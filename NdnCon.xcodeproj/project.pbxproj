@@ -1,0 +1,516 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
+		AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
+		AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
+		AFD978F619BE546D0061AA24 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.m */; };
+		AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F819BE546D0061AA24 /* Credits.rtf */; };
+		AFD978FD19BE546D0061AA24 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD978FC19BE546D0061AA24 /* AppDelegate.m */; };
+		AFD9790019BE546D0061AA24 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD978FE19BE546D0061AA24 /* MainMenu.xib */; };
+		AFD9790319BE546D0061AA24 /* NdnCon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */; };
+		AFD9790519BE546D0061AA24 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFD9790419BE546D0061AA24 /* Images.xcassets */; };
+		AFD9790C19BE546E0061AA24 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD9790B19BE546E0061AA24 /* XCTest.framework */; };
+		AFD9790D19BE546E0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
+		AFD9791519BE546E0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD9791319BE546E0061AA24 /* InfoPlist.strings */; };
+		AFD9791719BE546E0061AA24 /* NdnConTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD9791619BE546E0061AA24 /* NdnConTests.m */; };
+		AFD9792319BE5C6E0061AA24 /* ndncon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = AFD9792219BE5C6E0061AA24 /* ndncon.iconset */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AFD9790E19BE546E0061AA24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AFD978DE19BE546D0061AA24 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AFD978E519BE546D0061AA24;
+			remoteInfo = NdnCon;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
+		AFD978E619BE546D0061AA24 /* NdnCon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NdnCon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFD978E919BE546D0061AA24 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		AFD978EC19BE546D0061AA24 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		AFD978ED19BE546D0061AA24 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		AFD978EE19BE546D0061AA24 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		AFD978F119BE546D0061AA24 /* NdnCon-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NdnCon-Info.plist"; sourceTree = "<group>"; };
+		AFD978F319BE546D0061AA24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AFD978F519BE546D0061AA24 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AFD978F719BE546D0061AA24 /* NdnCon-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NdnCon-Prefix.pch"; sourceTree = "<group>"; };
+		AFD978F919BE546D0061AA24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		AFD978FB19BE546D0061AA24 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		AFD978FC19BE546D0061AA24 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		AFD978FF19BE546D0061AA24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NdnCon.xcdatamodel; sourceTree = "<group>"; };
+		AFD9790419BE546D0061AA24 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		AFD9790A19BE546E0061AA24 /* NdnConTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NdnConTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFD9790B19BE546E0061AA24 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		AFD9791219BE546E0061AA24 /* NdnConTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NdnConTests-Info.plist"; sourceTree = "<group>"; };
+		AFD9791419BE546E0061AA24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AFD9791619BE546E0061AA24 /* NdnConTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NdnConTests.m; path = "ndncon-tests/NdnConTests.m"; sourceTree = "<group>"; };
+		AFD9792219BE5C6E0061AA24 /* ndncon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = ndncon.iconset; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AFD978E319BE546D0061AA24 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFD9790719BE546E0061AA24 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFD9790D19BE546E0061AA24 /* Cocoa.framework in Frameworks */,
+				AFD9790C19BE546E0061AA24 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AF3C6FA319BE98D300FAE40B /* Thirdparty */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Thirdparty;
+			sourceTree = "<group>";
+		};
+		AFD978DD19BE546D0061AA24 = {
+			isa = PBXGroup;
+			children = (
+				AFD978EF19BE546D0061AA24 /* NdnCon */,
+				AFD9791019BE546E0061AA24 /* NdnConTests */,
+				AFD978E819BE546D0061AA24 /* Frameworks */,
+				AFD978E719BE546D0061AA24 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AFD978E719BE546D0061AA24 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AFD978E619BE546D0061AA24 /* NdnCon.app */,
+				AFD9790A19BE546E0061AA24 /* NdnConTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AFD978E819BE546D0061AA24 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AFD978E919BE546D0061AA24 /* Cocoa.framework */,
+				AFD9790B19BE546E0061AA24 /* XCTest.framework */,
+				AFD978EB19BE546D0061AA24 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AFD978EB19BE546D0061AA24 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AFD978EC19BE546D0061AA24 /* AppKit.framework */,
+				AFD978ED19BE546D0061AA24 /* CoreData.framework */,
+				AFD978EE19BE546D0061AA24 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		AFD978EF19BE546D0061AA24 /* NdnCon */ = {
+			isa = PBXGroup;
+			children = (
+				AF3C6FA319BE98D300FAE40B /* Thirdparty */,
+				AFD978FB19BE546D0061AA24 /* AppDelegate.h */,
+				AFD978FC19BE546D0061AA24 /* AppDelegate.m */,
+				AFD978FE19BE546D0061AA24 /* MainMenu.xib */,
+				AFD9790419BE546D0061AA24 /* Images.xcassets */,
+				AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */,
+				AFD978F019BE546D0061AA24 /* Supporting Files */,
+			);
+			path = NdnCon;
+			sourceTree = "<group>";
+		};
+		AFD978F019BE546D0061AA24 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AFD9792219BE5C6E0061AA24 /* ndncon.iconset */,
+				AFD978F119BE546D0061AA24 /* NdnCon-Info.plist */,
+				AFD978F219BE546D0061AA24 /* InfoPlist.strings */,
+				AFD978F519BE546D0061AA24 /* main.m */,
+				AFD978F719BE546D0061AA24 /* NdnCon-Prefix.pch */,
+				AFD978F819BE546D0061AA24 /* Credits.rtf */,
+				AF3C6FA119BE98B200FAE40B /* settings.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AFD9791019BE546E0061AA24 /* NdnConTests */ = {
+			isa = PBXGroup;
+			children = (
+				AFD9791619BE546E0061AA24 /* NdnConTests.m */,
+				AFD9791119BE546E0061AA24 /* Supporting Files */,
+			);
+			path = NdnConTests;
+			sourceTree = "<group>";
+		};
+		AFD9791119BE546E0061AA24 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AFD9791219BE546E0061AA24 /* NdnConTests-Info.plist */,
+				AFD9791319BE546E0061AA24 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AFD978E519BE546D0061AA24 /* NdnCon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFD9791A19BE546E0061AA24 /* Build configuration list for PBXNativeTarget "NdnCon" */;
+			buildPhases = (
+				AFD978E219BE546D0061AA24 /* Sources */,
+				AFD978E319BE546D0061AA24 /* Frameworks */,
+				AFD978E419BE546D0061AA24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NdnCon;
+			productName = NdnCon;
+			productReference = AFD978E619BE546D0061AA24 /* NdnCon.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AFD9790919BE546E0061AA24 /* NdnConTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFD9791D19BE546E0061AA24 /* Build configuration list for PBXNativeTarget "NdnConTests" */;
+			buildPhases = (
+				AFD9790619BE546E0061AA24 /* Sources */,
+				AFD9790719BE546E0061AA24 /* Frameworks */,
+				AFD9790819BE546E0061AA24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AFD9790F19BE546E0061AA24 /* PBXTargetDependency */,
+			);
+			name = NdnConTests;
+			productName = NdnConTests;
+			productReference = AFD9790A19BE546E0061AA24 /* NdnConTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AFD978DE19BE546D0061AA24 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = REMAP;
+				TargetAttributes = {
+					AFD9790919BE546E0061AA24 = {
+						TestTargetID = AFD978E519BE546D0061AA24;
+					};
+				};
+			};
+			buildConfigurationList = AFD978E119BE546D0061AA24 /* Build configuration list for PBXProject "NdnCon" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AFD978DD19BE546D0061AA24;
+			productRefGroup = AFD978E719BE546D0061AA24 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AFD978E519BE546D0061AA24 /* NdnCon */,
+				AFD9790919BE546E0061AA24 /* NdnConTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AFD978E419BE546D0061AA24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFD9792319BE5C6E0061AA24 /* ndncon.iconset in Resources */,
+				AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */,
+				AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */,
+				AFD9790519BE546D0061AA24 /* Images.xcassets in Resources */,
+				AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */,
+				AFD9790019BE546D0061AA24 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFD9790819BE546E0061AA24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFD9791519BE546E0061AA24 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AFD978E219BE546D0061AA24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFD978FD19BE546D0061AA24 /* AppDelegate.m in Sources */,
+				AFD9790319BE546D0061AA24 /* NdnCon.xcdatamodeld in Sources */,
+				AFD978F619BE546D0061AA24 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFD9790619BE546E0061AA24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFD9791719BE546E0061AA24 /* NdnConTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AFD9790F19BE546E0061AA24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AFD978E519BE546D0061AA24 /* NdnCon */;
+			targetProxy = AFD9790E19BE546E0061AA24 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AFD978F219BE546D0061AA24 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AFD978F319BE546D0061AA24 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AFD978F819BE546D0061AA24 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AFD978F919BE546D0061AA24 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		AFD978FE19BE546D0061AA24 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AFD978FF19BE546D0061AA24 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		AFD9791319BE546E0061AA24 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AFD9791419BE546E0061AA24 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AFD9791819BE546E0061AA24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		AFD9791919BE546E0061AA24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		AFD9791B19BE546E0061AA24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				INFOPLIST_FILE = "NdnCon/NdnCon-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		AFD9791C19BE546E0061AA24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				INFOPLIST_FILE = "NdnCon/NdnCon-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		AFD9791E19BE546E0061AA24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NdnCon.app/Contents/MacOS/NdnCon";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "NdnConTests/NdnConTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		AFD9791F19BE546E0061AA24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NdnCon.app/Contents/MacOS/NdnCon";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				INFOPLIST_FILE = "NdnConTests/NdnConTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AFD978E119BE546D0061AA24 /* Build configuration list for PBXProject "NdnCon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFD9791819BE546E0061AA24 /* Debug */,
+				AFD9791919BE546E0061AA24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFD9791A19BE546E0061AA24 /* Build configuration list for PBXNativeTarget "NdnCon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFD9791B19BE546E0061AA24 /* Debug */,
+				AFD9791C19BE546E0061AA24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFD9791D19BE546E0061AA24 /* Build configuration list for PBXNativeTarget "NdnConTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFD9791E19BE546E0061AA24 /* Debug */,
+				AFD9791F19BE546E0061AA24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */,
+			);
+			currentVersion = AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */;
+			path = NdnCon.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = AFD978DE19BE546D0061AA24 /* Project object */;
+}
