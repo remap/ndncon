@@ -368,6 +368,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				NDNRTC_INCLUDE_PATH = "";
+				NDNRTC_LIB_PATH = "";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -401,6 +403,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				NDNRTC_INCLUDE_PATH = "";
+				NDNRTC_LIB_PATH = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -423,8 +427,6 @@
 					"$(NDNRTC_LIB_PATH)",
 					"$(inherited)",
 				);
-				NDNRTC_INCLUDE_PATH = "";
-				NDNRTC_LIB_PATH = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -448,8 +450,6 @@
 					"$(NDNRTC_LIB_PATH)",
 					"$(inherited)",
 				);
-				NDNRTC_INCLUDE_PATH = "";
-				NDNRTC_LIB_PATH = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
