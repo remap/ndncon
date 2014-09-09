@@ -408,7 +408,18 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(NDNRTC_INCLUDE_PATH)",
+				);
 				INFOPLIST_FILE = "NdnCon/NdnCon-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(NDNRTC_LIB_PATH)",
+					"$(inherited)",
+				);
+				NDNRTC_INCLUDE_PATH = "";
+				NDNRTC_LIB_PATH = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -421,7 +432,18 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(NDNRTC_INCLUDE_PATH)",
+				);
 				INFOPLIST_FILE = "NdnCon/NdnCon-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(NDNRTC_LIB_PATH)",
+					"$(inherited)",
+				);
+				NDNRTC_INCLUDE_PATH = "";
+				NDNRTC_LIB_PATH = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
