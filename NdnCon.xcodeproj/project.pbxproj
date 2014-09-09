@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
+		AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
 		AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
 		AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
 		AFD978F619BE546D0061AA24 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.m */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
+		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = usr/local/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AFD978E619BE546D0061AA24 /* NdnCon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NdnCon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFD978E919BE546D0061AA24 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AFD978EC19BE546D0061AA24 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -63,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */,
 				AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -108,6 +111,7 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */,
 				AFD978E919BE546D0061AA24 /* Cocoa.framework */,
 				AFD9790B19BE546E0061AA24 /* XCTest.framework */,
 				AFD978EB19BE546D0061AA24 /* Other Frameworks */,
