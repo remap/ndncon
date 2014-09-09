@@ -408,10 +408,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
+					"$(NDNRTC_INCLUDE_PATH)",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(NDNRTC_INCLUDE_PATH)",
 				);
 				INFOPLIST_FILE = "NdnCon/NdnCon-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -432,10 +433,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				HEADER_SEARCH_PATHS = (
+					"$(NDNRTC_INCLUDE_PATH)",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(NDNRTC_INCLUDE_PATH)",
 				);
 				INFOPLIST_FILE = "NdnCon/NdnCon-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
