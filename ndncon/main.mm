@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#include <ndnrtc/ndnrtc-library.h>
 
 int main(int argc, const char * argv[])
 {

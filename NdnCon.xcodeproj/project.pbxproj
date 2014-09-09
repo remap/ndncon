@@ -11,7 +11,7 @@
 		AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
 		AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
 		AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
-		AFD978F619BE546D0061AA24 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.m */; };
+		AFD978F619BE546D0061AA24 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.mm */; };
 		AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F819BE546D0061AA24 /* Credits.rtf */; };
 		AFD978FD19BE546D0061AA24 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD978FC19BE546D0061AA24 /* AppDelegate.m */; };
 		AFD9790019BE546D0061AA24 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD978FE19BE546D0061AA24 /* MainMenu.xib */; };
@@ -44,7 +44,7 @@
 		AFD978EE19BE546D0061AA24 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AFD978F119BE546D0061AA24 /* NdnCon-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NdnCon-Info.plist"; sourceTree = "<group>"; };
 		AFD978F319BE546D0061AA24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		AFD978F519BE546D0061AA24 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AFD978F519BE546D0061AA24 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		AFD978F719BE546D0061AA24 /* NdnCon-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NdnCon-Prefix.pch"; sourceTree = "<group>"; };
 		AFD978F919BE546D0061AA24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		AFD978FB19BE546D0061AA24 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 				AFD9792219BE5C6E0061AA24 /* ndncon.iconset */,
 				AFD978F119BE546D0061AA24 /* NdnCon-Info.plist */,
 				AFD978F219BE546D0061AA24 /* InfoPlist.strings */,
-				AFD978F519BE546D0061AA24 /* main.m */,
+				AFD978F519BE546D0061AA24 /* main.mm */,
 				AFD978F719BE546D0061AA24 /* NdnCon-Prefix.pch */,
 				AFD978F819BE546D0061AA24 /* Credits.rtf */,
 				AF3C6FA119BE98B200FAE40B /* settings.plist */,
@@ -277,7 +277,7 @@
 			files = (
 				AFD978FD19BE546D0061AA24 /* AppDelegate.m in Sources */,
 				AFD9790319BE546D0061AA24 /* NdnCon.xcdatamodeld in Sources */,
-				AFD978F619BE546D0061AA24 /* main.m in Sources */,
+				AFD978F619BE546D0061AA24 /* main.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +340,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -380,7 +380,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
