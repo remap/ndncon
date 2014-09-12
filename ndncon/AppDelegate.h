@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "MASPreferencesWindowController.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
@@ -15,6 +16,8 @@
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
+@property (nonatomic, strong) MASPreferencesWindowController* preferencesWindowController;
 
 - (IBAction)saveAction:(id)sender;
 

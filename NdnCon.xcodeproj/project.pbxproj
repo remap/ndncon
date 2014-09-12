@@ -8,12 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
+		AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */; };
+		AF7026AA19C11C6B0087B605 /* NCConsumerParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026A919C11C6B0087B605 /* NCConsumerParametersView.xib */; };
+		AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */; };
+		AF7026B119C11CBE0087B605 /* NCConsumerParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026AF19C11CBE0087B605 /* NCConsumerParametersViewController.m */; };
+		AF7026B719C250560087B605 /* NCStackEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026B519C250560087B605 /* NCStackEditorViewController.m */; };
+		AF7026B819C250560087B605 /* NCStackEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026B619C250560087B605 /* NCStackEditorView.xib */; };
+		AF7026BA19C251490087B605 /* NCStackEditorEntryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026B919C251490087B605 /* NCStackEditorEntryView.xib */; };
+		AF7026BE19C252B50087B605 /* NCStackEditorEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026BC19C252B50087B605 /* NCStackEditorEntryViewController.m */; };
+		AF7026C319C259AE0087B605 /* NCProducerParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026C119C259AE0087B605 /* NCProducerParametersViewController.m */; };
+		AF7026C419C259AE0087B605 /* NCProducerParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026C219C259AE0087B605 /* NCProducerParametersView.xib */; };
+		AF7026C919C279A80087B605 /* NCVideoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026C719C279A80087B605 /* NCVideoStreamViewController.m */; };
+		AF7026CA19C279A80087B605 /* NCVideoStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026C819C279A80087B605 /* NCVideoStreamView.xib */; };
 		AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
+		AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */; };
+		AF8A138F19BFB7C500010B20 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A138919BFB7C500010B20 /* MASPreferencesWindowController.m */; };
+		AF8A139419BFB85B00010B20 /* NCGeneralPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A139319BFB85B00010B20 /* NCGeneralPreferencesView.xib */; };
+		AF8A139719BFB89B00010B20 /* NCGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A139619BFB89B00010B20 /* NCGeneralPreferencesViewController.m */; };
+		AF8A139919BFB8B900010B20 /* NCMediaPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A139819BFB8B900010B20 /* NCMediaPreferencesView.xib */; };
+		AF8A139D19BFB8CE00010B20 /* NCMediaPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A139B19BFB8CE00010B20 /* NCMediaPreferencesViewController.m */; };
+		AF8A13A219BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF8A13A019BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm */; };
+		AF8A13A319BFB8E700010B20 /* NCAdvancedPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A13A119BFB8E700010B20 /* NCAdvancedPreferencesView.xib */; };
+		AF8A14CE19BFD6C100010B20 /* PTNStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A14CD19BFD6C100010B20 /* PTNStorage.m */; };
+		AF8A14D119BFD70B00010B20 /* NCPreferencesController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF8A14D019BFD70B00010B20 /* NCPreferencesController.mm */; };
 		AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
 		AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
 		AFD978F619BE546D0061AA24 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.mm */; };
 		AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F819BE546D0061AA24 /* Credits.rtf */; };
-		AFD978FD19BE546D0061AA24 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD978FC19BE546D0061AA24 /* AppDelegate.m */; };
+		AFD978FD19BE546D0061AA24 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978FC19BE546D0061AA24 /* AppDelegate.mm */; };
 		AFD9790019BE546D0061AA24 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD978FE19BE546D0061AA24 /* MainMenu.xib */; };
 		AFD9790319BE546D0061AA24 /* NdnCon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */; };
 		AFD9790519BE546D0061AA24 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFD9790419BE546D0061AA24 /* Images.xcassets */; };
@@ -36,7 +58,42 @@
 
 /* Begin PBXFileReference section */
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
+		AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCGeneralParametersView.xib; path = ndncon/NCGeneralParametersView.xib; sourceTree = SOURCE_ROOT; };
+		AF7026A919C11C6B0087B605 /* NCConsumerParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCConsumerParametersView.xib; path = ndncon/NCConsumerParametersView.xib; sourceTree = SOURCE_ROOT; };
+		AF7026AB19C11C8F0087B605 /* NCGeneralParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGeneralParametersViewController.h; path = ndncon/NCGeneralParametersViewController.h; sourceTree = SOURCE_ROOT; };
+		AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGeneralParametersViewController.m; path = ndncon/NCGeneralParametersViewController.m; sourceTree = SOURCE_ROOT; };
+		AF7026AE19C11CBE0087B605 /* NCConsumerParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConsumerParametersViewController.h; path = ndncon/NCConsumerParametersViewController.h; sourceTree = SOURCE_ROOT; };
+		AF7026AF19C11CBE0087B605 /* NCConsumerParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCConsumerParametersViewController.m; path = ndncon/NCConsumerParametersViewController.m; sourceTree = SOURCE_ROOT; };
+		AF7026B419C250560087B605 /* NCStackEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCStackEditorViewController.h; path = ndncon/NCStackEditorViewController.h; sourceTree = SOURCE_ROOT; };
+		AF7026B519C250560087B605 /* NCStackEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCStackEditorViewController.m; path = ndncon/NCStackEditorViewController.m; sourceTree = SOURCE_ROOT; };
+		AF7026B619C250560087B605 /* NCStackEditorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCStackEditorView.xib; path = ndncon/NCStackEditorView.xib; sourceTree = SOURCE_ROOT; };
+		AF7026B919C251490087B605 /* NCStackEditorEntryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCStackEditorEntryView.xib; path = ndncon/NCStackEditorEntryView.xib; sourceTree = SOURCE_ROOT; };
+		AF7026BB19C252B50087B605 /* NCStackEditorEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCStackEditorEntryViewController.h; path = ndncon/NCStackEditorEntryViewController.h; sourceTree = SOURCE_ROOT; };
+		AF7026BC19C252B50087B605 /* NCStackEditorEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCStackEditorEntryViewController.m; path = ndncon/NCStackEditorEntryViewController.m; sourceTree = SOURCE_ROOT; };
+		AF7026C019C259AE0087B605 /* NCProducerParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCProducerParametersViewController.h; path = ndncon/NCProducerParametersViewController.h; sourceTree = SOURCE_ROOT; };
+		AF7026C119C259AE0087B605 /* NCProducerParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCProducerParametersViewController.m; path = ndncon/NCProducerParametersViewController.m; sourceTree = SOURCE_ROOT; };
+		AF7026C219C259AE0087B605 /* NCProducerParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCProducerParametersView.xib; path = ndncon/NCProducerParametersView.xib; sourceTree = SOURCE_ROOT; };
+		AF7026C619C279A80087B605 /* NCVideoStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCVideoStreamViewController.h; path = ndncon/NCVideoStreamViewController.h; sourceTree = SOURCE_ROOT; };
+		AF7026C719C279A80087B605 /* NCVideoStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCVideoStreamViewController.m; path = ndncon/NCVideoStreamViewController.m; sourceTree = SOURCE_ROOT; };
+		AF7026C819C279A80087B605 /* NCVideoStreamView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCVideoStreamView.xib; path = ndncon/NCVideoStreamView.xib; sourceTree = SOURCE_ROOT; };
 		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = usr/local/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
+		AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
+		AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
+		AF8A138819BFB7C500010B20 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
+		AF8A138919BFB7C500010B20 /* MASPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASPreferencesWindowController.m; sourceTree = "<group>"; };
+		AF8A139319BFB85B00010B20 /* NCGeneralPreferencesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCGeneralPreferencesView.xib; path = ndncon/NCGeneralPreferencesView.xib; sourceTree = SOURCE_ROOT; };
+		AF8A139519BFB89B00010B20 /* NCGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGeneralPreferencesViewController.h; path = ndncon/NCGeneralPreferencesViewController.h; sourceTree = SOURCE_ROOT; };
+		AF8A139619BFB89B00010B20 /* NCGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGeneralPreferencesViewController.m; path = ndncon/NCGeneralPreferencesViewController.m; sourceTree = SOURCE_ROOT; };
+		AF8A139819BFB8B900010B20 /* NCMediaPreferencesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCMediaPreferencesView.xib; path = ndncon/NCMediaPreferencesView.xib; sourceTree = SOURCE_ROOT; };
+		AF8A139A19BFB8CE00010B20 /* NCMediaPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCMediaPreferencesViewController.h; path = ndncon/NCMediaPreferencesViewController.h; sourceTree = SOURCE_ROOT; };
+		AF8A139B19BFB8CE00010B20 /* NCMediaPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCMediaPreferencesViewController.m; path = ndncon/NCMediaPreferencesViewController.m; sourceTree = SOURCE_ROOT; };
+		AF8A139F19BFB8E700010B20 /* NCAdvancedPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCAdvancedPreferencesViewController.h; path = ndncon/NCAdvancedPreferencesViewController.h; sourceTree = SOURCE_ROOT; };
+		AF8A13A019BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCAdvancedPreferencesViewController.mm; path = ndncon/NCAdvancedPreferencesViewController.mm; sourceTree = SOURCE_ROOT; };
+		AF8A13A119BFB8E700010B20 /* NCAdvancedPreferencesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCAdvancedPreferencesView.xib; path = ndncon/NCAdvancedPreferencesView.xib; sourceTree = SOURCE_ROOT; };
+		AF8A14CC19BFD6C100010B20 /* PTNStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNStorage.h; sourceTree = "<group>"; };
+		AF8A14CD19BFD6C100010B20 /* PTNStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNStorage.m; sourceTree = "<group>"; };
+		AF8A14CF19BFD70B00010B20 /* NCPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCPreferencesController.h; path = ndncon/NCPreferencesController.h; sourceTree = SOURCE_ROOT; };
+		AF8A14D019BFD70B00010B20 /* NCPreferencesController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCPreferencesController.mm; path = ndncon/NCPreferencesController.mm; sourceTree = SOURCE_ROOT; };
 		AFD978E619BE546D0061AA24 /* NdnCon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NdnCon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFD978E919BE546D0061AA24 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AFD978EC19BE546D0061AA24 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -48,7 +105,7 @@
 		AFD978F719BE546D0061AA24 /* NdnCon-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NdnCon-Prefix.pch"; sourceTree = "<group>"; };
 		AFD978F919BE546D0061AA24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		AFD978FB19BE546D0061AA24 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		AFD978FC19BE546D0061AA24 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		AFD978FC19BE546D0061AA24 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		AFD978FF19BE546D0061AA24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NdnCon.xcdatamodel; sourceTree = "<group>"; };
 		AFD9790419BE546D0061AA24 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -85,9 +142,109 @@
 		AF3C6FA319BE98D300FAE40B /* Thirdparty */ = {
 			isa = PBXGroup;
 			children = (
+				AF8A14CB19BFD6C100010B20 /* ptnstorage */,
+				AF8A138219BFB7C500010B20 /* maspreferences */,
 			);
 			name = Thirdparty;
 			sourceTree = "<group>";
+		};
+		AF7026A619C11BF40087B605 /* Advanced preferences */ = {
+			isa = PBXGroup;
+			children = (
+				AF8A139F19BFB8E700010B20 /* NCAdvancedPreferencesViewController.h */,
+				AF8A13A019BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm */,
+				AF8A13A119BFB8E700010B20 /* NCAdvancedPreferencesView.xib */,
+				AF7026AB19C11C8F0087B605 /* NCGeneralParametersViewController.h */,
+				AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */,
+				AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */,
+				AF7026AE19C11CBE0087B605 /* NCConsumerParametersViewController.h */,
+				AF7026AF19C11CBE0087B605 /* NCConsumerParametersViewController.m */,
+				AF7026A919C11C6B0087B605 /* NCConsumerParametersView.xib */,
+				AF7026C019C259AE0087B605 /* NCProducerParametersViewController.h */,
+				AF7026C119C259AE0087B605 /* NCProducerParametersViewController.m */,
+				AF7026C219C259AE0087B605 /* NCProducerParametersView.xib */,
+			);
+			name = "Advanced preferences";
+			sourceTree = "<group>";
+		};
+		AF7026B319C250320087B605 /* Stack editor */ = {
+			isa = PBXGroup;
+			children = (
+				AF7026B419C250560087B605 /* NCStackEditorViewController.h */,
+				AF7026B519C250560087B605 /* NCStackEditorViewController.m */,
+				AF7026B619C250560087B605 /* NCStackEditorView.xib */,
+				AF7026B919C251490087B605 /* NCStackEditorEntryView.xib */,
+				AF7026BB19C252B50087B605 /* NCStackEditorEntryViewController.h */,
+				AF7026BC19C252B50087B605 /* NCStackEditorEntryViewController.m */,
+			);
+			name = "Stack editor";
+			sourceTree = "<group>";
+		};
+		AF7026C519C279830087B605 /* Stream editor */ = {
+			isa = PBXGroup;
+			children = (
+				AF7026B319C250320087B605 /* Stack editor */,
+				AF7026C619C279A80087B605 /* NCVideoStreamViewController.h */,
+				AF7026C719C279A80087B605 /* NCVideoStreamViewController.m */,
+				AF7026C819C279A80087B605 /* NCVideoStreamView.xib */,
+			);
+			name = "Stream editor";
+			sourceTree = "<group>";
+		};
+		AF8A138119BFB74300010B20 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				AF7026C519C279830087B605 /* Stream editor */,
+				AF8A139219BFB81E00010B20 /* Main window */,
+				AF8A139119BFB80E00010B20 /* Preferences */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		AF8A138219BFB7C500010B20 /* maspreferences */ = {
+			isa = PBXGroup;
+			children = (
+				AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */,
+				AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */,
+				AF8A138819BFB7C500010B20 /* MASPreferencesWindowController.h */,
+				AF8A138919BFB7C500010B20 /* MASPreferencesWindowController.m */,
+			);
+			name = maspreferences;
+			path = thirdparty/maspreferences;
+			sourceTree = SOURCE_ROOT;
+		};
+		AF8A139119BFB80E00010B20 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				AF8A139319BFB85B00010B20 /* NCGeneralPreferencesView.xib */,
+				AF8A139519BFB89B00010B20 /* NCGeneralPreferencesViewController.h */,
+				AF8A139619BFB89B00010B20 /* NCGeneralPreferencesViewController.m */,
+				AF8A139819BFB8B900010B20 /* NCMediaPreferencesView.xib */,
+				AF8A139A19BFB8CE00010B20 /* NCMediaPreferencesViewController.h */,
+				AF8A139B19BFB8CE00010B20 /* NCMediaPreferencesViewController.m */,
+				AF7026A619C11BF40087B605 /* Advanced preferences */,
+				AF8A14CF19BFD70B00010B20 /* NCPreferencesController.h */,
+				AF8A14D019BFD70B00010B20 /* NCPreferencesController.mm */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
+		AF8A139219BFB81E00010B20 /* Main window */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Main window";
+			sourceTree = "<group>";
+		};
+		AF8A14CB19BFD6C100010B20 /* ptnstorage */ = {
+			isa = PBXGroup;
+			children = (
+				AF8A14CC19BFD6C100010B20 /* PTNStorage.h */,
+				AF8A14CD19BFD6C100010B20 /* PTNStorage.m */,
+			);
+			name = ptnstorage;
+			path = thirdparty/ptnstorage;
+			sourceTree = SOURCE_ROOT;
 		};
 		AFD978DD19BE546D0061AA24 = {
 			isa = PBXGroup;
@@ -132,9 +289,10 @@
 		AFD978EF19BE546D0061AA24 /* NdnCon */ = {
 			isa = PBXGroup;
 			children = (
+				AF8A138119BFB74300010B20 /* Controllers */,
 				AF3C6FA319BE98D300FAE40B /* Thirdparty */,
 				AFD978FB19BE546D0061AA24 /* AppDelegate.h */,
-				AFD978FC19BE546D0061AA24 /* AppDelegate.m */,
+				AFD978FC19BE546D0061AA24 /* AppDelegate.mm */,
 				AFD978FE19BE546D0061AA24 /* MainMenu.xib */,
 				AFD9790419BE546D0061AA24 /* Images.xcassets */,
 				AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */,
@@ -251,11 +409,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF7026C419C259AE0087B605 /* NCProducerParametersView.xib in Resources */,
+				AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */,
 				AFD9792319BE5C6E0061AA24 /* ndncon.iconset in Resources */,
+				AF7026CA19C279A80087B605 /* NCVideoStreamView.xib in Resources */,
+				AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */,
+				AF7026B819C250560087B605 /* NCStackEditorView.xib in Resources */,
 				AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */,
+				AF8A139419BFB85B00010B20 /* NCGeneralPreferencesView.xib in Resources */,
 				AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */,
 				AFD9790519BE546D0061AA24 /* Images.xcassets in Resources */,
+				AF8A139919BFB8B900010B20 /* NCMediaPreferencesView.xib in Resources */,
 				AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */,
+				AF7026AA19C11C6B0087B605 /* NCConsumerParametersView.xib in Resources */,
+				AF7026BA19C251490087B605 /* NCStackEditorEntryView.xib in Resources */,
+				AF8A13A319BFB8E700010B20 /* NCAdvancedPreferencesView.xib in Resources */,
 				AFD9790019BE546D0061AA24 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,9 +443,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFD978FD19BE546D0061AA24 /* AppDelegate.m in Sources */,
+				AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */,
+				AF7026B119C11CBE0087B605 /* NCConsumerParametersViewController.m in Sources */,
+				AF8A13A219BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm in Sources */,
+				AF7026B719C250560087B605 /* NCStackEditorViewController.m in Sources */,
+				AF8A138F19BFB7C500010B20 /* MASPreferencesWindowController.m in Sources */,
+				AFD978FD19BE546D0061AA24 /* AppDelegate.mm in Sources */,
 				AFD9790319BE546D0061AA24 /* NdnCon.xcdatamodeld in Sources */,
+				AF7026C919C279A80087B605 /* NCVideoStreamViewController.m in Sources */,
+				AF8A139719BFB89B00010B20 /* NCGeneralPreferencesViewController.m in Sources */,
 				AFD978F619BE546D0061AA24 /* main.mm in Sources */,
+				AF7026BE19C252B50087B605 /* NCStackEditorEntryViewController.m in Sources */,
+				AF8A14CE19BFD6C100010B20 /* PTNStorage.m in Sources */,
+				AF7026C319C259AE0087B605 /* NCProducerParametersViewController.m in Sources */,
+				AF8A139D19BFB8CE00010B20 /* NCMediaPreferencesViewController.m in Sources */,
+				AF8A14D119BFD70B00010B20 /* NCPreferencesController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

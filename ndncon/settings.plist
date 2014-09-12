@@ -1,8 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>First launch</key>
-	<true/>
-</dict>
+    <dict>
+        <key>First launch</key>
+        <true/>
+        <key>General</key>
+        <dict>
+            <key>Log level</key>
+            <string>all</string>
+            <key>Use TLV</key>
+            <true/>
+            <key>Retransmissions enabled</key>
+            <true/>
+            <key>FEC enabled</key>
+            <true/>
+            <key>App caching enabled</key>
+            <true/>
+            <key>AV sync enabled</key>
+            <true/>
+            <key>Audio enabled</key>
+            <true/>
+            <key>Video enabled</key>
+            <true/>
+            <key>Skip incomplete frames</key>
+            <true/>
+            <key>Default prefix</key>
+            <string>/test</string>
+            <key>Default username</key>
+            <string>racoon</string>
+            <key>NDN daemon</key>
+            <dict>
+                <key>Host</key>
+                <string>localhost</string>
+                <key>Port</key>
+                <integer>6363</integer>
+            </dict>
+        </dict>
+        <key>Consumer</key>
+        <dict>
+            <key>Interest lifetime</key>
+            <integer>2000</integer>
+            <key>Jitter size</key>
+            <integer>300</integer>
+            <key>Buffer size</key>
+            <integer>150</integer>
+            <key>Slot size</key>
+            <integer>16000</integer>
+        </dict>
+        <key>Producer</key>
+        <dict>
+            <key>Audio</key>
+            <dict>
+                <key>Segment size</key>
+                <integer>500</integer>
+                <key>Freshness period</key>
+                <string>1000</string>
+            </dict>
+            <key>Video</key>
+            <dict>
+                <key>Segment size</key>
+                <integer>1000</integer>
+                <key>Freshness period</key>
+                <integer>1000</integer>
+            </dict>
+            <key>Audio streams</key>
+            <array>
+                <dict>
+                    <key>Name</key>
+                    <string>audio</string>
+                    <key>Capture device idx</key>
+                    <integer>0</integer>
+                    <key>Threads</key>
+                    <array>
+                        <dict>
+                            <key>Name</key>
+                            <string>pcmu</string>
+                        </dict>
+                    </array>
+                </dict>
+            </array>
+            <key>Video streams</key>
+            <array>
+                <dict>
+                    <key>Name</key>
+                    <string>front_camera</string>
+                    <key>Capture device idx</key>
+                    <integer>0</integer>
+                    <key>Threads</key>
+                    <array>
+                        <dict>
+                            <key>Name</key>
+                            <string>low</string>
+                            <key>Frame rate</key>
+                            <integer>30</integer>
+                            <key>GOP</key>
+                            <integer>30</integer>
+                            <key>Start bitrate</key>
+                            <integer>200</integer>
+                            <key>Max bitrate</key>
+                            <integer>0</integer>
+                            <key>Drop frames</key>
+                            <true/>
+                            <key>Encode width</key>
+                            <integer>320</integer>
+                            <key>Encoder height</key>
+                            <integer>240</integer>
+                        </dict>
+                        <dict>
+                            <key>Name</key>
+                            <string>mid</string>
+                            <key>Frame rate</key>
+                            <integer>30</integer>
+                            <key>GOP</key>
+                            <integer>30</integer>
+                            <key>Start bitrate</key>
+                            <integer>500</integer>
+                            <key>Max bitrate</key>
+                            <integer>0</integer>
+                            <key>Drop frames</key>
+                            <true/>
+                            <key>Encode width</key>
+                            <integer>640</integer>
+                            <key>Encoder height</key>
+                            <integer>480</integer>
+                        </dict>
+                        <dict>
+                            <key>Name</key>
+                            <string>hi</string>
+                            <key>Frame rate</key>
+                            <integer>30</integer>
+                            <key>GOP</key>
+                            <integer>30</integer>
+                            <key>Start bitrate</key>
+                            <integer>1000</integer>
+                            <key>Max bitrate</key>
+                            <integer>0</integer>
+                            <key>Drop frames</key>
+                            <true/>
+                            <key>Encode width</key>
+                            <integer>640</integer>
+                            <key>Encoder height</key>
+                            <integer>480</integer>
+                        </dict>
+                    </array>
+                </dict>
+                <dict>
+                    <key>Name</key>
+                    <string>desktop</string>
+                    <key>Capture device idx</key>
+                    <integer>-1</integer>
+                    <key>Threads</key>
+                    <array>
+                        <dict>
+                            <key>Name</key>
+                            <string>mid</string>
+                            <key>Frame rate</key>
+                            <integer>30</integer>
+                            <key>GOP</key>
+                            <integer>30</integer>
+                            <key>Start bitrate</key>
+                            <integer>500</integer>
+                            <key>Max bitrate</key>
+                            <integer>0</integer>
+                            <key>Drop frames</key>
+                            <true/>
+                            <key>Encode width</key>
+                            <integer>1280</integer>
+                            <key>Encoder height</key>
+                            <integer>800</integer>
+                        </dict>
+                        <dict>
+                            <key>Name</key>
+                            <string>hi</string>
+                            <key>Frame rate</key>
+                            <integer>30</integer>
+                            <key>GOP</key>
+                            <integer>30</integer>
+                            <key>Start bitrate</key>
+                            <integer>1000</integer>
+                            <key>Max bitrate</key>
+                            <integer>0</integer>
+                            <key>Drop frames</key>
+                            <true/>
+                            <key>Encode width</key>
+                            <integer>1280</integer>
+                            <key>Encoder height</key>
+                            <integer>800</integer>
+                        </dict>
+                    </array>
+                </dict>
+            </array>
+        </dict>
+    </dict>
 </plist>

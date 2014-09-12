@@ -1,0 +1,3 @@
+[submodule "thirdparty/maspreferences"]
+	path = thirdparty/maspreferences
+	url = https://github.com/shpakovski/MASPreferences.git

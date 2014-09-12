@@ -6,7 +6,19 @@
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
+#include <ndnrtc/simple-log.h>
+
 #import "AppDelegate.h"
+
+#import "NCAdvancedPreferencesViewController.h"
+#import "NCGeneralPreferencesViewController.h"
+#import "NCMediaPreferencesViewController.h"
+
+#import "NCPreferencesController.h"
+
+@interface AppDelegate()
+
+@end
 
 @implementation AppDelegate
 
@@ -16,7 +28,16 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    [NCPreferencesController sharedInstanceWithDefaultsFile:@"settings"];
+//    [[NCPreferencesController sharedInstance] resetDefaults];
+    
+    if ([NCPreferencesController sharedInstance].isFirstLaunch)
+    {
+        NSLog(@"First launch indeed!");
+        [NCPreferencesController sharedInstance].firstLaunch = NO;
+    }
+    else
+        NSLog(@"We're friends already...");
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ucla.edu.NdnCon" in the user's Application Support directory.
@@ -178,6 +199,23 @@
     }
 
     return NSTerminateNow;
+}
+
+
+-(IBAction)showPreferences:(id)sender
+{
+    if (self.preferencesWindowController == nil)
+    {
+        NSViewController *generalViewController = [[NCGeneralPreferencesViewController alloc] init];
+        NSViewController *mediaViewController = [[NCMediaPreferencesViewController alloc] init];
+        NSViewController *advancedViewController = [[NCAdvancedPreferencesViewController alloc] init];
+        NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, mediaViewController, advancedViewController, nil];
+        
+        NSString *title = NSLocalizedString(@"Preferences", @"Common title for Preferences window");
+        self.preferencesWindowController = [[MASPreferencesWindowController alloc] initWithViewControllers:controllers title:title];
+    }
+    
+    [self.preferencesWindowController showWindow:nil];
 }
 
 @end
