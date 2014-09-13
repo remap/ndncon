@@ -44,7 +44,7 @@
     return (NSStackView*)self.view;
 }
 
--(void)addViewEntry:(NSView*)view
+-(NCStackEditorEntryViewController*)addViewEntry:(NSView*)view
 {
     NCStackEditorEntryViewController *vc =[[NCStackEditorEntryViewController alloc] init];
     vc.delegate = self;
@@ -52,6 +52,11 @@
     
     [self.entryControllers addObject:vc];
     [self.stackView addView:vc.view inGravity:NSStackViewGravityTop];
+    
+    [vc.view.superview setWantsLayer:YES];
+    vc.view.superview.layer.backgroundColor = [NSColor colorWithWhite:0.9 alpha:1.].CGColor;
+    
+    return vc;
 }
 
 // NSStackView delegate

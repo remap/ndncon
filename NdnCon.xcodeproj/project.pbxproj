@@ -20,6 +20,14 @@
 		AF7026C419C259AE0087B605 /* NCProducerParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026C219C259AE0087B605 /* NCProducerParametersView.xib */; };
 		AF7026C919C279A80087B605 /* NCVideoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026C719C279A80087B605 /* NCVideoStreamViewController.m */; };
 		AF7026CA19C279A80087B605 /* NCVideoStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026C819C279A80087B605 /* NCVideoStreamView.xib */; };
+		AF7026CD19C2B3940087B605 /* NCEditorEntryView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026CC19C2B3940087B605 /* NCEditorEntryView.m */; };
+		AF7026D019C36FA00087B605 /* NCStreamEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026CF19C36FA00087B605 /* NCStreamEditorViewController.m */; };
+		AF7026D319C391B60087B605 /* NCStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026D219C391B60087B605 /* NCStreamViewController.m */; };
+		AF7026D719C392E80087B605 /* NCAudioStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026D519C392E80087B605 /* NCAudioStreamViewController.m */; };
+		AF7026D819C392E80087B605 /* NCAudioStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026D619C392E80087B605 /* NCAudioStreamView.xib */; };
+		AF7026DA19C3B5530087B605 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7026D919C3B5530087B605 /* AVFoundation.framework */; };
+		AF7026DC19C3B55C0087B605 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7026DB19C3B55C0087B605 /* CoreMedia.framework */; };
+		AF7026E319C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026E219C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.m */; };
 		AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
 		AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */; };
 		AF8A138F19BFB7C500010B20 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A138919BFB7C500010B20 /* MASPreferencesWindowController.m */; };
@@ -76,6 +84,21 @@
 		AF7026C619C279A80087B605 /* NCVideoStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCVideoStreamViewController.h; path = ndncon/NCVideoStreamViewController.h; sourceTree = SOURCE_ROOT; };
 		AF7026C719C279A80087B605 /* NCVideoStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCVideoStreamViewController.m; path = ndncon/NCVideoStreamViewController.m; sourceTree = SOURCE_ROOT; };
 		AF7026C819C279A80087B605 /* NCVideoStreamView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCVideoStreamView.xib; path = ndncon/NCVideoStreamView.xib; sourceTree = SOURCE_ROOT; };
+		AF7026CB19C2B3940087B605 /* NCEditorEntryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCEditorEntryView.h; path = ndncon/NCEditorEntryView.h; sourceTree = SOURCE_ROOT; };
+		AF7026CC19C2B3940087B605 /* NCEditorEntryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCEditorEntryView.m; path = ndncon/NCEditorEntryView.m; sourceTree = SOURCE_ROOT; };
+		AF7026CE19C36FA00087B605 /* NCStreamEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCStreamEditorViewController.h; path = ndncon/NCStreamEditorViewController.h; sourceTree = SOURCE_ROOT; };
+		AF7026CF19C36FA00087B605 /* NCStreamEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCStreamEditorViewController.m; path = ndncon/NCStreamEditorViewController.m; sourceTree = SOURCE_ROOT; };
+		AF7026D119C391B60087B605 /* NCStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCStreamViewController.h; path = ndncon/NCStreamViewController.h; sourceTree = SOURCE_ROOT; };
+		AF7026D219C391B60087B605 /* NCStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCStreamViewController.m; path = ndncon/NCStreamViewController.m; sourceTree = SOURCE_ROOT; };
+		AF7026D419C392E80087B605 /* NCAudioStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCAudioStreamViewController.h; path = ndncon/NCAudioStreamViewController.h; sourceTree = SOURCE_ROOT; };
+		AF7026D519C392E80087B605 /* NCAudioStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCAudioStreamViewController.m; path = ndncon/NCAudioStreamViewController.m; sourceTree = SOURCE_ROOT; };
+		AF7026D619C392E80087B605 /* NCAudioStreamView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCAudioStreamView.xib; path = ndncon/NCAudioStreamView.xib; sourceTree = SOURCE_ROOT; };
+		AF7026D919C3B5530087B605 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AF7026DB19C3B55C0087B605 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		AF7026DD19C3B56A0087B605 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		AF7026DF19C3B6280087B605 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		AF7026E119C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AVCaptureDeviceFormat+NdnConAdditions.h"; path = "ndncon/AVCaptureDeviceFormat+NdnConAdditions.h"; sourceTree = SOURCE_ROOT; };
+		AF7026E219C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AVCaptureDeviceFormat+NdnConAdditions.m"; path = "ndncon/AVCaptureDeviceFormat+NdnConAdditions.m"; sourceTree = SOURCE_ROOT; };
 		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = usr/local/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
@@ -122,6 +145,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF7026DC19C3B55C0087B605 /* CoreMedia.framework in Frameworks */,
+				AF7026DA19C3B5530087B605 /* AVFoundation.framework in Frameworks */,
 				AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */,
 				AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */,
 			);
@@ -176,6 +201,8 @@
 				AF7026B919C251490087B605 /* NCStackEditorEntryView.xib */,
 				AF7026BB19C252B50087B605 /* NCStackEditorEntryViewController.h */,
 				AF7026BC19C252B50087B605 /* NCStackEditorEntryViewController.m */,
+				AF7026CB19C2B3940087B605 /* NCEditorEntryView.h */,
+				AF7026CC19C2B3940087B605 /* NCEditorEntryView.m */,
 			);
 			name = "Stack editor";
 			sourceTree = "<group>";
@@ -184,9 +211,16 @@
 			isa = PBXGroup;
 			children = (
 				AF7026B319C250320087B605 /* Stack editor */,
+				AF7026D119C391B60087B605 /* NCStreamViewController.h */,
+				AF7026D219C391B60087B605 /* NCStreamViewController.m */,
+				AF7026D419C392E80087B605 /* NCAudioStreamViewController.h */,
+				AF7026D519C392E80087B605 /* NCAudioStreamViewController.m */,
+				AF7026D619C392E80087B605 /* NCAudioStreamView.xib */,
 				AF7026C619C279A80087B605 /* NCVideoStreamViewController.h */,
 				AF7026C719C279A80087B605 /* NCVideoStreamViewController.m */,
 				AF7026C819C279A80087B605 /* NCVideoStreamView.xib */,
+				AF7026CE19C36FA00087B605 /* NCStreamEditorViewController.h */,
+				AF7026CF19C36FA00087B605 /* NCStreamEditorViewController.m */,
 			);
 			name = "Stream editor";
 			sourceTree = "<group>";
@@ -225,6 +259,8 @@
 				AF7026A619C11BF40087B605 /* Advanced preferences */,
 				AF8A14CF19BFD70B00010B20 /* NCPreferencesController.h */,
 				AF8A14D019BFD70B00010B20 /* NCPreferencesController.mm */,
+				AF7026E119C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.h */,
+				AF7026E219C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.m */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -268,6 +304,10 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF7026DF19C3B6280087B605 /* CoreVideo.framework */,
+				AF7026DD19C3B56A0087B605 /* CoreFoundation.framework */,
+				AF7026DB19C3B55C0087B605 /* CoreMedia.framework */,
+				AF7026D919C3B5530087B605 /* AVFoundation.framework */,
 				AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */,
 				AFD978E919BE546D0061AA24 /* Cocoa.framework */,
 				AFD9790B19BE546E0061AA24 /* XCTest.framework */,
@@ -412,6 +452,7 @@
 				AF7026C419C259AE0087B605 /* NCProducerParametersView.xib in Resources */,
 				AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */,
 				AFD9792319BE5C6E0061AA24 /* ndncon.iconset in Resources */,
+				AF7026D819C392E80087B605 /* NCAudioStreamView.xib in Resources */,
 				AF7026CA19C279A80087B605 /* NCVideoStreamView.xib in Resources */,
 				AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */,
 				AF7026B819C250560087B605 /* NCStackEditorView.xib in Resources */,
@@ -444,12 +485,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */,
+				AF7026D019C36FA00087B605 /* NCStreamEditorViewController.m in Sources */,
 				AF7026B119C11CBE0087B605 /* NCConsumerParametersViewController.m in Sources */,
 				AF8A13A219BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm in Sources */,
+				AF7026E319C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.m in Sources */,
+				AF7026CD19C2B3940087B605 /* NCEditorEntryView.m in Sources */,
 				AF7026B719C250560087B605 /* NCStackEditorViewController.m in Sources */,
 				AF8A138F19BFB7C500010B20 /* MASPreferencesWindowController.m in Sources */,
 				AFD978FD19BE546D0061AA24 /* AppDelegate.mm in Sources */,
 				AFD9790319BE546D0061AA24 /* NdnCon.xcdatamodeld in Sources */,
+				AF7026D719C392E80087B605 /* NCAudioStreamViewController.m in Sources */,
 				AF7026C919C279A80087B605 /* NCVideoStreamViewController.m in Sources */,
 				AF8A139719BFB89B00010B20 /* NCGeneralPreferencesViewController.m in Sources */,
 				AFD978F619BE546D0061AA24 /* main.mm in Sources */,
@@ -458,6 +503,7 @@
 				AF7026C319C259AE0087B605 /* NCProducerParametersViewController.m in Sources */,
 				AF8A139D19BFB8CE00010B20 /* NCMediaPreferencesViewController.m in Sources */,
 				AF8A14D119BFD70B00010B20 /* NCPreferencesController.mm in Sources */,
+				AF7026D319C391B60087B605 /* NCStreamViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

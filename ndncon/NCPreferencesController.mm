@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
-#import "NCPreferencesController.h"
+#import <AVFoundation/AVFoundation.h>
 #include <ndnrtc/simple-log.h>
+
+#import "NCPreferencesController.h"
 
 NSString* const kFirstLaunchKey = @"First launch";
 NSString* const kGeneralSectionKey = @"General";
@@ -39,6 +41,12 @@ NSString* const kJitterSizeKey = @"Jitter size";
 NSString* const kBufferSizeKey = @"Buffer size";
 NSString* const kSlotSizeKey = @"Slot size";
 
+NSString* const kProducerSectionKey = @"Producer";
+NSString* const kAudioSectionKey = @"Audio";
+NSString* const kVideoSectionKey = @"Video";
+NSString* const kFreshnessPeriodKey = @"Freshness period";
+NSString* const kSegmentSizeKey = @"Segment size";
+
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
                                   kLogLevelDebug: @(ndnlog::NdnLoggerDetailLevelDebug),
                                   kLogLevelDefault: @(ndnlog::NdnLoggerDetailLevelDefault),
@@ -50,7 +58,55 @@ NSDictionary* const LogLevelsStrings = @{@(ndnlog::NdnLoggerDetailLevelAll):kLog
 
 
 
+@interface NCPreferencesController()
+
+@property (nonatomic) NSArray *observers;
+
+@end
+
 @implementation NCPreferencesController
+
+-(id)init
+{
+    if ((self = [super init]))
+    {
+        __weak NCPreferencesController *weakSelf = self;
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        id deviceWasConnectedObserver = [notificationCenter addObserverForName:AVCaptureDeviceWasConnectedNotification
+                                                                        object:nil
+                                                                         queue:[NSOperationQueue mainQueue]
+                                                                    usingBlock:^(NSNotification *note) {
+                                                                        [weakSelf refreshDevices];
+                                                                    }];
+        id deviceWasDisconnectedObserver = [notificationCenter addObserverForName:AVCaptureDeviceWasDisconnectedNotification
+                                                                           object:nil
+                                                                            queue:[NSOperationQueue mainQueue]
+                                                                       usingBlock:^(NSNotification *note) {
+                                                                           [weakSelf refreshDevices];
+                                                                       }];
+        self.observers = [[NSArray alloc] initWithObjects: deviceWasConnectedObserver, deviceWasDisconnectedObserver, nil];
+        
+        [self refreshDevices];
+    }
+    
+    return self;
+}
+
+-(void)dealloc
+{
+    self.videoDevices = nil;
+    self.audioDevices = nil;
+    
+    for (id observer in self.observers)
+        [[NSNotificationCenter defaultCenter] removeObserver:observer];
+    self.observers = nil;
+}
+
+- (void)refreshDevices
+{
+    [self setVideoDevices:[[AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] arrayByAddingObjectsFromArray:[AVCaptureDevice devicesWithMediaType:AVMediaTypeMuxed]]];
+    [self setAudioDevices:[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio]];
+}
 
 +(NCPreferencesController*)sharedInstance
 {
@@ -223,6 +279,46 @@ NSDictionary* const LogLevelsStrings = @{@(ndnlog::NdnLoggerDetailLevelAll):kLog
 -(NSNumber *)slotSize
 {
     return [self getParamAtPathByComponents:kConsumerSectionKey, kSlotSizeKey, nil];
+}
+
+-(NSNumber *)audioFreshness
+{
+    return [self getParamAtPathByComponents:kProducerSectionKey, kAudioSectionKey, kFreshnessPeriodKey, nil];
+}
+
+-(void)setAudioFreshness:(NSNumber *)audioFreshness
+{
+    [self saveParam:audioFreshness atPathByComponents:kProducerSectionKey, kAudioSectionKey, kFreshnessPeriodKey, nil];
+}
+
+-(NSNumber *)audioSegmentSize
+{
+    return [self getParamAtPathByComponents:kProducerSectionKey, kAudioSectionKey, kSegmentSizeKey, nil];
+}
+
+-(void)setAudioSegmentSize:(NSNumber *)audioSegmentSize
+{
+    [self saveParam:audioSegmentSize atPathByComponents:kProducerSectionKey, kAudioSectionKey, kSegmentSizeKey, nil];
+}
+
+-(NSNumber *)videoFreshness
+{
+    return [self getParamAtPathByComponents:kProducerSectionKey, kVideoSectionKey, kFreshnessPeriodKey, nil];
+}
+
+-(void)setVideoFreshness:(NSNumber *)videoFreshness
+{
+    [self saveParam:videoFreshness atPathByComponents:kProducerSectionKey, kVideoSectionKey, kFreshnessPeriodKey, nil];
+}
+
+-(NSNumber *)videoSegmentSize
+{
+    return [self getParamAtPathByComponents:kProducerSectionKey, kVideoSectionKey, kSegmentSizeKey, nil];
+}
+
+-(void)setVideoSegmentSize:(NSNumber *)videoSegmentSize
+{
+    [self saveParam:videoSegmentSize atPathByComponents:kProducerSectionKey, kVideoSectionKey, kSegmentSizeKey, nil];
 }
 
 // private

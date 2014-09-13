@@ -13,6 +13,6 @@
 
 @property (nonatomic, readonly) NSStackView *stackView;
 
--(void)addViewEntry:(NSView*)view;
+-(NCStackEditorEntryViewController*)addViewEntry:(NSView*)view;
 
 @end

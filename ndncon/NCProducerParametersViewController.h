@@ -7,7 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "NCPreferencesController.h"
 
 @interface NCProducerParametersViewController : NSViewController
+
+@property (nonatomic, strong) NCPreferencesController *preferences;
 
 @end

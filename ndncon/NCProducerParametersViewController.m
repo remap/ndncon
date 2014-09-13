@@ -7,12 +7,12 @@
 //
 
 #import "NCProducerParametersViewController.h"
-#import "NCStackEditorViewController.h"
+#import "NCStreamEditorViewController.h"
 #import "NCVideoStreamViewController.h"
 
 @interface NCProducerParametersViewController ()
 
-@property (strong) NCStackEditorViewController *stackEditorController;
+@property (strong) NCStreamEditorViewController *streamEditorController;
 @property (weak) IBOutlet NSScrollView *scrollView;
 
 @property (strong) NSMutableArray *streamControllers;
@@ -30,19 +30,21 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.stackEditorController = [[NCStackEditorViewController alloc] init];
+        self.streamEditorController = [[NCStreamEditorViewController alloc] init];
     }
     return self;
 }
 
+-(void)dealloc
+{
+    self.preferences = nil;
+}
+
 -(void)awakeFromNib
 {
-    self.view.wantsLayer = YES;
-    self.view.layer.backgroundColor = [NSColor redColor].CGColor;
-    
-    [self.scrollView setDocumentView:self.stackEditorController.view];
+    [self.scrollView setDocumentView:self.streamEditorController.view];
 
-    NSStackView *stackEditorView = self.stackEditorController.stackView;
+    NSStackView *stackEditorView = self.streamEditorController.stackView;
     
     [stackEditorView setClippingResistancePriority:NSLayoutPriorityDefaultLow forOrientation:NSLayoutConstraintOrientationVertical];
     
@@ -60,23 +62,7 @@
 
 - (IBAction)addStream:(id)sender
 {
-    NCVideoStreamViewController *videoStreamViewController = [[NCVideoStreamViewController alloc] init];
-    
-//    [view setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[view(598)]"
-//                                                                options:0
-//                                                                metrics:nil
-//                                                                  views:NSDictionaryOfVariableBindings(view)]];
-//    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[view(200)]"
-//                                                                options:0
-//                                                                metrics:nil
-//                                                                  views:NSDictionaryOfVariableBindings(view)]];
-    
-//    NSTextField *tf = [[NSTextField alloc] initWithFrame:CGRectMake(250, 90, 100, 20)];
-//    [tf setStringValue: @"HELLO!"];
-//    [view addSubview:tf];
-    
-    [self.stackEditorController addViewEntry:videoStreamViewController.view];
+    [self.streamEditorController addVideoStream:[NCVideoStreamViewController defaultVideoStreamConfiguration]];
 }
 
 @end

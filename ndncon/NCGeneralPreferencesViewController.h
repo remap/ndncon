@@ -11,6 +11,6 @@
 
 @interface NCGeneralPreferencesViewController : NSViewController<MASPreferencesViewController>
 
-@property (nonatomic, readonly) NCPreferencesController *preferences;
+@property (nonatomic, strong) NCPreferencesController *preferences;
 
 @end

@@ -36,18 +36,17 @@
 
 -(void)awakeFromNib
 {
-    self.view.wantsLayer = YES;
-    self.view.layer.backgroundColor = [NSColor yellowColor].CGColor;
+
 }
 
 -(void)setCaption:(NSString *)caption
 {
-    self.captionLabel.value = caption;
+    [self.captionLabel setStringValue: caption];
 }
 
 -(NSString *)caption
 {
-    return self.captionLabel.value;
+    return self.captionLabel.stringValue;
 }
 
 -(NSView *)contentView
@@ -61,14 +60,8 @@
         [self.contentView removeFromSuperview];
         _contentView = view;
         [self.view addSubview:self.contentView];
-        
-        // we want a white background to distinguish between the
-        // header portion of this view controller containing the hide/show button
-        //
-        self.contentView.wantsLayer = YES;
-        self.contentView.layer.backgroundColor = [[NSColor whiteColor] CGColor];
-        
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_contentView]|"
+                
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_contentView]-20-|"
                                                                           options:0
                                                                           metrics:nil
                                                                             views:NSDictionaryOfVariableBindings(_contentView)]];
@@ -77,36 +70,10 @@
                                                                           metrics:nil
                                                                             views:NSDictionaryOfVariableBindings(_headerView, _contentView)]];
         
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_contentView]-(0@600)-|"
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_contentView]-(20@600)-|"
                                                                           options:0 metrics:nil
                                                                             views:NSDictionaryOfVariableBindings(_contentView)]];
     }
-//    if ([self.contentView.subviews containsObject:view])
-//        return;
-//    
-//    for (NSView *subview in self.contentView.subviews)
-//        [subview removeFromSuperview];
-//    
-//    CGRect contentViewFrame = self.contentView.frame;
-//    
-//    if (CGRectGetWidth(contentViewFrame) != CGRectGetWidth(view.frame) ||
-//        CGRectGetHeight(contentViewFrame) != CGRectGetHeight(view.frame))
-//    {
-//        contentViewFrame.size.width = view.frame.size.width;
-//        contentViewFrame.size.height = view.frame.size.height;
-//        
-//        CGRect mainViewFrame = self.view.frame;
-//        mainViewFrame.size.width = contentViewFrame.size.width;
-//        mainViewFrame.size.height += CGRectGetHeight(contentViewFrame)-CGRectGetHeight(self.contentView.frame) ;
-//        
-//        self.contentView.frame = contentViewFrame;
-//        self.view.frame = mainViewFrame;
-//        
-//        if (self.delegate && [self.delegate respondsToSelector:@selector(stackEditorEntryViewControllerUpdatedFrame:)])
-//            [self.delegate stackEditorEntryViewControllerUpdatedFrame:self];
-//    }
-//    
-//    [self.contentView addSubview:view];
 }
 
 - (IBAction)closeView:(id)sender

@@ -48,6 +48,7 @@ NSString* const kProducerParameters = @"Producer parameters";
 
         generalParameteresViewController.preferences = self.preferences;
         consumerParametersViewController.preferences = self.preferences;
+        producerParametersViewController.preferences = self.preferences;
         
         self.advancedSettings = @[
                                   @{@"name":kGeneralParameters, @"controller":generalParameteresViewController},
@@ -110,28 +111,40 @@ NSString* const kProducerParameters = @"Producer parameters";
         for (NSView *view in self.contentView.subviews)
              [view removeFromSuperview];
     
-    // adjust custom view's size to the view's size
-    self.contentView.frame = aView.bounds;
     [self.contentView addSubview:aView];
     
-    // check is split view is smaller than required
-    if (CGRectGetHeight(self.splitView.frame) != CGRectGetHeight(self.contentView.frame) ||
-        CGRectGetWidth(self.splitView.frame) != CGRectGetWidth(self.contentView.frame)+CGRectGetWidth(self.settingsView.frame)+self.splitView.dividerThickness)
-    {
-        CGRect splitViewFrame = self.splitView.frame;
-        splitViewFrame = CGRectMake(0, 0,
-                                    CGRectGetWidth(self.settingsView.frame)+self.splitView.dividerThickness+CGRectGetWidth(self.contentView.frame),
-                                    CGRectGetHeight(self.contentView.frame));
-        self.splitView.frame = splitViewFrame;
-        
-        NSWindow *preferencesWindow = [(AppDelegate*)[NSApplication sharedApplication].delegate preferencesWindowController].window;
-        CGRect newWindowRect = [preferencesWindow frameRectForContentRect:splitViewFrame];
-        newWindowRect.origin = preferencesWindow.frame.origin;
-        newWindowRect.origin.y += CGRectGetHeight(preferencesWindow.frame)-CGRectGetHeight(newWindowRect);
-
-        [preferencesWindow setContentMinSize:splitViewFrame.size];
-        [preferencesWindow setFrame:newWindowRect display:YES animate:NO];
-    }
+    [self.contentView addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:@"H:|[aView]|"
+                                      options:0 metrics:nil
+                                      views:NSDictionaryOfVariableBindings(aView)]];
+    [self.contentView addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:@"V:|[aView]|"
+                                      options:0
+                                      metrics:nil
+                                      views:NSDictionaryOfVariableBindings(aView)]];
+    
+//    // adjust custom view's size to the view's size
+//    self.contentView.frame = aView.bounds;
+//    [self.contentView addSubview:aView];
+//    
+//    // check is split view is smaller than required
+//    if (CGRectGetHeight(self.splitView.frame) != CGRectGetHeight(self.contentView.frame) ||
+//        CGRectGetWidth(self.splitView.frame) != CGRectGetWidth(self.contentView.frame)+CGRectGetWidth(self.settingsView.frame)+self.splitView.dividerThickness)
+//    {
+//        CGRect splitViewFrame = self.splitView.frame;
+//        splitViewFrame = CGRectMake(0, 0,
+//                                    CGRectGetWidth(self.settingsView.frame)+self.splitView.dividerThickness+CGRectGetWidth(self.contentView.frame),
+//                                    CGRectGetHeight(self.contentView.frame));
+//        self.splitView.frame = splitViewFrame;
+//        
+//        NSWindow *preferencesWindow = [(AppDelegate*)[NSApplication sharedApplication].delegate preferencesWindowController].window;
+//        CGRect newWindowRect = [preferencesWindow frameRectForContentRect:splitViewFrame];
+//        newWindowRect.origin = preferencesWindow.frame.origin;
+//        newWindowRect.origin.y += CGRectGetHeight(preferencesWindow.frame)-CGRectGetHeight(newWindowRect);
+//
+//        [preferencesWindow setContentMinSize:splitViewFrame.size];
+//        [preferencesWindow setFrame:newWindowRect display:YES animate:NO];
+//    }
 }
 
 @end

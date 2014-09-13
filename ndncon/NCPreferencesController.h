@@ -26,24 +26,23 @@
 //@property (nonatomic) NSUInteger daemonPort;
 @property (nonatomic) NSNumber *daemonPort;
 
-//@property (nonatomic, getter=isTlvEnabled, setter=setTlvEnabled:) BOOL tlvEnabled;
 @property (nonatomic) NSNumber *tlvEnabled;
-
-//@property (nonatomic, getter=isRtxEnabled, setter=setRtxEnabled:) BOOL rtxEnabled;
 @property (nonatomic) NSNumber *rtxEnabled;
-
-//@property (nonatomic, getter=isFecEnabled, setter=setFecEnabled:) BOOL fecEnabled;
 @property (nonatomic) NSNumber *fecEnabled;
-
-//@property (nonatomic, getter=isCachingEnabled, setter=setCachingEnabled:) BOOL cachingEnabled;
 @property (nonatomic) NSNumber *cachingEnabled;
-
-//@property (nonatomic, getter=isAvSyncEnabled, setter=setAvSyncEnabled:) BOOL avSyncEnabled;
 @property (nonatomic) NSNumber *avSyncEnabled;
 
 @property (nonatomic) NSNumber *interestLifetimeMs;
 @property (nonatomic) NSNumber *jitterSizeMs;
 @property (nonatomic) NSNumber *bufferSize;
 @property (nonatomic) NSNumber *slotSize;
+
+@property (nonatomic) NSNumber *audioSegmentSize;
+@property (nonatomic) NSNumber *audioFreshness;
+@property (nonatomic) NSNumber *videoSegmentSize;
+@property (nonatomic) NSNumber *videoFreshness;
+
+@property (retain) NSArray *videoDevices;
+@property (retain) NSArray *audioDevices;
 
 @end

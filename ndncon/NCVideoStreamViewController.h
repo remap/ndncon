@@ -7,7 +7,38 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "NCStreamViewController.h"
 
-@interface NCVideoStreamViewController : NSViewController
+/**
+ * Video stream configuration:
+ * {
+ *      Name: <stream_name>;
+ *      Input device: <device_idx>;
+ *      Device configuration: <configuration_idx>;
+ *      Synchronized to: <stream_idx>;
+ *      Threads: [
+ *          {
+ *              Name: <thread_name>;
+ *              Frame rate: <frame_rate>;
+ *              GOP: <GOP>;
+ *              Bitrate: <bitrate>;
+ *              Max bitrate: <max_bitrate>;
+ *              Encoding width: <encoding_width>;
+ *              Encoding height: <encoding_height>;
+ *          }, ...
+ *      ];
+ * }
+ */
+
+NSString* const kDeviceConfigurationKey;
+NSString* const kFrameRateKey;
+NSString* const kGopKey;
+NSString* const kMaxBitrateKey;
+NSString* const kEncodingWidthKey;
+NSString* const kEncodingHeightKey;
+
+@interface NCVideoStreamViewController : NCStreamViewController
+
++(NSDictionary*)defaultVideoStreamConfiguration;
 
 @end
