@@ -7,12 +7,20 @@
 //
 
 #import "NCStackEditorViewController.h"
+#import "NCPreferencesController.h"
+#import "NCStreamViewController.h"
 
 @interface NCStreamEditorViewController : NCStackEditorViewController
+<NCConfigurationObserverDelegate, NCStreamViewControllerDelegate>
+
+-(id)initWithPreferncesController:(NCPreferencesController*)preferences;
 
 -(void)addVideoStream:(NSDictionary*)defaultConfiguration;
 -(void)addAudioStream:(NSDictionary*)defaultConfiguration;
 
-@property (nonatomic, readonly) NSDictionary *configuration;
+@property (nonatomic, readonly) NSMutableArray *audioStreams;
+@property (nonatomic, readonly) NSMutableArray *videoStreams;
+
+//@property (nonatomic, readonly) NSDictionary *configuration;
 
 @end

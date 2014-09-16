@@ -11,6 +11,7 @@
 
 @interface NCStackEditorViewController : NSViewController<NSStackViewDelegate, NCStackEditorEntryDelegate>
 
+@property (nonatomic, weak) id<NCStackEditorEntryDelegate> delegate;
 @property (nonatomic, readonly) NSStackView *stackView;
 
 -(NCStackEditorEntryViewController*)addViewEntry:(NSView*)view;

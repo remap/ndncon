@@ -7,6 +7,7 @@
 //
 
 #import "NCStackEditorEntryViewController.h"
+#import "NCEditorEntryView.h"
 
 @interface NCStackEditorEntryViewController ()
 {
@@ -15,6 +16,8 @@
 
 @property (weak) IBOutlet NSTextField *captionLabel;
 @property (weak) IBOutlet NSView *headerView;
+@property (weak) IBOutlet NSLayoutConstraint *headerHeightConstraint;
+@property (weak) IBOutlet NSLayoutConstraint *captionBottomSpaceConstraint;
 
 @end
 
@@ -65,7 +68,7 @@
                                                                           options:0
                                                                           metrics:nil
                                                                             views:NSDictionaryOfVariableBindings(_contentView)]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_headerView][_contentView]"
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_headerView]-(0@750)-[_contentView]"
                                                                           options:0
                                                                           metrics:nil
                                                                             views:NSDictionaryOfVariableBindings(_headerView, _contentView)]];
@@ -80,6 +83,19 @@
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(stackEditorEntryViewControllerDidClosed:)])
         [self.delegate stackEditorEntryViewControllerDidClosed:self];
+}
+
+-(void)setHeaderSmall:(BOOL)isHeaderSmall
+{
+    CGFloat headerHeight = (isHeaderSmall) ? 33 : 39;
+    self.headerHeightConstraint.constant = headerHeight;
+    self.captionBottomSpaceConstraint.constant = (isHeaderSmall)?6:8;
+    
+    NSFont *captionFont = (isHeaderSmall)?[NSFont fontWithName:@"System Regular" size:11.] : [NSFont fontWithName:@"System Bold Regular" size:13.];
+    
+    [self.captionLabel setFont:captionFont];
+    [(NCEditorEntryView*)self.view setHeaderHeight:headerHeight];
+    self.view.needsDisplay = YES;
 }
 
 @end

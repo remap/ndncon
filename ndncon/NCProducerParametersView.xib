@@ -26,10 +26,10 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="roundRect" title="Add video stream" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MAe-fR-PGm">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="controlContent"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
                             <connections>
-                                <action selector="addStream:" target="-2" id="t31-Ii-jrc"/>
+                                <action selector="addVideoStream:" target="-2" id="Bem-fr-jZW"/>
                             </connections>
                         </button>
                         <box horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="197" placeholderIntrinsicHeight="69" title="Audio" boxType="oldStyle" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="1ie-gZ-8Rn">
@@ -199,10 +199,10 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="roundRect" title="Add audio stream" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="54z-9I-Zwp">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="controlContent"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
                             <connections>
-                                <action selector="addStream:" target="-2" id="O4q-7u-uO7"/>
+                                <action selector="addAudioStream:" target="-2" id="Hhg-3H-Pms"/>
                             </connections>
                         </button>
                     </subviews>

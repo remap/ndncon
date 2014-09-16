@@ -44,11 +44,10 @@ NSString* const kProducerParameters = @"Producer parameters";
     {
         NCGeneralParametersViewController *generalParameteresViewController = [[NCGeneralParametersViewController alloc] init];
         NCConsumerParametersViewController *consumerParametersViewController = [[NCConsumerParametersViewController alloc] init];
-        NCProducerParametersViewController *producerParametersViewController = [[NCProducerParametersViewController alloc] init];
+        NCProducerParametersViewController *producerParametersViewController = [[NCProducerParametersViewController alloc] initWithPreferences:self.preferences];
 
         generalParameteresViewController.preferences = self.preferences;
         consumerParametersViewController.preferences = self.preferences;
-        producerParametersViewController.preferences = self.preferences;
         
         self.advancedSettings = @[
                                   @{@"name":kGeneralParameters, @"controller":generalParameteresViewController},

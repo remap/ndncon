@@ -15,6 +15,9 @@
 @property (nonatomic, weak) id<NCStackEditorEntryDelegate> delegate;
 @property (nonatomic) NSString *caption;
 @property (weak) IBOutlet NSView *contentView;
+@property (weak, readonly) IBOutlet NSTextField *captionLabel;
+
+-(void)setHeaderSmall:(BOOL)isHeaderSmall;
 
 @end
 

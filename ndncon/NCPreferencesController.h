@@ -45,4 +45,7 @@
 @property (retain) NSArray *videoDevices;
 @property (retain) NSArray *audioDevices;
 
+@property (nonatomic) NSArray *audioStreams;
+@property (nonatomic) NSArray *videoStreams;
+
 @end

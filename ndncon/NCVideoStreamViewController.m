@@ -7,23 +7,21 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 #import "NCVideoStreamViewController.h"
 #import "AVCaptureDeviceFormat+NdnConAdditions.h"
+#import "NCVideoThreadViewController.h"
+#import "NCStackEditorViewController.h"
+#import "NSObject+NCAdditions.h"
 
 NSString* const kDeviceConfigurationKey = @"Device configuration";
-NSString* const kFrameRateKey = @"Frame rate";
-NSString* const kGopKey = @"GOP";
-NSString* const kMaxBitrateKey = @"Max bitrate";
-NSString* const kEncodingWidthKey = @"Encoding width";
-NSString* const kEncodingHeightKey = @"Encoding height";
 
 @interface NCVideoStreamViewController ()
 
-@property (nonatomic, strong) AVCaptureSession *session;
-@property (nonatomic, strong) AVCaptureDeviceInput *deviceInput;
-@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (weak) IBOutlet NSView *previewArea;
+
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 
 @end
 
@@ -43,24 +41,65 @@ NSString* const kEncodingHeightKey = @"Encoding height";
 
 - (void)dealloc
 {
-    [self.session stopRunning];
-    self.session = nil;
+    [self stopObservingSelf];
+    
     self.previewLayer = nil;
-    self.deviceInput = nil;
 }
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    CALayer *previewViewLayer = [self.previewArea layer];
-    [previewViewLayer setBackgroundColor:CGColorGetConstantColor(kCGColorBlack)];
-    AVCaptureVideoPreviewLayer *newPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
-    [newPreviewLayer setFrame:[previewViewLayer bounds]];
-    [previewViewLayer addSublayer:newPreviewLayer];
-    self.previewLayer =newPreviewLayer;
-
-    [self.session startRunning];
+    {// setting device
+        NSUInteger deviceIdx = [[self.configuration objectForKey:kInputDeviceKey] intValue];
+        
+        if (deviceIdx < self.preferences.videoDevices.count)
+        {
+            AVCaptureDevice *device = [self.preferences.videoDevices objectAtIndex:deviceIdx];
+            
+            if (device)
+                [self setSelectedDevice:device];
+        }
+    }
+    
+    {// setting device configuration
+        if (self.selectedDevice)
+        {
+            NSInteger configurationIdx = [[self.configuration objectForKey:kDeviceConfigurationKey] intValue];
+            
+            if (configurationIdx < 0)
+                configurationIdx = self.selectedDevice.formats.count-1;
+            
+            if (configurationIdx < self.selectedDevice.formats.count)
+            {
+                AVCaptureDeviceFormat *format = [self.selectedDevice.formats objectAtIndex:configurationIdx];
+                
+                if (format)
+                    [self setDeviceFormat:format];
+            }
+        }
+    }
+    
+    { // set preview layer
+        CALayer *previewViewLayer = [self.previewArea layer];
+        [previewViewLayer setBackgroundColor:CGColorGetConstantColor(kCGColorBlack)];
+        
+        AVCaptureVideoPreviewLayer *newPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+        [newPreviewLayer setFrame:[previewViewLayer bounds]];
+        [previewViewLayer addSublayer:newPreviewLayer];
+        
+        self.previewLayer =newPreviewLayer;
+        [self.session startRunning];
+    }
+    
+    { // adding thread controllers
+        for (NSDictionary *threadConfigruation in [self.configuration objectForKey:kThreadsArrayKey])
+        {
+            [self addThreadControllerForThread:threadConfigruation];
+        }
+    }
+    
+    [self startObservingSelf];
 }
 
 +(NSDictionary *)defaultVideoStreamConfiguration
@@ -102,62 +141,64 @@ NSString* const kEncodingHeightKey = @"Encoding height";
              };
 }
 
--(AVCaptureDevice *)selectedDevice
-{
-    return [self.deviceInput device];
-}
-
 -(void)setSelectedDevice:(AVCaptureDevice *)selectedDevice
 {
-    [self.session beginConfiguration];
+    [super setSelectedDevice:selectedDevice];
     
-    if (self.deviceInput)
-    {
-        [self.session removeInput:self.deviceInput];
-        self.deviceInput = nil;
-    }
-    
-    if (selectedDevice)
-    {
-        NSError *error = nil;
-        AVCaptureDeviceInput *newDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:selectedDevice error:&error];
-        
-        if (newDeviceInput == nil)
-        {
-            NSLog(@"error while chosing device: %@", error);
-        }
-        else
-        {
-            if (![selectedDevice supportsAVCaptureSessionPreset:self.session.sessionPreset])
-                [self.session setSessionPreset:AVCaptureSessionPresetHigh];
-            
-            [self.session addInput:newDeviceInput];
-            self.deviceInput = newDeviceInput;
-        }
-    }
-    
-    [self.session commitConfiguration];
-}
-
--(AVCaptureDeviceFormat*)deviceFormat
-{
-    return [self.selectedDevice activeFormat];
+    NSUInteger deviceIdx = [self.preferences.videoDevices indexOfObject:selectedDevice];
+    [self.configuration setValue:@(deviceIdx) forKeyPath:kInputDeviceKey];
 }
 
 -(void)setDeviceFormat:(AVCaptureDeviceFormat *)deviceFormat
 {
-    NSError *error = nil;
-    AVCaptureDevice *device = self.selectedDevice;
+    [super setDeviceFormat:deviceFormat];
     
-    if ([device lockForConfiguration:&error])
-    {
-        [device setActiveFormat:deviceFormat];
-        [device unlockForConfiguration];
-    }
-    else
-    {
-        NSLog(@"error while configuring device: %@", error);
-    }
+    NSUInteger configurationIdx = [self.selectedDevice.formats indexOfObject:deviceFormat];
+    [self.configuration setValue:@(configurationIdx) forKeyPath:kDeviceConfigurationKey];
+}
+
+- (IBAction)addThread:(id)sender
+{
+    [self addThreadControllerForThread:[self addNewThread]];
+}
+
+// override
+-(Class)threadViewControllerClass
+{
+    return [NCVideoThreadViewController class];
+}
+
+-(void)startObservingSelf
+{
+    [super startObservingSelf];
+    
+    [self addObserver:self forKeyPaths:
+     KEYPATH2(configuration, kDeviceConfigurationKey),
+     nil];
+}
+
+-(void)stopObservingSelf
+{
+    [self removeObserver:self forKeyPaths:
+     KEYPATH2(configuration, kDeviceConfigurationKey),
+     nil];
+    
+    [super stopObservingSelf];
+}
+
+// private
+-(NSMutableDictionary*)addNewThread
+{
+    NSMutableArray *threads = [NSMutableArray arrayWithArray:[self.configuration objectForKey:kThreadsArrayKey]];
+    NSString *threadName = [NSString stringWithFormat:@"thread-%lu",
+                            threads.count+1];
+    NSMutableDictionary *threadConfguration = [NSMutableDictionary dictionaryWithDictionary:[NCVideoThreadViewController defaultVideoThreadConfiguration]];
+    
+    [threadConfguration setObject:threadName forKey:kNameKey];
+    [threads addObject:threadConfguration];
+    [self.configuration setObject:threads forKey:kThreadsArrayKey];
+    
+    return threadConfguration;
 }
 
 @end

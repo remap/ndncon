@@ -47,6 +47,9 @@ NSString* const kVideoSectionKey = @"Video";
 NSString* const kFreshnessPeriodKey = @"Freshness period";
 NSString* const kSegmentSizeKey = @"Segment size";
 
+NSString* const kAudioStreamsKey = @"Audio streams";
+NSString* const kVideoStreamsKey = @"Video streams";
+
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
                                   kLogLevelDebug: @(ndnlog::NdnLoggerDetailLevelDebug),
                                   kLogLevelDefault: @(ndnlog::NdnLoggerDetailLevelDefault),
@@ -319,6 +322,26 @@ NSDictionary* const LogLevelsStrings = @{@(ndnlog::NdnLoggerDetailLevelAll):kLog
 -(void)setVideoSegmentSize:(NSNumber *)videoSegmentSize
 {
     [self saveParam:videoSegmentSize atPathByComponents:kProducerSectionKey, kVideoSectionKey, kSegmentSizeKey, nil];
+}
+
+-(NSArray *)audioStreams
+{
+    return [self getParamAtPathByComponents:kProducerSectionKey, kAudioStreamsKey, nil];
+}
+
+-(void)setAudioStreams:(NSArray *)audioStreams
+{
+    [self saveParam:audioStreams atPathByComponents:kProducerSectionKey, kAudioStreamsKey, nil];
+}
+
+-(NSArray *)videoStreams
+{
+    return [self getParamAtPathByComponents:kProducerSectionKey, kVideoStreamsKey, nil];
+}
+
+-(void)setVideoStreams:(NSArray *)videoStreams
+{
+    [self saveParam:videoStreams atPathByComponents:kProducerSectionKey, kVideoStreamsKey, nil];
 }
 
 // private

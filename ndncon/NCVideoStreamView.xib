@@ -7,6 +7,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="NCVideoStreamViewController">
             <connections>
                 <outlet property="previewArea" destination="mBn-c2-ImN" id="swM-F7-fDQ"/>
+                <outlet property="scrollView" destination="eHU-OK-ALh" id="me8-LU-sBK"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -52,9 +53,9 @@
                         </menu>
                     </popUpButtonCell>
                     <connections>
+                        <binding destination="-2" name="selectedObject" keyPath="selectedDevice" previousBinding="dpj-l8-44f" id="mz4-4P-tJP"/>
                         <binding destination="-2" name="content" keyPath="self.preferences.videoDevices" id="Dva-Nw-DkD"/>
                         <binding destination="-2" name="contentValues" keyPath="self.preferences.videoDevices.localizedName" previousBinding="Dva-Nw-DkD" id="dpj-l8-44f"/>
-                        <binding destination="-2" name="selectedObject" keyPath="selectedDevice" previousBinding="dpj-l8-44f" id="mz4-4P-tJP"/>
                     </connections>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xrz-Co-jfz">
@@ -81,9 +82,9 @@
                         </menu>
                     </popUpButtonCell>
                     <connections>
+                        <binding destination="-2" name="selectedObject" keyPath="deviceFormat" previousBinding="4Zj-Rh-1zB" id="2e4-4T-52Q"/>
                         <binding destination="-2" name="content" keyPath="selectedDevice.formats" id="XRX-1h-Wfe"/>
                         <binding destination="-2" name="contentValues" keyPath="selectedDevice.formats.localizedName" previousBinding="XRX-1h-Wfe" id="4Zj-Rh-1zB"/>
-                        <binding destination="-2" name="selectedObject" keyPath="deviceFormat" previousBinding="4Zj-Rh-1zB" id="2e4-4T-52Q"/>
                     </connections>
                 </popUpButton>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="mBn-c2-ImN">
@@ -127,17 +128,17 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
+                        <binding destination="-2" name="displayPatternValue3" keyPath="self.streamName" previousBinding="cu7-JL-z8Y" id="ZKK-bf-aV4">
+                            <dictionary key="options">
+                                <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="-2" name="displayPatternValue1" keyPath="self.preferences.prefix" id="ElK-iF-ndJ">
                             <dictionary key="options">
                                 <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
                             </dictionary>
                         </binding>
                         <binding destination="-2" name="displayPatternValue2" keyPath="self.preferences.userName" previousBinding="ElK-iF-ndJ" id="cu7-JL-z8Y">
-                            <dictionary key="options">
-                                <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
-                            </dictionary>
-                        </binding>
-                        <binding destination="-2" name="displayPatternValue3" keyPath="self.configuration.Name" previousBinding="cu7-JL-z8Y" id="95J-xD-vaI">
                             <dictionary key="options">
                                 <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
                             </dictionary>
@@ -162,10 +163,10 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="self.configuration.Name" id="Pvd-hA-elX"/>
+                        <binding destination="-2" name="value" keyPath="self.streamName" id="srT-1y-bMI"/>
                     </connections>
                 </textField>
-                <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHU-OK-ALh">
+                <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHU-OK-ALh" customClass="NCEmbeddedScrollView">
                     <rect key="frame" x="0.0" y="0.0" width="590" height="171"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="qpK-3G-6mS" customClass="NCEditorClipView">
@@ -185,10 +186,13 @@
                         <rect key="frame" x="1" y="154" width="588" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="4lz-8X-coQ">
-                        <rect key="frame" x="573" y="1" width="16" height="169"/>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="4lz-8X-coQ">
+                        <rect key="frame" x="-100" y="-100" width="16" height="169"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="ignoreVerticalScroll" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                 </scrollView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="USL-TD-cDj">
                     <rect key="frame" x="-2" y="175" width="50" height="14"/>
@@ -206,6 +210,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" size="10" name="LucidaGrande"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="addThread:" target="-2" id="KPa-qa-DSA"/>
+                    </connections>
                 </button>
             </subviews>
             <constraints>

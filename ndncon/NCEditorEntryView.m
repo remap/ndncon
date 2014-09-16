@@ -16,6 +16,7 @@
     
     if (self)
     {
+        self.headerHeight = 39;
         self.wantsLayer = YES;
         self.layer.backgroundColor = [NSColor clearColor].CGColor;
         self.layer.shadowColor = [NSColor blackColor].CGColor;
@@ -48,8 +49,8 @@
         [headerPath appendBezierPathWithArcFromPoint:NSMakePoint(6, height-6)
                                              toPoint:NSMakePoint(6, height-16)
                                               radius:10.];
-        [headerPath lineToPoint:NSMakePoint(6, height-39)];
-        [headerPath lineToPoint:NSMakePoint(width-6, height-39)];
+        [headerPath lineToPoint:NSMakePoint(6, height-self.headerHeight)];
+        [headerPath lineToPoint:NSMakePoint(width-6, height-self.headerHeight)];
         [headerPath appendBezierPathWithArcFromPoint:NSMakePoint(width-6, height-6)
                                              toPoint:NSMakePoint(width-16, height-6)
                                               radius:10.];

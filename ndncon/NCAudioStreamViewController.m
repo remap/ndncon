@@ -7,6 +7,7 @@
 //
 
 #import "NCAudioStreamViewController.h"
+#import "NCThreadViewController.h"
 
 @interface NCAudioStreamViewController ()
 

@@ -75,11 +75,15 @@
 {
     [self.stackView removeView:vc.view];
     [self.entryControllers removeObject:vc];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(stackEditorEntryViewControllerDidClosed:)])
+        [self.delegate stackEditorEntryViewControllerDidClosed:vc];
 }
 
 -(void)stackEditorEntryViewControllerUpdatedFrame:(NCStackEditorEntryViewController *)vc
 {
-    NSLog(@"updated frame");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(stackEditorEntryViewControllerUpdatedFrame:)])
+        [self.delegate stackEditorEntryViewControllerUpdatedFrame:vc];
 }
 
 @end

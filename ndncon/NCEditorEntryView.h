@@ -10,4 +10,6 @@
 
 @interface NCEditorEntryView : NSView
 
+@property (nonatomic) CGFloat headerHeight;
+
 @end

@@ -11,6 +11,8 @@
 
 @interface NCProducerParametersViewController : NSViewController
 
+-(id)initWithPreferences:(NCPreferencesController*)preferences;
+
 @property (nonatomic, strong) NCPreferencesController *preferences;
 
 @end

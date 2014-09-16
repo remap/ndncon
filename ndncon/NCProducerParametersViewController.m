@@ -25,12 +25,25 @@
     return [self initWithNibName:@"NCProducerParametersView" bundle:nil];
 }
 
+-(id)initWithPreferences:(NCPreferencesController *)preferences
+{
+    self = [self init];
+    
+    if (self)
+    {
+        self.preferences = preferences;
+        self.streamEditorController =  [[NCStreamEditorViewController alloc] initWithPreferncesController:self.preferences];
+    }
+    
+    return self;
+    
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.streamEditorController = [[NCStreamEditorViewController alloc] init];
     }
     return self;
 }
@@ -38,6 +51,7 @@
 -(void)dealloc
 {
     self.preferences = nil;
+    self.streamEditorController = nil;
 }
 
 -(void)awakeFromNib
@@ -58,11 +72,17 @@
                                                                                             options:0
                                                                                             metrics:nil
                                                                                               views:NSDictionaryOfVariableBindings(stackEditorView)]];
+    [self.streamEditorController awakeFromNib];
 }
 
-- (IBAction)addStream:(id)sender
+- (IBAction)addAudioStream:(id)sender
 {
-    [self.streamEditorController addVideoStream:[NCVideoStreamViewController defaultVideoStreamConfiguration]];
+    
+}
+
+- (IBAction)addVideoStream:(id)sender
+{
+    [self.streamEditorController addVideoStream:[[NCVideoStreamViewController defaultVideoStreamConfiguration] mutableCopy]];
 }
 
 @end

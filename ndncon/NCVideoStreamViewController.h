@@ -31,11 +31,6 @@
  */
 
 NSString* const kDeviceConfigurationKey;
-NSString* const kFrameRateKey;
-NSString* const kGopKey;
-NSString* const kMaxBitrateKey;
-NSString* const kEncodingWidthKey;
-NSString* const kEncodingHeightKey;
 
 @interface NCVideoStreamViewController : NCStreamViewController
 
