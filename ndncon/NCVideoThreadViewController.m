@@ -33,12 +33,7 @@ NSString* const kEncodingHeightKey = @"Encoding height";
     return self;
 }
 
--(void)dealloc
-{
-//    [self stopObservingSelf];
-}
-
-+(NSDictionary*)defaultVideoThreadConfiguration
++(NSDictionary*)defaultConfiguration
 {
     return @{
              kNameKey:@"mid",

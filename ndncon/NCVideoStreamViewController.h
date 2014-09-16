@@ -34,6 +34,4 @@ NSString* const kDeviceConfigurationKey;
 
 @interface NCVideoStreamViewController : NCStreamViewController
 
-+(NSDictionary*)defaultVideoStreamConfiguration;
-
 @end

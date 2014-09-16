@@ -14,6 +14,8 @@
 #import "NCVideoThreadViewController.h"
 #import "NCStackEditorViewController.h"
 #import "NSObject+NCAdditions.h"
+#import "NSDictionary+NCAdditions.h"
+#import "NSArray+NCAdditions.h"
 
 NSString* const kDeviceConfigurationKey = @"Device configuration";
 
@@ -33,7 +35,6 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
     
     if (self)
     {
-        self.session = [[AVCaptureSession alloc] init];
     }
     
     return self;
@@ -94,15 +95,13 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
     
     { // adding thread controllers
         for (NSDictionary *threadConfigruation in [self.configuration objectForKey:kThreadsArrayKey])
-        {
             [self addThreadControllerForThread:threadConfigruation];
-        }
     }
     
     [self startObservingSelf];
 }
 
-+(NSDictionary *)defaultVideoStreamConfiguration
++(NSDictionary *)defaultConfguration
 {
     return @{
              kNameKey:@"camera",
@@ -145,7 +144,14 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
 {
     [super setSelectedDevice:selectedDevice];
     
-    NSUInteger deviceIdx = [self.preferences.videoDevices indexOfObject:selectedDevice];
+    NSInteger deviceIdx = ([self.preferences.videoDevices containsObject:selectedDevice])?[self.preferences.videoDevices indexOfObject:selectedDevice]:-1;
+    
+    if (deviceIdx < 0)
+    {
+        NSLog(@"video device was not found. falling back to deafult");
+        deviceIdx = 0;
+    }
+    
     [self.configuration setValue:@(deviceIdx) forKeyPath:kInputDeviceKey];
 }
 
@@ -153,7 +159,14 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
 {
     [super setDeviceFormat:deviceFormat];
     
-    NSUInteger configurationIdx = [self.selectedDevice.formats indexOfObject:deviceFormat];
+    NSInteger configurationIdx = ([self.selectedDevice.formats containsObject:deviceFormat])?[self.selectedDevice.formats indexOfObject:deviceFormat]:-1;
+    
+    if (configurationIdx < 0)
+    {
+        NSLog(@"video device format was not found. falling back to deafult");
+        configurationIdx = self.selectedDevice.formats.count-1;
+    }
+    
     [self.configuration setValue:@(configurationIdx) forKeyPath:kDeviceConfigurationKey];
 }
 
@@ -189,10 +202,10 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
 // private
 -(NSMutableDictionary*)addNewThread
 {
-    NSMutableArray *threads = [NSMutableArray arrayWithArray:[self.configuration objectForKey:kThreadsArrayKey]];
+    NSMutableArray *threads = [(NSArray*)[self.configuration objectForKey:kThreadsArrayKey] deepMutableCopy];
     NSString *threadName = [NSString stringWithFormat:@"thread-%lu",
                             threads.count+1];
-    NSMutableDictionary *threadConfguration = [NSMutableDictionary dictionaryWithDictionary:[NCVideoThreadViewController defaultVideoThreadConfiguration]];
+    NSMutableDictionary *threadConfguration = [[NCVideoThreadViewController defaultConfiguration] deepMutableCopy];
     
     [threadConfguration setObject:threadName forKey:kNameKey];
     [threads addObject:threadConfguration];

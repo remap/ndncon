@@ -17,6 +17,4 @@ NSString* const kEncodingHeightKey;
 
 @interface NCVideoThreadViewController : NCThreadViewController
 
-+(NSDictionary*)defaultVideoThreadConfiguration;
-
 @end

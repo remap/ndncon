@@ -27,6 +27,8 @@ NSString* const kThreadsArrayKey;
 @interface NCStreamViewController : NSViewController
 <NCStackEditorEntryDelegate, NCConfigurationObserverDelegate>
 
++(NSDictionary*)defaultConfguration;
+
 @property (nonatomic, weak) id<NCConfigurationObserverDelegate, NCStreamViewControllerDelegate> delegate;
 
 @property (nonatomic, readonly) NCPreferencesController *preferences;

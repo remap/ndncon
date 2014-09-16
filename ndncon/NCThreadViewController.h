@@ -21,6 +21,8 @@ NSString* const kBitrateKey;
 
 @property (nonatomic, weak) id<NCConfigurationObserverDelegate> delegate;
 
++(NSDictionary*)defaultConfiguration;
+
 @property (nonatomic) NSString *threadName;
 @property (nonatomic, weak) NCStreamViewController *stream;
 @property (nonatomic, readonly) NSMutableDictionary *configuration;

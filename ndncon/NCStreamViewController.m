@@ -31,6 +31,11 @@ NSString* const kThreadsArrayKey = @"Threads";
 
 @implementation NCStreamViewController
 
++(NSDictionary*)defaultConfguration
+{
+    return nil;
+}
+
 -(id)initWithPreferences:(NCPreferencesController*)preferences andName:(NSString *)streamName
 {
     self = [self init];
@@ -42,6 +47,7 @@ NSString* const kThreadsArrayKey = @"Threads";
         self.stackEditor = [[NCStackEditorViewController alloc] init];
         self.stackEditor.delegate = self;
         self.threadControllers = [NSMutableArray array];
+        self.session = [[AVCaptureSession alloc] init];
     }
     
     return self;

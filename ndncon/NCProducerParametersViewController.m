@@ -9,6 +9,7 @@
 #import "NCProducerParametersViewController.h"
 #import "NCStreamEditorViewController.h"
 #import "NCVideoStreamViewController.h"
+#import "NCAudioStreamViewController.h"
 
 @interface NCProducerParametersViewController ()
 
@@ -77,12 +78,12 @@
 
 - (IBAction)addAudioStream:(id)sender
 {
-    
+    [self.streamEditorController addAudioStream:[NCAudioStreamViewController defaultConfguration]];
 }
 
 - (IBAction)addVideoStream:(id)sender
 {
-    [self.streamEditorController addVideoStream:[[NCVideoStreamViewController defaultVideoStreamConfiguration] mutableCopy]];
+    [self.streamEditorController addVideoStream:[NCVideoStreamViewController defaultConfguration]];
 }
 
 @end

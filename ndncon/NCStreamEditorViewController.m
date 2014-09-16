@@ -73,8 +73,18 @@
 
 -(void)addAudioStream:(NSDictionary *)defaultConfiguration
 {
-    [self addNewAudioStream:defaultConfiguration];
-    [self addNewAudioStreamControllerForStream:defaultConfiguration];
+    NSMutableDictionary *streamConfiguration = [defaultConfiguration deepMutableCopy];
+    
+    if ([self checkStreamNameExists:[streamConfiguration valueForKeyPath:kNameKey]])
+    {
+        [streamConfiguration setValue:[NSString stringWithFormat:@"%@-%lu",
+                                       [streamConfiguration valueForKeyPath:kNameKey],
+                                       (unsigned long)[self getNumberOfStreamsForType:[NCAudioStreamViewController class]]]
+                               forKey:kNameKey];
+    }
+    
+    [self addNewAudioStream:streamConfiguration];
+    [self addNewAudioStreamControllerForStream:streamConfiguration];
 }
 
 -(void)setStackEntry:(NCStackEditorEntryViewController*)stackEntryVc newCaption:(NSString*)caption
@@ -157,23 +167,32 @@
 // private
 -(void)addNewVideoStreamControllerForStream:(NSDictionary*)streamConfiguration
 {
-    NCVideoStreamViewController *videoStreamViewController = [[NCVideoStreamViewController alloc]
-                                                              initWithPreferences:self.preferences
-                                                              andName:[streamConfiguration valueForKeyPath:kNameKey]];
-    videoStreamViewController.delegate = self;
-    
-    [self.streamsControllers addObject:videoStreamViewController];
-    
-    NCStackEditorEntryViewController *stackEntryVc = [self addViewEntry:videoStreamViewController.view];
-    [self setStackEntry:stackEntryVc newCaption:[videoStreamViewController valueForKeyPath:KEYPATH2(configuration, kNameKey)]];
-    [stackEntryVc.captionLabel bind:@"displayPatternValue1"
-                           toObject:videoStreamViewController
-                        withKeyPath:NSStringFromSelector(@selector(streamName))
-                            options:@{NSDisplayPatternBindingOption:@"Stream: %{value1}@"}];
+    [self addNewStreamControllerWithClass:[NCVideoStreamViewController class]
+                                forStream:streamConfiguration];
 }
 
 -(void)addNewAudioStreamControllerForStream:(NSDictionary*)streamConfiguration
 {
+    [self addNewStreamControllerWithClass:[NCAudioStreamViewController class]
+                                forStream:streamConfiguration];
+}
+
+-(void)addNewStreamControllerWithClass:(Class)StreamControllerClass
+                             forStream:(NSDictionary*)streamConfiguration
+{
+    NCStreamViewController *streamViewController = [[StreamControllerClass alloc]
+                                                              initWithPreferences:self.preferences
+                                                              andName:[streamConfiguration valueForKeyPath:kNameKey]];
+    streamViewController.delegate = self;
+    
+    [self.streamsControllers addObject:streamViewController];
+    
+    NCStackEditorEntryViewController *stackEntryVc = [self addViewEntry:streamViewController.view];
+    [self setStackEntry:stackEntryVc newCaption:[streamViewController valueForKeyPath:KEYPATH2(configuration, kNameKey)]];
+    [stackEntryVc.captionLabel bind:@"displayPatternValue1"
+                           toObject:streamViewController
+                        withKeyPath:NSStringFromSelector(@selector(streamName))
+                            options:@{NSDisplayPatternBindingOption:@"Stream: %{value1}@"}];
 }
 
 -(void)addNewVideoStream:(NSDictionary*)configuration

@@ -47,6 +47,8 @@
 		AFA8521119C7AB0C0015A883 /* NSArray+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521019C7AB0C0015A883 /* NSArray+NCAdditions.m */; };
 		AFA8521419C8A6060015A883 /* NSObject+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521319C8A6060015A883 /* NSObject+NCAdditions.m */; };
 		AFA8521719C8B2FF0015A883 /* NCEmbeddedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521619C8B2FF0015A883 /* NCEmbeddedScrollView.m */; };
+		AFA8521A19C8F1E40015A883 /* NCAudioThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */; };
+		AFA8521D19C8F3220015A883 /* NCAudioThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */; };
 		AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
 		AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
 		AFD978F619BE546D0061AA24 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.mm */; };
@@ -141,6 +143,9 @@
 		AFA8521519C8B2FF0015A883 /* NCEmbeddedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCEmbeddedScrollView.h; path = ndncon/NCEmbeddedScrollView.h; sourceTree = SOURCE_ROOT; };
 		AFA8521619C8B2FF0015A883 /* NCEmbeddedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCEmbeddedScrollView.m; path = ndncon/NCEmbeddedScrollView.m; sourceTree = SOURCE_ROOT; };
 		AFA8521819C8B3880015A883 /* NCConfigurationObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NCConfigurationObserver.h; path = ndncon/NCConfigurationObserver.h; sourceTree = SOURCE_ROOT; };
+		AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCAudioThreadView.xib; path = ndncon/NCAudioThreadView.xib; sourceTree = SOURCE_ROOT; };
+		AFA8521B19C8F3220015A883 /* NCAudioThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCAudioThreadViewController.h; path = ndncon/NCAudioThreadViewController.h; sourceTree = SOURCE_ROOT; };
+		AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCAudioThreadViewController.m; path = ndncon/NCAudioThreadViewController.m; sourceTree = SOURCE_ROOT; };
 		AFD978E619BE546D0061AA24 /* NdnCon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NdnCon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFD978E919BE546D0061AA24 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AFD978EC19BE546D0061AA24 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -259,6 +264,9 @@
 				AF7026E619C3CCBA0087B605 /* NCVideoThreadViewController.m */,
 				AF7026E819C3CCF30087B605 /* NCThreadViewController.h */,
 				AF7026E919C3CCF30087B605 /* NCThreadViewController.m */,
+				AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */,
+				AFA8521B19C8F3220015A883 /* NCAudioThreadViewController.h */,
+				AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */,
 			);
 			name = "Thread editor";
 			sourceTree = "<group>";
@@ -509,6 +517,7 @@
 				AF7026C419C259AE0087B605 /* NCProducerParametersView.xib in Resources */,
 				AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */,
 				AFD9792319BE5C6E0061AA24 /* ndncon.iconset in Resources */,
+				AFA8521A19C8F1E40015A883 /* NCAudioThreadView.xib in Resources */,
 				AF7026D819C392E80087B605 /* NCAudioStreamView.xib in Resources */,
 				AF7026CA19C279A80087B605 /* NCVideoStreamView.xib in Resources */,
 				AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */,
@@ -546,6 +555,7 @@
 				AF7026D019C36FA00087B605 /* NCStreamEditorViewController.m in Sources */,
 				AF7026B119C11CBE0087B605 /* NCConsumerParametersViewController.m in Sources */,
 				AFA8521119C7AB0C0015A883 /* NSArray+NCAdditions.m in Sources */,
+				AFA8521D19C8F3220015A883 /* NCAudioThreadViewController.m in Sources */,
 				AF8A13A219BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm in Sources */,
 				AF7026E319C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.m in Sources */,
 				AF7026CD19C2B3940087B605 /* NCEditorEntryView.m in Sources */,

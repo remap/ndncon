@@ -20,6 +20,11 @@ NSString* const kBitrateKey = @"Start bitrate";
 
 @implementation NCThreadViewController
 
++(NSDictionary*)defaultConfiguration
+{
+    return nil;
+}
+
 -(id)initWithStream:(NCStreamViewController *)streamVc andName:(NSString *)threadName
 {
     self = [self init];

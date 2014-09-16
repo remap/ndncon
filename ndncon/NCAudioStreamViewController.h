@@ -26,6 +26,4 @@
 
 @interface NCAudioStreamViewController : NCStreamViewController
 
-+(NSDictionary*)defaultAudioStreamConfguration;
-
 @end
