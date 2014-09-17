@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MASPreferencesWindowController.h"
+#import "NCPreferencesController.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
@@ -18,6 +19,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong) MASPreferencesWindowController* preferencesWindowController;
+@property (nonatomic, readonly) NCPreferencesController *preferences;
 
 - (IBAction)saveAction:(id)sender;
 

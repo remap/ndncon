@@ -136,6 +136,17 @@
     return nil;
 }
 
+-(NSArray *)streamViewControllerQueriedPairedStreams:(NCStreamViewController *)streamVc
+{
+    NSMutableArray *streamViewControllers = [NSMutableArray arrayWithObject:@{@"streamName":@"-"}];
+    
+    for (NCStreamViewController *vc in self.streamsControllers)
+        if (![vc isKindOfClass:[streamVc class]])
+            [streamViewControllers addObject:vc];
+    
+    return streamViewControllers;
+}
+
 // stack editor delegate
 -(void)stackEditorEntryViewControllerDidClosed:(NCStackEditorEntryViewController *)vc
 {

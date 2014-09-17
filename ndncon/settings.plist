@@ -27,7 +27,7 @@
 		<key>Default prefix</key>
 		<string>/test</string>
 		<key>Default username</key>
-		<string>racoon</string>
+		<string>jedi</string>
 		<key>NDN daemon</key>
 		<dict>
 			<key>Host</key>
@@ -67,14 +67,18 @@
 		<array>
 			<dict>
 				<key>Name</key>
-				<string>audio</string>
+				<string>mic</string>
 				<key>Capture device idx</key>
 				<integer>0</integer>
+				<key>Synchronized to</key>
+				<string>main_camera</string>
 				<key>Threads</key>
 				<array>
 					<dict>
 						<key>Name</key>
 						<string>pcmu</string>
+						<key>Start bitrate</key>
+						<string>90</string>
 					</dict>
 				</array>
 			</dict>
@@ -83,9 +87,11 @@
 		<array>
 			<dict>
 				<key>Name</key>
-				<string>front_camera</string>
+				<string>main_camera</string>
 				<key>Capture device idx</key>
 				<integer>0</integer>
+				<key>Synchronized to</key>
+				<string>mic</string>
 				<key>Threads</key>
 				<array>
 					<dict>
@@ -149,6 +155,8 @@
 				<string>desktop</string>
 				<key>Capture device idx</key>
 				<integer>-1</integer>
+				<key>Synchronized to</key>
+				<string>-</string>
 				<key>Threads</key>
 				<array>
 					<dict>

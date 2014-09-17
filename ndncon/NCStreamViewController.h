@@ -33,6 +33,8 @@ NSString* const kThreadsArrayKey;
 
 @property (nonatomic, readonly) NCPreferencesController *preferences;
 @property (nonatomic, readonly) NSMutableDictionary* configuration;
+@property (nonatomic, readonly) NSArray *pairedStreams;
+@property (nonatomic) NSString *synchronizedStreamName;
 
 @property (nonatomic) NSString *streamName;
 @property (assign) AVCaptureDevice *selectedDevice;
@@ -58,5 +60,6 @@ NSString* const kThreadsArrayKey;
 
 @required
 -(NSArray*)streamViewControllerQueriedForStreamArray:(NCStreamViewController*)streamVc;
+-(NSArray*)streamViewControllerQueriedPairedStreams:(NCStreamViewController*)streamVc;
 
 @end

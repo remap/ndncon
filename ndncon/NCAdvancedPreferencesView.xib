@@ -10,6 +10,7 @@
                 <outlet property="contentView" destination="dys-RD-1o5" id="HHr-3r-cBP"/>
                 <outlet property="settingsView" destination="ZC9-fY-25L" id="NPW-3P-FcA"/>
                 <outlet property="splitView" destination="qpJ-Z7-YmR" id="rK0-60-c7f"/>
+                <outlet property="tableView" destination="oin-wn-GBL" id="JrM-S6-W6y"/>
                 <outlet property="view" destination="qpJ-Z7-YmR" id="EJZ-Zu-0Bd"/>
             </connections>
         </customObject>

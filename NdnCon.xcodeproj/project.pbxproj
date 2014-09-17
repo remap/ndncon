@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
 		AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */; };
-		AF7026AA19C11C6B0087B605 /* NCConsumerParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026A919C11C6B0087B605 /* NCConsumerParametersView.xib */; };
 		AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */; };
-		AF7026B119C11CBE0087B605 /* NCConsumerParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026AF19C11CBE0087B605 /* NCConsumerParametersViewController.m */; };
 		AF7026B719C250560087B605 /* NCStackEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026B519C250560087B605 /* NCStackEditorViewController.m */; };
 		AF7026B819C250560087B605 /* NCStackEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026B619C250560087B605 /* NCStackEditorView.xib */; };
 		AF7026BA19C251490087B605 /* NCStackEditorEntryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026B919C251490087B605 /* NCStackEditorEntryView.xib */; };
@@ -77,11 +75,8 @@
 /* Begin PBXFileReference section */
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
 		AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCGeneralParametersView.xib; path = ndncon/NCGeneralParametersView.xib; sourceTree = SOURCE_ROOT; };
-		AF7026A919C11C6B0087B605 /* NCConsumerParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCConsumerParametersView.xib; path = ndncon/NCConsumerParametersView.xib; sourceTree = SOURCE_ROOT; };
 		AF7026AB19C11C8F0087B605 /* NCGeneralParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGeneralParametersViewController.h; path = ndncon/NCGeneralParametersViewController.h; sourceTree = SOURCE_ROOT; };
 		AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGeneralParametersViewController.m; path = ndncon/NCGeneralParametersViewController.m; sourceTree = SOURCE_ROOT; };
-		AF7026AE19C11CBE0087B605 /* NCConsumerParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConsumerParametersViewController.h; path = ndncon/NCConsumerParametersViewController.h; sourceTree = SOURCE_ROOT; };
-		AF7026AF19C11CBE0087B605 /* NCConsumerParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCConsumerParametersViewController.m; path = ndncon/NCConsumerParametersViewController.m; sourceTree = SOURCE_ROOT; };
 		AF7026B419C250560087B605 /* NCStackEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCStackEditorViewController.h; path = ndncon/NCStackEditorViewController.h; sourceTree = SOURCE_ROOT; };
 		AF7026B519C250560087B605 /* NCStackEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCStackEditorViewController.m; path = ndncon/NCStackEditorViewController.m; sourceTree = SOURCE_ROOT; };
 		AF7026B619C250560087B605 /* NCStackEditorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCStackEditorView.xib; path = ndncon/NCStackEditorView.xib; sourceTree = SOURCE_ROOT; };
@@ -212,9 +207,6 @@
 				AF7026AB19C11C8F0087B605 /* NCGeneralParametersViewController.h */,
 				AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */,
 				AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */,
-				AF7026AE19C11CBE0087B605 /* NCConsumerParametersViewController.h */,
-				AF7026AF19C11CBE0087B605 /* NCConsumerParametersViewController.m */,
-				AF7026A919C11C6B0087B605 /* NCConsumerParametersView.xib */,
 				AF7026C019C259AE0087B605 /* NCProducerParametersViewController.h */,
 				AF7026C119C259AE0087B605 /* NCProducerParametersViewController.m */,
 				AF7026C219C259AE0087B605 /* NCProducerParametersView.xib */,
@@ -529,7 +521,6 @@
 				AF8A139919BFB8B900010B20 /* NCMediaPreferencesView.xib in Resources */,
 				AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */,
 				AF7026EC19C3CD560087B605 /* NCVideoThreadView.xib in Resources */,
-				AF7026AA19C11C6B0087B605 /* NCConsumerParametersView.xib in Resources */,
 				AF7026BA19C251490087B605 /* NCStackEditorEntryView.xib in Resources */,
 				AF8A13A319BFB8E700010B20 /* NCAdvancedPreferencesView.xib in Resources */,
 				AFD9790019BE546D0061AA24 /* MainMenu.xib in Resources */,
@@ -553,7 +544,6 @@
 			files = (
 				AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */,
 				AF7026D019C36FA00087B605 /* NCStreamEditorViewController.m in Sources */,
-				AF7026B119C11CBE0087B605 /* NCConsumerParametersViewController.m in Sources */,
 				AFA8521119C7AB0C0015A883 /* NSArray+NCAdditions.m in Sources */,
 				AFA8521D19C8F3220015A883 /* NCAudioThreadViewController.m in Sources */,
 				AF8A13A219BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm in Sources */,

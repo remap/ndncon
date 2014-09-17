@@ -21,7 +21,6 @@ NSString* const kThreadsArrayKey = @"Threads";
 @interface NCStreamViewController ()
 {
     NSString *_streamName;
-//    NSMutableDictionary *_configuration;
     NCPreferencesController *_preferences;
 }
 
@@ -181,6 +180,24 @@ NSString* const kThreadsArrayKey = @"Threads";
     [self setStackEntry:entryViewController newCaption:threadViewController.threadName];
     
     return threadViewController;
+}
+
+-(NSArray *)pairedStreams
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(streamViewControllerQueriedPairedStreams:)])
+        return [self.delegate streamViewControllerQueriedPairedStreams:self];
+    
+    return nil;
+}
+
+-(void)setSynchronizedStreamName:(NSString *)synchronizedStreamName
+{
+    [self.configuration setValue:synchronizedStreamName forKey:kSynchornizedToKey];
+}
+
+-(NSString *)synchronizedStreamName
+{
+    return [self.configuration valueForKeyPath:kSynchornizedToKey];
 }
 
 // delegate NCStackEditorEntryDelegate

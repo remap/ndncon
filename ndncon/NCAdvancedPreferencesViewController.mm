@@ -8,25 +8,26 @@
 
 #import "NCAdvancedPreferencesViewController.h"
 #import "NCGeneralParametersViewController.h"
-#import "NCConsumerParametersViewController.h"
 #import "NCProducerParametersViewController.h"
 
 #import "AppDelegate.h"
 
 #include <ndnrtc/simple-log.h>
 
-NSString* const kGeneralParameters = @"General parameters";
-NSString* const kConsumerParameters = @"Consumer parameters";
-NSString* const kProducerParameters = @"Producer parameters";
+NSString* const kGeneralParameters = @"Advanced settings";
+NSString* const kProducerParameters = @"Media streams";
 
 @interface NCAdvancedPreferencesViewController ()
 
 @property (weak) IBOutlet NSSplitView *splitView;
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *settingsView;
+@property (weak) IBOutlet NSTableView *tableView;
 
 @property (nonatomic, strong) NSArray *advancedSettings;
 @property (strong) IBOutlet NSArrayController *arrayController;
+
+@property (nonatomic, strong) NCProducerParametersViewController *producerController;
 
 @end
 
@@ -43,16 +44,11 @@ NSString* const kProducerParameters = @"Producer parameters";
     if (self)
     {
         NCGeneralParametersViewController *generalParameteresViewController = [[NCGeneralParametersViewController alloc] init];
-        NCConsumerParametersViewController *consumerParametersViewController = [[NCConsumerParametersViewController alloc] init];
-        NCProducerParametersViewController *producerParametersViewController = [[NCProducerParametersViewController alloc] initWithPreferences:self.preferences];
-
         generalParameteresViewController.preferences = self.preferences;
-        consumerParametersViewController.preferences = self.preferences;
         
         self.advancedSettings = @[
                                   @{@"name":kGeneralParameters, @"controller":generalParameteresViewController},
-                                  @{@"name":kConsumerParameters, @"controller":consumerParametersViewController},
-                                  @{@"name":kProducerParameters, @"controller":producerParametersViewController}
+                                  @{@"name":kProducerParameters}
                                   ];
     }
     return self;
@@ -68,6 +64,12 @@ NSString* const kProducerParameters = @"Producer parameters";
     self.advancedSettings = nil;
 }
 
+- (NCPreferencesController*)preferences
+{
+    return [NCPreferencesController sharedInstance];
+}
+
+// MASPreferencesViewController
 - (NSString *)identifier
 {
     return @"AdvancedPreferences";
@@ -75,7 +77,7 @@ NSString* const kProducerParameters = @"Producer parameters";
 
 - (NSImage *)toolbarItemImage
 {
-    return [NSImage imageNamed:NSImageNameAdvanced];
+    return [NSImage imageNamed:@"media_icon"];
 }
 
 - (NSString *)toolbarItemLabel
@@ -83,9 +85,16 @@ NSString* const kProducerParameters = @"Producer parameters";
     return NSLocalizedString(@"Advanced", @"");
 }
 
-- (NCPreferencesController*)preferences
+- (void)viewDidDisappear
 {
-    return [NCPreferencesController sharedInstance];
+    [self unloadProducerViews];
+}
+
+// override
+-(BOOL)commitEditing
+{
+    [self unloadProducerViews];
+    return [super commitEditing];
 }
 
 // NSTableView delegate
@@ -100,7 +109,17 @@ NSString* const kProducerParameters = @"Producer parameters";
     NSViewController *controller = [[self.advancedSettings objectAtIndex:tableView.selectedRow] valueForKeyPath:@"controller"];
     
     if (controller)
+    {
+        self.producerController = nil;
         [self loadView: controller.view];
+    }
+    else
+        if ([[[self.advancedSettings objectAtIndex:tableView.selectedRow] valueForKeyPath:@"name"] isEqualToString:kProducerParameters])
+    {
+        self.producerController = [[NCProducerParametersViewController alloc] initWithPreferences:self.preferences];
+        [self loadView:self.producerController.view];
+    }
+        
 }
 
 -(void)loadView:(NSView*)aView
@@ -121,29 +140,15 @@ NSString* const kProducerParameters = @"Producer parameters";
                                       options:0
                                       metrics:nil
                                       views:NSDictionaryOfVariableBindings(aView)]];
+}
+
+-(void)unloadProducerViews
+{
+    self.producerController = nil;
+    [self loadView:[[[self.advancedSettings firstObject] valueForKeyPath:@"controller"] view]];
     
-//    // adjust custom view's size to the view's size
-//    self.contentView.frame = aView.bounds;
-//    [self.contentView addSubview:aView];
-//    
-//    // check is split view is smaller than required
-//    if (CGRectGetHeight(self.splitView.frame) != CGRectGetHeight(self.contentView.frame) ||
-//        CGRectGetWidth(self.splitView.frame) != CGRectGetWidth(self.contentView.frame)+CGRectGetWidth(self.settingsView.frame)+self.splitView.dividerThickness)
-//    {
-//        CGRect splitViewFrame = self.splitView.frame;
-//        splitViewFrame = CGRectMake(0, 0,
-//                                    CGRectGetWidth(self.settingsView.frame)+self.splitView.dividerThickness+CGRectGetWidth(self.contentView.frame),
-//                                    CGRectGetHeight(self.contentView.frame));
-//        self.splitView.frame = splitViewFrame;
-//        
-//        NSWindow *preferencesWindow = [(AppDelegate*)[NSApplication sharedApplication].delegate preferencesWindowController].window;
-//        CGRect newWindowRect = [preferencesWindow frameRectForContentRect:splitViewFrame];
-//        newWindowRect.origin = preferencesWindow.frame.origin;
-//        newWindowRect.origin.y += CGRectGetHeight(preferencesWindow.frame)-CGRectGetHeight(newWindowRect);
-//
-//        [preferencesWindow setContentMinSize:splitViewFrame.size];
-//        [preferencesWindow setFrame:newWindowRect display:YES animate:NO];
-//    }
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
+    [self.tableView selectRowIndexes:indexSet byExtendingSelection:NO];
 }
 
 @end

@@ -118,6 +118,11 @@
                             </items>
                         </menu>
                     </popUpButtonCell>
+                    <connections>
+                        <binding destination="-2" name="content" keyPath="self.pairedStreams" id="KMb-7e-ZUi"/>
+                        <binding destination="-2" name="contentValues" keyPath="self.pairedStreams.streamName" previousBinding="KMb-7e-ZUi" id="7hX-d3-ywY"/>
+                        <binding destination="-2" name="selectedValue" keyPath="self.synchronizedStreamName" previousBinding="7hX-d3-ywY" id="EPa-B7-5ko"/>
+                    </connections>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z3x-4W-Ehc">
                     <rect key="frame" x="167" y="264" width="254" height="14"/>

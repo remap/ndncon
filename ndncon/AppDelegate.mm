@@ -13,6 +13,7 @@
 #import "NCAdvancedPreferencesViewController.h"
 #import "NCGeneralPreferencesViewController.h"
 #import "NCMediaPreferencesViewController.h"
+#import "NSObject+NCAdditions.h"
 
 #import "NCPreferencesController.h"
 
@@ -204,12 +205,15 @@
 
 -(IBAction)showPreferences:(id)sender
 {
+    if (self.preferencesWindowController != nil)
+        self.preferencesWindowController = nil;
+    
     if (self.preferencesWindowController == nil)
     {
         NSViewController *generalViewController = [[NCGeneralPreferencesViewController alloc] init];
-        NSViewController *mediaViewController = [[NCMediaPreferencesViewController alloc] init];
+//        NSViewController *mediaViewController = [[NCMediaPreferencesViewController alloc] init];
         NSViewController *advancedViewController = [[NCAdvancedPreferencesViewController alloc] init];
-        NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, mediaViewController, advancedViewController, nil];
+        NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, /*mediaViewController,*/ advancedViewController, nil];
         
         NSString *title = NSLocalizedString(@"Preferences", @"Common title for Preferences window");
         self.preferencesWindowController = [[MASPreferencesWindowController alloc] initWithViewControllers:controllers title:title];
@@ -217,5 +221,11 @@
     
     [self.preferencesWindowController showWindow:nil];
 }
+
+-(NCPreferencesController *)preferences
+{
+    return [NCPreferencesController sharedInstance];
+}
+
 
 @end
