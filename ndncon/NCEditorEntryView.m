@@ -30,42 +30,72 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    CGRect frame = NSInsetRect(self.bounds, 6.0, 6.0);
+    CGFloat inset = self.shadowInset;//(self.roundCorners)?6.0:0;
+    CGFloat cornerRadius =(self.roundCorners)?self.cornerRadius:0.;
+    
+    CGRect frame = NSInsetRect(self.bounds, inset, inset);
     
     [NSBezierPath setDefaultLineWidth:1.0];
     
     NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:frame
-                                                         xRadius:10.0 yRadius:10.0];
+                                                         xRadius:cornerRadius yRadius:cornerRadius];
     
     [[NSColor colorWithWhite:0.95 alpha:1.] set];
     [path fill];
-
+    
     { // draw header
         CGFloat width = CGRectGetWidth(self.bounds);
         CGFloat height = CGRectGetHeight(self.bounds);
         
-        NSBezierPath *headerPath = [[NSBezierPath alloc] init];
-        [headerPath moveToPoint:NSMakePoint(16, height-6)];
-        [headerPath appendBezierPathWithArcFromPoint:NSMakePoint(6, height-6)
-                                             toPoint:NSMakePoint(6, height-16)
-                                              radius:10.];
-        [headerPath lineToPoint:NSMakePoint(6, height-self.headerHeight)];
-        [headerPath lineToPoint:NSMakePoint(width-6, height-self.headerHeight)];
-        [headerPath appendBezierPathWithArcFromPoint:NSMakePoint(width-6, height-6)
-                                             toPoint:NSMakePoint(width-16, height-6)
-                                              radius:10.];
-        [headerPath closePath];
+        NSBezierPath *headerPath = nil;
         
-        [[NSColor colorWithWhite:0.7 alpha:1.] set];
-        [headerPath fill];
+        if (self.roundCorners)
+        {
+            headerPath = [[NSBezierPath alloc] init];
+            [headerPath moveToPoint:NSMakePoint(cornerRadius+inset, height-inset)];
+            [headerPath appendBezierPathWithArcFromPoint:NSMakePoint(inset, height-inset)
+                                                 toPoint:NSMakePoint(inset, height-(cornerRadius+inset))
+                                                  radius:cornerRadius];
+            [headerPath lineToPoint:NSMakePoint(inset, height-self.headerHeight)];
+            [headerPath lineToPoint:NSMakePoint(width-inset, height-self.headerHeight)];
+            [headerPath appendBezierPathWithArcFromPoint:NSMakePoint(width-inset, height-inset)
+                                                 toPoint:NSMakePoint(width-(cornerRadius+inset), height-inset)
+                                                  radius:cornerRadius];
+            [headerPath closePath];
+        }
+        else
+        {
+            headerPath = [NSBezierPath bezierPathWithRect:CGRectMake(inset, frame.size.height-inset-self.headerHeight,
+                                                                     frame.size.width,
+                                                                     self.headerHeight)];
+        }
         
-        NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations:
-                                [NSColor colorWithWhite:0.8 alpha:1.], 0.,
-                                [NSColor colorWithWhite:0.8 alpha:1.], 0.5,
-                                [NSColor colorWithWhite:0.9 alpha:1.], 0.51,
-                                [NSColor colorWithWhite:0.85 alpha:1.], 0.9,
-                                nil];
-        [gradient drawInBezierPath:headerPath angle:90.];
+        if (self.headerStyle != EditorEntryViewHeaderStyleNone)
+        {
+            NSGradient *gradient = nil;
+            
+            if (self.headerStyle == EditorEntryViewHeaderStyleGloss)
+            {
+                [[NSColor colorWithWhite:0.7 alpha:1.] set];
+                [headerPath fill];
+                
+                gradient = [[NSGradient alloc] initWithColorsAndLocations:
+                            [NSColor colorWithWhite:0.8 alpha:1.], 0.,
+                            [NSColor colorWithWhite:0.8 alpha:1.], 0.5,
+                            [NSColor colorWithWhite:0.9 alpha:1.], 0.51,
+                            [NSColor colorWithWhite:0.85 alpha:1.], 0.9,
+                            nil];
+            }
+            else if (self.headerStyle == EditorEntryViewHeaderStyleDark)
+            {
+                gradient = [[NSGradient alloc] initWithColorsAndLocations:
+                            [NSColor colorWithWhite:0. alpha:0.], 0.,
+                            [NSColor colorWithWhite:0. alpha:1.], 1.,
+                            nil];
+            }
+            
+            [gradient drawInBezierPath:headerPath angle:90.];
+        }
     }
     
     [[NSColor colorWithWhite:0.5 alpha:1.] set];
@@ -73,3 +103,71 @@
 }
 
 @end
+
+@interface NCBlockDrawableView ()
+
+@property (nonatomic, strong) NSMutableArray *drawBlocks;
+
+@end
+
+@implementation NCBlockDrawableView
+
+-(void)initialize
+{
+    self.drawBlocks = [[NSMutableArray alloc] init];
+}
+
+- (id)initWithFrame:(NSRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initialize];
+    }
+    return self;
+}
+
+-(id)initWithCoder:(NSCoder*)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if (self)
+        [self initialize];
+    
+    return self;
+}
+
+-(void)dealloc
+{
+    [self.drawBlocks removeAllObjects];
+}
+
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(NSRect)dirtyRect
+{
+    @synchronized (self.drawBlocks)
+    {
+        [self.drawBlocks enumerateObjectsUsingBlock:^(NCDrawBlock drawBlock, NSUInteger idx, BOOL *stop){
+            drawBlock(self, dirtyRect);
+        }];
+    }
+}
+
+-(void)addDrawBlock:(NCDrawBlock)drawBlock
+{
+    @synchronized (self.drawBlocks)
+    {
+        [self.drawBlocks addObject:drawBlock];
+    }
+}
+
+-(void)removeDrawBlock:(NCDrawBlock)drawBlock
+{
+    @synchronized (self.drawBlocks)
+    {
+        [self.drawBlocks removeObject:drawBlock];
+    }
+}
+
+@end
+

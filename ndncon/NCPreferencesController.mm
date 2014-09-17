@@ -344,6 +344,14 @@ NSDictionary* const LogLevelsStrings = @{@(ndnlog::NdnLoggerDetailLevelAll):kLog
     [self saveParam:videoStreams atPathByComponents:kProducerSectionKey, kVideoStreamsKey, nil];
 }
 
+-(NSDictionary *)producerConfigurationCopy
+{
+    return @{
+             kAudioStreamsKey: self.audioStreams,
+             kVideoStreamsKey: self.videoStreams
+             };
+}
+
 // private
 -(id)getParamAtPathByComponents:(id)comp1, ...
 {

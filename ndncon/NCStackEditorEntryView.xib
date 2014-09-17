@@ -6,8 +6,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCStackEditorEntryViewController">
             <connections>
+                <outlet property="buttonTrailingSpaceConstraint" destination="Dkl-SM-7i9" id="5Zh-zK-xbB"/>
                 <outlet property="captionBottomSpaceConstraint" destination="SOT-Nv-30h" id="D2p-Ni-0vc"/>
                 <outlet property="captionLabel" destination="5Vi-he-Koe" id="Lnd-PE-GzT"/>
+                <outlet property="captionLeadingSpaceConstraint" destination="jDW-Hv-dwH" id="qdN-3v-HEW"/>
                 <outlet property="headerHeightConstraint" destination="rHr-VG-ShE" id="07m-31-Cw3"/>
                 <outlet property="headerView" destination="hg4-Y7-wIO" id="saK-B0-BnR"/>
                 <outlet property="view" destination="c22-O7-iKe" id="3R4-AY-1ok"/>
@@ -19,7 +21,7 @@
             <rect key="frame" x="0.0" y="0.0" width="598" height="138"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="hg4-Y7-wIO" userLabel="Header view">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="hg4-Y7-wIO" userLabel="Header view" customClass="NCBlockDrawableView">
                     <rect key="frame" x="0.0" y="99" width="598" height="39"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -33,12 +35,12 @@
                             </textFieldCell>
                         </textField>
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fia-yZ-EL0">
-                            <rect key="frame" x="525" y="6" width="53" height="19"/>
+                            <rect key="frame" x="557" y="6" width="21" height="19"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="18" id="GZy-Wp-zqp"/>
                             </constraints>
-                            <buttonCell key="cell" type="roundRect" title="Remove" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2ZI-2d-0U7">
+                            <buttonCell key="cell" type="roundRect" title="X" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2ZI-2d-0U7">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" size="10" name="LucidaGrande"/>
                             </buttonCell>
@@ -62,6 +64,18 @@
                 <constraint firstItem="hg4-Y7-wIO" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="QzY-8a-QFe"/>
                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="598" id="b2l-Nq-8So"/>
             </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="roundCorners" value="YES"/>
+                <userDefinedRuntimeAttribute type="number" keyPath="headerStyle">
+                    <integer key="value" value="1"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <integer key="value" value="10"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="shadowInset">
+                    <integer key="value" value="6"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
         </customView>
     </objects>
 </document>

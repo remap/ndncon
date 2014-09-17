@@ -8,8 +8,27 @@
 
 #import <Cocoa/Cocoa.h>
 
+typedef enum : NSUInteger {
+    EditorEntryViewHeaderStyleGloss = 1,
+    EditorEntryViewHeaderStyleDark = 2,
+    EditorEntryViewHeaderStyleNone = 3
+} NCEditorEntryViewHeaderStyle;
+
 @interface NCEditorEntryView : NSView
 
 @property (nonatomic) CGFloat headerHeight;
+@property (nonatomic) BOOL roundCorners;
+@property (nonatomic) NCEditorEntryViewHeaderStyle headerStyle;
+@property (nonatomic) CGFloat cornerRadius;
+@property (nonatomic) CGFloat shadowInset;
+
+@end
+
+typedef void(^NCDrawBlock)(NSView *view, NSRect dirtyRect);
+
+@interface NCBlockDrawableView : NSView
+
+-(void)addDrawBlock:(NCDrawBlock)drawBlock;
+-(void)removeDrawBlock:(NCDrawBlock)drawBlock;
 
 @end

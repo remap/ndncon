@@ -15,5 +15,6 @@
 @property (nonatomic, readonly) NSStackView *stackView;
 
 -(NCStackEditorEntryViewController*)addViewEntry:(NSView*)view;
+-(NCStackEditorEntryViewController*)addViewEntry:(NSView*)view withStyle:(NCStackEditorEntryStyle)style;
 
 @end

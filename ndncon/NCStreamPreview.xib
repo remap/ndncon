@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NCStreamPreviewController">
+            <connections>
+                <outlet property="streamCaptionLabel" destination="48L-5g-hYa" id="VL2-Qm-CTC"/>
+                <outlet property="streamPreview" destination="LN1-et-LHL" id="aZo-jV-gzD"/>
+                <outlet property="view" destination="c22-O7-iKe" id="eVE-D9-O6g"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="222" height="150"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="LN1-et-LHL">
+                    <rect key="frame" x="0.0" y="25" width="222" height="125"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </customView>
+                <customView verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="5ja-Tu-KWf">
+                    <rect key="frame" x="0.0" y="0.0" width="222" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="48L-5g-hYa">
+                            <rect key="frame" x="61.5" y="4" width="99" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Stream caption" id="PVZ-Av-nBC">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="0Wo-Nm-Ga9"/>
+                        <constraint firstAttribute="centerY" secondItem="48L-5g-hYa" secondAttribute="centerY" id="9RX-Wk-w0f"/>
+                        <constraint firstAttribute="height" priority="250" constant="25" id="Bu2-x8-g9R"/>
+                        <constraint firstAttribute="centerX" secondItem="48L-5g-hYa" secondAttribute="centerX" id="ZaU-cA-Nip"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="30" id="irc-hN-Ydt"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="5ja-Tu-KWf" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="4wA-IL-elB"/>
+                <constraint firstAttribute="bottom" secondItem="5ja-Tu-KWf" secondAttribute="bottom" id="5Fr-qj-M9F"/>
+                <constraint firstItem="5ja-Tu-KWf" firstAttribute="top" secondItem="LN1-et-LHL" secondAttribute="bottom" id="KuN-FW-p93"/>
+                <constraint firstAttribute="trailing" secondItem="LN1-et-LHL" secondAttribute="trailing" id="Q9l-VM-VnV"/>
+                <constraint firstItem="LN1-et-LHL" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="bEp-jl-GfO"/>
+                <constraint firstItem="LN1-et-LHL" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="hwD-1A-63K"/>
+                <constraint firstAttribute="trailing" secondItem="5ja-Tu-KWf" secondAttribute="trailing" id="mmu-Xx-FE5"/>
+                <constraint firstItem="5ja-Tu-KWf" firstAttribute="top" secondItem="LN1-et-LHL" secondAttribute="bottom" id="te4-s2-Lh2"/>
+            </constraints>
+        </customView>
+    </objects>
+</document>

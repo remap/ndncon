@@ -8,6 +8,9 @@
 
 #import "PTNStorage.h"
 
+extern NSString* const kAudioStreamsKey;
+extern NSString* const kVideoStreamsKey;
+
 @interface NCPreferencesController : PTNStorage
 
 +(NCPreferencesController*)sharedInstance;
@@ -47,5 +50,7 @@
 
 @property (nonatomic) NSArray *audioStreams;
 @property (nonatomic) NSArray *videoStreams;
+
+-(NSDictionary*)producerConfigurationCopy;
 
 @end

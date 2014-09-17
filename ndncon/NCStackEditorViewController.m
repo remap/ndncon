@@ -47,14 +47,17 @@
 -(NCStackEditorEntryViewController*)addViewEntry:(NSView*)view
 {
     NCStackEditorEntryViewController *vc =[[NCStackEditorEntryViewController alloc] init];
-    vc.delegate = self;
-    vc.contentView = view;
+
+    [self newViewEntry:vc forView:view];
     
-    [self.entryControllers addObject:vc];
-    [self.stackView addView:vc.view inGravity:NSStackViewGravityTop];
+    return vc;
+}
+
+-(NCStackEditorEntryViewController *)addViewEntry:(NSView *)view withStyle:(NCStackEditorEntryStyle)style
+{
+    NCStackEditorEntryViewController *vc = [[NCStackEditorEntryViewController alloc] initWithStyle:style];
     
-    [vc.view.superview setWantsLayer:YES];
-    vc.view.superview.layer.backgroundColor = [NSColor colorWithWhite:0.9 alpha:1.].CGColor;
+    [self newViewEntry:vc forView:view];
     
     return vc;
 }
@@ -84,6 +87,19 @@
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(stackEditorEntryViewControllerUpdatedFrame:)])
         [self.delegate stackEditorEntryViewControllerUpdatedFrame:vc];
+}
+
+// private
+-(void)newViewEntry:(NCStackEditorEntryViewController*)entry forView:(NSView*)view
+{
+    entry.delegate = self;
+    entry.contentView = view;
+    
+    [self.entryControllers addObject:entry];
+    [self.stackView addView:entry.view inGravity:NSStackViewGravityTop];
+    
+    [entry.view.superview setWantsLayer:YES];
+    entry.view.superview.layer.backgroundColor = [NSColor colorWithWhite:0.9 alpha:1.].CGColor;
 }
 
 @end
