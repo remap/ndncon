@@ -12,6 +12,7 @@
 #import "NCAudioStreamViewController.h"
 #import "NSDictionary+NCAdditions.h"
 #import "NSObject+NCAdditions.h"
+#import "NSScrollView+NCAdditions.h"
 
 NSString* const kNameKey = @"Name";
 NSString* const kSynchornizedToKey = @"Synchronized to";
@@ -65,22 +66,8 @@ NSString* const kThreadsArrayKey = @"Threads";
 {
     self.view.wantsLayer = YES;
     self.view.layer.backgroundColor = [NSColor clearColor].CGColor;
-    
-    [self.scrollView setDocumentView:self.stackEditor.view];
-    
-    NSStackView *stackEditorView = self.stackEditor.stackView;
-    stackEditorView.orientation = NSUserInterfaceLayoutOrientationHorizontal;
-    
-    [stackEditorView setClippingResistancePriority:NSLayoutPriorityDefaultLow forOrientation:NSLayoutConstraintOrientationHorizontal];
-    
-    [self.scrollView.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[stackEditorView]"
-                                                                                       options:0
-                                                                                       metrics:nil
-                                                                                         views:NSDictionaryOfVariableBindings(stackEditorView)]];
-    [self.scrollView.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[stackEditorView]|"
-                                                                                        options:0
-                                                                                        metrics:nil
-                                                                                          views:NSDictionaryOfVariableBindings(stackEditorView)]];
+    [self.scrollView addStackView:self.stackEditor.stackView
+                  withOrientation:NSUserInterfaceLayoutOrientationHorizontal];
 }
 
 -(NSMutableDictionary *)configuration

@@ -10,6 +10,7 @@
 #import "NCStreamEditorViewController.h"
 #import "NCVideoStreamViewController.h"
 #import "NCAudioStreamViewController.h"
+#import "NSScrollView+NCAdditions.h"
 
 @interface NCProducerParametersViewController ()
 
@@ -57,22 +58,9 @@
 
 -(void)awakeFromNib
 {
-    [self.scrollView setDocumentView:self.streamEditorController.view];
-
-    NSStackView *stackEditorView = self.streamEditorController.stackView;
+    [self.scrollView addStackView:self.streamEditorController.stackView
+                  withOrientation:NSUserInterfaceLayoutOrientationVertical];
     
-    [stackEditorView setClippingResistancePriority:NSLayoutPriorityDefaultLow forOrientation:NSLayoutConstraintOrientationVertical];
-    
-    [self.scrollView.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[stackEditorView]|"
-                                                                                          options:0
-                                                                                          metrics:nil
-                                                                                             views:NSDictionaryOfVariableBindings(stackEditorView)]];
-
-
-    [self.scrollView.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[stackEditorView]"
-                                                                                            options:0
-                                                                                            metrics:nil
-                                                                                              views:NSDictionaryOfVariableBindings(stackEditorView)]];
     [self.streamEditorController awakeFromNib];
 }
 
