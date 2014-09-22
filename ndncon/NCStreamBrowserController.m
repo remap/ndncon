@@ -9,7 +9,7 @@
 #import "NCStreamBrowserController.h"
 #import "NCStreamViewController.h"
 
-const NSString *kNoUserNameKey = @"noname";
+NSString* const kLocalUserNameKey = @"local";
 
 @interface NCStreamBrowserController ()
 
@@ -19,7 +19,13 @@ const NSString *kNoUserNameKey = @"noname";
 
 @implementation NCStreamBrowserController
 
--(void)addStreamWithConfiguration:(NSDictionary *)configuration andStreamPreviewClass:(Class)streamPreviewClass
+-(void)initialize
+{
+    [super initialize];
+    self.userPreviewControllers = [[NSMutableDictionary alloc] init];
+}
+
+-(NCStreamPreviewController*)addStreamWithConfiguration:(NSDictionary *)configuration andStreamPreviewClass:(Class)streamPreviewClass
 {
     NCStreamPreviewController *streamPreviewController = [[streamPreviewClass alloc] init];
     streamPreviewController.streamName = [configuration valueForKeyPath:kNameKey];
@@ -29,7 +35,32 @@ const NSString *kNoUserNameKey = @"noname";
     vc.caption = [configuration valueForKey:kNameKey];
     
     [self.userPreviewControllers setObject:streamPreviewController
-                                    forKey:kNoUserNameKey];
+                                    forKey:kLocalUserNameKey];
+    return streamPreviewController;
+}
+
+// NCStackEditorEntryDelegate
+-(void)stackEditorEntryViewControllerDidClosed:(NCStackEditorEntryViewController *)vc
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(streamBrowserController:streamWasClosed:forUser:)])
+    {
+        NCStreamPreviewController *streamPreviewController = nil;
+        NSString *userName = nil;
+        
+        for (NSString *key in self.userPreviewControllers.allKeys)
+            if ([(NSViewController*)[self.userPreviewControllers objectForKey:key] view] == vc.contentView)
+            {
+                streamPreviewController = [self.userPreviewControllers objectForKey:key];
+                userName = key;
+                break;
+            }
+        
+        [self.delegate streamBrowserController:self
+                               streamWasClosed:streamPreviewController
+                                       forUser:userName];
+    }
+    
+    [super stackEditorEntryViewControllerDidClosed:vc];
 }
 
 @end

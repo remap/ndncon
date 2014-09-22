@@ -15,7 +15,7 @@
 #define KEYPATH2(s1, k2) ([NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(s1)), k2])
 #define KEYPATH3(s1, k2, k3) ([NSString stringWithFormat:@"%@.%@.%@", NSStringFromSelector(@selector(s1)), k2, k3])
 
-NSString* const kBitrateKey;
+extern NSString* const kBitrateKey;
 
 @interface NCThreadViewController : NSViewController
 

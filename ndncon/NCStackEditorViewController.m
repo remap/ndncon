@@ -27,11 +27,16 @@
     
     if (self)
     {
-        self.stackView.wantsLayer = YES;
-        self.stackView.layer.backgroundColor = [NSColor scrollBarColor].CGColor;
-        self.entryControllers = [[NSMutableArray alloc] init];
+        [self initialize];
     }
     return self;
+}
+
+-(void)initialize
+{
+    self.stackView.wantsLayer = YES;
+    self.stackView.layer.backgroundColor = [NSColor scrollBarColor].CGColor;
+    self.entryControllers = [[NSMutableArray alloc] init];
 }
 
 - (void)dealloc

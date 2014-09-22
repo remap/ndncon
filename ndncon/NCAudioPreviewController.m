@@ -36,6 +36,7 @@
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.image = [NSImage imageNamed:@"sound_icon"];
     
+    self.streamPreview = imageView;
     [self.view addSubview:imageView];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[imageView]|"
@@ -46,10 +47,6 @@
                                                                        options:0
                                                                        metrics:nil
                                                                          views:NSDictionaryOfVariableBindings(imageView)]];
-     
-    
-//    imageView.frame = self.view.bounds;
-
 }
 
 @end

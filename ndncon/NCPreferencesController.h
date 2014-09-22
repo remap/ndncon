@@ -20,13 +20,11 @@ extern NSString* const kVideoStreamsKey;
 /**
  * General settings
  */
-//@property (nonatomic) int logLevel;
 @property (nonatomic) NSNumber* logLevel;
 
 @property (nonatomic) NSString *prefix;
 @property (nonatomic) NSString *userName;
 @property (nonatomic) NSString *daemonHost;
-//@property (nonatomic) NSUInteger daemonPort;
 @property (nonatomic) NSNumber *daemonPort;
 
 @property (nonatomic) NSNumber *tlvEnabled;
@@ -52,5 +50,9 @@ extern NSString* const kVideoStreamsKey;
 @property (nonatomic) NSArray *videoStreams;
 
 -(NSDictionary*)producerConfigurationCopy;
+
+// NdnRtc library-specific
+-(void)getNdnRtcGeneralParameters:(void*)generalParameters;
+-(void)getNdnRtcGeneralProducerParameters:(void*)generalProducerParameters;
 
 @end

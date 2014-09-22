@@ -9,11 +9,11 @@
 #import <Cocoa/Cocoa.h>
 #import "NCThreadViewController.h"
 
-NSString* const kFrameRateKey;
-NSString* const kGopKey;
-NSString* const kMaxBitrateKey;
-NSString* const kEncodingWidthKey;
-NSString* const kEncodingHeightKey;
+extern NSString* const kFrameRateKey;
+extern NSString* const kGopKey;
+extern NSString* const kMaxBitrateKey;
+extern NSString* const kEncodingWidthKey;
+extern NSString* const kEncodingHeightKey;
 
 @interface NCVideoThreadViewController : NCThreadViewController
 

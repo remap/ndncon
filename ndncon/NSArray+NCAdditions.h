@@ -11,5 +11,11 @@
 @interface NSArray (NCAdditions)
 
 -(NSMutableArray*)deepMutableCopy;
-
+-(id)objectAtIndexOrNil:(NSUInteger)index;
+/**
+ * If the index >= 0 works as objectAtIndexOrNil
+ * Otherwise - executes [self objectAtIndexOrNil: self.count+index] allowing to 
+ * retrieve elements from the end of the array
+ */
+-(id)objectAtSignedIndexOrNil:(NSInteger)index;
 @end

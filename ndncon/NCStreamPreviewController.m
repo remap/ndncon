@@ -26,10 +26,16 @@
     return self;
 }
 
+- (void)dealloc
+{
+    self.streamName = nil;
+    self.userData = nil;
+}
+
 -(void)initialize
 {
     self.view = [[NSView alloc] init];
-    [self.view setTranslatesAutoresizingMaskIntoConstraints:NO];    
+    [self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
 
 -(void)setStreamName:(NSString *)streamCaption

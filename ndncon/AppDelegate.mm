@@ -6,10 +6,9 @@
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
-#include <ndnrtc/simple-log.h>
-
 #import "AppDelegate.h"
 
+#import "NCNdnRtcLibraryController.h"
 #import "NCAdvancedPreferencesViewController.h"
 #import "NCGeneralPreferencesViewController.h"
 #import "NCMediaPreferencesViewController.h"
@@ -38,7 +37,10 @@
         [NCPreferencesController sharedInstance].firstLaunch = NO;
     }
     else
-        NSLog(@"We're friends already...");
+        NSLog(@"Not a first launch. We're friends already...");
+    
+    [[NCNdnRtcLibraryController sharedInstance] instantiateLibrary];
+    [[NCNdnRtcLibraryController sharedInstance] startSession];
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ucla.edu.NdnCon" in the user's Application Support directory.
@@ -158,7 +160,8 @@
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    // Save changes in the application's managed object context before the application terminates.
+    [[NCNdnRtcLibraryController sharedInstance] stopSession];
+    [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
     
     if (!_managedObjectContext) {
         return NSTerminateNow;
@@ -198,7 +201,7 @@
             return NSTerminateCancel;
         }
     }
-
+    
     return NSTerminateNow;
 }
 
@@ -226,6 +229,5 @@
 {
     return [NCPreferencesController sharedInstance];
 }
-
 
 @end

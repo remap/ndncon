@@ -68,8 +68,10 @@
 			<dict>
 				<key>Name</key>
 				<string>mic</string>
-				<key>Capture device idx</key>
+				<key>Input device</key>
 				<integer>0</integer>
+				<key>Device configuration</key>
+				<integer>-1</integer>
 				<key>Synchronized to</key>
 				<string>main_camera</string>
 				<key>Threads</key>
@@ -88,8 +90,10 @@
 			<dict>
 				<key>Name</key>
 				<string>main_camera</string>
-				<key>Capture device idx</key>
+				<key>Input device</key>
 				<integer>0</integer>
+        <key>Device configuration</key>
+        <integer>-1</integer>
 				<key>Synchronized to</key>
 				<string>mic</string>
 				<key>Threads</key>
@@ -153,8 +157,10 @@
 			<dict>
 				<key>Name</key>
 				<string>desktop</string>
-				<key>Capture device idx</key>
+				<key>Input device</key>
 				<integer>-1</integer>
+        <key>Device configuration</key>
+        <integer>-1</integer>
 				<key>Synchronized to</key>
 				<string>-</string>
 				<key>Threads</key>

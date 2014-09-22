@@ -9,12 +9,14 @@
 #import "NCMainViewController.h"
 #import "NCConversationViewController.h"
 #import "NCPreferencesController.h"
+#import "NSObject+NCAdditions.h"
+#import "NCNdnRtcLibraryController.h"
 
 @interface NCMainViewController ()
 
 @property (nonatomic, strong) NSDictionary *conversationConfiguration;
 @property (nonatomic, strong) NCConversationViewController *converstaionViewController;
-
+@property (weak) IBOutlet NSPopUpButton *statusPopUpButton;
 
 @end
 
@@ -34,9 +36,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
-    if (self)
-        [self initialize];
-    
     return self;
 }
 
@@ -52,12 +51,15 @@
 
 -(void)initialize
 {
-    
+    [self subscribeForNotificationsAndSelectors:
+     NCSessionStatusUpdateNotificaiton, @selector(onSessionStatusUpdate:),
+     NCSessionErrorNotificaiton, @selector(onSessionError:),
+     nil];
 }
 
 -(void)dealloc
 {
-    
+    [self unsubscribeFromNotifications];
 }
 
 -(void)awakeFromNib
@@ -66,6 +68,17 @@
     self.view.layer.backgroundColor = [NSColor whiteColor].CGColor;
     self.view.layer.borderColor = [NSColor darkGrayColor].CGColor;
     self.view.layer.borderWidth = 1.f;
+}
+
+- (IBAction)changeStatus:(id)sender
+{
+    if ([self.statusPopUpButton.itemArray indexOfObject:self.statusPopUpButton.selectedItem] == 0 &&
+        [NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
+        [[NCNdnRtcLibraryController sharedInstance] stopSession];
+    
+    if ([self.statusPopUpButton.itemArray indexOfObject:self.statusPopUpButton.selectedItem] == 1 &&
+        [NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOnlineNotPublishing)
+        [[NCNdnRtcLibraryController sharedInstance] startSession];
 }
 
 - (IBAction)startPublishing:(id)sender {
@@ -96,6 +109,43 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(currentView)]];
+}
+
+// private
+-(void)onSessionStatusUpdate:(NSNotification*)notification
+{
+    NSLog(@"received session status update: %d",
+          [[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]);
+
+    [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+}
+
+-(void)onSessionError:(NSNotification*)notification
+{
+    NSLog(@"received session error: %d %@",
+          [[notification.userInfo objectForKey:kNCSessionErrorCodeKey] intValue],
+          [notification.userInfo objectForKey:kNCSessionErrorMessageKey]);
+    
+    [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+}
+
+-(void)updateSessionStatus:(NCSessionStatus)status
+{
+    switch (status) {
+        case SessionStatusOnlineNotPublishing:
+            [self.statusPopUpButton selectItemAtIndex:1];
+            break;
+        case SessionStatusOnlinePublishing:
+        {
+            NSMenuItem *activeItem = [[NSMenuItem alloc] init];
+            activeItem.image = [NSImage imageNamed:@"session_active"];
+            [self.statusPopUpButton selectItem:activeItem];
+        }
+            break;
+        default:
+            [self.statusPopUpButton selectItemAtIndex:0];
+            break;
+    }
 }
 
 @end

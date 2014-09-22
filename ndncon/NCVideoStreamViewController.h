@@ -19,7 +19,6 @@
  *      Threads: [
  *          {
  *              Name: <thread_name>;
- *              Frame rate: <frame_rate>;
  *              GOP: <GOP>;
  *              Bitrate: <bitrate>;
  *              Max bitrate: <max_bitrate>;
@@ -30,7 +29,7 @@
  * }
  */
 
-NSString* const kDeviceConfigurationKey;
+extern NSString* const kDeviceConfigurationKey;
 
 @interface NCVideoStreamViewController : NCStreamViewController
 

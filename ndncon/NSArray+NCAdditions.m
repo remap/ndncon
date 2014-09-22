@@ -30,4 +30,20 @@
     return deepMutableCopy;
 }
 
+-(id)objectAtIndexOrNil:(NSUInteger)index
+{
+    if (index >= self.count)
+        return nil;
+    
+    return [self objectAtIndex:index];
+}
+
+-(id)objectAtSignedIndexOrNil:(NSInteger)index
+{
+    if (index >= 0)
+        return [self objectAtIndexOrNil:index];
+    else
+        return [self objectAtIndexOrNil:self.count+index];
+}
+
 @end

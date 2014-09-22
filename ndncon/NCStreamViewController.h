@@ -14,10 +14,10 @@
 #import "NCStackEditorViewController.h"
 #import "NCStackEditorEntryViewController.h"
 
-NSString* const kNameKey;
-NSString* const kSynchornizedToKey;
-NSString* const kInputDeviceKey;
-NSString* const kThreadsArrayKey;
+extern NSString* const kNameKey;
+extern NSString* const kSynchornizedToKey;
+extern NSString* const kInputDeviceKey;
+extern NSString* const kThreadsArrayKey;
 
 @protocol NCStreamViewControllerDelegate;
 

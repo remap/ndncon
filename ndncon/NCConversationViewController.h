@@ -7,12 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "NCStackEditorViewController.h"
+#import "NCStreamBrowserController.h"
 
 @protocol NCConversationViewControllerDelegate;
 
 @interface NCConversationViewController : NSViewController
-<NCStackEditorEntryDelegate>
+<NCStreamBrowserControllerDelegate>
 
 -(void)startPublishingWithConfiguration:(NSDictionary*)streamsConfiguration;
 

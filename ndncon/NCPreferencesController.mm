@@ -7,6 +7,7 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
+#include <ndnrtc/params.h>
 #include <ndnrtc/simple-log.h>
 
 #import "NCPreferencesController.h"
@@ -60,6 +61,8 @@ NSDictionary* const LogLevelsStrings = @{@(ndnlog::NdnLoggerDetailLevelAll):kLog
                                          @(ndnlog::NdnLoggerDetailLevelNone):kLogLevelNone};
 
 
+using namespace ndnrtc;
+using namespace ndnrtc::new_api;
 
 @interface NCPreferencesController()
 
@@ -350,6 +353,32 @@ NSDictionary* const LogLevelsStrings = @{@(ndnlog::NdnLoggerDetailLevelAll):kLog
              kAudioStreamsKey: self.audioStreams,
              kVideoStreamsKey: self.videoStreams
              };
+}
+
+-(void)getNdnRtcGeneralParameters:(void *)generalParameters
+{
+    GeneralParams* params = (GeneralParams*)generalParameters;
+    
+    params->loggingLevel_ = (ndnlog::NdnLoggerDetailLevel)self.logLevel.intValue;
+    params->useTlv_ = self.tlvEnabled.boolValue;
+    params->useRtx_ = self.rtxEnabled.boolValue;
+    params->useFec_ = self.fecEnabled.boolValue;
+    params->useCache_ = self.cachingEnabled.boolValue;
+    params->useAudio_ = true;
+    params->useVideo_ = true;
+    params->useAvSync_ = true;
+    params->skipIncomplete_ = true;
+    params->prefix_ = std::string([self.prefix cStringUsingEncoding:NSUTF8StringEncoding]);
+    params->host_ = std::string([self.daemonHost cStringUsingEncoding:NSUTF8StringEncoding]);
+    params->portNum_ = self.daemonPort.intValue;
+}
+
+-(void)getNdnRtcGeneralProducerParameters:(void *)generalProducerParameters
+{
+    GeneralProducerParams* params = (GeneralProducerParams*)generalProducerParameters;
+    
+    params->segmentSize_ = self.videoSegmentSize.intValue;
+    params->freshnessMs_ = self.videoFreshness.intValue;
 }
 
 // private

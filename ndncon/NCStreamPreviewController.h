@@ -13,6 +13,7 @@
 @property (nonatomic) NSString *streamName;
 @property (nonatomic, weak) IBOutlet NSTextField *streamCaptionLabel;
 @property (nonatomic, weak) IBOutlet NSView *streamPreview;
+@property (nonatomic, strong) id userData;
 
 -(void)initialize;
 
