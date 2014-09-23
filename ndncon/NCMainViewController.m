@@ -52,8 +52,8 @@
 -(void)initialize
 {
     [self subscribeForNotificationsAndSelectors:
-     NCSessionStatusUpdateNotificaiton, @selector(onSessionStatusUpdate:),
-     NCSessionErrorNotificaiton, @selector(onSessionError:),
+     NCSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
+     NCSessionErrorNotification, @selector(onSessionError:),
      nil];
 }
 
@@ -114,38 +114,65 @@
 // private
 -(void)onSessionStatusUpdate:(NSNotification*)notification
 {
-    NSLog(@"received session status update: %d",
-          [[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]);
-
-    [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+    NSString *sessionPrefix = [notification.userInfo objectForKey:kNCSessionPrefixKey];
+    NSString *sessionUserName = [notification.userInfo objectForKey:kNCSessionUsernameKey];
+    
+    if ([sessionPrefix isEqualToString:[NCNdnRtcLibraryController sharedInstance].sessionPrefix] &&
+        [sessionUserName isEqualToString:[NCPreferencesController sharedInstance].userName])
+    {
+        NSLog(@"received session status update: %d",
+              [[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]);
+        
+        [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+    }
 }
 
 -(void)onSessionError:(NSNotification*)notification
 {
-    NSLog(@"received session error: %d %@",
-          [[notification.userInfo objectForKey:kNCSessionErrorCodeKey] intValue],
-          [notification.userInfo objectForKey:kNCSessionErrorMessageKey]);
+    NSString *sessionPrefix = [notification.userInfo objectForKey:kNCSessionPrefixKey];
+    NSString *sessionUserName = [notification.userInfo objectForKey:kNCSessionUsernameKey];
     
-    [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+    if ([sessionPrefix isEqualToString:[NCNdnRtcLibraryController sharedInstance].sessionPrefix] &&
+        [sessionUserName isEqualToString:[NCPreferencesController sharedInstance].userName])
+    {
+        NSLog(@"received session error: %d %@",
+              [[notification.userInfo objectForKey:kNCSessionErrorCodeKey] intValue],
+              [notification.userInfo objectForKey:kNCSessionErrorMessageKey]);
+        
+        [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+    }
 }
 
 -(void)updateSessionStatus:(NCSessionStatus)status
 {
     switch (status) {
         case SessionStatusOnlineNotPublishing:
+        {
+            [self removeOnlinePublishingStatusIfPresent];
             [self.statusPopUpButton selectItemAtIndex:1];
+        }
             break;
         case SessionStatusOnlinePublishing:
         {
-            NSMenuItem *activeItem = [[NSMenuItem alloc] init];
+            [self.statusPopUpButton addItemWithTitle:@""];
+            NSMenuItem *activeItem = [self.statusPopUpButton.itemArray lastObject];
             activeItem.image = [NSImage imageNamed:@"session_active"];
             [self.statusPopUpButton selectItem:activeItem];
         }
             break;
         default:
+        {
+            [self removeOnlinePublishingStatusIfPresent];
             [self.statusPopUpButton selectItemAtIndex:0];
+        }
             break;
     }
+}
+
+-(void)removeOnlinePublishingStatusIfPresent
+{
+    if (self.statusPopUpButton.itemArray.count == 3)
+        [self.statusPopUpButton removeItemAtIndex:2];
 }
 
 @end

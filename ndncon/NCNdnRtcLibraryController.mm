@@ -14,8 +14,8 @@
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
 
-NSString* const NCSessionStatusUpdateNotificaiton = @"NCSessionStatusUpdateNotificaiton";
-NSString* const NCSessionErrorNotificaiton = @"NCSessionErrorNotificaiton";
+NSString* const NCSessionStatusUpdateNotification = @"NCSessionStatusUpdateNotificaiton";
+NSString* const NCSessionErrorNotification = @"NCSessionErrorNotificaiton";
 
 NSString* const kNCSessionUsernameKey = @"username";
 NSString* const kNCSessionPrefixKey = @"prefix";
@@ -53,7 +53,7 @@ public:
                      SessionStatus status)
     {
         [[NSNotificationCenter defaultCenter]
-         postNotificationName:NCSessionStatusUpdateNotificaiton
+         postNotificationName:NCSessionStatusUpdateNotification
          object:nil
          userInfo:@{kNCSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
                     kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
@@ -68,7 +68,7 @@ public:
                    const char* errorMessage)
     {
         [[NSNotificationCenter defaultCenter]
-         postNotificationName:NCSessionErrorNotificaiton
+         postNotificationName:NCSessionErrorNotification
          object:nil
          userInfo:@{kNCSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
                     kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
@@ -110,6 +110,7 @@ public:
             break;
         case ndnrtc::SessionOnlinePublishing:
             sessionStatus = SessionStatusOnlinePublishing;
+            break;
         default:
             sessionStatus = SessionStatusOffline;
             break;
@@ -126,7 +127,17 @@ public:
 
 -(id)initPrivate
 {
-    return [super init];
+    self = [super init];
+    
+    if (self)
+        [self instantiateLibrary];
+    
+    return self;
+}
+
+-(void)dealloc
+{
+    [self releaseLibrary];
 }
 
 +(NCNdnRtcLibraryController*)sharedInstance

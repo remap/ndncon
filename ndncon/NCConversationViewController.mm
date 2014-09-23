@@ -28,7 +28,6 @@ using namespace ndnrtc;
 using namespace ndnrtc::new_api;
 
 const NSString *kCameraCapturerKey = @"cameraCapturer";
-const NSString *kStreamPrefixKey = @"streamPrefix";
 
 @interface NSDictionary (NdnRtcParamsAdditions)
 
@@ -113,9 +112,22 @@ const NSString *kStreamPrefixKey = @"streamPrefix";
 // private
 -(void)startAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
 {
-//    [self startLibraryStreamWithConfiguration: ]
-    [self.localStreamViewer addStreamWithConfiguration:streamConfiguration
-                                 andStreamPreviewClass:[NCAudioPreviewController class]];
+    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    std::string sessionPrefix([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    IExternalCapturer *nilCapturer = NULL;
+    std::string streamPrefix = lib->addLocalStream(sessionPrefix,
+                                                   [streamConfiguration asAudioStreamParams],
+                                                   &nilCapturer);
+    
+    if (streamPrefix != "")
+    {
+        NCAudioPreviewController *audioPreviewVc = (NCAudioPreviewController*)[self.localStreamViewer addStreamWithConfiguration:streamConfiguration
+                                                                                                           andStreamPreviewClass:[NCAudioPreviewController class]
+                                                                               forStreamPrefix:[NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding]];
+        audioPreviewVc.userData = @{
+                                    kStreamPrefixKey: [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding]
+                                    };
+    }
 }
 
 -(void)startVideoStreamWithConfiguration:(NSDictionary*)streamConfiguration
@@ -138,7 +150,8 @@ const NSString *kStreamPrefixKey = @"streamPrefix";
         {
             NCVideoPreviewController *videoPreviewVc = (NCVideoPreviewController*)[self.localStreamViewer
                                                                                    addStreamWithConfiguration:streamConfiguration
-                                                                                   andStreamPreviewClass:[NCVideoPreviewController class]];
+                                                                                   andStreamPreviewClass:[NCVideoPreviewController class]
+                                                                                   forStreamPrefix:[NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding]];
             
             AVCaptureDeviceFormat *format = [device.formats
                                              objectAtSignedIndexOrNil:[[streamConfiguration valueForKey:kDeviceConfigurationKey] intValue]];
@@ -161,10 +174,6 @@ const NSString *kStreamPrefixKey = @"streamPrefix";
                                         kCameraCapturerKey: cameraCapturer,
                                         kStreamPrefixKey: [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding]
                                         };
-            
-//            [self.localStreams
-//             setObject:cameraCapturer
-//             forKey:[NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding]];
         }
     }
     else
@@ -177,18 +186,19 @@ const NSString *kStreamPrefixKey = @"streamPrefix";
 -(void)streamBrowserController:(NCStreamBrowserController *)browserController
                streamWasClosed:(NCStreamPreviewController *)previewController
                        forUser:(NSString *)userName
+                     forPrefix:(NSString *)streamPrefix
 {
     if (browserController == self.localStreamViewer)
     {
         NCCameraCapturer *cameraCapturer = (NCCameraCapturer*)[previewController.userData objectForKey:kCameraCapturerKey];
-        [cameraCapturer stopCapturing];
+        if (cameraCapturer)
+            [cameraCapturer stopCapturing];
+        [self removeLocalStreamWithPrefix:(NSString*)[previewController.userData objectForKey:kStreamPrefixKey]];
     }
-
-    [self removeStreamWithPrefix:(NSString*)[previewController.userData objectForKey:kStreamPrefixKey]];
 }
 
 // private
--(void)removeStreamWithPrefix:(NSString*)streamPrefix
+-(void)removeLocalStreamWithPrefix:(NSString*)streamPrefix
 {
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->removeLocalStream([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding],

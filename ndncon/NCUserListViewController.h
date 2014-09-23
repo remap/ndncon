@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* const kNCSessionInfoKey;
+extern NSString* const kNCHubPrefixKey;
+
+@interface NCSessionInfoContainer : NSObject
+
++(NCSessionInfoContainer*)containerWithSessionInfo:(void*)sessionInfo;
+-(id)initWithSessionInfo:(void*)sessionInfo;
+-(void*)sessionInfo;
+
+@end
+
 @interface NCUserListViewController : NSObject
 
 @end

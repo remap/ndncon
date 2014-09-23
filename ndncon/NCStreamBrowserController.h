@@ -10,7 +10,8 @@
 #import "NCStackEditorViewController.h"
 #import "NCStreamPreviewController.h"
 
-extern NSString* const kLocalUserNameKey;
+extern NSString* const kLocalUserName;
+extern NSString* const kStreamPrefixKey;
 
 @protocol NCStreamBrowserControllerDelegate;
 
@@ -20,7 +21,8 @@ extern NSString* const kLocalUserNameKey;
 @property (nonatomic, weak) id<NCStreamBrowserControllerDelegate> delegate;
 
 -(NCStreamPreviewController*)addStreamWithConfiguration:(NSDictionary*)configuration
-                                  andStreamPreviewClass:(Class)streamPreviewClass;
+                                  andStreamPreviewClass:(Class)streamPreviewClass
+                                        forStreamPrefix:(NSString*)streamPrefix;
 
 @end
 
@@ -29,6 +31,7 @@ extern NSString* const kLocalUserNameKey;
 @optional
 -(void)streamBrowserController:(NCStreamBrowserController*)browserController
                streamWasClosed:(NCStreamPreviewController*)previewController
-                       forUser:(NSString*)userName;
+                       forUser:(NSString*)userName
+                     forPrefix:(NSString*)streamPrefix;
 
 @end

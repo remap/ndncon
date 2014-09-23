@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString* const NCSessionStatusUpdateNotificaiton;
-extern NSString* const NCSessionErrorNotificaiton;
+extern NSString* const NCSessionStatusUpdateNotification;
+extern NSString* const NCSessionErrorNotification;
 
 extern NSString* const kNCSessionUsernameKey;
 extern NSString* const kNCSessionPrefixKey;
@@ -30,9 +30,7 @@ typedef enum : NSUInteger {
 
 +(NCNdnRtcLibraryController*)sharedInstance;
 
--(void)instantiateLibrary;
 -(void*)getLibraryObject;
--(void)releaseLibrary;
 
 -(BOOL)startSession;
 -(BOOL)stopSession;

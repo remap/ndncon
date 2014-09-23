@@ -9,7 +9,10 @@
 #import "NCStreamBrowserController.h"
 #import "NCStreamViewController.h"
 
-NSString* const kLocalUserNameKey = @"local";
+NSString* const kLocalUserName = @"local";
+NSString* const kUserNameKey = @"user";
+NSString* const kStreamPrefixKey = @"streamPrefix";
+NSString* const kPreviewControllerKey = @"previewController";
 
 @interface NCStreamBrowserController ()
 
@@ -25,7 +28,9 @@ NSString* const kLocalUserNameKey = @"local";
     self.userPreviewControllers = [[NSMutableDictionary alloc] init];
 }
 
--(NCStreamPreviewController*)addStreamWithConfiguration:(NSDictionary *)configuration andStreamPreviewClass:(Class)streamPreviewClass
+-(NCStreamPreviewController*)addStreamWithConfiguration:(NSDictionary *)configuration
+                                  andStreamPreviewClass:(Class)streamPreviewClass
+                                         forStreamPrefix:(NSString*)streamPrefix
 {
     NCStreamPreviewController *streamPreviewController = [[streamPreviewClass alloc] init];
     streamPreviewController.streamName = [configuration valueForKeyPath:kNameKey];
@@ -34,30 +39,38 @@ NSString* const kLocalUserNameKey = @"local";
     [vc setHeaderSmall:YES];
     vc.caption = [configuration valueForKey:kNameKey];
     
-    [self.userPreviewControllers setObject:streamPreviewController
-                                    forKey:kLocalUserNameKey];
+    [self.userPreviewControllers setObject:@{kUserNameKey:kLocalUserName,
+                                             kPreviewControllerKey:streamPreviewController}
+                                    forKey:streamPrefix];
     return streamPreviewController;
 }
 
 // NCStackEditorEntryDelegate
 -(void)stackEditorEntryViewControllerDidClosed:(NCStackEditorEntryViewController *)vc
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(streamBrowserController:streamWasClosed:forUser:)])
+    if (self.delegate && [self.delegate respondsToSelector:@selector(streamBrowserController:streamWasClosed:forUser:forPrefix:)])
     {
         NCStreamPreviewController *streamPreviewController = nil;
         NSString *userName = nil;
+        NSString *streamPrefix = nil;
         
         for (NSString *key in self.userPreviewControllers.allKeys)
-            if ([(NSViewController*)[self.userPreviewControllers objectForKey:key] view] == vc.contentView)
+        {
+            NSDictionary *info = [self.userPreviewControllers objectForKey:key];
+            
+            if ([(NSViewController*)[info objectForKey:kPreviewControllerKey] view] == vc.contentView)
             {
-                streamPreviewController = [self.userPreviewControllers objectForKey:key];
-                userName = key;
+                streamPreviewController = [info objectForKey:kPreviewControllerKey];
+                userName =  [info objectForKey:kUserNameKey];
+                streamPrefix = key;
                 break;
             }
+        }
         
         [self.delegate streamBrowserController:self
                                streamWasClosed:streamPreviewController
-                                       forUser:userName];
+                                       forUser:userName
+                                     forPrefix:streamPrefix];
     }
     
     [super stackEditorEntryViewControllerDidClosed:vc];

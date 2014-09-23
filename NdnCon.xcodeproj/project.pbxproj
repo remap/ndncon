@@ -48,7 +48,7 @@
 		AFA8521A19C8F1E40015A883 /* NCAudioThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */; };
 		AFA8521D19C8F3220015A883 /* NCAudioThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */; };
 		AFB35BF819C9FB4E00D8A2BC /* NCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BF719C9FB4E00D8A2BC /* NCMainViewController.m */; };
-		AFB35BFB19C9FB6F00D8A2BC /* NCUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.m */; };
+		AFB35BFB19C9FB6F00D8A2BC /* NCUserListViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.mm */; };
 		AFB35BFF19C9FDFE00D8A2BC /* NCConversationViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BFE19C9FDFE00D8A2BC /* NCConversationViewController.mm */; };
 		AFB35C0119C9FE0F00D8A2BC /* NCConverstaionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFB35C0019C9FE0F00D8A2BC /* NCConverstaionView.xib */; };
 		AFB35C0619CA010700D8A2BC /* NCStreamBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C0419CA010700D8A2BC /* NCStreamBrowserController.m */; };
@@ -158,7 +158,7 @@
 		AFB35BF619C9FB4E00D8A2BC /* NCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCMainViewController.h; path = ndncon/NCMainViewController.h; sourceTree = SOURCE_ROOT; };
 		AFB35BF719C9FB4E00D8A2BC /* NCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCMainViewController.m; path = ndncon/NCMainViewController.m; sourceTree = SOURCE_ROOT; };
 		AFB35BF919C9FB6F00D8A2BC /* NCUserListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCUserListViewController.h; path = ndncon/NCUserListViewController.h; sourceTree = SOURCE_ROOT; };
-		AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCUserListViewController.m; path = ndncon/NCUserListViewController.m; sourceTree = SOURCE_ROOT; };
+		AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCUserListViewController.mm; path = ndncon/NCUserListViewController.mm; sourceTree = SOURCE_ROOT; };
 		AFB35BFD19C9FDFE00D8A2BC /* NCConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConversationViewController.h; path = ndncon/NCConversationViewController.h; sourceTree = SOURCE_ROOT; };
 		AFB35BFE19C9FDFE00D8A2BC /* NCConversationViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCConversationViewController.mm; path = ndncon/NCConversationViewController.mm; sourceTree = SOURCE_ROOT; };
 		AFB35C0019C9FE0F00D8A2BC /* NCConverstaionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCConverstaionView.xib; path = ndncon/NCConverstaionView.xib; sourceTree = SOURCE_ROOT; };
@@ -347,8 +347,7 @@
 				AFB35BFC19C9FDE600D8A2BC /* Conversation view */,
 				AFB35BF619C9FB4E00D8A2BC /* NCMainViewController.h */,
 				AFB35BF719C9FB4E00D8A2BC /* NCMainViewController.m */,
-				AFB35BF919C9FB6F00D8A2BC /* NCUserListViewController.h */,
-				AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.m */,
+				AFC99BD019D15C0B005B75AB /* User list */,
 			);
 			name = "Main window";
 			sourceTree = "<group>";
@@ -420,6 +419,15 @@
 				AFB8DE9419CD049B008F691B /* NCCameraCapturer.mm */,
 			);
 			name = "Device manager";
+			sourceTree = "<group>";
+		};
+		AFC99BD019D15C0B005B75AB /* User list */ = {
+			isa = PBXGroup;
+			children = (
+				AFB35BF919C9FB6F00D8A2BC /* NCUserListViewController.h */,
+				AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.mm */,
+			);
+			name = "User list";
 			sourceTree = "<group>";
 		};
 		AFD978DD19BE546D0061AA24 = {
@@ -665,7 +673,7 @@
 				AFA8521419C8A6060015A883 /* NSObject+NCAdditions.m in Sources */,
 				AFB35C0E19CA095100D8A2BC /* NCStreamPreviewController.m in Sources */,
 				AF7026C319C259AE0087B605 /* NCProducerParametersViewController.m in Sources */,
-				AFB35BFB19C9FB6F00D8A2BC /* NCUserListViewController.m in Sources */,
+				AFB35BFB19C9FB6F00D8A2BC /* NCUserListViewController.mm in Sources */,
 				AFB35C0619CA010700D8A2BC /* NCStreamBrowserController.m in Sources */,
 				AF8A139D19BFB8CE00010B20 /* NCMediaPreferencesViewController.m in Sources */,
 				AF8A14D119BFD70B00010B20 /* NCPreferencesController.mm in Sources */,

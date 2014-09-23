@@ -39,7 +39,6 @@
     else
         NSLog(@"Not a first launch. We're friends already...");
     
-    [[NCNdnRtcLibraryController sharedInstance] instantiateLibrary];
     [[NCNdnRtcLibraryController sharedInstance] startSession];
 }
 
@@ -161,7 +160,6 @@
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     [[NCNdnRtcLibraryController sharedInstance] stopSession];
-    [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
     
     if (!_managedObjectContext) {
         return NSTerminateNow;
