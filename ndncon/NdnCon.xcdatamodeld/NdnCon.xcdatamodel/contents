@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="untitled.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="User" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString="username" syncable="YES"/>
+        <attribute name="prefix" optional="YES" attributeType="String" defaultValueString="/ndn/edu/ucla/remap" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="User" positionX="-1944" positionY="-1089" width="128" height="73"/>
+    </elements>
 </model>

@@ -12,6 +12,7 @@ extern NSString* const kNCSessionInfoKey;
 extern NSString* const kNCHubPrefixKey;
 
 @interface NCSessionInfoContainer : NSObject
+<NSTableViewDelegate, NSTableViewDataSource>
 
 +(NCSessionInfoContainer*)containerWithSessionInfo:(void*)sessionInfo;
 -(id)initWithSessionInfo:(void*)sessionInfo;
