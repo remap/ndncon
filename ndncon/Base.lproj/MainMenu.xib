@@ -28,6 +28,7 @@
         </customObject>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="userListViewController" destination="N2m-Sp-SCk" id="9yd-5I-wiT"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -749,7 +750,7 @@
                                                             <customCell key="dataCell" alignment="left" id="Fft-ru-f3N"/>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
-                                                                <tableCellView identifier="UserCell" id="kjG-HO-HvN" customClass="NCUserListCell">
+                                                                <tableCellView identifier="UserCell" id="kjG-HO-HvN">
                                                                     <rect key="frame" x="1" y="1" width="195" height="50"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
@@ -760,6 +761,9 @@
                                                                                 <constraint firstAttribute="height" constant="40" id="xeb-qU-616"/>
                                                                             </constraints>
                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="session_offline" id="YXF-Vn-Tki"/>
+                                                                            <connections>
+                                                                                <binding destination="kjG-HO-HvN" name="value" keyPath="objectValue.statusImage" id="6Zg-Ix-lBT"/>
+                                                                            </connections>
                                                                         </imageView>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="17" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQW-5e-xB0" customClass="NCCustomTextField">
                                                                             <rect key="frame" x="42" y="28" width="151" height="17"/>

@@ -156,7 +156,7 @@
         {
             [self.statusPopUpButton addItemWithTitle:@""];
             NSMenuItem *activeItem = [self.statusPopUpButton.itemArray lastObject];
-            activeItem.image = [NSImage imageNamed:@"session_active"];
+            activeItem.image = [[NCNdnRtcLibraryController sharedInstance] imageForSessionStatus:status];
             [self.statusPopUpButton selectItem:activeItem];
         }
             break;

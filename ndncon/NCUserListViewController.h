@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NCNdnRtcLibraryController.h"
 
 extern NSString* const kNCSessionInfoKey;
 extern NSString* const kNCHubPrefixKey;
@@ -21,5 +22,9 @@ extern NSString* const kNCHubPrefixKey;
 @end
 
 @interface NCUserListViewController : NSObject
+
++(NCSessionStatus)sessionStatusForUser:(NSString*)user
+                withPrefix:(NSString*)prefix;
+
 
 @end

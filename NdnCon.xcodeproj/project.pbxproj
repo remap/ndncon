@@ -61,6 +61,8 @@
 		AFB35C1C19CA1CA400D8A2BC /* NCUserStreamsController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C1B19CA1CA400D8A2BC /* NCUserStreamsController.m */; };
 		AFB35C2719CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C2619CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm */; };
 		AFB8DE9519CD049B008F691B /* NCCameraCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB8DE9419CD049B008F691B /* NCCameraCapturer.mm */; };
+		AFC99BD319D16E2E005B75AB /* NCCustomTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BD219D16E2E005B75AB /* NCCustomTextField.m */; };
+		AFC99BD619D20489005B75AB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BD519D20489005B75AB /* User.m */; };
 		AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
 		AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
 		AFD978F619BE546D0061AA24 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.mm */; };
@@ -182,6 +184,8 @@
 		AFB8DE9419CD049B008F691B /* NCCameraCapturer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCCameraCapturer.mm; path = ndncon/NCCameraCapturer.mm; sourceTree = SOURCE_ROOT; };
 		AFC99BD119D16E2E005B75AB /* NCCustomTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCCustomTextField.h; path = ndncon/NCCustomTextField.h; sourceTree = SOURCE_ROOT; };
 		AFC99BD219D16E2E005B75AB /* NCCustomTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCCustomTextField.m; path = ndncon/NCCustomTextField.m; sourceTree = SOURCE_ROOT; };
+		AFC99BD419D20489005B75AB /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = ndncon/User.h; sourceTree = SOURCE_ROOT; };
+		AFC99BD519D20489005B75AB /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = ndncon/User.m; sourceTree = SOURCE_ROOT; };
 		AFD978E619BE546D0061AA24 /* NdnCon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NdnCon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFD978E919BE546D0061AA24 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AFD978EC19BE546D0061AA24 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -430,6 +434,8 @@
 				AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.mm */,
 				AFC99BD119D16E2E005B75AB /* NCCustomTextField.h */,
 				AFC99BD219D16E2E005B75AB /* NCCustomTextField.m */,
+				AFC99BD419D20489005B75AB /* User.h */,
+				AFC99BD519D20489005B75AB /* User.m */,
 			);
 			name = "User list";
 			sourceTree = "<group>";
@@ -679,6 +685,7 @@
 				AF7026C319C259AE0087B605 /* NCProducerParametersViewController.m in Sources */,
 				AFB35BFB19C9FB6F00D8A2BC /* NCUserListViewController.mm in Sources */,
 				AFB35C0619CA010700D8A2BC /* NCStreamBrowserController.m in Sources */,
+				AFC99BD619D20489005B75AB /* User.m in Sources */,
 				AF8A139D19BFB8CE00010B20 /* NCMediaPreferencesViewController.m in Sources */,
 				AF8A14D119BFD70B00010B20 /* NCPreferencesController.mm in Sources */,
 				AF7026D319C391B60087B605 /* NCStreamViewController.m in Sources */,

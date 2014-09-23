@@ -9,9 +9,11 @@
 #include <ndnrtc/ndnrtc-library.h>
 
 #import "NCUserListViewController.h"
-#import "NCNdnRtcLibraryController.h"
 #import "NCPreferencesController.h"
 #import "NSObject+NCAdditions.h"
+#import "AppDelegate.h"
+#import "User.h"
+#import "NCNdnRtcLibraryController.h"
 
 NSString* const kNCSessionInfoKey = @"sessionInfo";
 NSString* const kNCHubPrefixKey = @"hubPrefix";
@@ -67,6 +69,7 @@ public:
     username_(username), prefix_(prefix) {};
     
     std::string username_, prefix_;
+    NCSessionStatus lastStatus_ = SessionStatusOffline;
     
 private:
     bool freshStart_ = true;
@@ -81,15 +84,13 @@ private:
     void
     onSessionInfoUpdate(const new_api::SessionInfo& sessionInfo)
     {
-//        std::cout << "session update: " << std::endl << sessionInfo;
-        
         freshStart_ = false;
         
-        NCSessionStatus status = (sessionInfo.audioStreams_.size() == 0 &&
-                                  sessionInfo.videoStreams_.size() == 0)?SessionStatusOnlineNotPublishing:
-                                    SessionStatusOnlinePublishing;
+        lastStatus_ = (sessionInfo.audioStreams_.size() == 0 &&
+                       sessionInfo.videoStreams_.size() == 0)?SessionStatusOnlineNotPublishing:
+        SessionStatusOnlinePublishing;
         NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
-        [userInfo setObject:@(status)
+        [userInfo setObject:@(lastStatus_)
                      forKey:kNCSessionStatusKey];
         [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo: (void*)&sessionInfo]
                      forKey:kNCSessionInfoKey];
@@ -126,6 +127,8 @@ private:
     void
     notifyStatusUpdate(NCSessionStatus status)
     {
+        lastStatus_ = status;
+        
         NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
         
         [userInfo setObject:@(status)
@@ -141,7 +144,10 @@ private:
 @interface NCUserListViewController()
 {
     std::vector<RemoteSessionObserver*> _sessionObservers;
+    dispatch_queue_t _observerQueue;
 }
+
++(NCUserListViewController*)sharedInstance;
 
 @property (weak) IBOutlet NSArrayController *userController;
 @property (weak) IBOutlet NSTableView *tableView;
@@ -149,6 +155,19 @@ private:
 @end
 
 @implementation NCUserListViewController
+
++(NCUserListViewController *)sharedInstance
+{
+    return ((AppDelegate*)[NSApp delegate]).userListViewController;
+}
+
++(NCSessionStatus)sessionStatusForUser:(NSString *)user withPrefix:(NSString *)prefix
+{
+    RemoteSessionObserver *observer = [[NCUserListViewController sharedInstance] observerForUser:user andPrefix:prefix];
+    NCSessionStatus status = (observer)?observer->lastStatus_:SessionStatusOffline;
+    
+    return status;
+}
 
 -(id)init
 {
@@ -167,6 +186,7 @@ private:
 
 -(void)initialize
 {
+    _observerQueue = dispatch_queue_create("queue.observers", DISPATCH_QUEUE_SERIAL);
     [self subscribeForNotificationsAndSelectors:NCSessionStatusUpdateNotification, @selector(sessionDidUpdateStatus:), nil];
 }
 
@@ -175,8 +195,10 @@ private:
     [self unsubscribeFromNotifications];
     [self.userController removeObserver:self forKeyPaths: @"arrangedObjects.name", @"arrangedObjects.prefix", nil];
     
-    while (_sessionObservers.size())
-        [self stopObserver: _sessionObservers[0]];
+    dispatch_sync(_observerQueue, ^{
+        while (_sessionObservers.size())
+            [self stopObserver: _sessionObservers[0]];
+    });
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -185,10 +207,6 @@ private:
 }
 
 // NSTableViewDelegate
-- (void)tableView:(NSTableView *)tableView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
-{
-    
-}
 
 // private
 -(void)sessionDidUpdateStatus:(NSNotification*)notification
@@ -199,11 +217,13 @@ private:
     
     if (userName && prefix)
     {
-        NSTableColumn *column = [self.tableView tableColumnWithIdentifier:@"UserCell"];
-
+        [self.userController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([[obj name] isEqualToString:userName] && [[obj prefix] isEqualToString:prefix])
+                [obj setStatusImage:[[NCNdnRtcLibraryController sharedInstance] imageForSessionStatus:status]];
+        }];
+        NSLog(@"%@:%@ - %lu", userName, prefix, status);
     }
 }
-
 -(void)checkAndUpdateSessionObservers
 {
     [self stopOldObservers];
@@ -221,13 +241,15 @@ private:
 
 -(void)stopOldObservers
 {
-    int i = 0;
+    __block int i = 0;
     while (i < _sessionObservers.size())
     {
-        if (![self isObserverPresentedInUserList:_sessionObservers[i]])
-            [self stopObserver:_sessionObservers[i]];
-        else
-            i++;
+        dispatch_sync(_observerQueue, ^{
+            if (![self isObserverPresentedInUserList:_sessionObservers[i]])
+                [self stopObserver:_sessionObservers[i]];
+            else
+                i++;
+        });
     }
 }
 
@@ -242,7 +264,10 @@ private:
     [[NCPreferencesController sharedInstance] getNdnRtcGeneralParameters:&generalParams];
     RemoteSessionObserver *observer = new RemoteSessionObserver(username, prefix);
     lib->setRemoteSessionObserver(username, prefix, generalParams, observer);
-    _sessionObservers.push_back(observer);
+    
+    dispatch_sync(_observerQueue, ^{
+        _sessionObservers.push_back(observer);
+    });
     
     NSLog(@"started observer for %@:%@", aPrefix, aUserName);
 }
@@ -262,23 +287,31 @@ private:
     delete observer;
 }
 
--(BOOL)hasObserverForUser:(NSString*)aUsername andPrefix:(NSString*)aPrefix
+-(BOOL)hasObserverForUser:(NSString*)aUserName andPrefix:(NSString*)aPrefix
 {
-    std::string username = [aUsername cStringUsingEncoding:NSASCIIStringEncoding];
-    std::string prefix = [aPrefix cStringUsingEncoding:NSASCIIStringEncoding];
-    
-    std::vector<RemoteSessionObserver*>::iterator it = _sessionObservers.begin();
-    BOOL hasObserver = NO;
-    
-    while (it != _sessionObservers.end() && !hasObserver)
-    {
-        hasObserver = (((*it)->username_ == username) && ((*it)->prefix_ == prefix));
-        it++;
-    }
-
-    return hasObserver;
+    return ([self observerForUser:aUserName andPrefix:aPrefix] != NULL);
 }
 
+-(RemoteSessionObserver*)observerForUser:(NSString*)aUserName andPrefix:(NSString*)aPrefix
+{
+    std::string username = [aUserName cStringUsingEncoding:NSASCIIStringEncoding];
+    std::string prefix = [aPrefix cStringUsingEncoding:NSASCIIStringEncoding];
+    
+    __block RemoteSessionObserver *observer = NULL;
+    
+    dispatch_sync(_observerQueue, ^{
+        std::vector<RemoteSessionObserver*>::iterator it = _sessionObservers.begin();
+        
+        while (it != _sessionObservers.end() && !observer)
+        {
+            if (((*it)->username_ == username) && ((*it)->prefix_ == prefix))
+                observer = *it;
+            it++;
+        }
+    });
+    
+    return observer;
+}
 -(BOOL)isObserverPresentedInUserList:(RemoteSessionObserver*)observer
 {
     NSString *userName = [NSString stringWithCString:observer->username_.c_str()

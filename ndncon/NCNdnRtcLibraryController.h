@@ -35,6 +35,6 @@ typedef enum : NSUInteger {
 -(BOOL)startSession;
 -(BOOL)stopSession;
 
-
+-(NSImage*)imageForSessionStatus:(NCSessionStatus)status;
 
 @end

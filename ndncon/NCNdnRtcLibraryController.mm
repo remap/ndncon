@@ -202,4 +202,16 @@ public:
     return _sessionPrefix;
 }
 
+-(NSImage*)imageForSessionStatus:(NCSessionStatus)status
+{
+    switch (status) {
+        case SessionStatusOnlineNotPublishing:
+            return [NSImage imageNamed:@"session_passive"];
+        case SessionStatusOnlinePublishing:
+            return [NSImage imageNamed:@"session_active"];
+        default:
+            return [NSImage imageNamed:@"session_offline"];
+    }
+}
+
 @end
