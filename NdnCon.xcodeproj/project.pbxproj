@@ -72,6 +72,8 @@
 		AFC99BED19D26510005B75AB /* NCUserVideoThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC99BE919D26510005B75AB /* NCUserVideoThreadView.xib */; };
 		AFC99BF019D29793005B75AB /* NCUserStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BEF19D29793005B75AB /* NCUserStreamViewController.m */; };
 		AFC99BF319D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BF219D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm */; };
+		AFC99BF719D36B89005B75AB /* NdnCon.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFD978E619BE546D0061AA24 /* NdnCon.app */; };
+		AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
 		AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
 		AFD978F619BE546D0061AA24 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.mm */; };
@@ -96,6 +98,29 @@
 			remoteInfo = NdnCon;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AFC99BF619D36B5D005B75AB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "/Users/peetonn/Documents/remap-dropbox/Dropbox/cocoa";
+			dstSubfolderSpec = 0;
+			files = (
+				AFC99BF719D36B89005B75AB /* NdnCon.app in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFC99BF819D36CF6005B75AB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
@@ -134,7 +159,7 @@
 		AF7026E819C3CCF30087B605 /* NCThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCThreadViewController.h; path = ndncon/NCThreadViewController.h; sourceTree = SOURCE_ROOT; };
 		AF7026E919C3CCF30087B605 /* NCThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCThreadViewController.m; path = ndncon/NCThreadViewController.m; sourceTree = SOURCE_ROOT; };
 		AF7026EB19C3CD560087B605 /* NCVideoThreadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCVideoThreadView.xib; path = ndncon/NCVideoThreadView.xib; sourceTree = SOURCE_ROOT; };
-		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = usr/local/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
+		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
 		AF8A138819BFB7C500010B20 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -594,9 +619,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AFD9791A19BE546E0061AA24 /* Build configuration list for PBXNativeTarget "NdnCon" */;
 			buildPhases = (
+				AFC99BF819D36CF6005B75AB /* CopyFiles */,
+				AFC99BFA19D38234005B75AB /* ShellScript */,
 				AFD978E219BE546D0061AA24 /* Sources */,
 				AFD978E319BE546D0061AA24 /* Frameworks */,
 				AFD978E419BE546D0061AA24 /* Resources */,
+				AFC99BF619D36B5D005B75AB /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -701,6 +729,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AFC99BFA19D38234005B75AB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "install_name_tool -id @rpath/libndnrtc.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AFD978E219BE546D0061AA24 /* Sources */ = {
@@ -895,8 +939,10 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "NdnCon/NdnCon-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"$(NDNRTC_LIB_PATH)",
+					$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH,
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -918,8 +964,10 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "NdnCon/NdnCon-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"$(NDNRTC_LIB_PATH)",
+					$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH,
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
