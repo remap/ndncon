@@ -67,6 +67,16 @@
     return vc;
 }
 
+-(void)removeAllEntries
+{
+    for (NCStackEditorEntryViewController *vc in self.entryControllers)
+    {
+        [self.stackView removeView:vc.view];
+    }
+    
+    [self.entryControllers removeAllObjects];
+}
+
 // NSStackView delegate
 -(void)stackView:(NSStackView *)stackView didReattachViews:(NSArray *)views
 {

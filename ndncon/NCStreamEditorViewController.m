@@ -20,20 +20,21 @@
 
 @property (nonatomic) NSMutableArray *streamsControllers;
 @property (nonatomic, strong) NCPreferencesController *preferences;
-@property (nonatomic) NSMutableArray *audioStreams;
-@property (nonatomic) NSMutableArray *videoStreams;
 
 @end
 
 @implementation NCStreamEditorViewController
 
-- (id)initWithPreferncesController:(NCPreferencesController *)preferences
+- (id)initWithPreferencesController:(NCPreferencesController *)preferences
 {
     if ((self = [super init]))
     {
+        self.audioStreamViewControllerClass = [NCAudioStreamViewController class];
+        self.videoStreamViewControllerClass = [NCVideoStreamViewController class];
+        
         self.preferences = preferences;
-        self.audioStreams = [preferences.audioStreams deepMutableCopy];
-        self.videoStreams = [preferences.videoStreams deepMutableCopy];
+        _audioStreams = [preferences.audioStreams deepMutableCopy];
+        _videoStreams = [preferences.videoStreams deepMutableCopy];
         self.streamsControllers = [[NSMutableArray alloc] init];
     }
     
@@ -48,11 +49,18 @@
 
 -(void)awakeFromNib
 {
-    for (NSDictionary *audioStream in self.preferences.audioStreams)
-        [self addNewAudioStreamControllerForStream:audioStream];
+    [self loadViewsForAudioStreams:self.preferences.audioStreams
+                   andVideoStreams:self.preferences.videoStreams];
+}
+
+-(void)setAudioStreams:(NSArray *)audioStreams andVideoStreams:(NSArray*)videoStreams
+{
+    [self removeAllEntries];
     
-    for (NSDictionary *videoStream in self.preferences.videoStreams)
-        [self addNewVideoStreamControllerForStream:videoStream];
+    _audioStreams = [audioStreams deepMutableCopy];
+    _videoStreams = [videoStreams deepMutableCopy]
+    ;
+    [self loadViewsForAudioStreams:_audioStreams andVideoStreams:_videoStreams];
 }
 
 -(void)addVideoStream:(NSDictionary *)defaultConfiguration
@@ -63,7 +71,7 @@
     {
         [streamConfiguration setValue:[NSString stringWithFormat:@"%@-%lu",
                                        [streamConfiguration valueForKeyPath:kNameKey],
-                                       (unsigned long)[self getNumberOfStreamsForType:[NCVideoStreamViewController class]]]
+                                       (unsigned long)[self getNumberOfStreamsForType:self.videoStreamViewControllerClass]]
                                forKey:kNameKey];
     }
     
@@ -79,7 +87,7 @@
     {
         [streamConfiguration setValue:[NSString stringWithFormat:@"%@-%lu",
                                        [streamConfiguration valueForKeyPath:kNameKey],
-                                       (unsigned long)[self getNumberOfStreamsForType:[NCAudioStreamViewController class]]]
+                                       (unsigned long)[self getNumberOfStreamsForType:self.audioStreamViewControllerClass]]
                                forKey:kNameKey];
     }
     
@@ -117,20 +125,20 @@
 {
     NSLog(@"saving change %@ for %@", keyPath, object);
     
-    if ([object isKindOfClass:[NCVideoStreamViewController class]])
+    if ([object isKindOfClass:self.videoStreamViewControllerClass])
         self.preferences.videoStreams = self.videoStreams;
     
-    if ([object isKindOfClass:[NCAudioStreamViewController class]])
+    if ([object isKindOfClass:self.audioStreamViewControllerClass])
         self.preferences.audioStreams = self.audioStreams;
 }
 
 // NCStreamViewControllerDelegate
 -(NSArray*)streamViewControllerQueriedForStreamArray:(NCStreamViewController *)streamVc
 {
-    if ([streamVc isKindOfClass:[NCVideoStreamViewController class]])
+    if ([streamVc isKindOfClass:self.videoStreamViewControllerClass])
         return self.videoStreams;
     
-    if ([streamVc isKindOfClass:[NCAudioStreamViewController class]])
+    if ([streamVc isKindOfClass:self.audioStreamViewControllerClass])
         return self.audioStreams;
     
     return nil;
@@ -167,7 +175,7 @@
     {
         [self.streamsControllers removeObject:controllerForDeletion];
         
-        if ([controllerForDeletion isKindOfClass:[NCVideoStreamViewController class]])
+        if ([controllerForDeletion isKindOfClass:self.videoStreamViewControllerClass])
             [self removeVideoStreamWithName:controllerForDeletion.streamName];
         else
             [self removeAudioStreamWithName:controllerForDeletion.streamName];
@@ -176,15 +184,24 @@
 }
 
 // private
+-(void)loadViewsForAudioStreams:(NSArray*)audioStreams andVideoStreams:(NSArray*)videoStreams
+{
+    for (NSDictionary *audioStream in audioStreams)
+        [self addNewAudioStreamControllerForStream:audioStream];
+    
+    for (NSDictionary *videoStream in videoStreams)
+        [self addNewVideoStreamControllerForStream:videoStream];
+}
+
 -(void)addNewVideoStreamControllerForStream:(NSDictionary*)streamConfiguration
 {
-    [self addNewStreamControllerWithClass:[NCVideoStreamViewController class]
+    [self addNewStreamControllerWithClass:self.videoStreamViewControllerClass
                                 forStream:streamConfiguration];
 }
 
 -(void)addNewAudioStreamControllerForStream:(NSDictionary*)streamConfiguration
 {
-    [self addNewStreamControllerWithClass:[NCAudioStreamViewController class]
+    [self addNewStreamControllerWithClass:self.audioStreamViewControllerClass
                                 forStream:streamConfiguration];
 }
 

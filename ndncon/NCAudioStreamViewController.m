@@ -69,11 +69,6 @@
         self.audioLevelTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f target:self selector:@selector(updateAudioLevels:) userInfo:nil repeats:YES];
     }
     
-    { // adding thread controllers
-        for (NSDictionary *threadConfiguration in [self.configuration objectForKey:kThreadsArrayKey])
-            [self addThreadControllerForThread:threadConfiguration];
-    }
-    
     [self startObservingSelf];
 }
 
@@ -81,6 +76,8 @@
 {
     return @{
              kNameKey:@"mic",
+             kSegmentSizeKey: @(500),
+             kFreshnessPeriodKey: @(1000),
              kInputDeviceKey:@(0),  // any first device in the list
              kSynchornizedToKey:@(-1),  // index -1 means no synchornization
              kThreadsArrayKey:@[

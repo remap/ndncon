@@ -18,4 +18,7 @@
  * retrieve elements from the end of the array
  */
 -(id)objectAtSignedIndexOrNil:(NSInteger)index;
+
+-(NSArray *)arrayByRemovingObject:(id)object;
+
 @end

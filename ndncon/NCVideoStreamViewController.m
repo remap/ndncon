@@ -93,11 +93,6 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
         [self.session startRunning];
     }
     
-    { // adding thread controllers
-        for (NSDictionary *threadConfigruation in [self.configuration objectForKey:kThreadsArrayKey])
-            [self addThreadControllerForThread:threadConfigruation];
-    }
-    
     [self startObservingSelf];
 }
 
@@ -105,6 +100,8 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
 {
     return @{
              kNameKey:@"camera",
+             kSegmentSizeKey: @(1000),
+             kFreshnessPeriodKey: @(1000),
              kInputDeviceKey:@(0),  // any first device in the list
              kDeviceConfigurationKey:@(-1), // index -1 means last element in array
              kSynchornizedToKey:@(-1),  // index -1 means no synchornization

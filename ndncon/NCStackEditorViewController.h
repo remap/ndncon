@@ -17,5 +17,6 @@
 -(void)initialize;
 -(NCStackEditorEntryViewController*)addViewEntry:(NSView*)view;
 -(NCStackEditorEntryViewController*)addViewEntry:(NSView*)view withStyle:(NCStackEditorEntryStyle)style;
+-(void)removeAllEntries;
 
 @end

@@ -45,6 +45,23 @@ NSString* const kPreviewControllerKey = @"previewController";
     return streamPreviewController;
 }
 
+-(void)closeAllStreams
+{
+    [super removeAllEntries];
+    
+    NSArray *viewControllers = [[self.userPreviewControllers allValues] valueForKeyPath:kPreviewControllerKey];
+    
+    [self.userPreviewControllers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        NCStreamPreviewController *vc = [obj valueForKeyPath:kPreviewControllerKey];
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(streamBrowserController:willCloseStream:forUser:forPrefix:)])
+            [self.delegate streamBrowserController:self
+                                   willCloseStream:vc
+                                           forUser:[obj valueForKeyPath:kUserNameKey]
+                                         forPrefix:key];
+    }];
+}
+
 // NCStackEditorEntryDelegate
 -(void)stackEditorEntryViewControllerDidClosed:(NCStackEditorEntryViewController *)vc
 {

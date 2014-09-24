@@ -68,6 +68,11 @@ NSString* const kThreadsArrayKey = @"Threads";
     self.view.layer.backgroundColor = [NSColor clearColor].CGColor;
     [self.scrollView addStackView:self.stackEditor.stackView
                   withOrientation:NSUserInterfaceLayoutOrientationHorizontal];
+    
+    { // adding thread controllers
+        for (NSDictionary *threadConfiguration in [self.configuration objectForKey:kThreadsArrayKey])
+            [self addThreadControllerForThread:threadConfiguration];
+    }
 }
 
 -(NSMutableDictionary *)configuration

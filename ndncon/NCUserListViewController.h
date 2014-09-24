@@ -16,15 +16,31 @@ extern NSString* const kNCHubPrefixKey;
 <NSTableViewDelegate, NSTableViewDataSource>
 
 +(NCSessionInfoContainer*)containerWithSessionInfo:(void*)sessionInfo;
+
 -(id)initWithSessionInfo:(void*)sessionInfo;
 -(void*)sessionInfo;
 
+-(NSArray*)audioStreamsConfigurations;
+-(NSArray*)videoStreamsConfigurations;
+
 @end
 
+@protocol NCUserListViewControllerDelegate;
+
 @interface NCUserListViewController : NSObject
+
+@property (nonatomic, weak) IBOutlet id<NCUserListViewControllerDelegate> delegate;
 
 +(NCSessionStatus)sessionStatusForUser:(NSString*)user
                 withPrefix:(NSString*)prefix;
 
+
+@end
+
+@protocol NCUserListViewControllerDelegate <NSObject>
+
+@optional
+-(void)userListViewController:(NCUserListViewController*)userListViewController
+                userWasChosen:(NSDictionary*)user;
 
 @end

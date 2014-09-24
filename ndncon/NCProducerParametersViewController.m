@@ -34,7 +34,7 @@
     if (self)
     {
         self.preferences = preferences;
-        self.streamEditorController =  [[NCStreamEditorViewController alloc] initWithPreferncesController:self.preferences];
+        self.streamEditorController =  [[NCStreamEditorViewController alloc] initWithPreferencesController:self.preferences];
     }
     
     return self;

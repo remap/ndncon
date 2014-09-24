@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "User.h"
 #import "NCNdnRtcLibraryController.h"
+#import "NSDictionary+NCNdnRtcAdditions.h"
 
 NSString* const kNCSessionInfoKey = @"sessionInfo";
 NSString* const kNCHubPrefixKey = @"hubPrefix";
@@ -59,6 +60,39 @@ using namespace ndnrtc::new_api;
     return _sessionInfo;
 }
 
+-(NSArray *)audioStreamsConfigurations
+{
+    NSMutableArray *streams = [NSMutableArray array];
+    
+    if (_sessionInfo)
+        for (std::vector<MediaStreamParams*>::iterator it = _sessionInfo->audioStreams_.begin();
+             it != _sessionInfo->audioStreams_.end(); it++)
+            [streams addObject:[NSDictionary configurationWithAudioStreamParams:*(*it)]];
+    
+    return streams;
+}
+
+-(NSArray *)videoStreamsConfigurations
+{
+    NSMutableArray *streams = [NSMutableArray array];
+    
+    if (_sessionInfo)
+        for (std::vector<MediaStreamParams*>::iterator it = _sessionInfo->videoStreams_.begin();
+             it != _sessionInfo->videoStreams_.end(); it++)
+            [streams addObject:[NSDictionary configurationWithVideoStreamParams:*(*it)]];
+    
+    return streams;
+}
+
+-(BOOL)isEqual:(id)object
+{
+    if (!object || ![object isKindOfClass:[NCSessionInfoContainer class]])
+        return NO;
+    
+    return [[self audioStreamsConfigurations] isEqual:[object audioStreamsConfigurations]] &&
+        [[self videoStreamsConfigurations] isEqual:[object videoStreamsConfigurations]];
+}
+
 @end
 
 //******************************************************************************
@@ -68,8 +102,9 @@ public:
     RemoteSessionObserver(std::string& username, std::string& prefix):
     username_(username), prefix_(prefix) {};
     
-    std::string username_, prefix_;
+    std::string username_, prefix_, sessionPrefix_;
     NCSessionStatus lastStatus_ = SessionStatusOffline;
+    SessionInfo lastSessionInfo_;
     
 private:
     bool freshStart_ = true;
@@ -78,14 +113,15 @@ private:
     NSDictionary* sessionUserInfo()
     {
         return @{kNCSessionUsernameKey: [NSString stringWithCString:username_.c_str() encoding:NSASCIIStringEncoding],
-                 kNCHubPrefixKey: [NSString stringWithCString:prefix_.c_str() encoding:NSASCIIStringEncoding]};
+                 kNCHubPrefixKey: [NSString stringWithCString:prefix_.c_str() encoding:NSASCIIStringEncoding],
+                 kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix_.c_str() encoding:NSASCIIStringEncoding]};
     }
     
     void
     onSessionInfoUpdate(const new_api::SessionInfo& sessionInfo)
     {
         freshStart_ = false;
-        
+        lastSessionInfo_ = sessionInfo;
         lastStatus_ = (sessionInfo.audioStreams_.size() == 0 &&
                        sessionInfo.videoStreams_.size() == 0)?SessionStatusOnlineNotPublishing:
         SessionStatusOnlinePublishing;
@@ -95,9 +131,11 @@ private:
         [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo: (void*)&sessionInfo]
                      forKey:kNCSessionInfoKey];
         
-        [[[NSObject alloc] init]
-         notifyNowWithNotificationName:NCSessionStatusUpdateNotification
-         andUserInfo:userInfo];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [[[NSObject alloc] init]
+             notifyNowWithNotificationName:NCSessionStatusUpdateNotification
+             andUserInfo:userInfo];
+        });
     }
     
     void
@@ -207,6 +245,16 @@ private:
 }
 
 // NSTableViewDelegate
+-(void)tableViewSelectionDidChange:(NSNotification *)notification
+{
+    if (self.tableView.selectedRow < [self.userController.arrangedObjects count])
+    {
+        id user = [self.userController.arrangedObjects objectAtIndex:self.tableView.selectedRow];
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewController:userWasChosen:)])
+            [self.delegate userListViewController:self userWasChosen:[self userInfoDictionaryForUser:[user name] withPrefix:[user prefix]]];
+    }
+}
 
 // private
 -(void)sessionDidUpdateStatus:(NSNotification*)notification
@@ -263,7 +311,8 @@ private:
     
     [[NCPreferencesController sharedInstance] getNdnRtcGeneralParameters:&generalParams];
     RemoteSessionObserver *observer = new RemoteSessionObserver(username, prefix);
-    lib->setRemoteSessionObserver(username, prefix, generalParams, observer);
+    std::string sessionPrefix = lib->setRemoteSessionObserver(username, prefix, generalParams, observer);
+    observer->sessionPrefix_ = sessionPrefix;
     
     dispatch_sync(_observerQueue, ^{
         _sessionObservers.push_back(observer);
@@ -275,7 +324,7 @@ private:
 -(void)stopObserver:(RemoteSessionObserver*)observer
 {
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    lib->removeRemoteSessionObserver(observer->username_, observer->prefix_);
+    lib->removeRemoteSessionObserver(observer->sessionPrefix_);
     
     std::vector<RemoteSessionObserver*>::iterator it = _sessionObservers.begin();
     while (*it != observer && it != _sessionObservers.end()) it++;
@@ -329,6 +378,25 @@ private:
         NSLog(@"two or more observers for %@:%@", prefix, userName);
     
     return (set.count == 1);
+}
+
+-(NSDictionary*)userInfoDictionaryForUser:(NSString*)userName withPrefix:(NSString*)prefix
+{
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    
+    [userInfo setObject:userName forKey:kNCSessionUsernameKey];
+    [userInfo setObject:prefix forKey:kNCHubPrefixKey];
+    
+    RemoteSessionObserver *observer = [self observerForUser:userName andPrefix:prefix];
+    
+    if (observer)
+    {
+        [userInfo setObject:@(observer->lastStatus_) forKey:kNCSessionStatusKey];
+        [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo:(void*)&observer->lastSessionInfo_] forKey:kNCSessionInfoKey];
+        [userInfo setObject:[NSString stringWithCString:observer->sessionPrefix_.c_str() encoding:NSASCIIStringEncoding] forKey:kNCSessionPrefixKey];
+    }
+    
+    return userInfo;
 }
 
 @end

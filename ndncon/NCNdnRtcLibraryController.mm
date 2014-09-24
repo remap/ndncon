@@ -8,6 +8,7 @@
 
 #import "NCNdnRtcLibraryController.h"
 #import "NCPreferencesController.h"
+#import "NSObject+NCAdditions.h"
 
 #include <ndnrtc/ndnrtc-library.h>
 
@@ -34,6 +35,7 @@ static NCNdnRtcLibraryController *SharedInstance = NULL;
     NSString *_sessionPrefix;
 }
 
+@property (nonatomic) NSString *sessionPrefix;
 @property (nonatomic) NCSessionStatus sessionStatus;
 
 +(ndnrtc::SessionStatus)ndnRtcStatus:(NCSessionStatus)ncStatus;
@@ -52,12 +54,14 @@ public:
     onSessionStatusUpdate(const char* username, const char* sessionPrefix,
                      SessionStatus status)
     {
-        [[NSNotificationCenter defaultCenter]
-         postNotificationName:NCSessionStatusUpdateNotification
-         object:nil
-         userInfo:@{kNCSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
-                    kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
-                    kNCSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status])}];
+        if (![NCNdnRtcLibraryController sharedInstance].sessionPrefix)
+            [NCNdnRtcLibraryController sharedInstance].sessionPrefix = [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[[NSObject alloc] init] notifyNowWithNotificationName:NCSessionStatusUpdateNotification andUserInfo:@{kNCSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
+                                                                                                                   kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
+                                                                                                                   kNCSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status])}];
+        });
         
         [NCNdnRtcLibraryController sharedInstance].sessionStatus = [NCNdnRtcLibraryController ncStatus:status];
     }

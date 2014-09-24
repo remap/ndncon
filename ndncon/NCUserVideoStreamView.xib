@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NCVideoUserStreamViewController">
+            <connections>
+                <outlet property="scrollView" destination="eHU-OK-ALh" id="me8-LU-sBK"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="590" height="240"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ag6-Gk-76S">
+                    <rect key="frame" x="-2" y="198" width="83" height="14"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Stream prefix: " id="VWO-wj-oFf">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5yx-sZ-rQq">
+                    <rect key="frame" x="-2" y="180" width="94" height="14"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Synchronized to:" id="lTJ-9Q-19I">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z3x-4W-Ehc">
+                    <rect key="frame" x="167" y="198" width="80" height="14"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="/some/prefix" id="Ib2-Qi-s2Q">
+                        <font key="font" size="11" name="LucidaGrande-Bold"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="displayPatternValue1" keyPath="self.preferences.prefix" id="ElK-iF-ndJ">
+                            <dictionary key="options">
+                                <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="displayPatternValue2" keyPath="self.preferences.userName" previousBinding="ElK-iF-ndJ" id="cu7-JL-z8Y">
+                            <dictionary key="options">
+                                <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="displayPatternValue3" keyPath="self.streamName" previousBinding="cu7-JL-z8Y" id="ZKK-bf-aV4">
+                            <dictionary key="options">
+                                <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="21d-ye-IM7">
+                    <rect key="frame" x="-2" y="216" width="78" height="14"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Stream name:" id="LI7-53-pYm">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WP2-aj-UnA">
+                    <rect key="frame" x="167" y="216" width="43" height="14"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="video0" usesSingleLineMode="YES" id="V0k-Hs-2TN">
+                        <font key="font" size="11" name="LucidaGrande-Bold"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.streamName" id="srT-1y-bMI"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="812-hO-CB3">
+                    <rect key="frame" x="-2" y="162" width="150" height="14"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Data freshness period (ms):" id="oZ8-pN-rm0">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fIc-RA-4It">
+                    <rect key="frame" x="167" y="162" width="54" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="Mdf-NV-GDq"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="1000" usesSingleLineMode="YES" id="E9u-ZN-qPe">
+                        <font key="font" size="11" name="LucidaGrande-Bold"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.configuration.Freshness period" id="gqi-qh-p14"/>
+                    </connections>
+                </textField>
+                <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHU-OK-ALh" customClass="NCEmbeddedScrollView">
+                    <rect key="frame" x="0.0" y="0.0" width="590" height="118"/>
+                    <clipView key="contentView" id="qpK-3G-6mS" customClass="NCEditorClipView">
+                        <rect key="frame" x="1" y="1" width="588" height="169"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="edc-nH-7dh">
+                                <rect key="frame" x="0.0" y="0.0" width="588" height="169"/>
+                            </view>
+                        </subviews>
+                    </clipView>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="F7W-vy-at5"/>
+                    </constraints>
+                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="w2f-JM-0zX">
+                        <rect key="frame" x="1" y="154" width="588" height="16"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="4lz-8X-coQ">
+                        <rect key="frame" x="-100" y="-100" width="16" height="169"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="ignoreVerticalScroll" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </scrollView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="USL-TD-cDj">
+                    <rect key="frame" x="-2" y="122" width="50" height="14"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Threads:" id="2He-Sm-bWc">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZgR-Xt-nqS">
+                    <rect key="frame" x="-2" y="144" width="117" height="14"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Segment size (bytes):" id="J0f-K9-itL">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DMY-ze-t8n">
+                    <rect key="frame" x="167" y="180" width="79" height="14"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="audio stream" id="am3-x6-bhe">
+                        <font key="font" size="11" name="LucidaGrande-Bold"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="displayPatternValue1" keyPath="self.preferences.prefix" id="aEQ-6R-Jpo">
+                            <dictionary key="options">
+                                <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="displayPatternValue2" keyPath="self.preferences.userName" previousBinding="aEQ-6R-Jpo" id="VXO-zc-862">
+                            <dictionary key="options">
+                                <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="displayPatternValue3" keyPath="self.streamName" previousBinding="VXO-zc-862" id="vxS-di-YhX">
+                            <dictionary key="options">
+                                <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZIn-Ji-rkb">
+                    <rect key="frame" x="167" y="144" width="54" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="WgM-wW-miI"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="1000" usesSingleLineMode="YES" id="NvD-E1-ALO">
+                        <font key="font" size="11" name="LucidaGrande-Bold"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.configuration.Segment size" id="Cu8-lV-mjM"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="5yx-sZ-rQq" firstAttribute="baseline" secondItem="DMY-ze-t8n" secondAttribute="baseline" id="2jb-ab-feS"/>
+                <constraint firstItem="5yx-sZ-rQq" firstAttribute="leading" secondItem="Ag6-Gk-76S" secondAttribute="leading" id="39P-sL-gHo"/>
+                <constraint firstItem="fIc-RA-4It" firstAttribute="top" secondItem="DMY-ze-t8n" secondAttribute="bottom" constant="4" id="4VV-JX-FYl"/>
+                <constraint firstItem="ZgR-Xt-nqS" firstAttribute="baseline" secondItem="ZIn-Ji-rkb" secondAttribute="baseline" id="62E-uu-2Rz"/>
+                <constraint firstItem="fIc-RA-4It" firstAttribute="leading" secondItem="ZIn-Ji-rkb" secondAttribute="leading" id="7aM-98-Dbd"/>
+                <constraint firstItem="WP2-aj-UnA" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="10" id="B21-6m-2yU"/>
+                <constraint firstItem="DMY-ze-t8n" firstAttribute="leading" secondItem="fIc-RA-4It" secondAttribute="leading" id="DNF-hq-hCh"/>
+                <constraint firstItem="812-hO-CB3" firstAttribute="baseline" secondItem="fIc-RA-4It" secondAttribute="baseline" id="E1u-rl-kqa"/>
+                <constraint firstItem="812-hO-CB3" firstAttribute="leading" secondItem="ZgR-Xt-nqS" secondAttribute="leading" id="Eho-L5-hdo"/>
+                <constraint firstItem="USL-TD-cDj" firstAttribute="top" secondItem="ZgR-Xt-nqS" secondAttribute="bottom" constant="8" id="HIh-z9-uxD"/>
+                <constraint firstItem="5yx-sZ-rQq" firstAttribute="leading" secondItem="812-hO-CB3" secondAttribute="leading" id="Hha-T0-zgv"/>
+                <constraint firstItem="ZIn-Ji-rkb" firstAttribute="top" secondItem="fIc-RA-4It" secondAttribute="bottom" constant="4" id="NiJ-oI-1FN"/>
+                <constraint firstAttribute="trailing" secondItem="eHU-OK-ALh" secondAttribute="trailing" id="RCS-jD-LdF"/>
+                <constraint firstItem="fIc-RA-4It" firstAttribute="leading" secondItem="ZIn-Ji-rkb" secondAttribute="leading" id="U0A-jq-Epz"/>
+                <constraint firstItem="Ag6-Gk-76S" firstAttribute="baseline" secondItem="z3x-4W-Ehc" secondAttribute="baseline" id="UMk-PF-yCA"/>
+                <constraint firstItem="z3x-4W-Ehc" firstAttribute="leading" secondItem="WP2-aj-UnA" secondAttribute="leading" id="UQh-8Y-RzZ"/>
+                <constraint firstItem="DMY-ze-t8n" firstAttribute="top" secondItem="z3x-4W-Ehc" secondAttribute="bottom" constant="4" id="Vq3-sF-fxa"/>
+                <constraint firstItem="USL-TD-cDj" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="W3o-7p-Suu"/>
+                <constraint firstItem="812-hO-CB3" firstAttribute="baseline" secondItem="fIc-RA-4It" secondAttribute="baseline" id="Yt1-OQ-Gms"/>
+                <constraint firstItem="eHU-OK-ALh" firstAttribute="top" secondItem="USL-TD-cDj" secondAttribute="bottom" constant="4" id="aBx-wD-w65"/>
+                <constraint firstItem="21d-ye-IM7" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="bc1-rR-qUH"/>
+                <constraint firstItem="z3x-4W-Ehc" firstAttribute="top" secondItem="WP2-aj-UnA" secondAttribute="bottom" constant="4" id="f8r-fs-xPn"/>
+                <constraint firstItem="DMY-ze-t8n" firstAttribute="leading" secondItem="z3x-4W-Ehc" secondAttribute="leading" id="fC9-GH-OTc"/>
+                <constraint firstItem="21d-ye-IM7" firstAttribute="baseline" secondItem="WP2-aj-UnA" secondAttribute="baseline" id="fKY-B6-RyN"/>
+                <constraint firstItem="WP2-aj-UnA" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="10" id="hco-Pu-kg8"/>
+                <constraint firstItem="WP2-aj-UnA" firstAttribute="leading" secondItem="21d-ye-IM7" secondAttribute="trailing" constant="95" id="ih5-AL-zir"/>
+                <constraint firstItem="eHU-OK-ALh" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="jgz-Eg-dxf"/>
+                <constraint firstAttribute="bottom" secondItem="eHU-OK-ALh" secondAttribute="bottom" id="oEs-DL-MK1"/>
+                <constraint firstItem="Ag6-Gk-76S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="sGO-Z4-f5t"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="174"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="FRg-8t-xVD"/>
+    </objects>
+</document>

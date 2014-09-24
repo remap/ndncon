@@ -10,6 +10,8 @@
 
 extern NSString* const kAudioStreamsKey;
 extern NSString* const kVideoStreamsKey;
+extern NSString* const kFreshnessPeriodKey;
+extern NSString* const kSegmentSizeKey;
 
 @interface NCPreferencesController : PTNStorage
 

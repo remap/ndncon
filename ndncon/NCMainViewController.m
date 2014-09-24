@@ -7,16 +7,21 @@
 //
 
 #import "NCMainViewController.h"
-#import "NCConversationViewController.h"
 #import "NCPreferencesController.h"
 #import "NSObject+NCAdditions.h"
 #import "NCNdnRtcLibraryController.h"
+#import "NCConversationInfoView.h"
+#import "NCUserViewController.h"
 
 @interface NCMainViewController ()
 
 @property (nonatomic, strong) NSDictionary *conversationConfiguration;
+
 @property (nonatomic, strong) NCConversationViewController *converstaionViewController;
 @property (weak) IBOutlet NSPopUpButton *statusPopUpButton;
+@property (weak) IBOutlet NCConversationInfoView *conversationInfoView;
+@property (weak) IBOutlet NSTextField *conversationInfoStatusLabel;
+@property (nonatomic, strong) NCUserViewController *userViewController;
 
 @end
 
@@ -68,6 +73,7 @@
     self.view.layer.backgroundColor = [NSColor whiteColor].CGColor;
     self.view.layer.borderColor = [NSColor darkGrayColor].CGColor;
     self.view.layer.borderWidth = 1.f;
+    self.conversationInfoView.status = [NCMainViewController fromSessionSatus:[NCNdnRtcLibraryController sharedInstance].sessionStatus];
 }
 
 - (IBAction)changeStatus:(id)sender
@@ -81,9 +87,11 @@
         [[NCNdnRtcLibraryController sharedInstance] startSession];
 }
 
-- (IBAction)startPublishing:(id)sender {
+- (IBAction)startPublishing:(id)sender
+{
     self.conversationConfiguration = [NCPreferencesController sharedInstance].producerConfigurationCopy;
     self.converstaionViewController = [[NCConversationViewController alloc] init];
+    self.converstaionViewController.delegate = self;
     
     [self loadCurrentView:self.converstaionViewController.view];
     [self.converstaionViewController startPublishingWithConfiguration:self.conversationConfiguration];
@@ -91,6 +99,44 @@
 
 - (IBAction)startPublishingCustom:(id)sender {
     NSLog(@"customize...");
+}
+
+// NCConversationViewControllerDelegate
+-(void)converstaionInfoViewWasClicked:(NCConversationInfoView *)infoView
+{
+    if (self.converstaionViewController.currentConversationStatus == SessionStatusOffline ||
+        (self.converstaionViewController.participants.count == 0 &&
+         self.converstaionViewController.currentConversationStatus == SessionStatusOnlineNotPublishing))
+    {
+        [self loadCurrentView: self.initialView];
+    }
+    else
+    {
+        [self loadCurrentView:self.converstaionViewController.view];
+    }
+}
+
+// NCUserListViewControllerDelegate
+-(void)userListViewController:(NCUserListViewController *)userListViewController userWasChosen:(NSDictionary *)user
+{
+    NSString *userName = [user valueForKey:kNCSessionUsernameKey];
+    NSString *hubPrefix = [user valueForKey:kNCHubPrefixKey];
+    NCSessionInfoContainer *sessionInfo = [user valueForKey:kNCSessionInfoKey];
+    
+    NSLog(@"selected %@:%@", userName, hubPrefix);
+    
+    self.userViewController = [[NCUserViewController alloc] init];
+    self.userViewController.sessionInfo = sessionInfo;
+    self.userViewController.userInfo = user;
+    
+    [self loadCurrentView:self.userViewController.view];
+}
+
+// NCConversationViewControllerDelegate
+-(void)conversationViewControllerDidEndConversation:(NCConversationViewController *)converstaionVc
+{
+    self.converstaionViewController = nil;
+    [self loadCurrentView:self.initialView];
 }
 
 // private
@@ -111,7 +157,6 @@
                                                                         views:NSDictionaryOfVariableBindings(currentView)]];
 }
 
-// private
 -(void)onSessionStatusUpdate:(NSNotification*)notification
 {
     NSString *sessionPrefix = [notification.userInfo objectForKey:kNCSessionPrefixKey];
@@ -124,6 +169,9 @@
               [[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]);
         
         [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+        
+        self.conversationInfoView.status = [NCMainViewController fromSessionSatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+        [self.conversationInfoView setNeedsDisplay:YES];
     }
 }
 
@@ -173,6 +221,49 @@
 {
     if (self.statusPopUpButton.itemArray.count == 3)
         [self.statusPopUpButton removeItemAtIndex:2];
+}
+
++(NCConversationInfoStatus)fromSessionSatus:(NCSessionStatus)status
+{
+    switch (status) {
+        case SessionStatusOnlineNotPublishing:
+            return NCConversationInfoStatusOnlineNotPublishing;
+        case SessionStatusOnlinePublishing:
+            return NCConversationInfoStatusOnline;
+        default:
+            return NCConversationInfoStatusOffline;
+    }
+}
+
+@end
+
+@interface NCParticipantsValueTransformer : NSValueTransformer
+@end
+
+@implementation NCParticipantsValueTransformer
+
++(Class)transformedValueClass
+{
+    return [NSString class];
+}
+
+-(id)transformedValue:(id)value
+{
+    if (!value || ![value isKindOfClass:[NSArray class]] || [value count] == 0)
+        return @"no one";
+    
+    __block NSString *outputString = @"";
+    NSArray *participants = [value valueForKeyPath:kNCSessionUsernameKey];
+    
+    if ([participants containsObject:[NCPreferencesController sharedInstance].userName])
+        outputString = (participants.count == 1)?@"only you":@"you";
+    
+    [participants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (![obj isEqualToString:[NCPreferencesController sharedInstance].userName])
+            outputString = [NSString stringWithFormat:@"%@, %@", outputString, obj];
+    }];
+    
+    return outputString;
 }
 
 @end

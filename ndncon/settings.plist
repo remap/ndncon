@@ -68,6 +68,10 @@
 			<dict>
 				<key>Name</key>
 				<string>mic</string>
+				<key>Segment size</key>
+				<integer>500</integer>
+				<key>Freshness period</key>
+				<integer>1000</integer>
 				<key>Input device</key>
 				<integer>0</integer>
 				<key>Device configuration</key>
@@ -90,10 +94,14 @@
 			<dict>
 				<key>Name</key>
 				<string>main_camera</string>
+				<key>Segment size</key>
+				<integer>1000</integer>
+				<key>Freshness period</key>
+				<integer>1000</integer>
 				<key>Input device</key>
 				<integer>0</integer>
-        <key>Device configuration</key>
-        <integer>-1</integer>
+				<key>Device configuration</key>
+				<integer>-1</integer>
 				<key>Synchronized to</key>
 				<string>mic</string>
 				<key>Threads</key>
@@ -157,10 +165,14 @@
 			<dict>
 				<key>Name</key>
 				<string>desktop</string>
+				<key>Segment size</key>
+				<integer>1000</integer>
+				<key>Freshness period</key>
+				<integer>1000</integer>
 				<key>Input device</key>
 				<integer>-1</integer>
-        <key>Device configuration</key>
-        <integer>-1</integer>
+				<key>Device configuration</key>
+				<integer>-1</integer>
 				<key>Synchronized to</key>
 				<string>-</string>
 				<key>Threads</key>

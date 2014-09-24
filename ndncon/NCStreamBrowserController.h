@@ -24,6 +24,8 @@ extern NSString* const kStreamPrefixKey;
                                   andStreamPreviewClass:(Class)streamPreviewClass
                                         forStreamPrefix:(NSString*)streamPrefix;
 
+-(void)closeAllStreams;
+
 @end
 
 @protocol NCStreamBrowserControllerDelegate <NSObject>
@@ -31,6 +33,11 @@ extern NSString* const kStreamPrefixKey;
 @optional
 -(void)streamBrowserController:(NCStreamBrowserController*)browserController
                streamWasClosed:(NCStreamPreviewController*)previewController
+                       forUser:(NSString*)userName
+                     forPrefix:(NSString*)streamPrefix;
+
+-(void)streamBrowserController:(NCStreamBrowserController*)browserController
+               willCloseStream:(NCStreamPreviewController*)previewController
                        forUser:(NSString*)userName
                      forPrefix:(NSString*)streamPrefix;
 

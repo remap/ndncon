@@ -1,0 +1,18 @@
+//
+//  NCUserViewController.h
+//  NdnCon
+//
+//  Created by Peter Gusev on 9/23/14.
+//  Copyright (c) 2014 REMAP. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+#import "NCUserListViewController.h"
+
+@interface NCUserViewController : NSViewController
+
+@property (nonatomic) NCSessionInfoContainer *sessionInfo;
+@property (nonatomic) NSDictionary *userInfo;
+@property (nonatomic) NSImage *statusImage;
+
+@end

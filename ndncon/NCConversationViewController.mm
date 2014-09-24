@@ -17,26 +17,20 @@
 #import "NCVideoStreamViewController.h"
 #import "NCAudioPreviewController.h"
 #import "NCVideoPreviewController.h"
-#import "NCNdnRtcLibraryController.h"
 #import "NCVideoThreadViewController.h"
 #import "NCAudioThreadViewController.h"
 #import "NCCameraCapturer.h"
 #import "NSArray+NCAdditions.h"
+#import "NSDictionary+NCAdditions.h"
 #import "AVCaptureDeviceFormat+NdnConAdditions.h"
+#import "NSDictionary+NCNdnRtcAdditions.h"
+#import "NSObject+NCAdditions.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
 
-const NSString *kCameraCapturerKey = @"cameraCapturer";
-
-@interface NSDictionary (NdnRtcParamsAdditions)
-
--(MediaStreamParams)asAudioStreamParams;
--(MediaStreamParams)asVideoStreamParams;
--(VideoThreadParams)asVideoThreadParams;
--(AudioThreadParams)asAudioThreadParams;
-
-@end
+NSString* const kCameraCapturerKey = @"cameraCapturer";
+NSString* const kNCStreamsArrayKey = @"streamsArray";
 
 @interface NCConversationViewController ()
 
@@ -65,6 +59,7 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
 
 -(void)initialize
 {
+    self.participants = [[NSMutableArray alloc] init];
     self.localStreams = [NSMutableDictionary dictionary];
     
     self.localStreamViewer = [[NCStreamBrowserController alloc] init];
@@ -72,10 +67,16 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
     
     self.remoteStreamViewer = [[NCStreamBrowserController alloc] init];
     self.remoteStreamViewer.delegate = self;
+    
+    [self subscribeForNotificationsAndSelectors:
+     NCSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
+     nil];
 }
 
 -(void)dealloc
 {
+    [self unsubscribeFromNotifications];
+    
     self.localStreamViewer = nil;
     self.remoteStreamViewer = nil;
 }
@@ -90,7 +91,13 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
 
 - (IBAction)endConversation:(id)sender
 {
-    NSLog(@"end converstaion");
+    [self.localStreamViewer closeAllStreams];
+
+    if (self.remoteStreamViewer)
+        [self.remoteStreamViewer closeAllStreams];
+    
+    self.participants = @[];
+    [self checkConversationDidEnd];    
 }
 
 -(void)startPublishingWithConfiguration:(NSDictionary *)streamsConfiguration
@@ -102,6 +109,11 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
         [self startVideoStreamWithConfiguration: videoConfiguration];
 }
 
+-(void)setParticipants:(NSArray *)participants
+{
+    _participants = participants;
+    _currentConversationStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
+}
 
 // NCStackEditorEntryDelegate
 -(void)stackEditorEntryViewControllerDidClosed:(NCStackEditorEntryViewController *)vc
@@ -110,6 +122,14 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
 }
 
 // private
+-(void)onSessionStatusUpdate:(NSNotification*)notification
+{
+    if ([[notification.userInfo valueForKey:kNCSessionPrefixKey] isEqualToString:[NCNdnRtcLibraryController sharedInstance].sessionPrefix])
+    {
+        _currentConversationStatus = (NCSessionStatus)[[notification.userInfo valueForKey:kNCSessionStatusKey] integerValue];
+    }
+}
+
 -(void)startAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
 {
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
@@ -121,12 +141,16 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
     
     if (streamPrefix != "")
     {
+        NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
         NCAudioPreviewController *audioPreviewVc = (NCAudioPreviewController*)[self.localStreamViewer addStreamWithConfiguration:streamConfiguration
                                                                                                            andStreamPreviewClass:[NCAudioPreviewController class]
-                                                                               forStreamPrefix:[NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding]];
+                                                                               forStreamPrefix:streamPrefixStr];
         audioPreviewVc.userData = @{
-                                    kStreamPrefixKey: [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding]
+                                    kStreamPrefixKey: streamPrefixStr
                                     };
+        [self addStreamToConversation:streamPrefixStr
+                        sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
+                             userName:[NCPreferencesController sharedInstance].userName];
     }
 }
 
@@ -148,10 +172,11 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
         
         if (streamPrefix != "")
         {
+            NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
             NCVideoPreviewController *videoPreviewVc = (NCVideoPreviewController*)[self.localStreamViewer
                                                                                    addStreamWithConfiguration:streamConfiguration
                                                                                    andStreamPreviewClass:[NCVideoPreviewController class]
-                                                                                   forStreamPrefix:[NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding]];
+                                                                                   forStreamPrefix:streamPrefixStr];
             
             AVCaptureDeviceFormat *format = [device.formats
                                              objectAtSignedIndexOrNil:[[streamConfiguration valueForKey:kDeviceConfigurationKey] intValue]];
@@ -172,8 +197,11 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
             
             videoPreviewVc.userData = @{
                                         kCameraCapturerKey: cameraCapturer,
-                                        kStreamPrefixKey: [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding]
+                                        kStreamPrefixKey: streamPrefixStr
                                         };
+            [self addStreamToConversation:streamPrefixStr
+                            sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
+                                 userName:[NCPreferencesController sharedInstance].userName];
         }
     }
     else
@@ -195,6 +223,19 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
             [cameraCapturer stopCapturing];
         [self removeLocalStreamWithPrefix:(NSString*)[previewController.userData objectForKey:kStreamPrefixKey]];
     }
+    
+    [self checkConversationDidEnd];
+}
+
+-(void)streamBrowserController:(NCStreamBrowserController *)browserController willCloseStream:(NCStreamPreviewController *)previewController forUser:(NSString *)userName forPrefix:(NSString *)streamPrefix
+{
+    if (browserController == self.localStreamViewer)
+    {
+        NCCameraCapturer *cameraCapturer = (NCCameraCapturer*)[previewController.userData objectForKey:kCameraCapturerKey];
+        if (cameraCapturer)
+            [cameraCapturer stopCapturing];
+        [self removeLocalStreamWithPrefix:(NSString*)[previewController.userData objectForKey:kStreamPrefixKey]];
+    }
 }
 
 // private
@@ -203,115 +244,78 @@ const NSString *kCameraCapturerKey = @"cameraCapturer";
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->removeLocalStream([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding],
                            [streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    
+    [self removeStreamFromConversation:streamPrefix];
 }
 
-@end
-
-
-@implementation NSDictionary (NdnRtcParamsAdditions)
-
--(ndnrtc::new_api::MediaStreamParams)asVideoStreamParams
+-(void)addUserToConversation:(NSMutableDictionary*)participantInfo
 {
-    MediaStreamParams params;
-    params.type_ = MediaStreamParams::MediaStreamTypeVideo;
-
-#warning maybe put these parameters inside stream configuration dictionary
-    params.producerParams_.segmentSize_ = [NCPreferencesController sharedInstance].videoSegmentSize.intValue;
-    params.producerParams_.freshnessMs_ = [NCPreferencesController sharedInstance].videoFreshness.intValue;
+    NSMutableArray *newParticipants = [NSMutableArray arrayWithArray:self.participants];
+    [newParticipants addObject:participantInfo];
     
-    if ([self valueForKey:kNameKey])
-        params.streamName_ = std::string([(NSString*)[self valueForKey:kNameKey] cStringUsingEncoding:NSASCIIStringEncoding]);
-    
-    if ([self valueForKey:kInputDeviceKey])
-    {
-        params.captureDevice_ = new CaptureDeviceParams();
-        params.captureDevice_->deviceId_ = [[self valueForKey:kInputDeviceKey] intValue];
-    }
-    
-    if ([self valueForKey:kThreadsArrayKey])
-    {
-        NSArray *threads = (NSArray *)[self valueForKey:kThreadsArrayKey];
-
-        for (NSDictionary *threadConfiguration in threads)
-        {
-            VideoThreadParams *threadParams = new VideoThreadParams();
-            *threadParams = [threadConfiguration asVideoThreadParams];
-            params.mediaThreads_.push_back(threadParams);
-        }
-    }
-    
-    return params;
+    self.participants = [NSArray arrayWithArray:newParticipants];
 }
 
--(ndnrtc::new_api::MediaStreamParams)asAudioStreamParams
+-(void)removeUserFromConversation:(NSMutableDictionary*)participantInfo
 {
-    MediaStreamParams params;
-    params.type_ = MediaStreamParams::MediaStreamTypeAudio;
-    
-#warning maybe put these parameters inside stream configuration dictionary
-    params.producerParams_.segmentSize_ = [NCPreferencesController sharedInstance].audioSegmentSize.intValue;
-    params.producerParams_.freshnessMs_ = [NCPreferencesController sharedInstance].audioFreshness.intValue;
-    
-    if ([self valueForKey:kNameKey])
-        params.streamName_ = std::string([(NSString*)[self valueForKey:kNameKey] cStringUsingEncoding:NSASCIIStringEncoding]);
-    
-    if ([self valueForKey:kInputDeviceKey])
+    if ([[self.participants valueForKeyPath:kNCSessionPrefixKey]
+         containsObject:[participantInfo valueForKeyPath:kNCSessionPrefixKey]])
     {
-        params.captureDevice_ = new CaptureDeviceParams();
-        params.captureDevice_->deviceId_ = [[self valueForKey:kInputDeviceKey] intValue];
+        self.participants = [self.participants arrayByRemovingObject:participantInfo];
     }
-    
-    if ([self valueForKey:kThreadsArrayKey])
+}
+
+-(void)addStreamToConversation:(NSString*)streamPrefix
+                 sessionPrefix:(NSString*)sessionPrefix
+                      userName:(NSString*)userName
+{
+    if ([[self.participants valueForKeyPath:kNCSessionPrefixKey]
+         containsObject:sessionPrefix])
     {
-        NSArray *threads = (NSArray *)[self valueForKey:kThreadsArrayKey];
+        NSArray *participantArray = [self.participants filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"prefix==%@", sessionPrefix]];
+        NSAssert((participantArray.count == 1), @"should have 1 object");
         
-        for (NSDictionary *threadConfiguration in threads)
-        {
-            AudioThreadParams *threadParams = new AudioThreadParams();
-            *threadParams = [threadConfiguration asAudioThreadParams];
-            params.mediaThreads_.push_back(threadParams);
-        }
+        NSMutableDictionary *participantInfo = [participantArray firstObject];
+        [[participantInfo valueForKey:kNCStreamsArrayKey] addObject:streamPrefix];
     }
-    
-    return params;
+    else
+    {
+        [self addUserToConversation:[@{
+                                      kNCSessionPrefixKey:sessionPrefix,
+                                      kNCSessionUsernameKey:userName,
+                                      kNCStreamsArrayKey:[@[streamPrefix] deepMutableCopy]
+                                      } deepMutableCopy]];
+    }
 }
 
--(ndnrtc::new_api::VideoThreadParams)asVideoThreadParams
+-(void)removeStreamFromConversation:(NSString*)streamPrefix
 {
-    VideoThreadParams params;
+    __block NSMutableDictionary *participantForRemoval = nil;
     
-    if ([self valueForKey:kNameKey])
-        params.threadName_ = std::string([(NSString*)[self valueForKey:kNameKey] cStringUsingEncoding:NSASCIIStringEncoding]);
+    [self.participants enumerateObjectsUsingBlock:^(NSMutableDictionary *obj, NSUInteger idx, BOOL *stop) {
+        NSArray *streams = [obj valueForKey:kNCStreamsArrayKey];
+        if ([streams containsObject:streamPrefix])
+        {
+            NSArray *newStreams = [streams arrayByRemovingObject:streamPrefix];
+
+            if (newStreams.count == 0)
+                participantForRemoval = obj;
+
+            [obj setValue:newStreams forKey:kNCStreamsArrayKey];
+        }
+    }];
     
-    if ([self valueForKey:kFrameRateKey])
-        params.coderParams_.codecFrameRate_ = [[self valueForKey:kFrameRateKey] intValue];
-    
-    if ([self valueForKey:kGopKey])
-        params.coderParams_.gop_ = [[self valueForKey:kGopKey] intValue];
-    
-    if ([self valueForKey:kBitrateKey])
-        params.coderParams_.startBitrate_ = [[self valueForKey:kBitrateKey] intValue];
-    
-    if ([self valueForKey:kMaxBitrateKey])
-        params.coderParams_.maxBitrate_ = [[self valueForKey:kMaxBitrateKey] intValue];
-    
-    if ([self valueForKey:kEncodingHeightKey])
-        params.coderParams_.encodeHeight_ = [[self valueForKey:kEncodingHeightKey] intValue];
-    
-    if ([self valueForKey:kEncodingWidthKey])
-        params.coderParams_.encodeWidth_ = [[self valueForKey:kEncodingWidthKey] intValue];
-    
-    return params;
+    if (participantForRemoval)
+        [self removeUserFromConversation:participantForRemoval];
 }
 
--(ndnrtc::new_api::AudioThreadParams)asAudioThreadParams
+-(void)checkConversationDidEnd
 {
-    AudioThreadParams params;
-    
-    if ([self valueForKey:kNameKey])
-        params.threadName_ = std::string([(NSString*)[self valueForKey:kNameKey] cStringUsingEncoding:NSASCIIStringEncoding]);
-    
-    return params;
+    if (self.participants.count == 0)
+    {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(conversationViewControllerDidEndConversation:)])
+            [self.delegate conversationViewControllerDidEndConversation:self];
+    }
 }
 
 @end

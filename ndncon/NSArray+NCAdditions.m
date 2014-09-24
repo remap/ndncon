@@ -46,4 +46,12 @@
         return [self objectAtIndexOrNil:self.count+index];
 }
 
+-(NSArray *)arrayByRemovingObject:(id)object
+{
+    NSMutableArray *arrayCopy = [self mutableCopy];
+    [arrayCopy removeObject:object];
+    
+    return [NSArray arrayWithArray:arrayCopy];
+}
+
 @end
