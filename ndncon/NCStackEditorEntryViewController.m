@@ -12,7 +12,7 @@
 @interface NCStackEditorEntryViewController ()
 {
     NCStackEditorEntryStyle _style;
-    NSView *_contentView;
+    NSViewController *_contentViewController;
 }
 
 @property (weak) IBOutlet NSTextField *captionLabel;
@@ -45,6 +45,8 @@
 
 -(void)awakeFromNib
 {
+    [self view];
+    
     if (self.style == StackEditorEntryStyleClassic)
     {
         [(NCEditorEntryView*)self.view setHeaderStyle: EditorEntryViewHeaderStyleGloss];
@@ -73,6 +75,8 @@
         self.captionLeadingSpaceConstraint.constant = 10.;
         self.buttonTrailingSpaceConstraint.constant = 10.;
     }
+    
+    [self.contentViewController awakeFromNib];
 }
 
 -(void)setCaption:(NSString *)caption
@@ -85,18 +89,18 @@
     return self.captionLabel.stringValue;
 }
 
--(NSView *)contentView
+-(NSViewController *)contentViewController
 {
-    return _contentView;
+    return _contentViewController;
 }
--(void)setContentView:(NSView *)view
+-(void)setContentViewController:(NSViewController *)contentViewController
 {
-    if (view != _contentView)
+    if (contentViewController != _contentViewController)
     {
-        [self.contentView removeFromSuperview];
-        _contentView = view;
-        [self.view addSubview:self.contentView positioned:NSWindowBelow relativeTo:self.headerView];
-        
+        [self.contentViewController.view removeFromSuperview];
+        _contentViewController = contentViewController;
+        [self.view addSubview:self.contentViewController.view positioned:NSWindowBelow relativeTo:self.headerView];
+
         if (self.style == StackEditorEntryStyleClassic)
             [self applyClassicStyleConstraints];
         else
@@ -127,33 +131,37 @@
 // private
 -(void)applyClassicStyleConstraints
 {
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_contentView]-20-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_contentView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_headerView]-(0@750)-[_contentView]"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_headerView, _contentView)]];
+    NSView *contentView = self.contentViewController.view;
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_contentView]-(20@600)-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[contentView]-20-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(contentView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_headerView]-(0@750)-[contentView]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_headerView, contentView)]];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[contentView]-(20@600)-|"
                                                                       options:0 metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_contentView)]];
+                                                                        views:NSDictionaryOfVariableBindings(contentView)]];
 }
 
 -(void)applyModernStyleConstraints
 {
+    NSView *contentView = self.contentViewController.view;
+    
     CGFloat inset = [(NCEditorEntryView*)self.view shadowInset];
-    NSString *horizontalConstraint = [NSString stringWithFormat:@"H:|-%f-[_contentView]-%f-|", inset, inset];
-    NSString *verticalConstraint = [NSString stringWithFormat:@"V:|-%f-[_contentView]-%f-|", inset, inset];
+    NSString *horizontalConstraint = [NSString stringWithFormat:@"H:|-%f-[contentView]-%f-|", inset, inset];
+    NSString *verticalConstraint = [NSString stringWithFormat:@"V:|-%f-[contentView]-%f-|", inset, inset];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:horizontalConstraint
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_contentView)]];
+                                                                        views:NSDictionaryOfVariableBindings(contentView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalConstraint
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_headerView, _contentView)]];
+                                                                        views:NSDictionaryOfVariableBindings(_headerView, contentView)]];
 }
 
 @end

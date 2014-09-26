@@ -49,20 +49,20 @@
     return (NSStackView*)self.view;
 }
 
--(NCStackEditorEntryViewController*)addViewEntry:(NSView*)view
+-(NCStackEditorEntryViewController*)addViewControllerEntry:(NSViewController*)viewController
 {
     NCStackEditorEntryViewController *vc =[[NCStackEditorEntryViewController alloc] init];
 
-    [self newViewEntry:vc forView:view];
+    [self newViewEntry:vc forViewController:viewController];
     
     return vc;
 }
 
--(NCStackEditorEntryViewController *)addViewEntry:(NSView *)view withStyle:(NCStackEditorEntryStyle)style
+-(NCStackEditorEntryViewController *)addViewControllerEntry:(NSViewController*)viewController withStyle:(NCStackEditorEntryStyle)style
 {
     NCStackEditorEntryViewController *vc = [[NCStackEditorEntryViewController alloc] initWithStyle:style];
     
-    [self newViewEntry:vc forView:view];
+    [self newViewEntry:vc forViewController:viewController];
     
     return vc;
 }
@@ -105,10 +105,10 @@
 }
 
 // private
--(void)newViewEntry:(NCStackEditorEntryViewController*)entry forView:(NSView*)view
+-(void)newViewEntry:(NCStackEditorEntryViewController*)entry forViewController:(NSViewController*)viewController
 {
     entry.delegate = self;
-    entry.contentView = view;
+    entry.contentViewController = viewController;
     
     [self.entryControllers addObject:entry];
     [self.stackView addView:entry.view inGravity:NSStackViewGravityTop];

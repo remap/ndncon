@@ -38,7 +38,7 @@
 
 -(Class)threadViewControllerClass
 {
-    return [NCVideoUserThreadViewController class];
+    return [NCAudioUserThreadViewController class];
 }
 
 @end

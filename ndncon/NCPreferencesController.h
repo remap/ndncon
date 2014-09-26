@@ -56,5 +56,6 @@ extern NSString* const kSegmentSizeKey;
 // NdnRtc library-specific
 -(void)getNdnRtcGeneralParameters:(void*)generalParameters;
 -(void)getNdnRtcGeneralProducerParameters:(void*)generalProducerParameters;
+-(void)getNdnRtcGeneralConsumerParameters:(void*)generalConsumerParameters;
 
 @end

@@ -11,13 +11,12 @@
 #import "NSObject+NCAdditions.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NCConversationInfoView.h"
-#import "NCUserViewController.h"
 
 @interface NCMainViewController ()
 
 @property (nonatomic, strong) NSDictionary *conversationConfiguration;
 
-@property (nonatomic, strong) NCConversationViewController *converstaionViewController;
+@property (nonatomic, strong) NCConversationViewController *conversationViewController;
 @property (weak) IBOutlet NSPopUpButton *statusPopUpButton;
 @property (weak) IBOutlet NCConversationInfoView *conversationInfoView;
 @property (weak) IBOutlet NSTextField *conversationInfoStatusLabel;
@@ -89,12 +88,9 @@
 
 - (IBAction)startPublishing:(id)sender
 {
-    self.conversationConfiguration = [NCPreferencesController sharedInstance].producerConfigurationCopy;
-    self.converstaionViewController = [[NCConversationViewController alloc] init];
-    self.converstaionViewController.delegate = self;
-    
-    [self loadCurrentView:self.converstaionViewController.view];
-    [self.converstaionViewController startPublishingWithConfiguration:self.conversationConfiguration];
+    [self startConverstaionIfNotStarted];
+    [self.conversationViewController startPublishingWithConfiguration:self.conversationConfiguration];
+    [self loadCurrentView:self.conversationViewController.view];
 }
 
 - (IBAction)startPublishingCustom:(id)sender {
@@ -104,30 +100,27 @@
 // NCConversationViewControllerDelegate
 -(void)converstaionInfoViewWasClicked:(NCConversationInfoView *)infoView
 {
-    if (self.converstaionViewController.currentConversationStatus == SessionStatusOffline ||
-        (self.converstaionViewController.participants.count == 0 &&
-         self.converstaionViewController.currentConversationStatus == SessionStatusOnlineNotPublishing))
+    if (self.conversationViewController.currentConversationStatus == SessionStatusOffline ||
+        (self.conversationViewController.participants.count == 0 &&
+         self.conversationViewController.currentConversationStatus == SessionStatusOnlineNotPublishing))
     {
         [self loadCurrentView: self.initialView];
     }
     else
     {
-        [self loadCurrentView:self.converstaionViewController.view];
+        [self loadCurrentView:self.conversationViewController.view];
     }
 }
 
 // NCUserListViewControllerDelegate
 -(void)userListViewController:(NCUserListViewController *)userListViewController userWasChosen:(NSDictionary *)user
 {
-    NSString *userName = [user valueForKey:kNCSessionUsernameKey];
-    NSString *hubPrefix = [user valueForKey:kNCHubPrefixKey];
     NCSessionInfoContainer *sessionInfo = [user valueForKey:kNCSessionInfoKey];
-    
-    NSLog(@"selected %@:%@", userName, hubPrefix);
     
     self.userViewController = [[NCUserViewController alloc] init];
     self.userViewController.sessionInfo = sessionInfo;
     self.userViewController.userInfo = user;
+    self.userViewController.delegate = self;
     
     [self loadCurrentView:self.userViewController.view];
 }
@@ -135,11 +128,29 @@
 // NCConversationViewControllerDelegate
 -(void)conversationViewControllerDidEndConversation:(NCConversationViewController *)converstaionVc
 {
-    self.converstaionViewController = nil;
+    self.conversationViewController = nil;
     [self loadCurrentView:self.initialView];
 }
 
+// NCUserViewControllerDelegate
+-(void)userViewControllerFetchStreamsClicked:(NCUserViewController *)userVc
+{
+    [self startConverstaionIfNotStarted];
+    [self loadCurrentView:self.conversationViewController.view];
+    
+    [self.conversationViewController  startFetchingWithConfiguration:userVc.userInfo];
+}
+
 // private
+-(void)startConverstaionIfNotStarted
+{
+    if (!self.conversationViewController)
+    {
+        self.conversationConfiguration = [NCPreferencesController sharedInstance].producerConfigurationCopy;
+        self.conversationViewController = [[NCConversationViewController alloc] init];
+        self.conversationViewController.delegate = self;
+    }
+}
 -(void)loadCurrentView:(NSView *)currentView
 {
     [self.currentView removeFromSuperview];
@@ -165,8 +176,8 @@
     if ([sessionPrefix isEqualToString:[NCNdnRtcLibraryController sharedInstance].sessionPrefix] &&
         [sessionUserName isEqualToString:[NCPreferencesController sharedInstance].userName])
     {
-        NSLog(@"received session status update: %d",
-              [[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]);
+//        NSLog(@"received session status update: %d",
+//              [[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]);
         
         [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
         
@@ -259,8 +270,11 @@
         outputString = (participants.count == 1)?@"only you":@"you";
     
     [participants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (outputString.length > 0)
+            outputString = [NSString stringWithFormat:@"%@,", outputString];
+        
         if (![obj isEqualToString:[NCPreferencesController sharedInstance].userName])
-            outputString = [NSString stringWithFormat:@"%@, %@", outputString, obj];
+            outputString = [NSString stringWithFormat:@"%@ %@", outputString, obj];
     }];
     
     return outputString;

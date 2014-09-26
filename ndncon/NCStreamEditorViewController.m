@@ -164,7 +164,7 @@
     // remove stream corresponding stream controller
     for (NCStreamViewController *streamController in self.streamsControllers)
     {
-        if (streamController.view == vc.contentView)
+        if (streamController == vc.contentViewController)
         {
             controllerForDeletion = streamController;
             break;
@@ -215,7 +215,7 @@
     
     [self.streamsControllers addObject:streamViewController];
     
-    NCStackEditorEntryViewController *stackEntryVc = [self addViewEntry:streamViewController.view];
+    NCStackEditorEntryViewController *stackEntryVc = [self addViewControllerEntry:streamViewController];
     [self setStackEntry:stackEntryVc newCaption:[streamViewController valueForKeyPath:KEYPATH2(configuration, kNameKey)]];
     [stackEntryVc.captionLabel bind:@"displayPatternValue1"
                            toObject:streamViewController

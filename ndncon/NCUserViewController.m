@@ -74,6 +74,12 @@
 }
 
 // private
+- (IBAction)fetchAll:(id)sender
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(userViewControllerFetchStreamsClicked:)])
+        [self.delegate userViewControllerFetchStreamsClicked:self];
+}
+
 -(void)updateStreams
 {
     [self.streamEditorController setAudioStreams:[NSMutableArray arrayWithArray: [self.sessionInfo audioStreamsConfigurations]]

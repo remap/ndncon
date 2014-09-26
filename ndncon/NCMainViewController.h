@@ -10,15 +10,17 @@
 #import "NCUserListViewController.h"
 #import "NCConversationViewController.h"
 #import "NCConversationInfoView.h"
+#import "NCUserViewController.h"
 
 @interface NCMainViewController : NSViewController
 <NCConversationViewControllerDelegate,
 NCConversationInfoViewDelegate,
-NCUserListViewControllerDelegate>
+NCUserListViewControllerDelegate,
+NCUserViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet NCUserListViewController *userListViewController;
 @property (nonatomic, strong) IBOutlet NSView *initialView;
 @property (nonatomic, weak) IBOutlet NSView *currentView;
-@property (nonatomic, readonly) NCConversationViewController *converstaionViewController;
+@property (nonatomic, readonly) NCConversationViewController *conversationViewController;
 
 @end

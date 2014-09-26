@@ -198,7 +198,8 @@ using namespace ndnrtc::new_api;
 {
     return @{
              kNameKey: [NSString stringWithCString:params.threadName_.c_str()
-                                          encoding:NSASCIIStringEncoding]
+                                          encoding:NSASCIIStringEncoding],
+             kBitrateKey: @(90)
              };
 }
 

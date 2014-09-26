@@ -25,11 +25,14 @@
 #import "AVCaptureDeviceFormat+NdnConAdditions.h"
 #import "NSDictionary+NCNdnRtcAdditions.h"
 #import "NSObject+NCAdditions.h"
+#import "NCUserListViewController.h"
+#import "NCVideoStreamRenderer.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
 
 NSString* const kCameraCapturerKey = @"cameraCapturer";
+NSString* const kRendererKey = @"videoRenderer";
 NSString* const kNCStreamsArrayKey = @"streamsArray";
 
 @interface NCConversationViewController ()
@@ -92,9 +95,7 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
 - (IBAction)endConversation:(id)sender
 {
     [self.localStreamViewer closeAllStreams];
-
-    if (self.remoteStreamViewer)
-        [self.remoteStreamViewer closeAllStreams];
+    [self.remoteStreamViewer closeAllStreams];
     
     self.participants = @[];
     [self checkConversationDidEnd];    
@@ -109,6 +110,16 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
         [self startVideoStreamWithConfiguration: videoConfiguration];
 }
 
+-(void)startFetchingWithConfiguration:(NSDictionary *)userInfo
+{
+    NSLog(@"%@", userInfo);
+    NSArray *audioStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] audioStreamsConfigurations];
+    NSArray *videoStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] videoStreamsConfigurations];
+    
+    [self addRemoteAudioStreams: audioStreams withUserInfo:userInfo];
+    [self addRemoteVideoStreams: videoStreams withUserInfo:userInfo];
+}
+
 -(void)setParticipants:(NSArray *)participants
 {
     _participants = participants;
@@ -119,95 +130,6 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
 -(void)stackEditorEntryViewControllerDidClosed:(NCStackEditorEntryViewController *)vc
 {
     
-}
-
-// private
--(void)onSessionStatusUpdate:(NSNotification*)notification
-{
-    if ([[notification.userInfo valueForKey:kNCSessionPrefixKey] isEqualToString:[NCNdnRtcLibraryController sharedInstance].sessionPrefix])
-    {
-        _currentConversationStatus = (NCSessionStatus)[[notification.userInfo valueForKey:kNCSessionStatusKey] integerValue];
-    }
-}
-
--(void)startAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
-{
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    std::string sessionPrefix([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
-    IExternalCapturer *nilCapturer = NULL;
-    std::string streamPrefix = lib->addLocalStream(sessionPrefix,
-                                                   [streamConfiguration asAudioStreamParams],
-                                                   &nilCapturer);
-    
-    if (streamPrefix != "")
-    {
-        NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
-        NCAudioPreviewController *audioPreviewVc = (NCAudioPreviewController*)[self.localStreamViewer addStreamWithConfiguration:streamConfiguration
-                                                                                                           andStreamPreviewClass:[NCAudioPreviewController class]
-                                                                               forStreamPrefix:streamPrefixStr];
-        audioPreviewVc.userData = @{
-                                    kStreamPrefixKey: streamPrefixStr
-                                    };
-        [self addStreamToConversation:streamPrefixStr
-                        sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
-                             userName:[NCPreferencesController sharedInstance].userName];
-    }
-}
-
--(void)startVideoStreamWithConfiguration:(NSDictionary*)streamConfiguration
-{
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    std::string sessionPrefix([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
-    IExternalCapturer *externalCapturer;
-
-    
-    AVCaptureDevice *device = [[NCPreferencesController sharedInstance].videoDevices
-                               objectAtIndexOrNil:[[streamConfiguration valueForKey:kInputDeviceKey] intValue]];
-    
-    if (device)
-    {
-        std::string streamPrefix = lib->addLocalStream(sessionPrefix,
-                                                       [streamConfiguration asVideoStreamParams],
-                                                       &externalCapturer);
-        
-        if (streamPrefix != "")
-        {
-            NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
-            NCVideoPreviewController *videoPreviewVc = (NCVideoPreviewController*)[self.localStreamViewer
-                                                                                   addStreamWithConfiguration:streamConfiguration
-                                                                                   andStreamPreviewClass:[NCVideoPreviewController class]
-                                                                                   forStreamPrefix:streamPrefixStr];
-            
-            AVCaptureDeviceFormat *format = [device.formats
-                                             objectAtSignedIndexOrNil:[[streamConfiguration valueForKey:kDeviceConfigurationKey] intValue]];
-            
-            if (!format)
-            {
-                format = [device.formats lastObject];
-                NSLog(@"device %@ doesn't have configuration with index %@, falling back to last configuration in the list %@",
-                      device.localizedName, [streamConfiguration valueForKey:kDeviceConfigurationKey], [format localizedName]);
-            }
-            
-            NCCameraCapturer *cameraCapturer = [[NCCameraCapturer alloc]
-                                                initWithDevice: device
-                                                andFormat:format];
-            [cameraCapturer setNdnRtcExternalCapturer:externalCapturer];
-            [videoPreviewVc setPreviewForCameraCapturer:cameraCapturer];
-            [cameraCapturer startCapturing];
-            
-            videoPreviewVc.userData = @{
-                                        kCameraCapturerKey: cameraCapturer,
-                                        kStreamPrefixKey: streamPrefixStr
-                                        };
-            [self addStreamToConversation:streamPrefixStr
-                            sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
-                                 userName:[NCPreferencesController sharedInstance].userName];
-        }
-    }
-    else
-    {
-        NSLog(@"device with index %@ was not found", [streamConfiguration valueForKey:kInputDeviceKey]);
-    }
 }
 
 // NCStreamBrowserControllerDelegate
@@ -223,29 +145,34 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
             [cameraCapturer stopCapturing];
         [self removeLocalStreamWithPrefix:(NSString*)[previewController.userData objectForKey:kStreamPrefixKey]];
     }
+    else
+        [self removeRemoteStreamWithPrefix:[previewController.userData objectForKey:kStreamPrefixKey]];
     
     [self checkConversationDidEnd];
 }
 
--(void)streamBrowserController:(NCStreamBrowserController *)browserController willCloseStream:(NCStreamPreviewController *)previewController forUser:(NSString *)userName forPrefix:(NSString *)streamPrefix
+-(void)streamBrowserController:(NCStreamBrowserController *)browserController
+               willCloseStream:(NCStreamPreviewController *)previewController
+                       forUser:(NSString *)userName forPrefix:(NSString *)streamPrefix
 {
     if (browserController == self.localStreamViewer)
     {
         NCCameraCapturer *cameraCapturer = (NCCameraCapturer*)[previewController.userData objectForKey:kCameraCapturerKey];
         if (cameraCapturer)
             [cameraCapturer stopCapturing];
-        [self removeLocalStreamWithPrefix:(NSString*)[previewController.userData objectForKey:kStreamPrefixKey]];
+        [self removeLocalStreamWithPrefix:[previewController.userData objectForKey:kStreamPrefixKey]];
     }
+    else
+        [self removeRemoteStreamWithPrefix:[previewController.userData objectForKey:kStreamPrefixKey]];
 }
 
 // private
--(void)removeLocalStreamWithPrefix:(NSString*)streamPrefix
+-(void)onSessionStatusUpdate:(NSNotification*)notification
 {
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    lib->removeLocalStream([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding],
-                           [streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
-    
-    [self removeStreamFromConversation:streamPrefix];
+    if ([[notification.userInfo valueForKey:kNCSessionPrefixKey] isEqualToString:[NCNdnRtcLibraryController sharedInstance].sessionPrefix])
+    {
+        _currentConversationStatus = (NCSessionStatus)[[notification.userInfo valueForKey:kNCSessionStatusKey] integerValue];
+    }
 }
 
 -(void)addUserToConversation:(NSMutableDictionary*)participantInfo
@@ -316,6 +243,179 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
         if (self.delegate && [self.delegate respondsToSelector:@selector(conversationViewControllerDidEndConversation:)])
             [self.delegate conversationViewControllerDidEndConversation:self];
     }
+}
+
+-(void)addRemoteAudioStreams:(NSArray*)streamConfigurations
+                withUserInfo:(NSDictionary*)userInfo
+{
+    for (NSDictionary *streamConfiguration in streamConfigurations)
+        [self addRemoteAudioStreamWithConfiguration:streamConfiguration
+                                        andUserInfo:userInfo];
+}
+
+-(void)addRemoteVideoStreams:(NSArray*)streamConfigurations
+                withUserInfo:(NSDictionary*)userInfo
+{
+    for (NSDictionary *streamConfiguration in streamConfigurations)
+        [self addRemoteVideoStreamWithConfiguration:streamConfiguration
+                                        andUserInfo:userInfo];
+}
+
+-(GeneralConsumerParams)consumerParams
+{
+    GeneralConsumerParams params;
+    [[NCPreferencesController sharedInstance] getNdnRtcGeneralConsumerParameters:&params];
+    return params;
+}
+
+-(GeneralProducerParams)producerParams
+{
+    GeneralProducerParams params;
+    [[NCPreferencesController sharedInstance] getNdnRtcGeneralProducerParameters:&params];
+    return params;
+}
+
+-(GeneralParams)generalParams
+{
+    GeneralParams params;
+    [[NCPreferencesController sharedInstance] getNdnRtcGeneralParameters:&params];
+    return params;
+}
+
+// NdnRtc
+-(void)startAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
+{
+    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    std::string sessionPrefix([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    IExternalCapturer *nilCapturer = NULL;
+    std::string streamPrefix = lib->addLocalStream(sessionPrefix,
+                                                   [streamConfiguration asAudioStreamParams],
+                                                   &nilCapturer);
+    
+    if (streamPrefix != "")
+    {
+        NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
+        NCAudioPreviewController *audioPreviewVc = (NCAudioPreviewController*)[self.localStreamViewer addStreamWithConfiguration:streamConfiguration
+                                                                                                           andStreamPreviewClass:[NCAudioPreviewController class]
+                                                                                                                 forStreamPrefix:streamPrefixStr];
+        audioPreviewVc.userData = @{
+                                    kStreamPrefixKey: streamPrefixStr
+                                    };
+        [self addStreamToConversation:streamPrefixStr
+                        sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
+                             userName:[NCPreferencesController sharedInstance].userName];
+    }
+}
+
+-(void)startVideoStreamWithConfiguration:(NSDictionary*)streamConfiguration
+{
+    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    std::string sessionPrefix([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    IExternalCapturer *externalCapturer;
+    
+    
+    AVCaptureDevice *device = [[NCPreferencesController sharedInstance].videoDevices
+                               objectAtIndexOrNil:[[streamConfiguration valueForKey:kInputDeviceKey] intValue]];
+    
+    if (device)
+    {
+        std::string streamPrefix = lib->addLocalStream(sessionPrefix,
+                                                       [streamConfiguration asVideoStreamParams],
+                                                       &externalCapturer);
+        
+        if (streamPrefix != "")
+        {
+            NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
+            NCVideoPreviewController *videoPreviewVc = (NCVideoPreviewController*)[self.localStreamViewer
+                                                                                   addStreamWithConfiguration:streamConfiguration
+                                                                                   andStreamPreviewClass:[NCVideoPreviewController class]
+                                                                                   forStreamPrefix:streamPrefixStr];
+            
+            AVCaptureDeviceFormat *format = [device.formats
+                                             objectAtSignedIndexOrNil:[[streamConfiguration valueForKey:kDeviceConfigurationKey] intValue]];
+            
+            if (!format)
+            {
+                format = [device.formats lastObject];
+                NSLog(@"device %@ doesn't have configuration with index %@, falling back to last configuration in the list %@",
+                      device.localizedName, [streamConfiguration valueForKey:kDeviceConfigurationKey], [format localizedName]);
+            }
+            
+            NCCameraCapturer *cameraCapturer = [[NCCameraCapturer alloc]
+                                                initWithDevice: device
+                                                andFormat:format];
+            [cameraCapturer setNdnRtcExternalCapturer:externalCapturer];
+            [videoPreviewVc setPreviewForCameraCapturer:cameraCapturer];
+            [cameraCapturer startCapturing];
+            
+            videoPreviewVc.userData = @{
+                                        kCameraCapturerKey: cameraCapturer,
+                                        kStreamPrefixKey: streamPrefixStr
+                                        };
+            [self addStreamToConversation:streamPrefixStr
+                            sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
+                                 userName:[NCPreferencesController sharedInstance].userName];
+        }
+    }
+    else
+    {
+        NSLog(@"device with index %@ was not found", [streamConfiguration valueForKey:kInputDeviceKey]);
+    }
+}
+
+-(void)removeLocalStreamWithPrefix:(NSString*)streamPrefix
+{
+    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    lib->removeLocalStream([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding],
+                           [streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    
+    [self removeStreamFromConversation:streamPrefix];
+}
+
+-(void)addRemoteAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
+                                 andUserInfo:(NSDictionary*)userInfo
+{
+    
+}
+
+-(void)addRemoteVideoStreamWithConfiguration:(NSDictionary*)streamConfiguration
+                                 andUserInfo:(NSDictionary*)userInfo
+{
+    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    std::string sessionPrefix([[userInfo valueForKeyPath:kNCSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
+    NCVideoStreamRenderer *renderer = [[NCVideoStreamRenderer alloc] init];
+    
+    std::string streamPrefix = lib->addRemoteStream(sessionPrefix,
+                                                    [streamConfiguration asVideoStreamParams],
+                                                    [self generalParams],
+                                                    [self consumerParams],
+                                                    (IExternalRenderer*)renderer.ndnRtcRenderer);
+    
+    if (streamPrefix != "")
+    {
+        NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
+        NCVideoPreviewController *videoPreviewVc = (NCVideoPreviewController*)[self.remoteStreamViewer addStreamWithConfiguration:streamConfiguration
+                                                                                                            andStreamPreviewClass:[NCVideoPreviewController class]
+                                                                                                                  forStreamPrefix:streamPrefixStr];
+        [videoPreviewVc setPreviewForVideoRenderer:renderer];
+        videoPreviewVc.userData = @{
+                                    kRendererKey: renderer,
+                                    kStreamPrefixKey:streamPrefixStr
+                                    };
+        [self addStreamToConversation:streamPrefixStr
+                        sessionPrefix:[userInfo valueForKeyPath:kNCSessionPrefixKey]
+                             userName:[userInfo valueForKeyPath:kNCSessionUsernameKey]];
+        
+    }
+}
+
+-(void)removeRemoteStreamWithPrefix:(NSString*)streamPrefix
+{  
+    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    lib->removeRemoteStream([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    
+    [self removeStreamFromConversation:streamPrefix];
+    
 }
 
 @end

@@ -35,7 +35,8 @@ NSString* const kPreviewControllerKey = @"previewController";
     NCStreamPreviewController *streamPreviewController = [[streamPreviewClass alloc] init];
     streamPreviewController.streamName = [configuration valueForKeyPath:kNameKey];
     
-    NCStackEditorEntryViewController *vc = [self addViewEntry:streamPreviewController.view withStyle:StackEditorEntryStyleModern];
+    NCStackEditorEntryViewController *vc = [self addViewControllerEntry:streamPreviewController
+                                                              withStyle:StackEditorEntryStyleModern];
     [vc setHeaderSmall:YES];
     vc.caption = [configuration valueForKey:kNameKey];
     
@@ -75,7 +76,7 @@ NSString* const kPreviewControllerKey = @"previewController";
         {
             NSDictionary *info = [self.userPreviewControllers objectForKey:key];
             
-            if ([(NSViewController*)[info objectForKey:kPreviewControllerKey] view] == vc.contentView)
+            if ([info objectForKey:kPreviewControllerKey] == vc.contentViewController)
             {
                 streamPreviewController = [info objectForKey:kPreviewControllerKey];
                 userName =  [info objectForKey:kUserNameKey];

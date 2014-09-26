@@ -39,6 +39,17 @@ extern NSString* const kNCStreamsArrayKey;
 @property (nonatomic) NSArray *participants;
 
 -(void)startPublishingWithConfiguration:(NSDictionary*)streamsConfiguration;
+/**
+ * Start fetching from remote user
+ * @param userInfo Dictionary with structure:
+ *                  {
+ *                      kNCSessionUserNameKey : <username>,
+ *                      kNCHubPrefixKey : <hub_prefix>,
+ *                      kNCSessionInfoKey : <session_info>,
+ *                  }
+ *
+ */
+-(void)startFetchingWithConfiguration:(NSDictionary*)userInfo;
 
 @end
 

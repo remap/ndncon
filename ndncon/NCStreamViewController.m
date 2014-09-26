@@ -162,7 +162,7 @@ NSString* const kThreadsArrayKey = @"Threads";
     threadViewController.delegate = self;
     [self.threadControllers addObject:threadViewController];
     
-    NCStackEditorEntryViewController *entryViewController = [self.stackEditor addViewEntry:threadViewController.view];
+    NCStackEditorEntryViewController *entryViewController = [self.stackEditor addViewControllerEntry:threadViewController];
     [entryViewController setHeaderSmall:YES];
     [entryViewController.captionLabel bind:@"displayPatternValue1"
                                   toObject:threadViewController
@@ -200,7 +200,7 @@ NSString* const kThreadsArrayKey = @"Threads";
     
     for (NCThreadViewController *threadVc in self.threadControllers)
     {
-        if (threadVc.view == vc.contentView)
+        if (threadVc == vc.contentViewController)
         {
             threadControllerForDeletion = threadVc;
             break;

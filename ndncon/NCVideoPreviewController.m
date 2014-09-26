@@ -11,10 +11,72 @@
 #define PREVIEW_WIDTH 177.7
 #define PREVIEW_HEIGHT 100.
 
+@class NCVideoPreviewView;
+
+@protocol NCVideoPreviewViewDelegate <NSObject>
+
+@optional
+-(void)videoPreviewViewDidUpdatedFrame:(NCVideoPreviewView*)videoPreviewView;
+-(void)videoPreviewViewDidDisplayed:(NCVideoPreviewView*)videoPreviewView;
+
+@end
+
+@interface NCVideoPreviewView : NSView
+
+@property (nonatomic) BOOL frameWasUpdated, viewWasDisplayed;
+@property (nonatomic) id<NCVideoPreviewViewDelegate> delegate;
+
+@end
+
+@implementation NCVideoPreviewView
+
+-(id)init
+{
+    self = [super init];
+    
+    if (self)
+    {
+        self.frameWasUpdated = NO;
+        self.viewWasDisplayed = NO;
+    }
+    
+    return self;
+}
+
+-(void)setFrame:(NSRect)frameRect
+{
+    [super setFrame:frameRect];
+
+    if (!self.frameWasUpdated &&
+        !CGRectEqualToRect(CGRectZero, self.frame))
+    {
+        self.frameWasUpdated = YES;
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(videoPreviewViewDidUpdatedFrame:)])
+            [self.delegate videoPreviewViewDidUpdatedFrame:self];
+    }
+}
+
+-(void)drawRect:(NSRect)dirtyRect
+{
+    [super drawRect:dirtyRect];
+    
+    if (!self.viewWasDisplayed)
+    {
+        self.viewWasDisplayed = YES;
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(videoPreviewViewDidDisplayed:)])
+            [self.delegate videoPreviewViewDidDisplayed:self];
+    }
+}
+
+@end
+
 @interface NCVideoPreviewController ()
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, weak) NCCameraCapturer *cameraCapturer;
+@property (nonatomic, weak) NCVideoStreamRenderer *renderer;
 
 @end
 
@@ -22,7 +84,10 @@
 
 -(void)initialize
 {
-    [super initialize];
+//    [super initialize];
+    self.view = [[NCVideoPreviewView alloc] init];
+    [self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    ((NCVideoPreviewView*)self.view).delegate = self;
     
     NSView *streamPreview = self.view;
     NSString *widthConstraint = [NSString stringWithFormat:@"H:[streamPreview(==%f)]", PREVIEW_WIDTH];
@@ -45,9 +110,52 @@
 {
     self.cameraCapturer = cameraCapturer;
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.cameraCapturer.session];
-    [self.previewLayer setFrame: CGRectMake(0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT)];
-    [self.streamPreview.layer addSublayer:self.previewLayer];
-    [self.streamPreview.layer setBackgroundColor:[NSColor blackColor].CGColor];
+
+    if ([self isViewReady])
+        [self updatePreviewLayer];
+}
+
+-(void)setPreviewForVideoRenderer:(NCVideoStreamRenderer*)renderer
+{
+    if (renderer && renderer != self.renderer)
+    {
+        self.renderer = renderer;
+
+        if ([self isViewReady])
+            [self updatePreviewLayer];
+    }
+}
+
+// NCVideoPreviewViewDelegate
+-(void)videoPreviewViewDidUpdatedFrame:(NCVideoPreviewView *)videoPreviewView
+{
+    if (self.cameraCapturer)
+        [self updatePreviewLayer];
+}
+
+-(void)videoPreviewViewDidDisplayed:(NCVideoPreviewView *)videoPreviewView
+{
+    if (self.renderer)
+        [self updatePreviewLayer];
+}
+
+// private
+-(BOOL)isViewReady
+{
+    return !CGRectEqualToRect(CGRectZero, self.streamPreview.frame);
+}
+-(void)updatePreviewLayer
+{
+    if (self.cameraCapturer)
+    {
+        [self.previewLayer setFrame:self.streamPreview.bounds];
+        [self.streamPreview.layer addSublayer:self.previewLayer];
+        [self.streamPreview.layer setBackgroundColor:[NSColor blackColor].CGColor];
+    }
+    else if (self.renderer)
+    {
+        self.renderer.renderingView = self.streamPreview;
+    }
 }
 
 @end

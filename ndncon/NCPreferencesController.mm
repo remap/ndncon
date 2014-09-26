@@ -381,6 +381,16 @@ using namespace ndnrtc::new_api;
     params->freshnessMs_ = self.videoFreshness.intValue;
 }
 
+-(void)getNdnRtcGeneralConsumerParameters:(void*)generalConsumerParameters
+{
+    GeneralConsumerParams* params = (GeneralConsumerParams*)generalConsumerParameters;
+    
+    params->bufferSlotsNum_ = self.bufferSize.intValue;
+    params->jitterSizeMs_ = self.jitterSizeMs.intValue;
+    params->interestLifetime_ = self.interestLifetimeMs.intValue;
+    params->slotSize_ = self.slotSize.intValue;
+}
+
 // private
 -(id)getParamAtPathByComponents:(id)comp1, ...
 {

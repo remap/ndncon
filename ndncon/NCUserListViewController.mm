@@ -269,7 +269,6 @@ private:
             if ([[obj name] isEqualToString:userName] && [[obj prefix] isEqualToString:prefix])
                 [obj setStatusImage:[[NCNdnRtcLibraryController sharedInstance] imageForSessionStatus:status]];
         }];
-        NSLog(@"%@:%@ - %lu", userName, prefix, status);
     }
 }
 -(void)checkAndUpdateSessionObservers

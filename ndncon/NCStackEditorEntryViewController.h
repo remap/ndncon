@@ -19,7 +19,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, weak) id<NCStackEditorEntryDelegate> delegate;
 @property (nonatomic) NSString *caption;
-@property (weak) IBOutlet NSView *contentView;
+//@property (weak) IBOutlet NSView *contentView;
+@property (weak) IBOutlet NSViewController *contentViewController;
 @property (weak, readonly) IBOutlet NSTextField *captionLabel;
 @property (nonatomic, readonly) NCStackEditorEntryStyle style;
 

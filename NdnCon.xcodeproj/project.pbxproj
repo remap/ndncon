@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF11BAFA19D4E37E0011270F /* OpenGL.framework */; };
 		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
+		AF3E074519D4A86300028E26 /* NCVideoStreamRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3E074419D4A86300028E26 /* NCVideoStreamRenderer.mm */; };
 		AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */; };
 		AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */; };
 		AF7026B719C250560087B605 /* NCStackEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026B519C250560087B605 /* NCStackEditorViewController.m */; };
@@ -123,7 +125,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AF11BAFA19D4E37E0011270F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
+		AF3E074319D4A86300028E26 /* NCVideoStreamRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCVideoStreamRenderer.h; path = ndncon/NCVideoStreamRenderer.h; sourceTree = SOURCE_ROOT; };
+		AF3E074419D4A86300028E26 /* NCVideoStreamRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCVideoStreamRenderer.mm; path = ndncon/NCVideoStreamRenderer.mm; sourceTree = SOURCE_ROOT; };
 		AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCGeneralParametersView.xib; path = ndncon/NCGeneralParametersView.xib; sourceTree = SOURCE_ROOT; };
 		AF7026AB19C11C8F0087B605 /* NCGeneralParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGeneralParametersViewController.h; path = ndncon/NCGeneralParametersViewController.h; sourceTree = SOURCE_ROOT; };
 		AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGeneralParametersViewController.m; path = ndncon/NCGeneralParametersViewController.m; sourceTree = SOURCE_ROOT; };
@@ -261,6 +266,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */,
 				AFA8520A19C779180015A883 /* ApplicationServices.framework in Frameworks */,
 				AF7026DC19C3B55C0087B605 /* CoreMedia.framework in Frameworks */,
 				AF7026DA19C3B5530087B605 /* AVFoundation.framework in Frameworks */,
@@ -281,6 +287,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AF11BAF619D4D1F00011270F /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				AF3E074319D4A86300028E26 /* NCVideoStreamRenderer.h */,
+				AF3E074419D4A86300028E26 /* NCVideoStreamRenderer.mm */,
+			);
+			name = Renderer;
+			sourceTree = "<group>";
+		};
 		AF3C6FA319BE98D300FAE40B /* Thirdparty */ = {
 			isa = PBXGroup;
 			children = (
@@ -464,6 +479,7 @@
 				AFB35C1819CA1C3200D8A2BC /* NCUserStreamsView.xib */,
 				AFB35C1A19CA1CA400D8A2BC /* NCUserStreamsController.h */,
 				AFB35C1B19CA1CA400D8A2BC /* NCUserStreamsController.m */,
+				AF11BAF619D4D1F00011270F /* Renderer */,
 			);
 			name = "Streams browser";
 			sourceTree = "<group>";
@@ -536,6 +552,7 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF11BAFA19D4E37E0011270F /* OpenGL.framework */,
 				AFA8520919C779180015A883 /* ApplicationServices.framework */,
 				AFA8520719C778E50015A883 /* Quartz.framework */,
 				AF7026DF19C3B6280087B605 /* CoreVideo.framework */,
@@ -788,6 +805,7 @@
 				AFB35C0E19CA095100D8A2BC /* NCStreamPreviewController.m in Sources */,
 				AF7026C319C259AE0087B605 /* NCProducerParametersViewController.m in Sources */,
 				AFB35BFB19C9FB6F00D8A2BC /* NCUserListViewController.mm in Sources */,
+				AF3E074519D4A86300028E26 /* NCVideoStreamRenderer.mm in Sources */,
 				AFB35C0619CA010700D8A2BC /* NCStreamBrowserController.m in Sources */,
 				AFC99BD619D20489005B75AB /* User.m in Sources */,
 				AF8A139D19BFB8CE00010B20 /* NCMediaPreferencesViewController.m in Sources */,

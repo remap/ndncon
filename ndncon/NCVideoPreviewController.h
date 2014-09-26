@@ -8,9 +8,13 @@
 
 #import "NCStreamPreviewController.h"
 #import "NCCameraCapturer.h"
+#import "NCVideoStreamRenderer.h"
+
+@protocol NCVideoPreviewViewDelegate;
 
 @interface NCVideoPreviewController : NCStreamPreviewController
+<NCVideoPreviewViewDelegate>
 
 -(void)setPreviewForCameraCapturer:(NCCameraCapturer*)cameraCapturer;
-
+-(void)setPreviewForVideoRenderer:(NCVideoStreamRenderer*)renderer;
 @end

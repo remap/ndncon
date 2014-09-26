@@ -737,7 +737,6 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" headerView="o7M-7b-i09" viewBased="YES" id="Ei1-FY-IiO">
-                                                    <rect key="frame" x="0.0" y="0.0" width="198" height="19"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -825,7 +824,7 @@
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="hqD-Bf-Cw0"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="jD7-p6-Dw6"/>
                                         </constraints>
-                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="hdb-Lw-udc">
+                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="hdb-Lw-udc">
                                             <rect key="frame" x="1" y="119" width="223" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
@@ -887,7 +886,7 @@
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                                 <connections>
-                                                    <binding destination="AUf-oW-1iz" name="displayPatternValue1" keyPath="self.converstaionViewController.participants" id="1xP-E1-Tww">
+                                                    <binding destination="AUf-oW-1iz" name="displayPatternValue1" keyPath="self.conversationViewController.participants" id="YKy-FM-BYu">
                                                         <dictionary key="options">
                                                             <string key="NSDisplayPattern">Current conversation:
 %{value1}@</string>
@@ -1020,7 +1019,7 @@
                             <action selector="changeStatus:" target="AUf-oW-1iz" id="Ydn-Ur-E5X"/>
                         </connections>
                     </popUpButton>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hhd-Jn-iTa">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hhd-Jn-iTa">
                         <rect key="frame" x="57" y="566" width="165" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Prefix" id="RjQ-el-9tG">
                             <font key="font" metaFont="smallSystem"/>
@@ -1054,7 +1053,6 @@
                     <constraint firstItem="NFf-Xz-R6T" firstAttribute="top" secondItem="Hhd-Jn-iTa" secondAttribute="bottom" constant="10" id="az9-wU-Iax"/>
                     <constraint firstAttribute="trailing" secondItem="NFf-Xz-R6T" secondAttribute="trailing" id="onv-uE-xLX"/>
                     <constraint firstItem="NFf-Xz-R6T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="qr4-RU-2VJ"/>
-                    <constraint firstItem="Hhd-Jn-iTa" firstAttribute="width" secondItem="Wg4-r7-OUi" secondAttribute="width" id="rRt-vd-5hO"/>
                 </constraints>
             </view>
         </window>
