@@ -20,3 +20,7 @@
 -(void)removeAllEntries;
 
 @end
+
+@interface NCStackView : NSStackView
+
+@end

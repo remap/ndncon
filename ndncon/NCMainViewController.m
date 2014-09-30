@@ -98,17 +98,22 @@
 }
 
 // NCConversationViewControllerDelegate
--(void)converstaionInfoViewWasClicked:(NCConversationInfoView *)infoView
+-(void)viewWasClicked:(NCClickableView *)view
 {
-    if (self.conversationViewController.currentConversationStatus == SessionStatusOffline ||
-        (self.conversationViewController.participants.count == 0 &&
-         self.conversationViewController.currentConversationStatus == SessionStatusOnlineNotPublishing))
+    if (self.conversationInfoView == view)
     {
-        [self loadCurrentView: self.initialView];
-    }
-    else
-    {
-        [self loadCurrentView:self.conversationViewController.view];
+        if (self.conversationViewController.currentConversationStatus == SessionStatusOffline ||
+            (self.conversationViewController.participants.count == 0 &&
+             self.conversationViewController.currentConversationStatus == SessionStatusOnlineNotPublishing))
+        {
+            [self loadCurrentView: self.initialView];
+        }
+        else
+        {
+            [self loadCurrentView:self.conversationViewController.view];
+        }
+        
+        [self.userListViewController clearSelection];
     }
 }
 
@@ -135,10 +140,10 @@
 // NCUserViewControllerDelegate
 -(void)userViewControllerFetchStreamsClicked:(NCUserViewController *)userVc
 {
+    [self.userListViewController clearSelection];
     [self startConverstaionIfNotStarted];
     [self loadCurrentView:self.conversationViewController.view];
-    
-    [self.conversationViewController  startFetchingWithConfiguration:userVc.userInfo];
+    [self.conversationViewController startFetchingWithConfiguration:userVc.userInfo];
 }
 
 // private
@@ -270,11 +275,13 @@
         outputString = (participants.count == 1)?@"only you":@"you";
     
     [participants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if (outputString.length > 0)
-            outputString = [NSString stringWithFormat:@"%@,", outputString];
-        
         if (![obj isEqualToString:[NCPreferencesController sharedInstance].userName])
+        {
+            if (outputString.length > 0)
+                outputString = [NSString stringWithFormat:@"%@,", outputString];
+            
             outputString = [NSString stringWithFormat:@"%@ %@", outputString, obj];
+        }
     }];
     
     return outputString;

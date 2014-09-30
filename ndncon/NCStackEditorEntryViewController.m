@@ -8,6 +8,7 @@
 
 #import "NCStackEditorEntryViewController.h"
 #import "NCEditorEntryView.h"
+#import "NCBlockDrawableView.h"
 
 @interface NCStackEditorEntryViewController ()
 {
@@ -76,7 +77,7 @@
         self.buttonTrailingSpaceConstraint.constant = 10.;
     }
     
-    [self.contentViewController awakeFromNib];
+    [self.contentViewController loadView];
 }
 
 -(void)setCaption:(NSString *)caption

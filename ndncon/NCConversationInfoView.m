@@ -8,6 +8,10 @@
 
 #import "NCConversationInfoView.h"
 
+@interface NCConversationInfoView()
+
+@end
+
 @implementation NCConversationInfoView
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -45,12 +49,6 @@
 
     [insetPath1 stroke];
     [insetPath2 fill];
-}
-
--(void)mouseDown:(NSEvent *)theEvent
-{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(converstaionInfoViewWasClicked:)])
-        [self.delegate converstaionInfoViewWasClicked:self];
 }
 
 @end

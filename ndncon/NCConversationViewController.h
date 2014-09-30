@@ -9,13 +9,13 @@
 #import <Cocoa/Cocoa.h>
 #import "NCStreamBrowserController.h"
 #import "NCNdnRtcLibraryController.h"
+#import "NCStreamPreviewController.h"
 
 @protocol NCConversationViewControllerDelegate;
 
-extern NSString* const kNCStreamsArrayKey;
-
 @interface NCConversationViewController : NSViewController
-<NCStreamBrowserControllerDelegate>
+<NCStreamBrowserControllerDelegate,
+NCStreamPreviewControllerDelegate>
 
 //+(NSString*)textStatusFromSessionStatus:(NCSessionStatus)sessionStatus;
 
@@ -27,12 +27,12 @@ extern NSString* const kNCStreamsArrayKey;
 //      {
 //          kNCSessionPrefixKey: <session_prefix>
 //          kNCSessionUserNameKey: <username>,
-//          kNCStreamsArrayKey: [
-//                                  <stream_prefix1>
-//                                  <stream_prefix2>
+//          kNCStreamsDicitonaryKey: {
+//                                  <stream_prefix1> : <userInfo1>
+//                                  <stream_prefix2> : <userInfo2>
 //                                  ...
-//                                  <stream_prefixN>
-//                              ]
+//                                  <stream_prefixN> : <userInfoN>
+//                              }
 //      }
 // ]
 //

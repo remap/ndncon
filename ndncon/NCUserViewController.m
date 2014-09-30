@@ -52,9 +52,7 @@
 {
     [self.scrollView addStackView:self.streamEditorController.stackView
                   withOrientation:NSUserInterfaceLayoutOrientationVertical];
-    [self.streamEditorController awakeFromNib];
-    if (self.sessionInfo)
-        [self updateStreams];
+    [self.streamEditorController awakeFromNib];    
 }
 
 -(void)setUserInfo:(NSDictionary *)userInfo
@@ -66,7 +64,8 @@
 
 -(void)setSessionInfo:(NCSessionInfoContainer *)sessionInfo
 {
-    if (![_sessionInfo isEqual:sessionInfo])
+    if (![_sessionInfo isEqual:sessionInfo] &&
+        !(sessionInfo == _sessionInfo))
     {
         _sessionInfo = sessionInfo;
         [self updateStreams];

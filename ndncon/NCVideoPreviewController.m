@@ -11,23 +11,6 @@
 #define PREVIEW_WIDTH 177.7
 #define PREVIEW_HEIGHT 100.
 
-@class NCVideoPreviewView;
-
-@protocol NCVideoPreviewViewDelegate <NSObject>
-
-@optional
--(void)videoPreviewViewDidUpdatedFrame:(NCVideoPreviewView*)videoPreviewView;
--(void)videoPreviewViewDidDisplayed:(NCVideoPreviewView*)videoPreviewView;
-
-@end
-
-@interface NCVideoPreviewView : NSView
-
-@property (nonatomic) BOOL frameWasUpdated, viewWasDisplayed;
-@property (nonatomic) id<NCVideoPreviewViewDelegate> delegate;
-
-@end
-
 @implementation NCVideoPreviewView
 
 -(id)init
@@ -117,7 +100,7 @@
 
 -(void)setPreviewForVideoRenderer:(NCVideoStreamRenderer*)renderer
 {
-    if (renderer && renderer != self.renderer)
+    if (renderer != self.renderer)
     {
         self.renderer = renderer;
 

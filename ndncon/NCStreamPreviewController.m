@@ -34,18 +34,16 @@
 
 -(void)initialize
 {
-    self.view = [[NSView alloc] init];
+    self.view = [[NCClickableView alloc] init];
+    ((NCClickableView*)self.view).delegate = self;
+    
     [self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
 
--(void)setStreamName:(NSString *)streamCaption
+-(void)viewWasClicked:(NCClickableView *)view
 {
-    self.streamCaptionLabel.stringValue = streamCaption;
-}
-
--(NSString *)streamName
-{
-    return self.streamCaptionLabel.stringValue;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(streamPreviewControllerWasSelected:)])
+        [self.delegate streamPreviewControllerWasSelected:self];
 }
 
 @end

@@ -14,7 +14,7 @@
 
 @interface NCMainViewController : NSViewController
 <NCConversationViewControllerDelegate,
-NCConversationInfoViewDelegate,
+NCClickableViewDelegate,
 NCUserListViewControllerDelegate,
 NCUserViewControllerDelegate>
 

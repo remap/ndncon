@@ -47,12 +47,6 @@
     self.preferences = nil;
 }
 
--(void)awakeFromNib
-{
-    [self loadViewsForAudioStreams:self.preferences.audioStreams
-                   andVideoStreams:self.preferences.videoStreams];
-}
-
 -(void)setAudioStreams:(NSArray *)audioStreams andVideoStreams:(NSArray*)videoStreams
 {
     [self removeAllEntries];

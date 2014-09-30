@@ -7,14 +7,25 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "NCClickableView.h"
+
+@protocol NCStreamPreviewControllerDelegate;
 
 @interface NCStreamPreviewController : NSViewController
+<NCClickableViewDelegate>
 
+@property (nonatomic, weak) id<NCStreamPreviewControllerDelegate> delegate;
 @property (nonatomic) NSString *streamName;
-@property (nonatomic, weak) IBOutlet NSTextField *streamCaptionLabel;
 @property (nonatomic, weak) IBOutlet NSView *streamPreview;
 @property (nonatomic, strong) id userData;
 
 -(void)initialize;
+
+@end
+
+@protocol NCStreamPreviewControllerDelegate <NSObject>
+
+@optional
+-(void)streamPreviewControllerWasSelected:(NCStreamPreviewController*)streamPreviewController;
 
 @end

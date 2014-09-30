@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "NCClickableView.h"
 
 typedef enum : NSUInteger {
     NCConversationInfoStatusOffline,
@@ -16,16 +17,8 @@ typedef enum : NSUInteger {
 
 @protocol NCConversationInfoViewDelegate;
 
-@interface NCConversationInfoView : NSView
+@interface NCConversationInfoView : NCClickableView
 
-@property (nonatomic, weak) IBOutlet id<NCConversationInfoViewDelegate> delegate;
 @property (nonatomic) NCConversationInfoStatus status;
-
-@end
-
-
-@protocol NCConversationInfoViewDelegate <NSObject>
-@optional
--(void)converstaionInfoViewWasClicked:(NCConversationInfoView*)infoView;
 
 @end

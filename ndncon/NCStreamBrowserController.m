@@ -50,8 +50,6 @@ NSString* const kPreviewControllerKey = @"previewController";
 {
     [super removeAllEntries];
     
-    NSArray *viewControllers = [[self.userPreviewControllers allValues] valueForKeyPath:kPreviewControllerKey];
-    
     [self.userPreviewControllers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         NCStreamPreviewController *vc = [obj valueForKeyPath:kPreviewControllerKey];
         

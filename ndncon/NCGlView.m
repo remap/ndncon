@@ -1,18 +1,14 @@
 //
-//  NCVideoStreamRenderer.m
+//  NCGlView.m
 //  NdnCon
 //
-//  Created by Peter Gusev on 9/25/14.
+//  Created by Peter Gusev on 9/29/14.
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
-#include <ndnrtc/interfaces.h>
-
+#import "NCGlView.h"
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/gl.h>
-
-#import "NCVideoStreamRenderer.h"
-
 
 #define GetError( )\
 {\
@@ -29,19 +25,8 @@ default:                                                                        
 }\
 }
 
-@interface MyGlView : NSOpenGLView
-{
-    uint _bufferSize, _width, _height;
-    uint8_t *_renderingBuffer;
-    GLuint _texture;
-    NSLock *_renderingLock;
-}
 
-@property (nonatomic) BOOL bufferUpdated;
-
-@end
-
-@implementation MyGlView
+@implementation NCGlView
 
 -(id)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)format
 {
@@ -150,12 +135,12 @@ default:                                                                        
     glDisable(GL_STENCIL_TEST);
     glDisable(GL_FOG);
     glDisable(GL_TEXTURE_2D);
-    glPixelZoom(1.0, 1.0);
+//    glPixelZoom(1.0, 1.0);
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glDepthMask(GL_FALSE);
     glDisable(GL_CULL_FACE);
-
+    
     // Set texture parameters
     glTexParameterf(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_PRIORITY, 1.0);
     glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -164,7 +149,7 @@ default:                                                                        
     glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_STORAGE_HINT_APPLE, GL_STORAGE_SHARED_APPLE);
+//    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_STORAGE_HINT_APPLE, GL_STORAGE_SHARED_APPLE);
     
     glEnable(GL_TEXTURE_RECTANGLE_ARB);
     glTexParameteri(GL_TEXTURE_RECTANGLE_ARB,
@@ -195,16 +180,16 @@ default:                                                                        
     {
         self.bufferUpdated = NO;
         
-//        GLfloat _startWidth = 0.f, _startHeight = 0.f, _stopWidth = 1.f, _stopHeight = 1.f;
-//        
-//        GLfloat xStart = 2.0f * _startWidth - 1.0f;
-//        GLfloat xStop = 2.0f * _stopWidth - 1.0f;
-//        GLfloat yStart = 1.0f - 2.0f * _stopHeight;
-//        GLfloat yStop = 1.0f - 2.0f * _startHeight;
+        //        GLfloat _startWidth = 0.f, _startHeight = 0.f, _stopWidth = 1.f, _stopHeight = 1.f;
+        //
+        //        GLfloat xStart = 2.0f * _startWidth - 1.0f;
+        //        GLfloat xStop = 2.0f * _stopWidth - 1.0f;
+        //        GLfloat yStart = 1.0f - 2.0f * _stopHeight;
+        //        GLfloat yStop = 1.0f - 2.0f * _startHeight;
         
         glBindTexture(GL_TEXTURE_RECTANGLE_ARB, _texture);
         glLoadIdentity();
-
+        
         glBegin(GL_POLYGON);
         {
             glTexCoord2f(0.0, 0.0); glVertex2f(-1, 1);
@@ -221,178 +206,18 @@ default:                                                                        
     [_renderingLock unlock];
 }
 
-@end
-
-class RendererInternal;
-
-@interface NCVideoStreamRenderer ()
+-(void)reshape
 {
-    CVDisplayLinkRef _displayLink;
-    RendererInternal* _renderer;
-}
-
-@property (nonatomic) MyGlView *openGlView;
-
--(uint8_t*)getRenderingBufferForWidth:(int)width andHeight:(int)height;
--(void)renderFrame:(const uint8_t*)frameData withWidth:(NSInteger)width andHeight:(NSInteger)height andTimestamp:(int64_t)timestamp;
--(void)screenRefresh:(CVTimeStamp)timestamp;
-
-@end
-
-//******************************************************************************
-class RendererInternal : public ndnrtc::IExternalRenderer
-{
-public:
-    RendererInternal(NCVideoStreamRenderer* videoStreamRenderer)
-    { videoStreamRenderer_ = videoStreamRenderer; };
-    ~RendererInternal(){};
-    
-    uint8_t* getFrameBuffer(int width, int height)
-    {
-        return [videoStreamRenderer_ getRenderingBufferForWidth:width andHeight:height];
-    }
-    
-    void renderBGRAFrame(int64_t timestamp, int width, int height,
-                         const uint8_t* buffer)
-    {
-        if (videoStreamRenderer_)
-            [videoStreamRenderer_ renderFrame:buffer
-                                    withWidth:width
-                                    andHeight:height
-                                 andTimestamp:timestamp];
-        
-        return;
-    }
-    
-private:
-    NCVideoStreamRenderer *videoStreamRenderer_;
-};
-
-//******************************************************************************
-
-CVReturn displayCallback(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow, const CVTimeStamp *inOutputTime, CVOptionFlags flagsIn, CVOptionFlags *flagsOut, void *displayLinkContext)
-{
-    NCVideoStreamRenderer *controller = (__bridge NCVideoStreamRenderer *)displayLinkContext;
-    
-    [controller screenRefresh:*inOutputTime];
-    
-    return kCVReturnSuccess;
-}
-
-@implementation NCVideoStreamRenderer
-
--(id)init
-{
-    self = [super init];
-    
-    if (self)
-        [self initialize];
-    
-    return self;
-}
-
--(void)initialize
-{
-    _displayLink = 0;
-    _renderer = new RendererInternal(self);
-}
-
--(void)dealloc
-{
-    delete _renderer;
-    self.openGlView = nil;
-    [self releaseDisplayLink];
-}
-
--(void *)ndnRtcRenderer
-{
-    return _renderer;
-}
-
--(void)setRenderingView:(NSView *)renderingView
-{
-    if (renderingView && _renderingView != renderingView)
-    {
-        _renderingView = renderingView;
-        [self createOpenGlView];
-        [self createDisplayLink];
-    }
-}
-
--(uint8_t *)getRenderingBufferForWidth:(int)width andHeight:(int)height
-{
-    return [self.openGlView bufferForWidth:width andHeight:height];
-}
-
--(void)renderFrame:(const uint8_t*)frameData
-         withWidth:(NSInteger)width
-         andHeight:(NSInteger)height
-      andTimestamp:(int64_t)timestamp
-{
-    [self.openGlView updateBuffer];
-}
-
-// private
-- (void)createOpenGlView
-{
-    NSOpenGLPixelFormatAttribute pixelFormatAttributes[] =
-    {
-        NSOpenGLPFAColorSize    , 24                           ,
-        NSOpenGLPFAAlphaSize    , 8                            ,
-        NSOpenGLPFADoubleBuffer ,
-        NSOpenGLPFAAccelerated  ,
-        NSOpenGLPFANoRecovery   ,
-        0
-    };
-    
-    NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:pixelFormatAttributes];
-    self.openGlView = [[MyGlView alloc] initWithFrame:self.renderingView.bounds
-                                          pixelFormat:pixelFormat];
-    [self.renderingView addSubview: self.openGlView];
-}
-
-- (void)createDisplayLink
-{
-    [self releaseDisplayLink];
-
-    CVReturn error = CVDisplayLinkCreateWithActiveCGDisplays(&_displayLink);
-    
-    if (kCVReturnSuccess == error)
-    {
-        CVDisplayLinkSetOutputCallback(_displayLink, displayCallback, (__bridge void*)self);
-        CVDisplayLinkStart(_displayLink);
-    }
-    else
-    {
-        NSLog(@"Display Link created with error: %d", error);
-        _displayLink = NULL;
-    }
-}
-
-- (void)releaseDisplayLink
-{
-    if (_displayLink)
-    {
-        CVDisplayLinkStop(_displayLink);
-        CVDisplayLinkRelease(_displayLink);
-    }
-}
-
-- (void)screenRefresh:(CVTimeStamp)timestamp
-{
-    if (!self.openGlView.openGLContext)
-    {
-        NSLog(@"context is not ready yet");
-        return;
-    }
-    
-    if (self.openGlView.bufferUpdated)
-    {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.openGlView setNeedsDisplay:YES];
-        });
-    }
+    [_renderingLock lock];
+    [self.openGLContext makeCurrentContext];
+    glViewport(0, 0,
+               CGRectGetWidth(self.bounds),
+               CGRectGetHeight(self.bounds));
+    GetError();
+    glLoadIdentity();
+    GetError();
+    [self update];
+    [_renderingLock unlock];
 }
 
 @end
-

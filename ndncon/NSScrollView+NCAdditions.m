@@ -12,12 +12,12 @@
 
 -(void)addStackView:(NSStackView *)stackView withOrientation:(NSUserInterfaceLayoutOrientation)orientation
 {
-    [self setDocumentView:stackView];
-    
     stackView.orientation = orientation;
-    
     [stackView setClippingResistancePriority:NSLayoutPriorityDefaultLow
                               forOrientation:(orientation == NSUserInterfaceLayoutOrientationHorizontal)?NSLayoutConstraintOrientationHorizontal:NSLayoutConstraintOrientationVertical];
+    
+
+    [self setDocumentView:stackView];
     
     NSString *constraingFormat = (orientation == NSUserInterfaceLayoutOrientationHorizontal)?@"H:|[stackView]":@"H:|[stackView]|";
     

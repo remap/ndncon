@@ -35,7 +35,6 @@
 -(void)initialize
 {
     self.stackView.wantsLayer = YES;
-    self.stackView.layer.backgroundColor = [NSColor scrollBarColor].CGColor;
     self.entryControllers = [[NSMutableArray alloc] init];
 }
 
@@ -118,3 +117,13 @@
 }
 
 @end
+
+@implementation NCStackView
+
+-(BOOL)isFlipped
+{
+    return YES;
+}
+
+@end
+

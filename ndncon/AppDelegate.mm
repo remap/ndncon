@@ -159,7 +159,7 @@
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    [[NCNdnRtcLibraryController sharedInstance] stopSession];
+    NSLog(@"terminating...");
     
     if (!_managedObjectContext) {
         return NSTerminateNow;
@@ -203,6 +203,10 @@
     return NSTerminateNow;
 }
 
+-(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
+{
+    return YES;
+}
 
 -(IBAction)showPreferences:(id)sender
 {

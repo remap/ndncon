@@ -9,7 +9,9 @@
 #import "NCStreamPreviewController.h"
 #import "NCCameraCapturer.h"
 #import "NCVideoStreamRenderer.h"
+#import "NCClickableView.h"
 
+//******************************************************************************
 @protocol NCVideoPreviewViewDelegate;
 
 @interface NCVideoPreviewController : NCStreamPreviewController
@@ -17,4 +19,23 @@
 
 -(void)setPreviewForCameraCapturer:(NCCameraCapturer*)cameraCapturer;
 -(void)setPreviewForVideoRenderer:(NCVideoStreamRenderer*)renderer;
+@end
+
+//******************************************************************************
+@class NCVideoPreviewView;
+
+@protocol NCVideoPreviewViewDelegate <NSObject>
+
+@optional
+-(void)videoPreviewViewDidUpdatedFrame:(NCVideoPreviewView*)videoPreviewView;
+-(void)videoPreviewViewDidDisplayed:(NCVideoPreviewView*)videoPreviewView;
+
+@end
+
+//******************************************************************************
+@interface NCVideoPreviewView : NCClickableView
+
+@property (nonatomic) BOOL frameWasUpdated, viewWasDisplayed;
+@property (nonatomic) IBOutlet id<NCClickableViewDelegate,NCVideoPreviewViewDelegate> delegate;
+
 @end

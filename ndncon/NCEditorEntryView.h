@@ -23,12 +23,3 @@ typedef enum : NSUInteger {
 @property (nonatomic) CGFloat shadowInset;
 
 @end
-
-typedef void(^NCDrawBlock)(NSView *view, NSRect dirtyRect);
-
-@interface NCBlockDrawableView : NSView
-
--(void)addDrawBlock:(NCDrawBlock)drawBlock;
--(void)removeDrawBlock:(NCDrawBlock)drawBlock;
-
-@end

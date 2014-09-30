@@ -27,13 +27,15 @@
 #import "NSObject+NCAdditions.h"
 #import "NCUserListViewController.h"
 #import "NCVideoStreamRenderer.h"
+#import "NCActiveStreamViewer.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
 
 NSString* const kCameraCapturerKey = @"cameraCapturer";
 NSString* const kRendererKey = @"videoRenderer";
-NSString* const kNCStreamsArrayKey = @"streamsArray";
+NSString* const kNCLocalStreamsDictionaryKey = @"localStreamsDictionary";
+NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
 
 @interface NCConversationViewController ()
 
@@ -42,9 +44,13 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
 @property (weak) IBOutlet NSScrollView *localStreamsScrollView;
 @property (weak) IBOutlet NSScrollView *remoteStreamsScrollView;
 @property (weak) IBOutlet NSView *activeStreamContentView;
+@property (strong) IBOutlet NSView *startPublishingView;
 
 @property (nonatomic, strong) NCStreamBrowserController *localStreamViewer;
 @property (nonatomic, strong) NCStreamBrowserController *remoteStreamViewer;
+
+@property (nonatomic, strong) NCActiveStreamViewer *activeStreamViewer;
+@property (nonatomic, weak) NCStreamPreviewController *currentlySelectedPreview;
 
 @end
 
@@ -52,7 +58,7 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
 
 -(id)init
 {
-    self = [self initWithNibName:@"NCConverstaionView" bundle:nil];
+    self = [self initWithNibName:@"NCConversationView" bundle:nil];
     
     if (self)
         [self initialize];
@@ -71,8 +77,11 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
     self.remoteStreamViewer = [[NCStreamBrowserController alloc] init];
     self.remoteStreamViewer.delegate = self;
     
+    self.activeStreamViewer = [[NCActiveStreamViewer alloc] init];
+    
     [self subscribeForNotificationsAndSelectors:
      NCSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
+     NSApplicationWillTerminateNotification, @selector(onAppWillTerminate:),
      nil];
 }
 
@@ -86,10 +95,33 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
 
 -(void)awakeFromNib
 {
-    [self.localStreamsScrollView addStackView:self.localStreamViewer.stackView
-                              withOrientation:NSUserInterfaceLayoutOrientationHorizontal];
     [self.remoteStreamsScrollView addStackView:self.remoteStreamViewer.stackView
                                withOrientation:NSUserInterfaceLayoutOrientationVertical];
+    
+    if (self.currentConversationStatus != SessionStatusOnlinePublishing)
+        [self.localStreamsScrollView setDocumentView:self.startPublishingView];
+    else
+        [self.localStreamsScrollView addStackView:self.localStreamViewer.stackView
+                                  withOrientation:NSUserInterfaceLayoutOrientationHorizontal];
+    
+    [self.activeStreamContentView addSubview:self.activeStreamViewer.view];
+    NSView *activeStreamView = self.activeStreamViewer.view;
+    
+    [self.activeStreamContentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[activeStreamView]|"
+                                                                                         options:0
+                                                                                         metrics:nil
+                                                                                           views:NSDictionaryOfVariableBindings(activeStreamView)]];
+    [self.activeStreamContentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[activeStreamView]|"
+                                                                                         options:0
+                                                                                         metrics:nil
+                                                                                           views:NSDictionaryOfVariableBindings(activeStreamView)]];
+}
+
+- (IBAction)startPublishing:(id)sender
+{
+    [self.localStreamsScrollView addStackView:self.localStreamViewer.stackView
+                              withOrientation:NSUserInterfaceLayoutOrientationHorizontal];
+    [self startPublishingWithConfiguration:[NCPreferencesController sharedInstance].producerConfigurationCopy];
 }
 
 - (IBAction)endConversation:(id)sender
@@ -98,7 +130,7 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
     [self.remoteStreamViewer closeAllStreams];
     
     self.participants = @[];
-    [self checkConversationDidEnd];    
+    [self checkConversationDidEnd];
 }
 
 -(void)startPublishingWithConfiguration:(NSDictionary *)streamsConfiguration
@@ -112,12 +144,17 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
 
 -(void)startFetchingWithConfiguration:(NSDictionary *)userInfo
 {
-    NSLog(@"%@", userInfo);
+    BOOL hasRemoteParticipants = ([self numberOfRemoteParticipants] > 0);
+    
     NSArray *audioStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] audioStreamsConfigurations];
     NSArray *videoStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] videoStreamsConfigurations];
     
     [self addRemoteAudioStreams: audioStreams withUserInfo:userInfo];
     [self addRemoteVideoStreams: videoStreams withUserInfo:userInfo];
+    
+    if (!hasRemoteParticipants)
+        [self setStreamWithPrefixActive:[[self getStreamsForPariticpant:[userInfo valueForKeyPath:kNCSessionUsernameKey]
+                                                              isRemote:YES].allKeys firstObject]];
 }
 
 -(void)setParticipants:(NSArray *)participants
@@ -166,7 +203,45 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
         [self removeRemoteStreamWithPrefix:[previewController.userData objectForKey:kStreamPrefixKey]];
 }
 
+// NCStreamPreviewControllerDelegate
+-(void)streamPreviewControllerWasSelected:(NCStreamPreviewController *)streamPreviewController
+{
+    if (self.currentlySelectedPreview && [self.currentlySelectedPreview isKindOfClass:[NCVideoPreviewController class]])
+    {
+        [((NCVideoPreviewController*)self.currentlySelectedPreview) setPreviewForVideoRenderer:self.activeStreamViewer.renderer];
+    }
+    
+    NSString *streamPrefix = [streamPreviewController.userData valueForKey:kStreamPrefixKey];
+    [self setStreamWithPrefixActive:streamPrefix];
+}
+
 // private
+-(void)setStreamWithPrefixActive:(NSString*)streamPrefix
+{
+    NSMutableDictionary *participantInfo = [self getParticipantInfoForStream:streamPrefix];
+    NSString *username = [participantInfo valueForKey:kNCSessionUsernameKey];
+    
+    self.activeStreamViewer.userName = username;
+    self.activeStreamViewer.streamName = [streamPrefix lastPathComponent];
+//    self.activeStreamViewer.mediaThreads = [self getStreamsForPariticpant:username isRemote:NO];
+    
+    NCVideoPreviewController *previewController = [[participantInfo objectForKey:kNCRemoteStreamsDictionaryKey] valueForKey:streamPrefix];
+
+    if (previewController && [previewController isKindOfClass:[NCVideoPreviewController class]])
+    {
+        self.currentlySelectedPreview = previewController;
+        NCVideoStreamRenderer *renderer = [[(NCVideoPreviewController*)previewController userData] valueForKey:kRendererKey];
+        [previewController setPreviewForVideoRenderer:nil];
+        self.activeStreamViewer.renderer = renderer;
+    }
+}
+
+-(void)onAppWillTerminate:(NSNotification*)notification
+{
+    if (self.participants.count > 0)
+        [self endConversation:nil];
+}
+
 -(void)onSessionStatusUpdate:(NSNotification*)notification
 {
     if ([[notification.userInfo valueForKey:kNCSessionPrefixKey] isEqualToString:[NCNdnRtcLibraryController sharedInstance].sessionPrefix])
@@ -195,7 +270,12 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
 -(void)addStreamToConversation:(NSString*)streamPrefix
                  sessionPrefix:(NSString*)sessionPrefix
                       userName:(NSString*)userName
+                      isRemote:(BOOL)isStreamRemote
+                      userInfo:(id)userInfo
 {
+    NSString *streamsArrayKey = (isStreamRemote)?kNCRemoteStreamsDictionaryKey:kNCLocalStreamsDictionaryKey;
+    NSString *otherStreamsArrayKey = (isStreamRemote)?kNCLocalStreamsDictionaryKey:kNCRemoteStreamsDictionaryKey;
+    
     if ([[self.participants valueForKeyPath:kNCSessionPrefixKey]
          containsObject:sessionPrefix])
     {
@@ -203,32 +283,34 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
         NSAssert((participantArray.count == 1), @"should have 1 object");
         
         NSMutableDictionary *participantInfo = [participantArray firstObject];
-        [[participantInfo valueForKey:kNCStreamsArrayKey] addObject:streamPrefix];
+        [[participantInfo valueForKey:streamsArrayKey] setObject:userInfo forKey:streamPrefix];
     }
     else
     {
         [self addUserToConversation:[@{
                                       kNCSessionPrefixKey:sessionPrefix,
                                       kNCSessionUsernameKey:userName,
-                                      kNCStreamsArrayKey:[@[streamPrefix] deepMutableCopy]
+                                      streamsArrayKey:[@{streamPrefix:userInfo} deepMutableCopy],
+                                      otherStreamsArrayKey:@{}
                                       } deepMutableCopy]];
     }
 }
 
 -(void)removeStreamFromConversation:(NSString*)streamPrefix
+                           isRemote:(BOOL)isStreamRemote
 {
+    NSString *streamsArrayKey = (isStreamRemote)?kNCRemoteStreamsDictionaryKey:kNCLocalStreamsDictionaryKey;
+    NSString *otherStreamsArrayKey = (isStreamRemote)?kNCLocalStreamsDictionaryKey:kNCRemoteStreamsDictionaryKey;
     __block NSMutableDictionary *participantForRemoval = nil;
     
     [self.participants enumerateObjectsUsingBlock:^(NSMutableDictionary *obj, NSUInteger idx, BOOL *stop) {
-        NSArray *streams = [obj valueForKey:kNCStreamsArrayKey];
-        if ([streams containsObject:streamPrefix])
+        NSMutableDictionary *streams = [obj valueForKey:streamsArrayKey];
+        if ([streams.allKeys containsObject:streamPrefix])
         {
-            NSArray *newStreams = [streams arrayByRemovingObject:streamPrefix];
-
-            if (newStreams.count == 0)
+            [streams removeObjectForKey:streamPrefix];
+            
+            if (streams.count == 0 && [[obj valueForKey:otherStreamsArrayKey] count] == 0)
                 participantForRemoval = obj;
-
-            [obj setValue:newStreams forKey:kNCStreamsArrayKey];
         }
     }];
     
@@ -282,6 +364,43 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
     return params;
 }
 
+-(NSMutableDictionary*)getParticipantInfo:(NSString*)username
+{
+    return [[self.participants filteredArrayUsingPredicate:
+     [NSPredicate predicateWithFormat:@"self.%@==%@",
+      kNCSessionUsernameKey, username]] firstObject];
+}
+
+-(NSMutableDictionary*)getParticipantInfoForStream:(NSString*)streamPrefix
+{
+    __block NSMutableDictionary *participantInfo = nil;
+    
+    [self.participants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+       if ([[[obj valueForKey:kNCRemoteStreamsDictionaryKey] allKeys] containsObject:streamPrefix])
+           participantInfo = obj;
+        else if ([[[obj valueForKey:kNCLocalStreamsDictionaryKey] allKeys] containsObject:streamPrefix])
+            participantInfo = obj;
+        
+        *stop = (participantInfo != nil);
+    }];
+    
+    return participantInfo;
+}
+
+-(NSUInteger)numberOfRemoteParticipants
+{
+    return [self.participants filteredArrayUsingPredicate:
+            [NSPredicate predicateWithFormat:@"self.%@!=%@",
+             kNCSessionUsernameKey,
+             [NCPreferencesController sharedInstance].userName]].count;
+}
+
+-(NSDictionary*)getStreamsForPariticpant:(NSString*)username isRemote:(BOOL)isRemote
+{
+    NSDictionary *participantInfo = [self getParticipantInfo:username];
+    return (isRemote)?[participantInfo valueForKey:kNCRemoteStreamsDictionaryKey]:[participantInfo valueForKey:kNCLocalStreamsDictionaryKey];
+}
+
 // NdnRtc
 -(void)startAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
 {
@@ -303,7 +422,9 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
                                     };
         [self addStreamToConversation:streamPrefixStr
                         sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
-                             userName:[NCPreferencesController sharedInstance].userName];
+                             userName:[NCPreferencesController sharedInstance].userName
+                             isRemote:NO
+                             userInfo:audioPreviewVc];
     }
 }
 
@@ -354,7 +475,9 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
                                         };
             [self addStreamToConversation:streamPrefixStr
                             sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
-                                 userName:[NCPreferencesController sharedInstance].userName];
+                                 userName:[NCPreferencesController sharedInstance].userName
+                                 isRemote:NO
+                                 userInfo:videoPreviewVc];
         }
     }
     else
@@ -369,7 +492,7 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
     lib->removeLocalStream([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding],
                            [streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
     
-    [self removeStreamFromConversation:streamPrefix];
+    [self removeStreamFromConversation:streamPrefix isRemote:NO];
 }
 
 -(void)addRemoteAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
@@ -397,6 +520,7 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
         NCVideoPreviewController *videoPreviewVc = (NCVideoPreviewController*)[self.remoteStreamViewer addStreamWithConfiguration:streamConfiguration
                                                                                                             andStreamPreviewClass:[NCVideoPreviewController class]
                                                                                                                   forStreamPrefix:streamPrefixStr];
+        videoPreviewVc.delegate = self;
         [videoPreviewVc setPreviewForVideoRenderer:renderer];
         videoPreviewVc.userData = @{
                                     kRendererKey: renderer,
@@ -404,7 +528,9 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
                                     };
         [self addStreamToConversation:streamPrefixStr
                         sessionPrefix:[userInfo valueForKeyPath:kNCSessionPrefixKey]
-                             userName:[userInfo valueForKeyPath:kNCSessionUsernameKey]];
+                             userName:[userInfo valueForKeyPath:kNCSessionUsernameKey]
+                             isRemote:YES
+                             userInfo:videoPreviewVc];
         
     }
 }
@@ -414,7 +540,7 @@ NSString* const kNCStreamsArrayKey = @"streamsArray";
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->removeRemoteStream([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
     
-    [self removeStreamFromConversation:streamPrefix];
+    [self removeStreamFromConversation:streamPrefix isRemote:YES];
     
 }
 

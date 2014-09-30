@@ -244,6 +244,11 @@ private:
     [self checkAndUpdateSessionObservers];
 }
 
+-(void)clearSelection
+{
+    [self.tableView deselectAll:nil];
+}
+
 // NSTableViewDelegate
 -(void)tableViewSelectionDidChange:(NSNotification *)notification
 {
@@ -271,6 +276,7 @@ private:
         }];
     }
 }
+
 -(void)checkAndUpdateSessionObservers
 {
     [self stopOldObservers];

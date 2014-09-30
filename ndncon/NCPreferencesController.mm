@@ -110,8 +110,8 @@ using namespace ndnrtc::new_api;
 
 - (void)refreshDevices
 {
-    [self setVideoDevices:[[AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] arrayByAddingObjectsFromArray:[AVCaptureDevice devicesWithMediaType:AVMediaTypeMuxed]]];
-    [self setAudioDevices:[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio]];
+        [self setVideoDevices:[[AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] arrayByAddingObjectsFromArray:[AVCaptureDevice devicesWithMediaType:AVMediaTypeMuxed]]];
+        [self setAudioDevices:[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio]];
 }
 
 +(NCPreferencesController*)sharedInstance

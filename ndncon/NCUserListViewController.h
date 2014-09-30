@@ -12,6 +12,7 @@
 extern NSString* const kNCSessionInfoKey;
 extern NSString* const kNCHubPrefixKey;
 
+//******************************************************************************
 @interface NCSessionInfoContainer : NSObject
 <NSTableViewDelegate, NSTableViewDataSource>
 
@@ -25,6 +26,7 @@ extern NSString* const kNCHubPrefixKey;
 
 @end
 
+//******************************************************************************
 @protocol NCUserListViewControllerDelegate;
 
 @interface NCUserListViewController : NSObject
@@ -34,9 +36,11 @@ extern NSString* const kNCHubPrefixKey;
 +(NCSessionStatus)sessionStatusForUser:(NSString*)user
                 withPrefix:(NSString*)prefix;
 
+-(void)clearSelection;
 
 @end
 
+//******************************************************************************
 @protocol NCUserListViewControllerDelegate <NSObject>
 
 @optional

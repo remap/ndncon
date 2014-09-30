@@ -60,8 +60,8 @@
 {
     [self.scrollView addStackView:self.streamEditorController.stackView
                   withOrientation:NSUserInterfaceLayoutOrientationVertical];
-    
-    [self.streamEditorController awakeFromNib];
+    [self.streamEditorController setAudioStreams:self.preferences.audioStreams
+                                 andVideoStreams:self.preferences.videoStreams];
 }
 
 - (IBAction)addAudioStream:(id)sender
