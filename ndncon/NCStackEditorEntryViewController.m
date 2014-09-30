@@ -22,6 +22,7 @@
 @property (weak) IBOutlet NSLayoutConstraint *captionBottomSpaceConstraint;
 @property (weak) IBOutlet NSLayoutConstraint *captionLeadingSpaceConstraint;
 @property (weak) IBOutlet NSLayoutConstraint *buttonTrailingSpaceConstraint;
+@property (weak) IBOutlet NCEditorEntryView *entryView;
 
 @end
 
@@ -127,6 +128,16 @@
     [self.captionLabel setFont:captionFont];
     [(NCEditorEntryView*)self.view setHeaderHeight:headerHeight];
     self.view.needsDisplay = YES;
+}
+
+-(void)setIsHighlighted:(BOOL)isHighlighted
+{
+    if (_isHighlighted != isHighlighted)
+    {
+        self.entryView.shadowColor = (isHighlighted)?[NSColor orangeColor]:[NSColor blackColor];
+        _isHighlighted = isHighlighted;
+        [self.entryView setNeedsDisplay:YES];
+    }
 }
 
 // private

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCStackEditorEntryViewController">
@@ -10,24 +10,22 @@
                 <outlet property="captionBottomSpaceConstraint" destination="SOT-Nv-30h" id="D2p-Ni-0vc"/>
                 <outlet property="captionLabel" destination="5Vi-he-Koe" id="Lnd-PE-GzT"/>
                 <outlet property="captionLeadingSpaceConstraint" destination="jDW-Hv-dwH" id="qdN-3v-HEW"/>
+                <outlet property="entryView" destination="c22-O7-iKe" id="FLw-5a-wka"/>
                 <outlet property="headerHeightConstraint" destination="rHr-VG-ShE" id="07m-31-Cw3"/>
                 <outlet property="headerView" destination="hg4-Y7-wIO" id="saK-B0-BnR"/>
                 <outlet property="view" destination="c22-O7-iKe" id="3R4-AY-1ok"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe" customClass="NCEditorEntryView">
             <rect key="frame" x="0.0" y="0.0" width="598" height="138"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="hg4-Y7-wIO" userLabel="Header view" customClass="NCBlockDrawableView">
                     <rect key="frame" x="0.0" y="99" width="598" height="39"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5Vi-he-Koe">
                             <rect key="frame" x="18" y="8" width="57" height="17"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Caption" id="aPW-aY-GNF">
                                 <font key="font" metaFont="systemBold"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -36,13 +34,12 @@
                         </textField>
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fia-yZ-EL0">
                             <rect key="frame" x="557" y="6" width="21" height="19"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="18" id="GZy-Wp-zqp"/>
                             </constraints>
                             <buttonCell key="cell" type="roundRect" title="X" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2ZI-2d-0U7">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" size="10" name="LucidaGrande"/>
+                                <font key="font" metaFont="system" size="10"/>
                             </buttonCell>
                             <connections>
                                 <action selector="closeView:" target="-2" id="rAs-q6-6hs"/>
@@ -74,6 +71,9 @@
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="number" keyPath="shadowInset">
                     <integer key="value" value="6"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                    <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
         </customView>

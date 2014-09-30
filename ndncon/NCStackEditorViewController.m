@@ -76,6 +76,24 @@
     [self.entryControllers removeAllObjects];
 }
 
+-(void)highlightEntryWithcontroller:(NSViewController*)viewController
+{
+    [self.entryControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([(NCStackEditorEntryViewController*)obj contentViewController] == viewController)
+        {
+            [(NCStackEditorEntryViewController*)obj setIsHighlighted:YES];
+            *stop = YES;
+        }
+    }];
+}
+
+-(void)removeEntryHighlight
+{
+    [self.entryControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [(NCStackEditorEntryViewController*)obj setIsHighlighted:NO];
+    }];
+}
+
 // NSStackView delegate
 -(void)stackView:(NSStackView *)stackView didReattachViews:(NSArray *)views
 {

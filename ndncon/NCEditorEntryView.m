@@ -31,7 +31,9 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    CGFloat inset = self.shadowInset;//(self.roundCorners)?6.0:0;
+    self.layer.shadowColor = self.shadowColor.CGColor;
+    
+    CGFloat inset = self.shadowInset;
     CGFloat cornerRadius =(self.roundCorners)?self.cornerRadius:0.;
     
     CGRect frame = NSInsetRect(self.bounds, inset, inset);

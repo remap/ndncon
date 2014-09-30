@@ -17,9 +17,10 @@ class RendererInternal;
 {
     CVDisplayLinkRef _displayLink;
     RendererInternal* _renderer;
+    NSLock *_renderingViewLock;
 }
 
-@property (nonatomic) NCGlView *openGlView;
+@property (nonatomic, strong) NCGlView *openGlView;
 
 -(uint8_t*)getRenderingBufferForWidth:(int)width andHeight:(int)height;
 -(void)renderFrame:(const uint8_t*)frameData withWidth:(NSInteger)width andHeight:(NSInteger)height andTimestamp:(int64_t)timestamp;
@@ -81,6 +82,7 @@ CVReturn displayCallback(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow,
 
 -(void)initialize
 {
+    _renderingViewLock = [[NSLock alloc] init];
     _displayLink = 0;
     _renderer = new RendererInternal(self);
 }
@@ -99,17 +101,28 @@ CVReturn displayCallback(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow,
 
 -(void)setRenderingView:(NSView *)renderingView
 {
+    [_renderingViewLock lock];
+
     if (renderingView && _renderingView != renderingView)
     {
+        [self releaseDisplayLink];
         _renderingView = renderingView;
         [self createOpenGlView];
         [self createDisplayLink];
     }
+
+    [_renderingViewLock unlock];
 }
 
 -(uint8_t *)getRenderingBufferForWidth:(int)width andHeight:(int)height
 {
-    return [self.openGlView bufferForWidth:width andHeight:height];
+    [_renderingViewLock lock]; // will be unlocked in renderFrame:withWidth:andHeight:andTimestamp:
+    uint8_t *buf = [self.openGlView bufferForWidth:width andHeight:height];
+    
+    if (!buf)
+        [_renderingViewLock unlock];
+    
+    return buf;
 }
 
 -(void)renderFrame:(const uint8_t*)frameData
@@ -118,11 +131,18 @@ CVReturn displayCallback(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow,
       andTimestamp:(int64_t)timestamp
 {
     [self.openGlView updateBuffer];
+    [_renderingViewLock unlock]; // release lock set in getRenderingBufferForWidth:andHeight: call
 }
 
 // private
 - (void)createOpenGlView
 {
+    if (self.openGlView)
+    {
+        [self.openGlView removeFromSuperview];
+        self.openGlView = nil;
+    }
+    
     NSOpenGLPixelFormatAttribute pixelFormatAttributes[] =
     {
         NSOpenGLPFAColorSize    , 24                           ,
@@ -174,21 +194,21 @@ CVReturn displayCallback(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow,
     {
         CVDisplayLinkStop(_displayLink);
         CVDisplayLinkRelease(_displayLink);
+        _displayLink = 0;
     }
 }
 
 - (void)screenRefresh:(CVTimeStamp)timestamp
 {
     if (!self.openGlView.openGLContext)
-    {
-        NSLog(@"context is not ready yet");
         return;
-    }
     
     if (self.openGlView.bufferUpdated)
     {
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_renderingViewLock lock];
             [self.openGlView setNeedsDisplay:YES];
+            [_renderingViewLock unlock];
         });
     }
 }

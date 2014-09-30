@@ -40,18 +40,34 @@ default:                                                                        
     return self;
 }
 
+-(void)dealloc
+{
+    [self.openGLContext makeCurrentContext];
+    
+    if (glIsTexture(_texture))
+        glDeleteTextures(1, (const GLuint*) &_texture);
+    
+    free(_renderingBuffer);
+}
+
 -(uint8_t*)bufferForWidth:(int)width andHeight:(int)height
 {
+    if (!self.openGLContext)
+        return NULL;
+    
+    BOOL sizeChanged = (width != _width) || (height != _height);
+    
     _width = width;
     _height = height;
     
     int requiredSize = width*height*4;
     
-    if (!_renderingBuffer || _bufferSize < requiredSize)
+    if (!_renderingBuffer || _bufferSize < requiredSize || sizeChanged)
     {
         _renderingBuffer = (uint8_t*)realloc((void*)_renderingBuffer, requiredSize);
         memset(_renderingBuffer, 0, requiredSize);
         _bufferSize = requiredSize;
+        
         [self createTexture];
     }
     
@@ -60,6 +76,9 @@ default:                                                                        
 
 -(void)updateBuffer
 {
+    if (!self.openGLContext)
+        return;
+    
     [_renderingLock lock];
     
     [self.openGLContext makeCurrentContext];
@@ -83,7 +102,7 @@ default:                                                                        
 -(void)createTexture
 {
     [_renderingLock lock];
-    
+
     [self.openGLContext makeCurrentContext];
     
     if (glIsTexture(_texture))
@@ -122,20 +141,21 @@ default:                                                                        
                  GL_UNSIGNED_INT_8_8_8_8,
                  _renderingBuffer);
     GetError();
-    
+
     [_renderingLock unlock];
 }
 
 -(void)prepareOpenGL
 {
     [_renderingLock lock];
+
     // Disable not needed functionality to increase performance
     glDisable(GL_DITHER);
     glDisable(GL_ALPHA_TEST);
     glDisable(GL_STENCIL_TEST);
     glDisable(GL_FOG);
     glDisable(GL_TEXTURE_2D);
-//    glPixelZoom(1.0, 1.0);
+    glPixelZoom(1.0, 1.0);
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glDepthMask(GL_FALSE);
@@ -209,6 +229,7 @@ default:                                                                        
 -(void)reshape
 {
     [_renderingLock lock];
+    
     [self.openGLContext makeCurrentContext];
     glViewport(0, 0,
                CGRectGetWidth(self.bounds),
@@ -217,6 +238,7 @@ default:                                                                        
     glLoadIdentity();
     GetError();
     [self update];
+    
     [_renderingLock unlock];
 }
 

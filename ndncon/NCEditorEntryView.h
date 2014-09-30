@@ -21,5 +21,6 @@ typedef enum : NSUInteger {
 @property (nonatomic) NCEditorEntryViewHeaderStyle headerStyle;
 @property (nonatomic) CGFloat cornerRadius;
 @property (nonatomic) CGFloat shadowInset;
+@property (nonatomic) NSColor *shadowColor;
 
 @end

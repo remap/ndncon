@@ -19,6 +19,9 @@
 -(NCStackEditorEntryViewController *)addViewControllerEntry:(NSViewController*)viewController withStyle:(NCStackEditorEntryStyle)style;
 -(void)removeAllEntries;
 
+-(void)highlightEntryWithcontroller:(NSViewController*)viewController;
+-(void)removeEntryHighlight;
+
 @end
 
 @interface NCStackView : NSStackView

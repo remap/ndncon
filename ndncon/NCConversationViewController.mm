@@ -229,9 +229,13 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
 
     if (previewController && [previewController isKindOfClass:[NCVideoPreviewController class]])
     {
+        [self.remoteStreamViewer removeEntryHighlight];
+        [self.remoteStreamViewer highlightEntryWithcontroller:previewController];
         self.currentlySelectedPreview = previewController;
+        
         NCVideoStreamRenderer *renderer = [[(NCVideoPreviewController*)previewController userData] valueForKey:kRendererKey];
         [previewController setPreviewForVideoRenderer:nil];
+        
         self.activeStreamViewer.renderer = renderer;
     }
 }
