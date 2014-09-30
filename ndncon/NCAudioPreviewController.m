@@ -30,7 +30,7 @@
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(preview)]];
     self.view.wantsLayer = YES;
-    self.view.layer.backgroundColor = [NSColor clearColor].CGColor;
+    self.view.layer.backgroundColor = [NSColor blackColor].CGColor;
     
     NSImageView *imageView = [[NSImageView alloc] init];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;

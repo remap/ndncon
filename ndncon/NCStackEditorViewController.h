@@ -13,6 +13,7 @@
 
 @property (nonatomic, weak) id<NCStackEditorEntryDelegate> delegate;
 @property (nonatomic, readonly) NSStackView *stackView;
+@property (nonatomic) NSColor *backgroundColor;
 
 -(void)initialize;
 -(NCStackEditorEntryViewController *)addViewControllerEntry:(NSViewController*)viewController;

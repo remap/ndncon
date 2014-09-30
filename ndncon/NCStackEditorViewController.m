@@ -36,6 +36,7 @@
 {
     self.stackView.wantsLayer = YES;
     self.entryControllers = [[NSMutableArray alloc] init];
+    self.backgroundColor = [NSColor colorWithWhite:0.9 alpha:1.];
 }
 
 - (void)dealloc
@@ -131,7 +132,7 @@
     [self.stackView addView:entry.view inGravity:NSStackViewGravityTop];
     
     [entry.view.superview setWantsLayer:YES];
-    entry.view.superview.layer.backgroundColor = [NSColor colorWithWhite:0.9 alpha:1.].CGColor;
+    entry.view.superview.layer.backgroundColor = self.backgroundColor.CGColor;
 }
 
 @end

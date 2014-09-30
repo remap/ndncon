@@ -18,7 +18,7 @@
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
             <rect key="frame" x="0.0" y="0.0" width="550" height="500"/>
             <subviews>
-                <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="BWw-Qo-h7p">
+                <scrollView borderType="line" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="BWw-Qo-h7p">
                     <rect key="frame" x="0.0" y="380" width="550" height="120"/>
                     <clipView key="contentView" id="bxE-hX-9Ap">
                         <rect key="frame" x="1" y="1" width="548" height="118"/>
@@ -28,6 +28,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="548" height="118"/>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" red="0.102738361" green="0.102738361" blue="0.102738361" alpha="1" colorSpace="calibratedRGB"/>
                     </clipView>
                     <constraints>
                         <constraint firstAttribute="height" constant="120" id="19a-nq-7jl"/>
@@ -64,7 +65,7 @@
                         <constraint firstAttribute="centerX" secondItem="XWY-Ny-nZs" secondAttribute="centerX" id="zmm-b6-f8B"/>
                     </constraints>
                 </customView>
-                <scrollView verticalHuggingPriority="1000" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" scrollerKnobStyle="dark" translatesAutoresizingMaskIntoConstraints="NO" id="j2S-d6-YUw">
+                <scrollView verticalHuggingPriority="1000" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="j2S-d6-YUw">
                     <rect key="frame" x="0.0" y="60" width="195" height="320"/>
                     <clipView key="contentView" copiesOnScroll="NO" id="oQr-It-dmd">
                         <rect key="frame" x="1" y="1" width="238" height="318"/>
@@ -74,6 +75,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="238" height="318"/>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" red="0.10273836096938771" green="0.10273836096938771" blue="0.10273836096938771" alpha="1" colorSpace="calibratedRGB"/>
                     </clipView>
                     <constraints>
                         <constraint firstAttribute="width" constant="195" id="5mJ-P4-QG5"/>

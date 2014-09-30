@@ -115,6 +115,10 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
                                                                                          options:0
                                                                                          metrics:nil
                                                                                            views:NSDictionaryOfVariableBindings(activeStreamView)]];
+    
+    self.activeStreamViewer.view.layer.backgroundColor = self.remoteStreamsScrollView.backgroundColor.CGColor;
+    self.localStreamViewer.backgroundColor = self.localStreamsScrollView.backgroundColor;
+    self.remoteStreamViewer.backgroundColor = self.remoteStreamsScrollView.backgroundColor;
 }
 
 - (IBAction)startPublishing:(id)sender
@@ -231,7 +235,10 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
     {
         [self.remoteStreamViewer removeEntryHighlight];
         [self.remoteStreamViewer highlightEntryWithcontroller:previewController];
+
+        self.currentlySelectedPreview.isSelected = NO;
         self.currentlySelectedPreview = previewController;
+        self.currentlySelectedPreview.isSelected = YES;
         
         NCVideoStreamRenderer *renderer = [[(NCVideoPreviewController*)previewController userData] valueForKey:kRendererKey];
         [previewController setPreviewForVideoRenderer:nil];

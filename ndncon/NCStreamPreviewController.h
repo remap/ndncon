@@ -18,6 +18,7 @@
 @property (nonatomic) NSString *streamName;
 @property (nonatomic, weak) IBOutlet NSView *streamPreview;
 @property (nonatomic, strong) id userData;
+@property (nonatomic) BOOL isSelected;
 
 -(void)initialize;
 

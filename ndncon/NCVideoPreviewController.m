@@ -67,7 +67,7 @@
 
 -(void)initialize
 {
-//    [super initialize];
+    [super initialize];
     self.view = [[NCVideoPreviewView alloc] init];
     [self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
     ((NCVideoPreviewView*)self.view).delegate = self;
@@ -85,7 +85,7 @@
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(streamPreview)]];
     self.view.wantsLayer = YES;
-    self.view.layer.backgroundColor = [NSColor clearColor].CGColor;
+    self.view.layer.backgroundColor = [NSColor blackColor].CGColor;
     self.streamPreview = self.view;
 }
 
