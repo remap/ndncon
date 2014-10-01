@@ -8,6 +8,7 @@
 
 #import "NCStreamBrowserController.h"
 #import "NCStreamViewController.h"
+#import "NSString+NdnRtcNamespace.h"
 
 NSString* const kLocalUserName = @"local";
 NSString* const kUserNameKey = @"user";
@@ -38,7 +39,10 @@ NSString* const kPreviewControllerKey = @"previewController";
     NCStackEditorEntryViewController *vc = [self addViewControllerEntry:streamPreviewController
                                                               withStyle:StackEditorEntryStyleModern];
     [vc setHeaderSmall:YES];
-    vc.caption = [configuration valueForKey:kNameKey];
+
+    vc.caption = [NSString stringWithFormat:@"%@: %@",
+                  [streamPrefix getNdnRtcUserName],
+                  [configuration valueForKey:kNameKey]];
     
     [self.userPreviewControllers setObject:@{kUserNameKey:kLocalUserName,
                                              kPreviewControllerKey:streamPreviewController}

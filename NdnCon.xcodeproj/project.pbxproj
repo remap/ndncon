@@ -13,6 +13,7 @@
 		AF5D34A419DA1AF400227E75 /* NCGlView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A319DA1AF400227E75 /* NCGlView.m */; };
 		AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
 		AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AA19DA52E400227E75 /* NCClickableView.m */; };
+		AF5D34AE19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AD19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm */; };
 		AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */; };
 		AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */; };
 		AF7026B719C250560087B605 /* NCStackEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026B519C250560087B605 /* NCStackEditorViewController.m */; };
@@ -138,6 +139,8 @@
 		AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCBlockDrawableView.m; path = ndncon/NCBlockDrawableView.m; sourceTree = SOURCE_ROOT; };
 		AF5D34A919DA52E400227E75 /* NCClickableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCClickableView.h; path = ndncon/NCClickableView.h; sourceTree = SOURCE_ROOT; };
 		AF5D34AA19DA52E400227E75 /* NCClickableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCClickableView.m; path = ndncon/NCClickableView.m; sourceTree = SOURCE_ROOT; };
+		AF5D34AC19DB7B4700227E75 /* NSString+NdnRtcNamespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+NdnRtcNamespace.h"; path = "ndncon/NSString+NdnRtcNamespace.h"; sourceTree = SOURCE_ROOT; };
+		AF5D34AD19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSString+NdnRtcNamespace.mm"; path = "ndncon/NSString+NdnRtcNamespace.mm"; sourceTree = SOURCE_ROOT; };
 		AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCGeneralParametersView.xib; path = ndncon/NCGeneralParametersView.xib; sourceTree = SOURCE_ROOT; };
 		AF7026AB19C11C8F0087B605 /* NCGeneralParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGeneralParametersViewController.h; path = ndncon/NCGeneralParametersViewController.h; sourceTree = SOURCE_ROOT; };
 		AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGeneralParametersViewController.m; path = ndncon/NCGeneralParametersViewController.m; sourceTree = SOURCE_ROOT; };
@@ -462,6 +465,8 @@
 				AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */,
 				AF5D34A919DA52E400227E75 /* NCClickableView.h */,
 				AF5D34AA19DA52E400227E75 /* NCClickableView.m */,
+				AF5D34AC19DB7B4700227E75 /* NSString+NdnRtcNamespace.h */,
+				AF5D34AD19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -829,6 +834,7 @@
 				AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */,
 				AFA8521419C8A6060015A883 /* NSObject+NCAdditions.m in Sources */,
 				AFC99BF319D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm in Sources */,
+				AF5D34AE19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm in Sources */,
 				AFC99BDE19D22C01005B75AB /* NCConversationInfoView.m in Sources */,
 				AFB35C0E19CA095100D8A2BC /* NCStreamPreviewController.m in Sources */,
 				AF7026C319C259AE0087B605 /* NCProducerParametersViewController.m in Sources */,
