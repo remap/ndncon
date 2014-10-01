@@ -25,6 +25,37 @@ default:                                                                        
 }\
 }
 
+CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
+{
+    CGRect result = rect;
+    
+    if (CGRectGetWidth(rect)/CGRectGetHeight(rect) > w/h)
+    { // squeeze horizontally
+        CGFloat width = CGRectGetHeight(rect)*w/h;
+        CGFloat x = CGRectGetMinX(rect) + (CGRectGetWidth(rect) - width)/2.;
+        
+        result = CGRectMake(x, CGRectGetMinY(rect), width, CGRectGetHeight(rect));
+    }
+    else
+        if (CGRectGetWidth(rect)/CGRectGetHeight(rect) < w/h)
+        { // squeeze vertically
+            CGFloat height = CGRectGetWidth(rect)*h/w;
+            CGFloat y = CGRectGetMinY(rect) + (CGRectGetHeight(rect) - height)/2.;
+            
+            result = CGRectMake(CGRectGetMinX(rect), y, CGRectGetWidth(rect), height);
+        }
+    
+    result = CGRectMake(roundf(result.origin.x), roundf(result.origin.y), roundf(result.size.width), roundf(result.size.height));
+    
+    return result;
+}
+
+@interface NCGlView ()
+{
+    NSRect _renderingRect;
+}
+
+@end
 
 @implementation NCGlView
 
@@ -141,7 +172,9 @@ default:                                                                        
                  GL_UNSIGNED_INT_8_8_8_8,
                  _renderingBuffer);
     GetError();
-
+    
+    _renderingRect = CGRectMakeRectFromRectWithRatio(self.bounds, _width, _height);
+    
     [_renderingLock unlock];
 }
 
@@ -199,23 +232,26 @@ default:                                                                        
     if (self.bufferUpdated)
     {
         self.bufferUpdated = NO;
-        
-        //        GLfloat _startWidth = 0.f, _startHeight = 0.f, _stopWidth = 1.f, _stopHeight = 1.f;
-        //
-        //        GLfloat xStart = 2.0f * _startWidth - 1.0f;
-        //        GLfloat xStop = 2.0f * _stopWidth - 1.0f;
-        //        GLfloat yStart = 1.0f - 2.0f * _stopHeight;
-        //        GLfloat yStop = 1.0f - 2.0f * _startHeight;
+
+        GLfloat _startWidth = _renderingRect.origin.x/self.bounds.size.width,
+        _startHeight = _renderingRect.origin.y/self.bounds.size.height,
+        _stopWidth = CGRectGetMaxX(_renderingRect)/self.bounds.size.width,
+        _stopHeight = CGRectGetMaxY(_renderingRect)/self.bounds.size.height;
+
+        GLfloat xStart = 2.0f * _startWidth - 1.0f;
+        GLfloat xStop = 2.0f * _stopWidth - 1.0f;
+        GLfloat yStart = 1.0f - 2.0f * _stopHeight;
+        GLfloat yStop = 1.0f - 2.0f * _startHeight;
         
         glBindTexture(GL_TEXTURE_RECTANGLE_ARB, _texture);
         glLoadIdentity();
         
         glBegin(GL_POLYGON);
         {
-            glTexCoord2f(0.0, 0.0); glVertex2f(-1, 1);
-            glTexCoord2f(_width, 0.0); glVertex2f(1, 1);
-            glTexCoord2f(_width, _height); glVertex2f(1, -1);
-            glTexCoord2f(0.0, _height); glVertex2f(-1, -1);
+            glTexCoord2f(0.0, 0.0); glVertex2f(xStart, yStop);
+            glTexCoord2f(_width, 0.0); glVertex2f(xStop, yStop);
+            glTexCoord2f(_width, _height); glVertex2f(xStop, yStart);
+            glTexCoord2f(0.0, _height); glVertex2f(xStart, yStart);
         }
         glEnd();
         glFinish();
@@ -237,6 +273,9 @@ default:                                                                        
     GetError();
     glLoadIdentity();
     GetError();
+    
+    _renderingRect = CGRectMakeRectFromRectWithRatio(self.bounds, _width, _height);
+    
     [self update];
     
     [_renderingLock unlock];
