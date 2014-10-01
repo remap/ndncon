@@ -13,6 +13,7 @@
 
 class RendererInternal;
 
+//******************************************************************************
 @interface NCVideoStreamRenderer ()
 {
     CVDisplayLinkRef _displayLink;
@@ -34,7 +35,7 @@ class RendererInternal : public ndnrtc::IExternalRenderer
 public:
     RendererInternal(NCVideoStreamRenderer* videoStreamRenderer)
     { videoStreamRenderer_ = videoStreamRenderer; };
-    ~RendererInternal(){};
+    ~RendererInternal(){ videoStreamRenderer_ = NULL; };
     
     uint8_t* getFrameBuffer(int width, int height)
     {
@@ -54,7 +55,7 @@ public:
     }
     
 private:
-    NCVideoStreamRenderer *videoStreamRenderer_;
+    __weak NCVideoStreamRenderer *videoStreamRenderer_;
 };
 
 //******************************************************************************
@@ -68,6 +69,7 @@ CVReturn displayCallback(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow,
     return kCVReturnSuccess;
 }
 
+//******************************************************************************
 @implementation NCVideoStreamRenderer
 
 -(id)init

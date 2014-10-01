@@ -36,6 +36,6 @@
 @interface NCVideoPreviewView : NCClickableView
 
 @property (nonatomic) BOOL frameWasUpdated, viewWasDisplayed;
-@property (nonatomic) IBOutlet id<NCClickableViewDelegate,NCVideoPreviewViewDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<NCClickableViewDelegate,NCVideoPreviewViewDelegate> delegate;
 
 @end

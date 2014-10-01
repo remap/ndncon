@@ -30,6 +30,7 @@
 
 - (void)dealloc
 {
+    self.view = nil;
     self.streamName = nil;
     self.userData = nil;
 }
