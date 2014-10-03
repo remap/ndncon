@@ -27,7 +27,7 @@
 #import "NSObject+NCAdditions.h"
 #import "NCUserListViewController.h"
 #import "NCVideoStreamRenderer.h"
-#import "NCActiveStreamViewer.h"
+#import "NSString+NdnRtcNamespace.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -37,7 +37,104 @@ NSString* const kRendererKey = @"videoRenderer";
 NSString* const kNCLocalStreamsDictionaryKey = @"localStreamsDictionary";
 NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
 
+//******************************************************************************
+class StreamObserver : public IConsumerObserver
+{
+public:
+    StreamObserver(NCActiveStreamViewer* viewer):
+    viewer_(viewer){}
+    
+    ~StreamObserver()
+    {
+        unregisterObserver();
+    }
+    
+    void
+    setStreamPrefix(NSString* streamPrefix)
+    {
+        streamPrefix_ = std::string([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    }
+    
+    int
+    registerObserver()
+    {
+        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+        return lib->setStreamObserver(streamPrefix_, this);
+    }
+    
+    NSString*
+    getStreamPrefix()
+    {
+        return [NSString ncStringFromCString:streamPrefix_.c_str()];
+    }
+    
+    void
+    unregisterObserver()
+    {
+        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+        lib->removeStreamObserver(streamPrefix_);
+    }
+    
+    void
+    onStatusChanged(ConsumerStatus newStatus)
+    {
+        static std::string statusToImageName[] = {
+            [ConsumerStatusStopped] =     "status_stopped",
+            [ConsumerStatusNoData] =     "status_nodata",
+            [ConsumerStatusChasing] =      "status_chasing",
+            [ConsumerStatusBuffering] =   "status_buffering",
+            [ConsumerStatusFetching] =     "status_fetching",
+        };
+        static std::string statusToString[] = {
+            [ConsumerStatusStopped] =     "stopped",
+            [ConsumerStatusNoData] =     "no data",
+            [ConsumerStatusChasing] =      "chasing",
+            [ConsumerStatusBuffering] =   "buffering",
+            [ConsumerStatusFetching] =     "fetching",
+        };
+        
+        lastStatus_ = newStatus;
+        
+        viewer_.statusLabel.stringValue = [NSString ncStringFromCString:statusToString[newStatus].c_str()];
+        
+        NSString *imageName = [NSString ncStringFromCString:statusToImageName[newStatus].c_str()];
+        NSImage *image = [NSImage imageNamed: imageName];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [viewer_.statusImageView setImage: image];
+        });
+    }
+    
+    void
+    onRebufferingOccurred()
+    {
+        NSLog(@"rebuffering occurred for %s", streamPrefix_.c_str());
+    }
+    
+    void
+    onPlaybackEventOccurred(PlaybackEvent event, unsigned int frameSeqNo)
+    {
+        NSLog(@"playback event %d for %s", event, streamPrefix_.c_str());
+    }
+    
+    void
+    onThreadSwitched(const std::string& threadName)
+    {
+        NSLog(@"active thread is %s for %s", threadName.c_str(),
+              streamPrefix_.c_str());
+    }
+    
+private:
+    ConsumerStatus lastStatus_;
+    std::string streamPrefix_;
+    __weak NCActiveStreamViewer* viewer_;
+};
+
+//******************************************************************************
 @interface NCConversationViewController ()
+{
+    StreamObserver *_activeStreamObserver;
+}
 
 @property (nonatomic) NSMutableDictionary *localStreams;
 
@@ -78,6 +175,7 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
     self.remoteStreamViewer.delegate = self;
     
     self.activeStreamViewer = [[NCActiveStreamViewer alloc] init];
+    _activeStreamObserver = new StreamObserver(self.activeStreamViewer);
     
     [self subscribeForNotificationsAndSelectors:
      NCSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
@@ -87,6 +185,9 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
 
 -(void)dealloc
 {
+    _activeStreamObserver->unregisterObserver();
+    delete _activeStreamObserver;
+    
     [self unsubscribeFromNotifications];
     
     self.localStreamViewer = nil;
@@ -117,6 +218,8 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
                                                                                            views:NSDictionaryOfVariableBindings(activeStreamView)]];
     
     self.activeStreamViewer.view.layer.backgroundColor = self.remoteStreamsScrollView.backgroundColor.CGColor;
+    self.activeStreamViewer.delegate = self;
+    
     self.localStreamViewer.backgroundColor = self.localStreamsScrollView.backgroundColor;
     self.remoteStreamViewer.backgroundColor = self.remoteStreamsScrollView.backgroundColor;
 }
@@ -130,8 +233,8 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
 
 - (IBAction)endConversation:(id)sender
 {
-    [self.localStreamViewer closeAllStreams];
     [self.remoteStreamViewer closeAllStreams];
+    [self.localStreamViewer closeAllStreams];    
     
     self.participants = @[];
     [self checkConversationDidEnd];
@@ -165,6 +268,14 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
 {
     _participants = participants;
     _currentConversationStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
+}
+
+// NCActiveStreamViewerDelegate
+-(void)activeStreamViewer:(NCActiveStreamViewer *)activeStreamViewer didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
+{
+    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    lib->switchThread([activeStreamViewer.streamPrefix cStringUsingEncoding:NSASCIIStringEncoding],
+                      [[threadConfiguration valueForKey:kNameKey] cStringUsingEncoding:NSASCIIStringEncoding]);
 }
 
 // NCStackEditorEntryDelegate
@@ -223,16 +334,29 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
 -(void)setStreamWithPrefixActive:(NSString*)streamPrefix
 {
     NSMutableDictionary *participantInfo = [self getParticipantInfoForStream:streamPrefix];
-    NSString *username = [participantInfo valueForKey:kNCSessionUsernameKey];
-    
-    self.activeStreamViewer.userName = username;
-    self.activeStreamViewer.streamName = [streamPrefix lastPathComponent];
-//    self.activeStreamViewer.mediaThreads = [self getStreamsForPariticpant:username isRemote:NO];
-    
     NCVideoPreviewController *previewController = [[participantInfo objectForKey:kNCRemoteStreamsDictionaryKey] valueForKey:streamPrefix];
 
     if (previewController && [previewController isKindOfClass:[NCVideoPreviewController class]])
     {
+        // set active stream viewer parameters
+        self.activeStreamViewer.streamPrefix = streamPrefix;
+        self.activeStreamViewer.userInfo = participantInfo;
+
+        // set active stream viewer observer
+        if (![_activeStreamObserver->getStreamPrefix() isEqualToString:@""])
+            _activeStreamObserver->unregisterObserver();
+        
+        _activeStreamObserver->setStreamPrefix(streamPrefix);
+        _activeStreamObserver->registerObserver();
+        
+        // set current thread
+        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+        std::string activeThreadName = lib->getStreamThread(std::string([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]));
+        
+        if (activeThreadName != "")
+            self.activeStreamViewer.currentThreadIdx = @([[self.activeStreamViewer.mediaThreads valueForKeyPath:kNameKey]
+             indexOfObject:[NSString ncStringFromCString:activeThreadName.c_str()]]);
+        
         [self.remoteStreamViewer removeEntryHighlight];
         [self.remoteStreamViewer highlightEntryWithcontroller:previewController];
 
@@ -279,11 +403,11 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
 }
 
 -(void)addStreamToConversation:(NSString*)streamPrefix
-                 sessionPrefix:(NSString*)sessionPrefix
-                      userName:(NSString*)userName
+                      userDict:(NSDictionary*)userDictionary
                       isRemote:(BOOL)isStreamRemote
                       userInfo:(id)userInfo
 {
+    NSString *sessionPrefix = [userDictionary objectForKey:kNCSessionPrefixKey];
     NSString *streamsArrayKey = (isStreamRemote)?kNCRemoteStreamsDictionaryKey:kNCLocalStreamsDictionaryKey;
     NSString *otherStreamsArrayKey = (isStreamRemote)?kNCLocalStreamsDictionaryKey:kNCRemoteStreamsDictionaryKey;
     
@@ -298,12 +422,12 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
     }
     else
     {
-        [self addUserToConversation:[@{
-                                      kNCSessionPrefixKey:sessionPrefix,
-                                      kNCSessionUsernameKey:userName,
-                                      streamsArrayKey:[@{streamPrefix:userInfo} deepMutableCopy],
-                                      otherStreamsArrayKey:@{}
-                                      } deepMutableCopy]];
+        NSMutableDictionary *newParticipantDict = [userDictionary deepMutableCopy];
+        [newParticipantDict setValue:[@{streamPrefix:userInfo} deepMutableCopy]
+                              forKey:streamsArrayKey];
+        [newParticipantDict setValue:@{}
+                              forKey:otherStreamsArrayKey];
+        [self addUserToConversation:newParticipantDict];
     }
 }
 
@@ -432,8 +556,10 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
                                     kStreamPrefixKey: streamPrefixStr
                                     };
         [self addStreamToConversation:streamPrefixStr
-                        sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
-                             userName:[NCPreferencesController sharedInstance].userName
+                             userDict:@{
+                                        kNCSessionPrefixKey:[NCNdnRtcLibraryController sharedInstance].sessionPrefix,
+                                        kNCSessionUsernameKey:[NCPreferencesController sharedInstance].userName
+                                        }
                              isRemote:NO
                              userInfo:audioPreviewVc];
     }
@@ -485,8 +611,12 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
                                         kStreamPrefixKey: streamPrefixStr
                                         };
             [self addStreamToConversation:streamPrefixStr
-                            sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
-                                 userName:[NCPreferencesController sharedInstance].userName
+                                 userDict:@{
+                                            kNCSessionPrefixKey:[NCNdnRtcLibraryController sharedInstance].sessionPrefix,
+                                            kNCSessionUsernameKey:[NCPreferencesController sharedInstance].userName
+                                            }
+//                            sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
+//                                 userName:[NCPreferencesController sharedInstance].userName
                                  isRemote:NO
                                  userInfo:videoPreviewVc];
         }
@@ -509,7 +639,28 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
 -(void)addRemoteAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
                                  andUserInfo:(NSDictionary*)userInfo
 {
-    
+    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    std::string sessionPrefix([[userInfo valueForKeyPath:kNCSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
+    std::string streamPrefix = lib->addRemoteStream(sessionPrefix,
+                                                    [streamConfiguration asAudioStreamParams],
+                                                    [self generalParams],
+                                                    [self consumerParams],
+                                                    NULL);
+    if (streamPrefix != "")
+    {
+        NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
+        NCAudioPreviewController *audioPreviewVc = (NCAudioPreviewController*)[self.remoteStreamViewer addStreamWithConfiguration:streamConfiguration
+                                                                                                            andStreamPreviewClass:[NCAudioPreviewController class]
+                                                                                                                  forStreamPrefix:streamPrefixStr];
+        audioPreviewVc.delegate = self;
+        audioPreviewVc.userData = @{
+                                    kStreamPrefixKey:streamPrefixStr
+                                    };
+        [self addStreamToConversation:streamPrefixStr
+                             userDict:userInfo
+                             isRemote:YES
+                             userInfo:audioPreviewVc];
+    }
 }
 
 -(void)addRemoteVideoStreamWithConfiguration:(NSDictionary*)streamConfiguration
@@ -538,16 +689,16 @@ NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
                                     kStreamPrefixKey:streamPrefixStr
                                     };
         [self addStreamToConversation:streamPrefixStr
-                        sessionPrefix:[userInfo valueForKeyPath:kNCSessionPrefixKey]
-                             userName:[userInfo valueForKeyPath:kNCSessionUsernameKey]
+                             userDict:userInfo
                              isRemote:YES
                              userInfo:videoPreviewVc];
-        
     }
 }
 
 -(void)removeRemoteStreamWithPrefix:(NSString*)streamPrefix
-{  
+{
+    NSLog(@"*** removing stream %@", streamPrefix);
+    
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->removeRemoteStream([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
     

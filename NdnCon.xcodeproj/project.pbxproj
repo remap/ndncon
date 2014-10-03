@@ -14,6 +14,8 @@
 		AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
 		AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AA19DA52E400227E75 /* NCClickableView.m */; };
 		AF5D34AE19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AD19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm */; };
+		AF5D34B419DE227D00227E75 /* NCErrorController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34B319DE227D00227E75 /* NCErrorController.m */; };
+		AF5D34B819DE22EF00227E75 /* PTNSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34B719DE22EF00227E75 /* PTNSingleton.m */; };
 		AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */; };
 		AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */; };
 		AF7026B719C250560087B605 /* NCStackEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026B519C250560087B605 /* NCStackEditorViewController.m */; };
@@ -141,6 +143,10 @@
 		AF5D34AA19DA52E400227E75 /* NCClickableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCClickableView.m; path = ndncon/NCClickableView.m; sourceTree = SOURCE_ROOT; };
 		AF5D34AC19DB7B4700227E75 /* NSString+NdnRtcNamespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+NdnRtcNamespace.h"; path = "ndncon/NSString+NdnRtcNamespace.h"; sourceTree = SOURCE_ROOT; };
 		AF5D34AD19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSString+NdnRtcNamespace.mm"; path = "ndncon/NSString+NdnRtcNamespace.mm"; sourceTree = SOURCE_ROOT; };
+		AF5D34B219DE227C00227E75 /* NCErrorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCErrorController.h; path = ndncon/NCErrorController.h; sourceTree = SOURCE_ROOT; };
+		AF5D34B319DE227D00227E75 /* NCErrorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCErrorController.m; path = ndncon/NCErrorController.m; sourceTree = SOURCE_ROOT; };
+		AF5D34B619DE22EF00227E75 /* PTNSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNSingleton.h; sourceTree = "<group>"; };
+		AF5D34B719DE22EF00227E75 /* PTNSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNSingleton.m; sourceTree = "<group>"; };
 		AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCGeneralParametersView.xib; path = ndncon/NCGeneralParametersView.xib; sourceTree = SOURCE_ROOT; };
 		AF7026AB19C11C8F0087B605 /* NCGeneralParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGeneralParametersViewController.h; path = ndncon/NCGeneralParametersViewController.h; sourceTree = SOURCE_ROOT; };
 		AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGeneralParametersViewController.m; path = ndncon/NCGeneralParametersViewController.m; sourceTree = SOURCE_ROOT; };
@@ -314,10 +320,20 @@
 		AF3C6FA319BE98D300FAE40B /* Thirdparty */ = {
 			isa = PBXGroup;
 			children = (
+				AF5D34B519DE22DE00227E75 /* ptnsingleton */,
 				AF8A14CB19BFD6C100010B20 /* ptnstorage */,
 				AF8A138219BFB7C500010B20 /* maspreferences */,
 			);
 			name = Thirdparty;
+			sourceTree = "<group>";
+		};
+		AF5D34B519DE22DE00227E75 /* ptnsingleton */ = {
+			isa = PBXGroup;
+			children = (
+				AF5D34B619DE22EF00227E75 /* PTNSingleton.h */,
+				AF5D34B719DE22EF00227E75 /* PTNSingleton.m */,
+			);
+			name = ptnsingleton;
 			sourceTree = "<group>";
 		};
 		AF7026A619C11BF40087B605 /* Advanced preferences */ = {
@@ -467,6 +483,8 @@
 				AF5D34AA19DA52E400227E75 /* NCClickableView.m */,
 				AF5D34AC19DB7B4700227E75 /* NSString+NdnRtcNamespace.h */,
 				AF5D34AD19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm */,
+				AF5D34B219DE227C00227E75 /* NCErrorController.h */,
+				AF5D34B319DE227D00227E75 /* NCErrorController.m */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -823,11 +841,13 @@
 				AFB35BFF19C9FDFE00D8A2BC /* NCConversationViewController.mm in Sources */,
 				AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */,
 				AFB35C1519CA099800D8A2BC /* NCVideoPreviewController.m in Sources */,
+				AF5D34B819DE22EF00227E75 /* PTNSingleton.m in Sources */,
 				AFB8DE9519CD049B008F691B /* NCCameraCapturer.mm in Sources */,
 				AF7026C919C279A80087B605 /* NCVideoStreamViewController.m in Sources */,
 				AF8A139719BFB89B00010B20 /* NCGeneralPreferencesViewController.m in Sources */,
 				AFD978F619BE546D0061AA24 /* main.mm in Sources */,
 				AF7026BE19C252B50087B605 /* NCStackEditorEntryViewController.m in Sources */,
+				AF5D34B419DE227D00227E75 /* NCErrorController.m in Sources */,
 				AFB35C2719CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm in Sources */,
 				AF8A14CE19BFD6C100010B20 /* PTNStorage.m in Sources */,
 				AFA8521719C8B2FF0015A883 /* NCEmbeddedScrollView.m in Sources */,

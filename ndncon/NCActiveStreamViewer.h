@@ -10,14 +10,30 @@
 #import "NCVideoPreviewController.h"
 #import "NCVideoStreamRenderer.h"
 
+@protocol NCActiveStreamViewerDelegate;
+
 @interface NCActiveStreamViewer : NSViewController
 <NCVideoPreviewViewDelegate>
 
+@property (nonatomic, weak) IBOutlet id<NCActiveStreamViewerDelegate> delegate;
+
 @property (nonatomic, readonly) NSView *renderView;
-@property (nonatomic) NSString *userName;
-@property (nonatomic) NSString *streamName;
-@property (nonatomic) NSArray *mediaThreads;
-@property (nonatomic) NSString *currentThread;
+@property (nonatomic) NSString *streamPrefix;
+@property (nonatomic, readonly) NSArray *mediaThreads;
+@property (nonatomic, readonly) NSDictionary *currentThread;
+@property (nonatomic) NSNumber *currentThreadIdx;
+@property (nonatomic) NSDictionary *userInfo;
 @property (nonatomic, weak) NCVideoStreamRenderer *renderer;
+
+@property (weak) IBOutlet NSTextField *statusLabel;
+@property (weak) IBOutlet NSImageView *statusImageView;
+
+@end
+
+
+@protocol NCActiveStreamViewerDelegate  <NSObject>
+
+@optional
+-(void)activeStreamViewer:(NCActiveStreamViewer*)activeStreamViewer didSelectThreadWithConfiguration:(NSDictionary*)threadConfiguration;
 
 @end

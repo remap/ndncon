@@ -272,7 +272,7 @@
     NSArray *participants = [value valueForKeyPath:kNCSessionUsernameKey];
     
     if ([participants containsObject:[NCPreferencesController sharedInstance].userName])
-        outputString = (participants.count == 1)?@"only you":@"you";
+        outputString = (participants.count == 1)?@"only me":@"me";
     
     [participants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if (![obj isEqualToString:[NCPreferencesController sharedInstance].userName])

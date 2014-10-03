@@ -162,59 +162,6 @@
 					</dict>
 				</array>
 			</dict>
-			<dict>
-				<key>Name</key>
-				<string>desktop</string>
-				<key>Segment size</key>
-				<integer>1000</integer>
-				<key>Freshness period</key>
-				<integer>1000</integer>
-				<key>Input device</key>
-				<integer>-1</integer>
-				<key>Device configuration</key>
-				<integer>-1</integer>
-				<key>Synchronized to</key>
-				<string>-</string>
-				<key>Threads</key>
-				<array>
-					<dict>
-						<key>Name</key>
-						<string>mid</string>
-						<key>Frame rate</key>
-						<integer>30</integer>
-						<key>GOP</key>
-						<integer>30</integer>
-						<key>Start bitrate</key>
-						<integer>500</integer>
-						<key>Max bitrate</key>
-						<integer>0</integer>
-						<key>Drop frames</key>
-						<true/>
-						<key>Encoding width</key>
-						<integer>1280</integer>
-						<key>Encoding height</key>
-						<integer>800</integer>
-					</dict>
-					<dict>
-						<key>Name</key>
-						<string>hi</string>
-						<key>Frame rate</key>
-						<integer>30</integer>
-						<key>GOP</key>
-						<integer>30</integer>
-						<key>Start bitrate</key>
-						<integer>1000</integer>
-						<key>Max bitrate</key>
-						<integer>0</integer>
-						<key>Drop frames</key>
-						<true/>
-						<key>Encoding width</key>
-						<integer>1280</integer>
-						<key>Encoding height</key>
-						<integer>800</integer>
-					</dict>
-				</array>
-			</dict>
 		</array>
 	</dict>
 </dict>

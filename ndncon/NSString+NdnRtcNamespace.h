@@ -11,6 +11,7 @@
 @interface NSString (NdnRtcNamespace)
 
 +(NSString*)ncStringFromCString:(const char*)cString;
++(NSString*)keyPathByComponents:(NSString*)comp1, ...;
 
 -(NSString*)getNdnRtcHubPrefix;
 -(NSString*)getNdnRtcUserName;

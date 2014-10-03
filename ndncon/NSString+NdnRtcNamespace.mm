@@ -38,6 +38,23 @@ using namespace ndnrtc;
     return [NSString stringWithCString:(const char*)cString encoding:NSASCIIStringEncoding];
 }
 
++(NSString *)keyPathByComponents:(NSString *)comp1, ...
+{
+    NSMutableString *fullPath = [NSMutableString string];
+    va_list args;
+    va_start(args, comp1);
+    for (NSString *arg = comp1; arg != nil; arg = va_arg(args, NSString*))
+    {
+        if ([fullPath length] > 0)
+            [fullPath appendString:@"."];
+        
+        [fullPath appendString:arg];
+    }
+    va_end(args);
+    
+    return fullPath;
+}
+
 -(NSString*)getNdnRtcHubPrefix
 {
     NSUInteger idx = NSNotFound;
@@ -94,6 +111,4 @@ using namespace ndnrtc;
     
     return nil;
 }
-
-
 @end

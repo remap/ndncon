@@ -10,12 +10,14 @@
 #import "NCStreamBrowserController.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NCStreamPreviewController.h"
+#import "NCActiveStreamViewer.h"
 
 @protocol NCConversationViewControllerDelegate;
 
 @interface NCConversationViewController : NSViewController
 <NCStreamBrowserControllerDelegate,
-NCStreamPreviewControllerDelegate>
+NCStreamPreviewControllerDelegate,
+NCActiveStreamViewerDelegate>
 
 //+(NSString*)textStatusFromSessionStatus:(NCSessionStatus)sessionStatus;
 
