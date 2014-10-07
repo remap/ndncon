@@ -52,8 +52,8 @@
     [self removeAllEntries];
     
     _audioStreams = [audioStreams deepMutableCopy];
-    _videoStreams = [videoStreams deepMutableCopy]
-    ;
+    _videoStreams = [videoStreams deepMutableCopy];
+    
     [self loadViewsForAudioStreams:_audioStreams andVideoStreams:_videoStreams];
 }
 

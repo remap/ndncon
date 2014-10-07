@@ -7,6 +7,7 @@
 //
 
 #include <ndnrtc/ndnrtc-library.h>
+#include <ndnrtc/error-codes.h>
 
 #import "NCUserListViewController.h"
 #import "NCPreferencesController.h"
@@ -101,7 +102,7 @@ class RemoteSessionObserver : public IRemoteSessionObserver
 {
 public:
     RemoteSessionObserver(std::string& username, std::string& prefix):
-    username_(username), prefix_(prefix) {};
+    username_(username), prefix_(prefix), nTimeouts_(0) {};
     
     std::string username_, prefix_, sessionPrefix_;
     NCSessionStatus lastStatus_ = SessionStatusOffline;
@@ -109,7 +110,7 @@ public:
     
 private:
     bool freshStart_ = true;
-    unsigned int nTimeouts_ = 0;
+    unsigned int nTimeouts_;
     
     NSDictionary* sessionUserInfo()
     {
@@ -121,6 +122,7 @@ private:
     void
     onSessionInfoUpdate(const new_api::SessionInfo& sessionInfo)
     {
+        nTimeouts_ = 0;
         freshStart_ = false;
         lastSessionInfo_ = sessionInfo;
         lastStatus_ = (sessionInfo.audioStreams_.size() == 0 &&
@@ -144,23 +146,27 @@ private:
     {
         nTimeouts_++;
 
-        if (nTimeouts_ > 5 || freshStart_)
+        if (nTimeouts_ == 3 || freshStart_)
             notifyStatusUpdate(SessionStatusOffline);
         
         freshStart_ = false;
     }
     
     void
-    onUpdateFailedWithError(const char* errMsg)
+    onUpdateFailedWithError(int errCode, const char* errMsg)
     {
         NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
         
-        [userInfo setObject:[NSString stringWithCString:errMsg encoding:NSASCIIStringEncoding]
+        [userInfo setObject:[NSString stringWithCString:errMsg
+                                               encoding:NSASCIIStringEncoding]
                      forKey: kNCSessionErrorMessageKey];
+        
+        // check for specific error codes
+        if (errCode == NRTC_ERR_LIBERROR)
+            notifyStatusUpdate(SessionStatusOffline);
         
         NSLog(@"update failed %@", userInfo);
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"post update failed");
             [[[NSObject alloc] init]
              notifyNowWithNotificationName:NCRemoteSessionErrorNotification
              andUserInfo:userInfo];
