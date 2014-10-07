@@ -46,5 +46,6 @@ extern NSString* const kNCHubPrefixKey;
 @optional
 -(void)userListViewController:(NCUserListViewController*)userListViewController
                 userWasChosen:(NSDictionary*)user;
+-(void)userListViewControllerUserListUpdated:(NCUserListViewController*)userListViewController;
 
 @end

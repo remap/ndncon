@@ -10,11 +10,6 @@
 #import "NCStreamViewController.h"
 #import "NCConfigurationObserver.h"
 
-#define KEYPATH(s1, s2) ([NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(s1)), NSStringFromSelector(s2)])
-
-#define KEYPATH2(s1, k2) ([NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(s1)), k2])
-#define KEYPATH3(s1, k2, k3) ([NSString stringWithFormat:@"%@.%@.%@", NSStringFromSelector(@selector(s1)), k2, k3])
-
 extern NSString* const kBitrateKey;
 
 @interface NCThreadViewController : NSViewController

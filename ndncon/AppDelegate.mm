@@ -13,6 +13,7 @@
 #import "NCGeneralPreferencesViewController.h"
 #import "NCMediaPreferencesViewController.h"
 #import "NSObject+NCAdditions.h"
+#import "NCErrorController.h"
 
 #import "NCPreferencesController.h"
 
@@ -165,40 +166,8 @@
         return NSTerminateNow;
     }
     
-    if (![[self managedObjectContext] commitEditing]) {
-        NSLog(@"%@:%@ unable to commit editing to terminate", [self class], NSStringFromSelector(_cmd));
+    if (![self commitManagedContext])
         return NSTerminateCancel;
-    }
-    
-    if (![[self managedObjectContext] hasChanges]) {
-        return NSTerminateNow;
-    }
-    
-    NSError *error = nil;
-    if (![[self managedObjectContext] save:&error]) {
-
-        // Customize this code block to include application-specific recovery steps.              
-        BOOL result = [sender presentError:error];
-        if (result) {
-            return NSTerminateCancel;
-        }
-
-        NSString *question = NSLocalizedString(@"Could not save changes while quitting. Quit anyway?", @"Quit without saves error question message");
-        NSString *info = NSLocalizedString(@"Quitting now will lose any changes you have made since the last successful save", @"Quit without saves error question info");
-        NSString *quitButton = NSLocalizedString(@"Quit anyway", @"Quit anyway button title");
-        NSString *cancelButton = NSLocalizedString(@"Cancel", @"Cancel button title");
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText:question];
-        [alert setInformativeText:info];
-        [alert addButtonWithTitle:quitButton];
-        [alert addButtonWithTitle:cancelButton];
-
-        NSInteger answer = [alert runModal];
-        
-        if (answer == NSAlertAlternateReturn) {
-            return NSTerminateCancel;
-        }
-    }
     
     return NSTerminateNow;
 }
@@ -216,9 +185,8 @@
     if (self.preferencesWindowController == nil)
     {
         NSViewController *generalViewController = [[NCGeneralPreferencesViewController alloc] init];
-//        NSViewController *mediaViewController = [[NCMediaPreferencesViewController alloc] init];
         NSViewController *advancedViewController = [[NCAdvancedPreferencesViewController alloc] init];
-        NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, /*mediaViewController,*/ advancedViewController, nil];
+        NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, advancedViewController, nil];
         
         NSString *title = NSLocalizedString(@"Preferences", @"Common title for Preferences window");
         self.preferencesWindowController = [[MASPreferencesWindowController alloc] initWithViewControllers:controllers title:title];
@@ -230,6 +198,42 @@
 -(NCPreferencesController *)preferences
 {
     return [NCPreferencesController sharedInstance];
+}
+
+-(BOOL)commitManagedContext
+{
+    if (![[self managedObjectContext] commitEditing]) {
+        NSLog(@"%@:%@ unable to commit editing to terminate", [self class], NSStringFromSelector(_cmd));
+        return NO;
+    }
+    
+    if (![[self managedObjectContext] hasChanges]) {
+        return YES;
+    }
+    
+    NSError *error = nil;
+    if (![[self managedObjectContext] save:&error]) {
+        
+//        [[NCErrorController sharedInstance] postError:error];
+        
+        NSString *question = NSLocalizedString(@"Could not save changes while quitting. Quit anyway?", @"Quit without saves error question message");
+        NSString *info = NSLocalizedString(@"Quitting now will lose any changes you have made since the last successful save", @"Quit without saves error question info");
+        NSString *quitButton = NSLocalizedString(@"Quit anyway", @"Quit anyway button title");
+        NSString *cancelButton = NSLocalizedString(@"Cancel", @"Cancel button title");
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:question];
+        [alert setInformativeText:info];
+        [alert addButtonWithTitle:quitButton];
+        [alert addButtonWithTitle:cancelButton];
+        
+        NSInteger answer = [alert runModal];
+        
+        if (answer == NSAlertAlternateReturn) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 @end

@@ -30,7 +30,7 @@ NSString* const kVideoEnabledKey = @"Video enabled";
 NSString* const kSkipIncompleteKey = @"Skip incomplete frames";
 
 NSString* const kPrefixKey = @"Default prefix";
-NSString* const kUserNameKey = @"Default username";
+NSString* const kUserKey = @"Default username";
 
 NSString* const kNdnDaemonSectionKey = @"NDN daemon";
 NSString* const kNdnHostKey = @"Host";
@@ -159,12 +159,12 @@ using namespace ndnrtc::new_api;
 
 -(NSString*)userName
 {
-    return [self getParamAtPathByComponents:kGeneralSectionKey, kUserNameKey, nil];
+    return [self getParamAtPathByComponents:kGeneralSectionKey, kUserKey, nil];
 }
 
 -(void)setUserName:(NSString *)userName
 {
-    [self saveParam:userName atPathByComponents:kGeneralSectionKey, kUserNameKey, nil];
+    [self saveParam:userName atPathByComponents:kGeneralSectionKey, kUserKey, nil];
 }
 
 -(NSString*)daemonHost

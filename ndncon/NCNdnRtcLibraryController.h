@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString* const NCSessionStatusUpdateNotification;
-extern NSString* const NCSessionErrorNotification;
+extern NSString* const NCLocalSessionStatusUpdateNotification;
+extern NSString* const NCLocalSessionErrorNotification;
+extern NSString* const NCRemoteSessionStatusUpdateNotification;
+extern NSString* const NCRemoteSessionErrorNotification;
 
 extern NSString* const kNCSessionUsernameKey;
 extern NSString* const kNCSessionPrefixKey;

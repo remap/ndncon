@@ -36,7 +36,7 @@
                             imageForSessionStatus:SessionStatusOffline];
 
         [self subscribeForNotificationsAndSelectors:
-         NCSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
+         NCRemoteSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
          nil];
     }
     

@@ -15,6 +15,7 @@
 #import "User.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NSDictionary+NCNdnRtcAdditions.h"
+#import "NSObject+NCAdditions.h"
 
 NSString* const kNCSessionInfoKey = @"sessionInfo";
 NSString* const kNCHubPrefixKey = @"hubPrefix";
@@ -131,9 +132,9 @@ private:
         [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo: (void*)&sessionInfo]
                      forKey:kNCSessionInfoKey];
         
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             [[[NSObject alloc] init]
-             notifyNowWithNotificationName:NCSessionStatusUpdateNotification
+             notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
              andUserInfo:userInfo];
         });
     }
@@ -157,9 +158,13 @@ private:
         [userInfo setObject:[NSString stringWithCString:errMsg encoding:NSASCIIStringEncoding]
                      forKey: kNCSessionErrorMessageKey];
         
-        [[[NSObject alloc] init]
-         notifyNowWithNotificationName:NCSessionErrorNotification
-         andUserInfo:userInfo];
+        NSLog(@"update failed %@", userInfo);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"post update failed");
+            [[[NSObject alloc] init]
+             notifyNowWithNotificationName:NCRemoteSessionErrorNotification
+             andUserInfo:userInfo];
+        });
     }
     
     void
@@ -172,9 +177,13 @@ private:
         [userInfo setObject:@(status)
                      forKey:kNCSessionStatusKey];
         
-        [[[NSObject alloc] init]
-         notifyNowWithNotificationName:NCSessionStatusUpdateNotification
-         andUserInfo:userInfo];
+        NSLog(@"status update %@", userInfo);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"post status update");
+            [[[NSObject alloc] init]
+             notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
+             andUserInfo:userInfo];
+        });
     }
 };
 
@@ -220,12 +229,19 @@ private:
 -(void)awakeFromNib
 {
     [self.userController addObserver:self forKeyPaths:@"arrangedObjects.name", @"arrangedObjects.prefix", nil];
+
+    [[NCPreferencesController sharedInstance] addObserver:self
+                                              forKeyPaths:NSStringFromSelector(@selector(daemonHost)),
+     NSStringFromSelector(@selector(daemonPort)), nil];
 }
 
 -(void)initialize
 {
     _observerQueue = dispatch_queue_create("queue.observers", DISPATCH_QUEUE_SERIAL);
-    [self subscribeForNotificationsAndSelectors:NCSessionStatusUpdateNotification, @selector(sessionDidUpdateStatus:), nil];
+    [self subscribeForNotificationsAndSelectors:
+     NCRemoteSessionStatusUpdateNotification,
+     @selector(sessionDidUpdateStatus:),
+     nil];
 }
 
 - (void)dealloc
@@ -239,9 +255,15 @@ private:
     });
 }
 
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+-(void)observeValueForKeyPath:(NSString *)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary *)change
+                      context:(void *)context
 {
-    [self checkAndUpdateSessionObservers];
+    if (object == [NCPreferencesController sharedInstance])
+        [self restartObservers];
+    else
+        [self checkAndUpdateSessionObservers];
 }
 
 -(void)clearSelection
@@ -281,6 +303,8 @@ private:
 {
     [self stopOldObservers];
     
+    BOOL updated = NO;
+    
     for (id obj in self.userController.arrangedObjects)
     {
         NSString *userName = [obj name];
@@ -288,22 +312,37 @@ private:
         
         if (![userName isEqualToString:@"username"])
             if (![self hasObserverForUser:userName andPrefix:prefix])
+            {
+                updated = YES;
                 [self startObserverForUser:userName andPrefix:prefix];
+            }
     }
+    
+    if (updated)
+        if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
+            [self.delegate userListViewControllerUserListUpdated:self];
 }
 
 -(void)stopOldObservers
 {
+    __block BOOL updated = NO;
     __block int i = 0;
     while (i < _sessionObservers.size())
     {
         dispatch_sync(_observerQueue, ^{
             if (![self isObserverPresentedInUserList:_sessionObservers[i]])
+            {
                 [self stopObserver:_sessionObservers[i]];
+                updated = YES;
+            }
             else
                 i++;
         });
     }
+    
+    if (updated)
+        if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
+            [self.delegate userListViewControllerUserListUpdated:self];
 }
 
 -(void)startObserverForUser:(NSString*)aUserName andPrefix:(NSString*)aPrefix
@@ -366,6 +405,7 @@ private:
     
     return observer;
 }
+
 -(BOOL)isObserverPresentedInUserList:(RemoteSessionObserver*)observer
 {
     NSString *userName = [NSString stringWithCString:observer->username_.c_str()
@@ -402,6 +442,20 @@ private:
     }
     
     return userInfo;
+}
+
+-(void)restartObservers
+{
+    NSLog(@"restarting observers");
+          
+    [self.userController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *user = [obj name];
+        NSString *prefix = [obj prefix];
+        
+        // remove observer
+        [self stopObserver:[self observerForUser:user andPrefix:prefix]];
+        [self startObserverForUser:user andPrefix:prefix];
+    }];
 }
 
 @end

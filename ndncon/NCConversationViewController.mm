@@ -178,7 +178,7 @@ private:
     _activeStreamObserver = new StreamObserver(self.activeStreamViewer);
     
     [self subscribeForNotificationsAndSelectors:
-     NCSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
+     NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
      NSApplicationWillTerminateNotification, @selector(onAppWillTerminate:),
      nil];
 }
@@ -261,7 +261,7 @@ private:
     
     if (!hasRemoteParticipants)
         [self setStreamWithPrefixActive:[[self getStreamsForPariticpant:[userInfo valueForKeyPath:kNCSessionUsernameKey]
-                                                              isRemote:YES].allKeys firstObject]];
+                                                              isRemote:YES].allKeys lastObject]];
 }
 
 -(void)setParticipants:(NSArray *)participants
@@ -336,6 +336,9 @@ private:
     NSMutableDictionary *participantInfo = [self getParticipantInfoForStream:streamPrefix];
     NCVideoPreviewController *previewController = [[participantInfo objectForKey:kNCRemoteStreamsDictionaryKey] valueForKey:streamPrefix];
 
+    [self.remoteStreamViewer removeEntryHighlight];
+    [self.remoteStreamViewer highlightEntryWithcontroller:previewController];
+    
     if (previewController && [previewController isKindOfClass:[NCVideoPreviewController class]])
     {
         // set active stream viewer parameters
@@ -356,9 +359,6 @@ private:
         if (activeThreadName != "")
             self.activeStreamViewer.currentThreadIdx = @([[self.activeStreamViewer.mediaThreads valueForKeyPath:kNameKey]
              indexOfObject:[NSString ncStringFromCString:activeThreadName.c_str()]]);
-        
-        [self.remoteStreamViewer removeEntryHighlight];
-        [self.remoteStreamViewer highlightEntryWithcontroller:previewController];
 
         self.currentlySelectedPreview.isSelected = NO;
         self.currentlySelectedPreview = previewController;
@@ -379,10 +379,7 @@ private:
 
 -(void)onSessionStatusUpdate:(NSNotification*)notification
 {
-    if ([[notification.userInfo valueForKey:kNCSessionPrefixKey] isEqualToString:[NCNdnRtcLibraryController sharedInstance].sessionPrefix])
-    {
-        _currentConversationStatus = (NCSessionStatus)[[notification.userInfo valueForKey:kNCSessionStatusKey] integerValue];
-    }
+    _currentConversationStatus = (NCSessionStatus)[[notification.userInfo valueForKey:kNCSessionStatusKey] integerValue];
 }
 
 -(void)addUserToConversation:(NSMutableDictionary*)participantInfo
@@ -425,7 +422,7 @@ private:
         NSMutableDictionary *newParticipantDict = [userDictionary deepMutableCopy];
         [newParticipantDict setValue:[@{streamPrefix:userInfo} deepMutableCopy]
                               forKey:streamsArrayKey];
-        [newParticipantDict setValue:@{}
+        [newParticipantDict setValue:[@{} mutableCopy]
                               forKey:otherStreamsArrayKey];
         [self addUserToConversation:newParticipantDict];
     }
@@ -615,8 +612,6 @@ private:
                                             kNCSessionPrefixKey:[NCNdnRtcLibraryController sharedInstance].sessionPrefix,
                                             kNCSessionUsernameKey:[NCPreferencesController sharedInstance].userName
                                             }
-//                            sessionPrefix:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
-//                                 userName:[NCPreferencesController sharedInstance].userName
                                  isRemote:NO
                                  userInfo:videoPreviewVc];
         }

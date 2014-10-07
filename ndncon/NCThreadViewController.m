@@ -8,6 +8,7 @@
 
 #import "NCThreadViewController.h"
 #import "NSObject+NCAdditions.h"
+#import "NCPreferencesController.h"
 
 NSString* const kBitrateKey = @"Start bitrate";
 

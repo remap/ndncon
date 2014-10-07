@@ -24,5 +24,6 @@
 @property (assign) IBOutlet NCUserListViewController *userListViewController;
 
 - (IBAction)saveAction:(id)sender;
+- (BOOL)commitManagedContext;
 
 @end

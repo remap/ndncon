@@ -730,16 +730,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="200" height="556"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <scrollView misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="52" horizontalPageScroll="10" verticalLineScroll="52" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hf3-D9-G15">
-                                        <rect key="frame" x="0.0" y="20" width="200" height="495"/>
-                                        <clipView key="contentView" misplaced="YES" id="ece-5R-LCu">
+                                    <scrollView autohidesScrollers="YES" horizontalLineScroll="52" horizontalPageScroll="10" verticalLineScroll="52" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hf3-D9-G15">
+                                        <rect key="frame" x="0.0" y="20" width="200" height="496"/>
+                                        <clipView key="contentView" id="ece-5R-LCu">
                                             <rect key="frame" x="1" y="1" width="198" height="554"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" headerView="o7M-7b-i09" viewBased="YES" id="Ei1-FY-IiO">
+                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" headerView="o7M-7b-i09" viewBased="YES" id="Ei1-FY-IiO">
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                     <tableColumns>
                                                         <tableColumn identifier="UserCell" width="195" minWidth="40" maxWidth="1000" id="0ll-hr-hff">
@@ -782,7 +782,7 @@
                                                                             <rect key="frame" x="42" y="12" width="151" height="14"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="prefix" usesSingleLineMode="YES" id="5wz-f4-i0T">
                                                                                 <font key="font" metaFont="smallSystem"/>
-                                                                                <color key="textColor" red="0.50980392159999999" green="0.50980392159999999" blue="0.50980392159999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                <color key="textColor" red="0.20404177295918369" green="0.20404177295918369" blue="0.20404177295918369" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>
@@ -875,8 +875,8 @@
                                             <constraint firstAttribute="centerY" secondItem="Kj4-8C-A9M" secondAttribute="centerY" id="ssG-AO-lQY"/>
                                         </constraints>
                                     </customView>
-                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LaF-x4-xuG" customClass="NCConversationInfoView">
-                                        <rect key="frame" x="0.0" y="515" width="200" height="41"/>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="LaF-x4-xuG" customClass="NCConversationInfoView">
+                                        <rect key="frame" x="0.0" y="516" width="200" height="40"/>
                                         <subviews>
                                             <textField verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-oS-QNn">
                                                 <rect key="frame" x="18" y="12" width="164" height="16"/>
@@ -931,7 +931,7 @@
                                 <rect key="frame" x="201" y="0.0" width="599" height="556"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TKg-kF-Bmm">
+                                    <customView ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TKg-kF-Bmm">
                                         <rect key="frame" x="213" y="247" width="174" height="62"/>
                                         <subviews>
                                             <customView ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Exq-Z9-aJU">
@@ -989,6 +989,8 @@
                                     </customView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="TKg-kF-Bmm" secondAttribute="centerY" id="0An-e9-RXo"/>
+                                    <constraint firstAttribute="centerX" secondItem="TKg-kF-Bmm" secondAttribute="centerX" id="Iun-oz-Ruh"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="599" id="LHE-aA-TXu"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="556" id="RgC-I4-VUz"/>
                                 </constraints>
@@ -1005,13 +1007,13 @@
                             <constraint firstAttribute="width" constant="38" id="52m-MS-nIs"/>
                             <constraint firstAttribute="height" constant="33" id="kLG-Jc-5Tu"/>
                         </constraints>
-                        <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" arrowPosition="noArrow" selectedItem="kXW-vN-Ygb" id="oZq-zj-fMq">
+                        <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" arrowPosition="noArrow" id="oZq-zj-fMq">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" id="STG-TB-Tzi">
                                 <items>
                                     <menuItem image="session_offline" id="nsF-mI-xo6"/>
-                                    <menuItem state="on" image="session_passive" id="kXW-vN-Ygb"/>
+                                    <menuItem image="session_passive" id="kXW-vN-Ygb"/>
                                 </items>
                             </menu>
                         </popUpButtonCell>
@@ -1019,8 +1021,8 @@
                             <action selector="changeStatus:" target="AUf-oW-1iz" id="Ydn-Ur-E5X"/>
                         </connections>
                     </popUpButton>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hhd-Jn-iTa">
-                        <rect key="frame" x="57" y="566" width="165" height="14"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hhd-Jn-iTa">
+                        <rect key="frame" x="57" y="566" width="35" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Prefix" id="RjQ-el-9tG">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" red="0.4431372549" green="0.4549019608" blue="0.4823529412" alpha="1" colorSpace="calibratedRGB"/>
@@ -1055,6 +1057,7 @@
                     <constraint firstItem="NFf-Xz-R6T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="qr4-RU-2VJ"/>
                 </constraints>
             </view>
+            <point key="canvasLocation" x="139" y="251"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="AR2-Ub-wxp"/>
         <arrayController mode="entity" entityName="User" automaticallyPreparesContent="YES" id="H1Y-px-pwf">

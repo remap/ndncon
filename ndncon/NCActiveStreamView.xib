@@ -41,12 +41,21 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="-2" name="displayPatternValue1" keyPath="self.userInfo.username" id="wPc-am-eg4">
+                                <binding destination="-2" name="displayPatternValue1" keyPath="self.userInfo.username" id="Wkz-97-Xlz">
                                     <dictionary key="options">
                                         <string key="NSDisplayPattern">%{value1}@:%{value2}@</string>
+                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                        <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
+IA
+</string>
                                     </dictionary>
                                 </binding>
-                                <binding destination="-2" name="displayPatternValue2" keyPath="self.streamPrefix.getNdnRtcStreamName" previousBinding="wPc-am-eg4" id="Swl-dl-b3z">
+                                <binding destination="-2" name="displayPatternValue2" keyPath="self.streamPrefix.getNdnRtcStreamName" previousBinding="Wkz-97-Xlz" id="N5d-sR-01b">
                                     <dictionary key="options">
                                         <string key="NSDisplayPattern">%{value1}@:%{value2}@</string>
                                     </dictionary>
@@ -70,17 +79,17 @@
                                     </items>
                                 </menu>
                                 <connections>
-                                    <binding destination="-2" name="content" keyPath="self.mediaThreads" id="xde-BX-H3s"/>
                                     <binding destination="-2" name="contentObjects" keyPath="self.mediaThreads" previousBinding="xde-BX-H3s" id="KLE-La-PB5"/>
+                                    <binding destination="-2" name="content" keyPath="self.mediaThreads" id="xde-BX-H3s"/>
                                 </connections>
                             </popUpButtonCell>
                             <connections>
+                                <binding destination="-2" name="selectedIndex" keyPath="self.currentThreadIdx" previousBinding="uYn-Gg-3zu" id="k0B-Ed-950"/>
                                 <binding destination="-2" name="contentValues" keyPath="self.mediaThreads" id="uYn-Gg-3zu">
                                     <dictionary key="options">
                                         <string key="NSValueTransformerName">NCThreadInfoValueTransformer</string>
                                     </dictionary>
                                 </binding>
-                                <binding destination="-2" name="selectedIndex" keyPath="self.currentThreadIdx" previousBinding="uYn-Gg-3zu" id="k0B-Ed-950"/>
                             </connections>
                         </popUpButton>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="92Y-UC-GMK">
@@ -91,12 +100,21 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="-2" name="displayPatternValue1" keyPath="self.streamPrefix" id="HeX-Iv-76y">
+                                <binding destination="-2" name="displayPatternValue1" keyPath="self.streamPrefix" id="Ofw-F8-Dk8">
                                     <dictionary key="options">
                                         <string key="NSDisplayPattern">%{value1}@/%{value2}@</string>
+                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                        <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
+IA
+</string>
                                     </dictionary>
                                 </binding>
-                                <binding destination="-2" name="displayPatternValue2" keyPath="self.currentThread.Name" previousBinding="HeX-Iv-76y" id="tPz-bX-3Tu">
+                                <binding destination="-2" name="displayPatternValue2" keyPath="self.currentThread.Name" previousBinding="Ofw-F8-Dk8" id="iEM-so-Cvp">
                                     <dictionary key="options">
                                         <string key="NSDisplayPattern">%{value1}@/%{value2}@</string>
                                     </dictionary>
@@ -112,9 +130,9 @@
                             </textFieldCell>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UX7-YZ-ycH">
-                            <rect key="frame" x="477" y="6" width="39" height="16"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="status" id="RNG-3o-5zJ">
-                                <font key="font" metaFont="titleBar" size="12"/>
+                            <rect key="frame" x="477" y="6" width="4" height="16"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" id="RNG-3o-5zJ">
+                                <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>

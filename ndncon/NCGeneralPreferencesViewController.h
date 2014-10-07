@@ -12,5 +12,6 @@
 @interface NCGeneralPreferencesViewController : NSViewController<MASPreferencesViewController>
 
 @property (nonatomic, strong) NCPreferencesController *preferences;
+@property (nonatomic, readonly) NSString *connectionStatus;
 
 @end

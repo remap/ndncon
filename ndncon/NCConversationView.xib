@@ -49,7 +49,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="550" height="60"/>
                     <subviews>
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XWY-Ny-nZs">
-                            <rect key="frame" x="201" y="12.5" width="148" height="32"/>
+                            <rect key="frame" x="201" y="12" width="148" height="32"/>
                             <buttonCell key="cell" type="push" title="End conversation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Awa-Xh-vhj">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
