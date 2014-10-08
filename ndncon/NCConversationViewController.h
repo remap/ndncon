@@ -53,6 +53,8 @@ NCActiveStreamViewerDelegate>
  */
 -(void)startFetchingWithConfiguration:(NSDictionary*)userInfo;
 
+- (IBAction)endConversation:(id)sender;
+
 @end
 
 @protocol NCConversationViewControllerDelegate <NSObject>

@@ -27,6 +27,7 @@
 @property (weak) IBOutlet NCConversationInfoView *conversationInfoView;
 @property (weak) IBOutlet NSTextField *conversationInfoStatusLabel;
 @property (nonatomic, strong) NCUserViewController *userViewController;
+@property (weak) IBOutlet NSButton *startPublishingButton;
 
 @end
 
@@ -85,11 +86,23 @@
 {
     if ([self.statusPopUpButton.itemArray indexOfObject:self.statusPopUpButton.selectedItem] == STATUS_POPUP_OFFLINE_IDX &&
         [NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
+    {
+        if (self.conversationViewController.participants.count > 0)
+            [self.conversationViewController endConversation:self];
+        
         [[NCNdnRtcLibraryController sharedInstance] stopSession];
+    }
     
     if ([self.statusPopUpButton.itemArray indexOfObject:self.statusPopUpButton.selectedItem] == STATUS_POPUP_PASSIVE_IDX &&
         [NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOnlineNotPublishing)
-        [[NCNdnRtcLibraryController sharedInstance] startSession];
+    {
+        if ([NCNdnRtcLibraryController sharedInstance].sessionStatus == SessionStatusOffline)
+            [[NCNdnRtcLibraryController sharedInstance] startSession];
+        else
+        {
+            [self.conversationViewController endConversation:self];
+        }
+    }
 }
 
 - (IBAction)startPublishing:(id)sender
@@ -191,6 +204,7 @@
     [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
     self.conversationInfoView.status = [NCMainViewController fromSessionSatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
     [self.conversationInfoView setNeedsDisplay:YES];
+    [self.startPublishingButton setEnabled:([[notification.userInfo objectForKey:kNCSessionStatusKey] intValue] != SessionStatusOffline)];
 }
 
 -(void)onSessionError:(NSNotification*)notification
@@ -204,10 +218,11 @@
 
 -(void)updateSessionStatus:(NCSessionStatus)status
 {
+    [self removeOnlinePublishingStatusIfPresent];
+    
     switch (status) {
         case SessionStatusOnlineNotPublishing:
         {
-            [self removeOnlinePublishingStatusIfPresent];
             [self.statusPopUpButton selectItemAtIndex:STATUS_POPUP_PASSIVE_IDX];
         }
             break;
@@ -221,7 +236,6 @@
             break;
         default:
         {
-            [self removeOnlinePublishingStatusIfPresent];
             [self.statusPopUpButton selectItemAtIndex:STATUS_POPUP_OFFLINE_IDX];
         }
             break;
