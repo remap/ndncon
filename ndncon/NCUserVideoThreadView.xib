@@ -11,8 +11,8 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
-            <rect key="frame" x="0.0" y="0.0" width="192" height="60"/>
+        <customView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="194" height="60"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LOu-Z8-AnO">
                     <rect key="frame" x="-2" y="38" width="78" height="14"/>
@@ -25,8 +25,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jI9-ny-Gcf">
-                    <rect key="frame" x="84" y="38" width="77" height="14"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jI9-ny-Gcf">
+                    <rect key="frame" x="84" y="38" width="81" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" title="thread" drawsBackground="YES" id="GPm-i7-Xcy">
                         <font key="font" size="11" name="LucidaGrande-Bold"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -45,8 +45,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jbC-Ng-tej">
-                    <rect key="frame" x="84" y="2" width="32" height="14"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jbC-Ng-tej">
+                    <rect key="frame" x="84" y="2" width="34" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" title="1000" drawsBackground="YES" id="Fa8-vI-T3W">
                         <font key="font" size="11" name="LucidaGrande-Bold"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -57,16 +57,16 @@
                         <outlet property="nextKeyView" destination="XWx-H8-mnP" id="aSz-RU-TeX"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uh0-4u-3nV">
-                    <rect key="frame" x="118" y="2" width="30" height="14"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uh0-4u-3nV">
+                    <rect key="frame" x="120" y="2" width="30" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="GOP:" id="ano-ps-LQX">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XWx-H8-mnP">
-                    <rect key="frame" x="150" y="2" width="40" height="14"/>
+                <textField verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="XWx-H8-mnP">
+                    <rect key="frame" x="152" y="2" width="40" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="40" id="YXN-Dy-R15"/>
                     </constraints>
@@ -88,8 +88,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="124-T6-PAP">
-                    <rect key="frame" x="84" y="20" width="32" height="14"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="124-T6-PAP">
+                    <rect key="frame" x="84" y="20" width="34" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" title="1280" drawsBackground="YES" id="iVY-rC-h9e">
                         <font key="font" size="11" name="LucidaGrande-Bold"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -100,8 +100,8 @@
                         <outlet property="nextKeyView" destination="QA5-2O-thQ" id="k8E-7z-V87"/>
                     </connections>
                 </textField>
-                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QA5-2O-thQ">
-                    <rect key="frame" x="129" y="20" width="32" height="14"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QA5-2O-thQ">
+                    <rect key="frame" x="131" y="20" width="34" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" title="800" drawsBackground="YES" id="d1v-X2-pnV">
                         <font key="font" size="11" name="LucidaGrande-Bold"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -112,8 +112,8 @@
                         <outlet property="nextKeyView" destination="jbC-Ng-tej" id="7qj-ZV-6To"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yYV-D4-xqB">
-                    <rect key="frame" x="117" y="20" width="11" height="14"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yYV-D4-xqB">
+                    <rect key="frame" x="119" y="20" width="11" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="X" id="yrN-Vg-HHO">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>

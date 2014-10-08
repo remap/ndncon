@@ -251,6 +251,8 @@ NSString* const kThreadsArrayKey = @"Threads";
      KEYPATH2(configuration, kSynchornizedToKey),
      KEYPATH2(configuration, kInputDeviceKey),
      KEYPATH2(configuration, kThreadsArrayKey),
+     KEYPATH2(configuration, kSegmentSizeKey),
+     KEYPATH2(configuration, kFreshnessPeriodKey),
      nil];
 }
 
@@ -262,6 +264,8 @@ NSString* const kThreadsArrayKey = @"Threads";
      KEYPATH2(configuration, kSynchornizedToKey),
      KEYPATH2(configuration, kInputDeviceKey),
      KEYPATH2(configuration, kThreadsArrayKey),
+     KEYPATH2(configuration, kSegmentSizeKey),
+     KEYPATH2(configuration, kFreshnessPeriodKey),
      nil];
 }
 

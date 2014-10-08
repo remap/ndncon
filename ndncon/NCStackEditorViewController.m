@@ -95,6 +95,15 @@
     }];
 }
 
+-(void)setBackgroundColor:(NSColor *)backgroundColor
+{
+    _backgroundColor = backgroundColor;
+    
+    if (self.entryControllers)
+        for (NCStackEditorEntryViewController *entry in self.entryControllers)
+            entry.view.superview.layer.backgroundColor = _backgroundColor.CGColor;
+}
+
 // NSStackView delegate
 -(void)stackView:(NSStackView *)stackView didReattachViews:(NSArray *)views
 {

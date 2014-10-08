@@ -28,6 +28,7 @@
 #import "NCUserListViewController.h"
 #import "NCVideoStreamRenderer.h"
 #import "NSString+NdnRtcNamespace.h"
+#import "NCErrorController.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -251,6 +252,9 @@ private:
 
 -(void)startFetchingWithConfiguration:(NSDictionary *)userInfo
 {
+    if ([self getParticipantInfo:[userInfo valueForKey:kNCSessionUsernameKey]])
+        return;
+    
     BOOL hasRemoteParticipants = ([self numberOfRemoteParticipants] > 0);
     
     NSArray *audioStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] audioStreamsConfigurations];
@@ -416,6 +420,9 @@ private:
         
         NSMutableDictionary *participantInfo = [participantArray firstObject];
         [[participantInfo valueForKey:streamsArrayKey] setObject:userInfo forKey:streamPrefix];
+        
+        // update session info
+        [participantInfo setValue:[userDictionary valueForKey:kNCSessionInfoKey] forKey:kNCSessionInfoKey];
     }
     else
     {
@@ -560,6 +567,8 @@ private:
                              isRemote:NO
                              userInfo:audioPreviewVc];
     }
+    else
+        [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't start audio stream"];
 }
 
 -(void)startVideoStreamWithConfiguration:(NSDictionary*)streamConfiguration
@@ -615,6 +624,8 @@ private:
                                  isRemote:NO
                                  userInfo:videoPreviewVc];
         }
+        else
+            [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't start video stream"];
     }
     else
     {
@@ -656,6 +667,8 @@ private:
                              isRemote:YES
                              userInfo:audioPreviewVc];
     }
+    else
+        [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't add audio stream"];
 }
 
 -(void)addRemoteVideoStreamWithConfiguration:(NSDictionary*)streamConfiguration
@@ -688,6 +701,8 @@ private:
                              isRemote:YES
                              userInfo:videoPreviewVc];
     }
+    else
+        [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't add video stream"];
 }
 
 -(void)removeRemoteStreamWithPrefix:(NSString*)streamPrefix

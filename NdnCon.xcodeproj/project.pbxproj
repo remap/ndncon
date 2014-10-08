@@ -37,13 +37,12 @@
 		AF7026E719C3CCBA0087B605 /* NCVideoThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026E619C3CCBA0087B605 /* NCVideoThreadViewController.m */; };
 		AF7026EA19C3CCF30087B605 /* NCThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026E919C3CCF30087B605 /* NCThreadViewController.m */; };
 		AF7026EC19C3CD560087B605 /* NCVideoThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026EB19C3CD560087B605 /* NCVideoThreadView.xib */; };
+		AF744C7019E4899D00E92680 /* NCStreamViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744C6F19E4899D00E92680 /* NCStreamViewerController.m */; };
 		AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
 		AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */; };
 		AF8A138F19BFB7C500010B20 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A138919BFB7C500010B20 /* MASPreferencesWindowController.m */; };
 		AF8A139419BFB85B00010B20 /* NCGeneralPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A139319BFB85B00010B20 /* NCGeneralPreferencesView.xib */; };
 		AF8A139719BFB89B00010B20 /* NCGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A139619BFB89B00010B20 /* NCGeneralPreferencesViewController.m */; };
-		AF8A139919BFB8B900010B20 /* NCMediaPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A139819BFB8B900010B20 /* NCMediaPreferencesView.xib */; };
-		AF8A139D19BFB8CE00010B20 /* NCMediaPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A139B19BFB8CE00010B20 /* NCMediaPreferencesViewController.m */; };
 		AF8A13A219BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF8A13A019BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm */; };
 		AF8A13A319BFB8E700010B20 /* NCAdvancedPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A13A119BFB8E700010B20 /* NCAdvancedPreferencesView.xib */; };
 		AF8A14CE19BFD6C100010B20 /* PTNStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A14CD19BFD6C100010B20 /* PTNStorage.m */; };
@@ -182,6 +181,8 @@
 		AF7026E819C3CCF30087B605 /* NCThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCThreadViewController.h; path = ndncon/NCThreadViewController.h; sourceTree = SOURCE_ROOT; };
 		AF7026E919C3CCF30087B605 /* NCThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCThreadViewController.m; path = ndncon/NCThreadViewController.m; sourceTree = SOURCE_ROOT; };
 		AF7026EB19C3CD560087B605 /* NCVideoThreadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCVideoThreadView.xib; path = ndncon/NCVideoThreadView.xib; sourceTree = SOURCE_ROOT; };
+		AF744C6E19E4899D00E92680 /* NCStreamViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCStreamViewerController.h; path = ndncon/NCStreamViewerController.h; sourceTree = SOURCE_ROOT; };
+		AF744C6F19E4899D00E92680 /* NCStreamViewerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCStreamViewerController.m; path = ndncon/NCStreamViewerController.m; sourceTree = SOURCE_ROOT; };
 		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
@@ -190,9 +191,6 @@
 		AF8A139319BFB85B00010B20 /* NCGeneralPreferencesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCGeneralPreferencesView.xib; path = ndncon/NCGeneralPreferencesView.xib; sourceTree = SOURCE_ROOT; };
 		AF8A139519BFB89B00010B20 /* NCGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGeneralPreferencesViewController.h; path = ndncon/NCGeneralPreferencesViewController.h; sourceTree = SOURCE_ROOT; };
 		AF8A139619BFB89B00010B20 /* NCGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGeneralPreferencesViewController.m; path = ndncon/NCGeneralPreferencesViewController.m; sourceTree = SOURCE_ROOT; };
-		AF8A139819BFB8B900010B20 /* NCMediaPreferencesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCMediaPreferencesView.xib; path = ndncon/NCMediaPreferencesView.xib; sourceTree = SOURCE_ROOT; };
-		AF8A139A19BFB8CE00010B20 /* NCMediaPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCMediaPreferencesViewController.h; path = ndncon/NCMediaPreferencesViewController.h; sourceTree = SOURCE_ROOT; };
-		AF8A139B19BFB8CE00010B20 /* NCMediaPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCMediaPreferencesViewController.m; path = ndncon/NCMediaPreferencesViewController.m; sourceTree = SOURCE_ROOT; };
 		AF8A139F19BFB8E700010B20 /* NCAdvancedPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCAdvancedPreferencesViewController.h; path = ndncon/NCAdvancedPreferencesViewController.h; sourceTree = SOURCE_ROOT; };
 		AF8A13A019BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCAdvancedPreferencesViewController.mm; path = ndncon/NCAdvancedPreferencesViewController.mm; sourceTree = SOURCE_ROOT; };
 		AF8A13A119BFB8E700010B20 /* NCAdvancedPreferencesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCAdvancedPreferencesView.xib; path = ndncon/NCAdvancedPreferencesView.xib; sourceTree = SOURCE_ROOT; };
@@ -428,9 +426,6 @@
 				AF8A139319BFB85B00010B20 /* NCGeneralPreferencesView.xib */,
 				AF8A139519BFB89B00010B20 /* NCGeneralPreferencesViewController.h */,
 				AF8A139619BFB89B00010B20 /* NCGeneralPreferencesViewController.m */,
-				AF8A139819BFB8B900010B20 /* NCMediaPreferencesView.xib */,
-				AF8A139A19BFB8CE00010B20 /* NCMediaPreferencesViewController.h */,
-				AF8A139B19BFB8CE00010B20 /* NCMediaPreferencesViewController.m */,
 				AF7026A619C11BF40087B605 /* Advanced preferences */,
 				AF8A14CF19BFD70B00010B20 /* NCPreferencesController.h */,
 				AF8A14D019BFD70B00010B20 /* NCPreferencesController.mm */,
@@ -551,6 +546,8 @@
 				AFC99BE019D25E82005B75AB /* NCUserViewController.h */,
 				AFC99BE119D25E82005B75AB /* NCUserViewController.m */,
 				AFC99BE319D25E94005B75AB /* NCUserView.xib */,
+				AF744C6E19E4899D00E92680 /* NCStreamViewerController.h */,
+				AF744C6F19E4899D00E92680 /* NCStreamViewerController.m */,
 			);
 			name = "User view";
 			sourceTree = "<group>";
@@ -775,7 +772,6 @@
 				AFC99BEB19D26510005B75AB /* NCUserAudioThreadView.xib in Resources */,
 				AFD9790519BE546D0061AA24 /* Images.xcassets in Resources */,
 				AFC99BEA19D26510005B75AB /* NCUserAudioStreamView.xib in Resources */,
-				AF8A139919BFB8B900010B20 /* NCMediaPreferencesView.xib in Resources */,
 				AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */,
 				AF7026EC19C3CD560087B605 /* NCVideoThreadView.xib in Resources */,
 				AF7026BA19C251490087B605 /* NCStackEditorEntryView.xib in Resources */,
@@ -851,6 +847,7 @@
 				AFB35C2719CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm in Sources */,
 				AF8A14CE19BFD6C100010B20 /* PTNStorage.m in Sources */,
 				AFA8521719C8B2FF0015A883 /* NCEmbeddedScrollView.m in Sources */,
+				AF744C7019E4899D00E92680 /* NCStreamViewerController.m in Sources */,
 				AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */,
 				AFA8521419C8A6060015A883 /* NSObject+NCAdditions.m in Sources */,
 				AFC99BF319D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm in Sources */,
@@ -862,7 +859,6 @@
 				AF3E074519D4A86300028E26 /* NCVideoStreamRenderer.mm in Sources */,
 				AFB35C0619CA010700D8A2BC /* NCStreamBrowserController.m in Sources */,
 				AFC99BD619D20489005B75AB /* User.m in Sources */,
-				AF8A139D19BFB8CE00010B20 /* NCMediaPreferencesViewController.m in Sources */,
 				AF8A14D119BFD70B00010B20 /* NCPreferencesController.mm in Sources */,
 				AF7026D319C391B60087B605 /* NCStreamViewController.m in Sources */,
 				AFC99BD319D16E2E005B75AB /* NCCustomTextField.m in Sources */,

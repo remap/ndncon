@@ -15,6 +15,9 @@
 
 @property (nonatomic, weak) id<NCUserViewControllerDelegate> delegate;
 
+@property (nonatomic) NSString *userName;
+@property (nonatomic) NSString *prefix;
+
 @property (nonatomic) NCSessionInfoContainer *sessionInfo;
 @property (nonatomic) NSDictionary *userInfo;
 @property (nonatomic) NSImage *statusImage;

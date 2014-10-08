@@ -13,11 +13,14 @@
 #import "NCUserStreamViewController.h"
 #import "NSObject+NCAdditions.h"
 #import "NCNdnRtcLibraryController.h"
+#import "NCStreamViewerController.h"
 
 @interface NCUserViewController ()
 
 @property (weak) IBOutlet NSScrollView *scrollView;
-@property (nonatomic) NCStreamEditorViewController *streamEditorController;
+//@property (nonatomic) NCStreamEditorViewController *streamEditorController;
+@property (nonatomic) NCStreamViewerController *streamEditorController;
+@property (weak) IBOutlet NSButton *fetchAllButton;
 
 @end
 
@@ -29,9 +32,7 @@
     
     if (self)
     {
-        self.streamEditorController = [[NCStreamEditorViewController alloc] initWithPreferencesController:[NCPreferencesController sharedInstance]];
-        self.streamEditorController.videoStreamViewControllerClass = [NCVideoUserStreamViewController class];
-        self.streamEditorController.audioStreamViewControllerClass = [NCAudioUserStreamViewController class];
+        self.streamEditorController = [[NCStreamViewerController alloc] init];
         self.statusImage = [[NCNdnRtcLibraryController sharedInstance]
                             imageForSessionStatus:SessionStatusOffline];
 
@@ -52,14 +53,23 @@
 {
     [self.scrollView addStackView:self.streamEditorController.stackView
                   withOrientation:NSUserInterfaceLayoutOrientationVertical];
-    [self.streamEditorController awakeFromNib];    
+    [self.streamEditorController awakeFromNib];
+
+    NCSessionStatus status = [[self.userInfo valueForKey:kNCSessionStatusKey] integerValue];
+    [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
 }
 
 -(void)setUserInfo:(NSDictionary *)userInfo
 {
     _userInfo = userInfo;
+    self.streamEditorController.userName = [userInfo valueForKey:kNCSessionUsernameKey];
+    self.streamEditorController.userPrefix = [userInfo valueForKey:kNCHubPrefixKey];
+    
+    NCSessionStatus status = [[_userInfo valueForKey:kNCSessionStatusKey] integerValue];
+    
     self.statusImage = [[NCNdnRtcLibraryController sharedInstance]
-                        imageForSessionStatus:[[_userInfo valueForKey:kNCSessionStatusKey] integerValue]];
+                        imageForSessionStatus:status];
+    [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
 }
 
 -(void)setSessionInfo:(NCSessionInfoContainer *)sessionInfo

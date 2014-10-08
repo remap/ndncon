@@ -7,6 +7,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="NCUserViewController">
             <connections>
                 <outlet property="fetchAll" destination="ITG-mn-B5f" id="xak-nn-k6y"/>
+                <outlet property="fetchAllButton" destination="ITG-mn-B5f" id="xFe-gQ-uCh"/>
                 <outlet property="scrollView" destination="F0O-SU-HHs" id="YY5-Oq-ice"/>
                 <outlet property="view" destination="c22-O7-iKe" id="1ei-Ep-oJw"/>
             </connections>
@@ -85,7 +86,7 @@
                 </imageView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ITG-mn-B5f">
                     <rect key="frame" x="195" y="357" width="93" height="32"/>
-                    <buttonCell key="cell" type="push" title="Fetch all" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="OC4-ej-gKZ">
+                    <buttonCell key="cell" type="push" title="Fetch all" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="OC4-ej-gKZ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

@@ -264,7 +264,7 @@ CA
                                             <rect key="frame" x="1" y="1" width="198" height="554"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" headerView="o7M-7b-i09" viewBased="YES" id="Ei1-FY-IiO">
+                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" headerView="o7M-7b-i09" viewBased="YES" id="Ei1-FY-IiO">
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -310,7 +310,7 @@ CA
                                                                             <rect key="frame" x="42" y="12" width="151" height="14"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="prefix" usesSingleLineMode="YES" id="5wz-f4-i0T">
                                                                                 <font key="font" metaFont="smallSystem"/>
-                                                                                <color key="textColor" red="0.20404177295918369" green="0.20404177295918369" blue="0.20404177295918369" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                <color key="textColor" red="0.57308274872448983" green="0.57308274872448983" blue="0.57308274872448983" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>

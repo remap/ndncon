@@ -11,6 +11,9 @@
 
 @interface NCUserStreamViewController : NCStreamViewController
 
+@property (nonatomic) NSString *userName;
+@property (nonatomic) NSString *userPrefix;
+
 @end
 
 

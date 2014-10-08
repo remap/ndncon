@@ -23,7 +23,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eSS-3j-7XH">
+                <textField horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eSS-3j-7XH">
                     <rect key="frame" x="167" y="176" width="80" height="14"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="/some/prefix" id="398-tW-20g">
                         <font key="font" size="11" name="LucidaGrande-Bold"/>
@@ -31,17 +31,17 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="-2" name="displayPatternValue1" keyPath="self.preferences.prefix" id="saQ-mR-VpW">
+                        <binding destination="-2" name="displayPatternValue1" keyPath="self.userPrefix" id="ZlH-57-Rz6">
                             <dictionary key="options">
                                 <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
                             </dictionary>
                         </binding>
-                        <binding destination="-2" name="displayPatternValue2" keyPath="self.preferences.userName" previousBinding="saQ-mR-VpW" id="6fV-qJ-2Sy">
+                        <binding destination="-2" name="displayPatternValue2" keyPath="self.userName" previousBinding="ZlH-57-Rz6" id="bnl-7X-29F">
                             <dictionary key="options">
                                 <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
                             </dictionary>
                         </binding>
-                        <binding destination="-2" name="displayPatternValue3" keyPath="self.streamName" previousBinding="6fV-qJ-2Sy" id="7MR-oU-u2b">
+                        <binding destination="-2" name="displayPatternValue3" keyPath="self.streamName" previousBinding="bnl-7X-29F" id="Lwv-eO-Lbq">
                             <dictionary key="options">
                                 <string key="NSDisplayPattern">%{value1}@/ndnrtc/user/%{value2}@/streams/%{value3}@</string>
                             </dictionary>
@@ -68,7 +68,7 @@
                     </connections>
                 </textField>
                 <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYq-dq-VZZ" customClass="NCEmbeddedScrollView">
-                    <rect key="frame" x="0.0" y="0.0" width="590" height="114"/>
+                    <rect key="frame" x="0.0" y="0.0" width="590" height="132"/>
                     <clipView key="contentView" id="Bzq-Ho-A1v" customClass="NCEditorClipView">
                         <rect key="frame" x="1" y="1" width="588" height="98"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -94,37 +94,15 @@
                     </userDefinedRuntimeAttributes>
                 </scrollView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MuJ-xw-HTk">
-                    <rect key="frame" x="-2" y="118" width="50" height="14"/>
+                    <rect key="frame" x="-2" y="136" width="50" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Threads:" id="N0W-K9-hdV">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5NU-7E-eyc">
-                    <rect key="frame" x="-2" y="158" width="150" height="14"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Data freshness period (ms):" id="T6I-si-NxB">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MTi-3t-rH2">
-                    <rect key="frame" x="167" y="158" width="54" height="14"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="50" id="GVI-hG-JIB"/>
-                    </constraints>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="1000" usesSingleLineMode="YES" id="my5-ev-Bu7">
-                        <font key="font" size="11" name="LucidaGrande-Bold"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="-2" name="value" keyPath="self.configuration.Freshness period" id="foE-oq-ubn"/>
-                    </connections>
-                </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9bo-hJ-0vE">
-                    <rect key="frame" x="-2" y="140" width="153" height="14"/>
+                    <rect key="frame" x="-2" y="158" width="153" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Segment size (bytes):" id="kNN-cb-9AE">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -132,7 +110,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oAy-Py-eac">
-                    <rect key="frame" x="167" y="140" width="54" height="14"/>
+                    <rect key="frame" x="167" y="158" width="54" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="50" id="SJV-kY-dcm"/>
                     </constraints>
@@ -151,26 +129,22 @@
                 <constraint firstItem="9bo-hJ-0vE" firstAttribute="baseline" secondItem="oAy-Py-eac" secondAttribute="baseline" id="4Jj-Wf-e5d"/>
                 <constraint firstItem="3Wb-o0-W9N" firstAttribute="leading" secondItem="nzb-GV-pIc" secondAttribute="trailing" constant="95" id="9Fn-w7-A4J"/>
                 <constraint firstAttribute="bottom" secondItem="hYq-dq-VZZ" secondAttribute="bottom" id="9bs-6r-Sb3"/>
-                <constraint firstItem="5NU-7E-eyc" firstAttribute="leading" secondItem="nzb-GV-pIc" secondAttribute="leading" id="9cb-Bc-lKS"/>
                 <constraint firstItem="oAy-Py-eac" firstAttribute="leading" secondItem="3Wb-o0-W9N" secondAttribute="leading" id="BSn-UG-Rn8"/>
                 <constraint firstItem="eSS-3j-7XH" firstAttribute="centerX" secondItem="3Wb-o0-W9N" secondAttribute="centerX" id="DbP-uY-ISl"/>
                 <constraint firstAttribute="trailing" secondItem="hYq-dq-VZZ" secondAttribute="trailing" id="E8U-r1-0yV"/>
                 <constraint firstItem="iw4-zC-Cjg" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="ErC-k8-mMc"/>
                 <constraint firstItem="nzb-GV-pIc" firstAttribute="baseline" secondItem="3Wb-o0-W9N" secondAttribute="baseline" id="GFQ-Q4-GTw"/>
                 <constraint firstItem="MuJ-xw-HTk" firstAttribute="top" secondItem="9bo-hJ-0vE" secondAttribute="bottom" constant="8" id="Oxk-bX-pAp"/>
-                <constraint firstItem="MTi-3t-rH2" firstAttribute="top" secondItem="eSS-3j-7XH" secondAttribute="bottom" constant="4" id="Pba-3k-frh"/>
-                <constraint firstItem="5NU-7E-eyc" firstAttribute="baseline" secondItem="MTi-3t-rH2" secondAttribute="baseline" id="SgI-uP-Tkv"/>
+                <constraint firstItem="9bo-hJ-0vE" firstAttribute="leading" secondItem="iw4-zC-Cjg" secondAttribute="leading" id="Zlb-qf-1cx"/>
                 <constraint firstItem="MuJ-xw-HTk" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="d7e-Jj-GGJ"/>
                 <constraint firstItem="oAy-Py-eac" firstAttribute="leading" secondItem="9bo-hJ-0vE" secondAttribute="trailing" constant="20" id="fUz-ZH-oIc"/>
                 <constraint firstItem="hYq-dq-VZZ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="gAI-zQ-g7b"/>
                 <constraint firstItem="nzb-GV-pIc" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="mOR-pS-VmT"/>
-                <constraint firstItem="3Wb-o0-W9N" firstAttribute="leading" secondItem="MTi-3t-rH2" secondAttribute="leading" id="oP2-ju-1I8"/>
                 <constraint firstItem="hYq-dq-VZZ" firstAttribute="top" secondItem="MuJ-xw-HTk" secondAttribute="bottom" constant="4" id="oUo-B3-ber"/>
                 <constraint firstItem="iw4-zC-Cjg" firstAttribute="baseline" secondItem="eSS-3j-7XH" secondAttribute="baseline" id="po7-b2-Xkb"/>
-                <constraint firstItem="oAy-Py-eac" firstAttribute="top" secondItem="MTi-3t-rH2" secondAttribute="bottom" constant="4" id="qst-xy-yqj"/>
                 <constraint firstItem="3Wb-o0-W9N" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="10" id="rEU-9o-dVS"/>
                 <constraint firstItem="eSS-3j-7XH" firstAttribute="top" secondItem="3Wb-o0-W9N" secondAttribute="bottom" constant="4" id="rp7-gm-SwU"/>
-                <constraint firstItem="MTi-3t-rH2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5NU-7E-eyc" secondAttribute="trailing" constant="20" id="xvP-Dp-1om"/>
+                <constraint firstItem="9bo-hJ-0vE" firstAttribute="top" secondItem="iw4-zC-Cjg" secondAttribute="bottom" constant="4" id="ww5-7G-0bU"/>
                 <constraint firstItem="nzb-GV-pIc" firstAttribute="leading" secondItem="9bo-hJ-0vE" secondAttribute="leading" id="y1B-Rg-A3F"/>
             </constraints>
             <point key="canvasLocation" x="139" y="148"/>

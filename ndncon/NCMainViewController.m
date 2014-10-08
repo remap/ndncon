@@ -130,8 +130,8 @@
     NCSessionInfoContainer *sessionInfo = [user valueForKey:kNCSessionInfoKey];
     
     self.userViewController = [[NCUserViewController alloc] init];
+    self.userViewController.userInfo = user;    
     self.userViewController.sessionInfo = sessionInfo;
-    self.userViewController.userInfo = user;
     self.userViewController.delegate = self;
     
     [self loadCurrentView:self.userViewController.view];

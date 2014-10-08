@@ -41,6 +41,11 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
+                                <binding destination="-2" name="displayPatternValue2" keyPath="self.streamPrefix.getNdnRtcStreamName" previousBinding="Wkz-97-Xlz" id="N5d-sR-01b">
+                                    <dictionary key="options">
+                                        <string key="NSDisplayPattern">%{value1}@:%{value2}@</string>
+                                    </dictionary>
+                                </binding>
                                 <binding destination="-2" name="displayPatternValue1" keyPath="self.userInfo.username" id="Wkz-97-Xlz">
                                     <dictionary key="options">
                                         <string key="NSDisplayPattern">%{value1}@:%{value2}@</string>
@@ -53,11 +58,6 @@ IA
                                         <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                    </dictionary>
-                                </binding>
-                                <binding destination="-2" name="displayPatternValue2" keyPath="self.streamPrefix.getNdnRtcStreamName" previousBinding="Wkz-97-Xlz" id="N5d-sR-01b">
-                                    <dictionary key="options">
-                                        <string key="NSDisplayPattern">%{value1}@:%{value2}@</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -100,6 +100,11 @@ IA
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
+                                <binding destination="-2" name="displayPatternValue2" keyPath="self.currentThread.Name" previousBinding="Ofw-F8-Dk8" id="iEM-so-Cvp">
+                                    <dictionary key="options">
+                                        <string key="NSDisplayPattern">%{value1}@/%{value2}@</string>
+                                    </dictionary>
+                                </binding>
                                 <binding destination="-2" name="displayPatternValue1" keyPath="self.streamPrefix" id="Ofw-F8-Dk8">
                                     <dictionary key="options">
                                         <string key="NSDisplayPattern">%{value1}@/%{value2}@</string>
@@ -112,11 +117,6 @@ IA
                                         <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                    </dictionary>
-                                </binding>
-                                <binding destination="-2" name="displayPatternValue2" keyPath="self.currentThread.Name" previousBinding="Ofw-F8-Dk8" id="iEM-so-Cvp">
-                                    <dictionary key="options">
-                                        <string key="NSDisplayPattern">%{value1}@/%{value2}@</string>
                                     </dictionary>
                                 </binding>
                             </connections>

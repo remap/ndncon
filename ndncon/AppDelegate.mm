@@ -11,7 +11,6 @@
 #import "NCNdnRtcLibraryController.h"
 #import "NCAdvancedPreferencesViewController.h"
 #import "NCGeneralPreferencesViewController.h"
-#import "NCMediaPreferencesViewController.h"
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"
 
