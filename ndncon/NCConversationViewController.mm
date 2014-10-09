@@ -253,13 +253,14 @@ private:
     [self.localStreamViewer closeAllStreams];    
     
     self.participants = @[];
-    [self checkConversationDidEnd];
     
     if (self.statisticsController)
     {
         [self.statisticsController stopStatUpdate];
         self.statisticsController = nil;
     }
+    
+    [self checkConversationDidEnd];
 }
 
 - (IBAction)showStatistics:(id)sender
