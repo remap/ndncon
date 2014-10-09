@@ -28,6 +28,9 @@
 @property (weak) IBOutlet NSTextField *statusLabel;
 @property (weak) IBOutlet NSImageView *statusImageView;
 
+-(void)clearStreamEventView;
+-(void)renderStreamEvent:(NSString*)eventDescription;
+
 @end
 
 

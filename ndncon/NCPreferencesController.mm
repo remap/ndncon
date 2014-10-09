@@ -7,6 +7,8 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
+#import <CoreFoundation/CoreFoundation.h>
+
 #include <ndnrtc/params.h>
 #include <ndnrtc/simple-log.h>
 
@@ -122,6 +124,16 @@ using namespace ndnrtc::new_api;
 +(PTNStorage*)createInstance
 {
     return [[NCPreferencesController alloc] init];
+}
+
+-(NSString *)appName
+{
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
+}
+
+-(NSString *)versionString
+{
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 
 -(BOOL)isFirstLaunch

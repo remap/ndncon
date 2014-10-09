@@ -293,7 +293,7 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="-2" name="value" keyPath="self.preferences.interestLifetimeMs" id="YeQ-Gw-YH0"/>
+                                    <binding destination="-2" name="value" keyPath="self.preferences.interestLifetimeMs" id="518-wu-zdS"/>
                                     <outlet property="nextKeyView" destination="TyF-64-Reh" id="R2X-5t-CtI"/>
                                 </connections>
                             </textField>

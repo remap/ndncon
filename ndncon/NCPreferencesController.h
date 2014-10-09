@@ -31,6 +31,9 @@ extern NSString* const kNdnPortKey;
 
 @property (nonatomic, getter=isFirstLaunch, setter=firstLaunch:) BOOL firstLaunch;
 
+@property (nonatomic, readonly) NSString *appName;
+@property (nonatomic, readonly) NSString *versionString;
+
 /**
  * General settings
  */

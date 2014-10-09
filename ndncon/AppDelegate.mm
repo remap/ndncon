@@ -30,6 +30,9 @@
 {
     [NCPreferencesController sharedInstanceWithDefaultsFile:@"settings"];
 //    [[NCPreferencesController sharedInstance] resetDefaults];
+    [self.window setTitle:[NSString stringWithFormat:@"%@ v%@",
+                           [NCPreferencesController sharedInstance].appName,
+                           [NCPreferencesController sharedInstance].versionString]];
     
     if ([NCPreferencesController sharedInstance].isFirstLaunch)
     {

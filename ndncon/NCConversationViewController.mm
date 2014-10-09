@@ -29,6 +29,7 @@
 #import "NCVideoStreamRenderer.h"
 #import "NSString+NdnRtcNamespace.h"
 #import "NCErrorController.h"
+#import "NCStatisticsWindowController.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -37,6 +38,11 @@ NSString* const kCameraCapturerKey = @"cameraCapturer";
 NSString* const kRendererKey = @"videoRenderer";
 NSString* const kNCLocalStreamsDictionaryKey = @"localStreamsDictionary";
 NSString* const kNCRemoteStreamsDictionaryKey = @"remoteStreamsDictionary";
+
+NSString* const NCStreamRebufferingNotification = @"NCStreamRebufferingNotification";
+NSString* const NCStreamObserverEventNotification = @"NCStreamObserverEventNotification";
+NSString* const kStreamObserverEventTypeKey = @"eventType";
+NSString* const kStreamObserverEventDataKey = @"eventData";
 
 //******************************************************************************
 class StreamObserver : public IConsumerObserver
@@ -109,13 +115,18 @@ public:
     void
     onRebufferingOccurred()
     {
-        NSLog(@"rebuffering occurred for %s", streamPrefix_.c_str());
+        [[[NSObject alloc] init] notifyNowWithNotificationName:NCStreamRebufferingNotification
+                                                   andUserInfo:nil];
     }
     
     void
     onPlaybackEventOccurred(PlaybackEvent event, unsigned int frameSeqNo)
     {
-        NSLog(@"playback event %d for %s", event, streamPrefix_.c_str());
+        [[[NSObject alloc] init] notifyNowWithNotificationName:NCStreamObserverEventNotification
+                                                   andUserInfo:@{
+                                                                 kStreamObserverEventTypeKey:@(event),
+                                                                 kStreamObserverEventDataKey:@(frameSeqNo)
+                                                                 }];
     }
     
     void
@@ -149,6 +160,8 @@ private:
 
 @property (nonatomic, strong) NCActiveStreamViewer *activeStreamViewer;
 @property (nonatomic, weak) NCStreamPreviewController *currentlySelectedPreview;
+@property (nonatomic, strong) NCStatisticsWindowController *statisticsController;
+@property (weak) IBOutlet NSButton *statisticsButton;
 
 @end
 
@@ -181,6 +194,8 @@ private:
     [self subscribeForNotificationsAndSelectors:
      NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
      NSApplicationWillTerminateNotification, @selector(onAppWillTerminate:),
+     NCStreamObserverEventNotification, @selector(onStreamEvent:),
+     NCStreamRebufferingNotification, @selector(onStreamEvent:),
      nil];
 }
 
@@ -239,6 +254,27 @@ private:
     
     self.participants = @[];
     [self checkConversationDidEnd];
+    
+    if (self.statisticsController)
+    {
+        [self.statisticsController stopStatUpdate];
+        self.statisticsController = nil;
+    }
+}
+
+- (IBAction)showStatistics:(id)sender
+{
+    if ([self.statisticsController.window isVisible])
+        [self.statisticsController close];
+    else
+    {
+        if (!self.statisticsController)
+        {
+            self.statisticsController = [[NCStatisticsWindowController alloc] init];
+            self.statisticsController.delegate = self;
+        }
+        [self.statisticsController showWindow:nil];
+    }
 }
 
 -(void)startPublishingWithConfiguration:(NSDictionary *)streamsConfiguration
@@ -265,7 +301,7 @@ private:
     
     if (!hasRemoteParticipants)
         [self setStreamWithPrefixActive:[[self getStreamsForPariticpant:[userInfo valueForKeyPath:kNCSessionUsernameKey]
-                                                              isRemote:YES].allKeys lastObject]];
+                                                               isRemote:YES].allKeys firstObject]];
 }
 
 -(void)setParticipants:(NSArray *)participants
@@ -325,13 +361,27 @@ private:
 // NCStreamPreviewControllerDelegate
 -(void)streamPreviewControllerWasSelected:(NCStreamPreviewController *)streamPreviewController
 {
-    if (self.currentlySelectedPreview && [self.currentlySelectedPreview isKindOfClass:[NCVideoPreviewController class]])
+    if (self.currentlySelectedPreview && [streamPreviewController isKindOfClass:[NCVideoPreviewController class]])
     {
-        [((NCVideoPreviewController*)self.currentlySelectedPreview) setPreviewForVideoRenderer:self.activeStreamViewer.renderer];
+        NSString *streamPrefix = [streamPreviewController.userData valueForKey:kStreamPrefixKey];
+        
+        if (streamPrefix != self.activeStreamViewer.streamPrefix)
+        {
+            [((NCVideoPreviewController*)self.currentlySelectedPreview) setPreviewForVideoRenderer:self.activeStreamViewer.renderer];
+            [self setStreamWithPrefixActive:streamPrefix];
+        }
     }
-    
-    NSString *streamPrefix = [streamPreviewController.userData valueForKey:kStreamPrefixKey];
-    [self setStreamWithPrefixActive:streamPrefix];
+}
+
+// NCStatisticsWindowControllerDelegate
+-(NSArray *)statisticsWindowControllerNeedParticipantsArray:(NCStatisticsWindowController *)wc
+{
+    return self.participants;
+}
+
+-(void)statisticsWindowControllerWindowWillClose:(NCStatisticsWindowController *)wc
+{
+    self.statisticsButton.state = NSOffState;
 }
 
 // private
@@ -345,6 +395,7 @@ private:
     
     if (previewController && [previewController isKindOfClass:[NCVideoPreviewController class]])
     {
+        [self.activeStreamViewer clearStreamEventView];
         // set active stream viewer parameters
         self.activeStreamViewer.streamPrefix = streamPrefix;
         self.activeStreamViewer.userInfo = participantInfo;
@@ -384,6 +435,28 @@ private:
 -(void)onSessionStatusUpdate:(NSNotification*)notification
 {
     _currentConversationStatus = (NCSessionStatus)[[notification.userInfo valueForKey:kNCSessionStatusKey] integerValue];
+}
+
+-(void)onStreamEvent:(NSNotification*)notification
+{
+    if ([notification.name isEqualToString:NCStreamRebufferingNotification])
+        [self.activeStreamViewer renderStreamEvent:@"rebuffering"];
+
+    if ([notification.name isEqualToString:NCStreamObserverEventNotification])
+    {
+        PlaybackEvent event = (PlaybackEvent)[[notification.userInfo valueForKey:kStreamObserverEventTypeKey] integerValue];
+        NSInteger frameNo = [[notification.userInfo valueForKey:kStreamObserverEventDataKey] integerValue];
+        static std::string eventToString[] = {
+            [PlaybackEventDeltaSkipIncomplete] = "skip delta: incomplete",
+            [PlaybackEventDeltaSkipInvalidGop] = "skip delta: bad gop",
+            [PlaybackEventDeltaSkipNoKey] = "skip delta: no key",
+            [PlaybackEventKeySkipIncomplete] = "skip key: incomplete"
+        };
+        
+        NSString *eventStr = [NSString ncStringFromCString:eventToString[event].c_str()];
+        [self.activeStreamViewer renderStreamEvent:
+         [NSString stringWithFormat:@"%@ (#%ld)", eventStr, (long)frameNo]];
+    }
 }
 
 -(void)addUserToConversation:(NSMutableDictionary*)participantInfo

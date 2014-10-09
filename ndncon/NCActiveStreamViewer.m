@@ -14,7 +14,7 @@
 #import "NCVideoThreadViewController.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NCErrorController.h"
-
+#import "NSTimer+NCAdditions.h"
 
 //******************************************************************************
 @interface NCActiveStreamViewer ()
@@ -27,6 +27,10 @@
 @property (weak) IBOutlet NSTextField *userNameLabel;
 @property (weak) IBOutlet NSPopUpButton *mediaThreadsPopup;
 @property (nonatomic) BOOL viewUpdated;
+@property (unsafe_unretained) IBOutlet NSTextView *streamEventsTextView;
+@property (weak) IBOutlet NSScrollView *streamEventsScrollView;
+@property (nonatomic) NSTimer *fadeAnimationTimer;
+@property (nonatomic) BOOL isStreamEventsViewVisible;
 
 @end
 
@@ -67,6 +71,13 @@
     }];
     
     self.viewUpdated = NO;
+    self.isStreamEventsViewVisible = YES;
+}
+
+-(void)awakeFromNib
+{
+    [self.streamEventsTextView setDrawsBackground:NO];
+    [self.streamEventsScrollView setDrawsBackground:NO];
 }
 
 -(void)dealloc
@@ -132,6 +143,68 @@
         {
             [self.delegate activeStreamViewer:self didSelectThreadWithConfiguration:_currentThread];
         }
+    }
+}
+
+-(void)clearStreamEventView
+{
+    [self.streamEventsTextView setString:@""];
+}
+
+-(void)renderStreamEvent:(NSString*)eventDescription
+{
+    if (!self.isStreamEventsViewVisible)
+        return;
+    
+    static NSDictionary *stringAttributes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableParagraphStyle *pStyle;
+        pStyle = [[NSMutableParagraphStyle alloc] init];
+        [pStyle setAlignment:NSRightTextAlignment];
+        
+        stringAttributes = @{
+                             NSParagraphStyleAttributeName: pStyle,
+                             NSBackgroundColorAttributeName: [NSColor clearColor],
+                             NSFontAttributeName: [NSFont systemFontOfSize:10],
+                             NSForegroundColorAttributeName: [NSColor whiteColor]
+                             };
+    });
+    
+    NSString *textEntry = [NSString stringWithFormat:@"%@\n", eventDescription];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSAttributedString* attr = [[NSAttributedString alloc]
+                                    initWithString:textEntry
+                                    attributes:stringAttributes];
+        
+        [[_streamEventsTextView textStorage] appendAttributedString:attr];
+        [_streamEventsTextView scrollRangeToVisible:NSMakeRange([[_streamEventsTextView string] length], 0)];
+    });
+    
+    self.streamEventsTextView.alphaValue = 1.;
+    
+    __weak NCActiveStreamViewer *this = self;
+    if (self.fadeAnimationTimer)
+        [self.fadeAnimationTimer invalidate];
+    
+    self.fadeAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:2.
+                                                     repeats:NO
+                                                   fireBlock:^(NSTimer *timer) {
+                                                       [[this streamEventsTextView] setAlphaValue:0.];
+                                                       this.fadeAnimationTimer = nil;
+                                                   }];
+}
+
+-(void)setIsStreamEventsViewVisible:(BOOL)isStreamEventsViewVisible
+{
+    if (_isStreamEventsViewVisible != isStreamEventsViewVisible)
+    {
+        _isStreamEventsViewVisible = isStreamEventsViewVisible;
+        [self.streamEventsScrollView setHidden:!isStreamEventsViewVisible];
+        
+        if (isStreamEventsViewVisible)
+            [self renderStreamEvent:@"stream events enabled"];
     }
 }
 

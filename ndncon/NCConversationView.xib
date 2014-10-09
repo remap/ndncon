@@ -10,6 +10,7 @@
                 <outlet property="localStreamsScrollView" destination="BWw-Qo-h7p" id="obh-WZ-z87"/>
                 <outlet property="remoteStreamsScrollView" destination="j2S-d6-YUw" id="uUw-u0-ogx"/>
                 <outlet property="startPublishingView" destination="rhs-Lr-yBq" id="WxO-ir-93F"/>
+                <outlet property="statisticsButton" destination="HJ8-dE-WHn" id="sY7-2d-KAS"/>
                 <outlet property="view" destination="c22-O7-iKe" id="ldz-OH-XRm"/>
             </connections>
         </customObject>
@@ -58,10 +59,22 @@
                                 <action selector="endConversation:" target="-2" id="dS0-Dg-5IS"/>
                             </connections>
                         </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HJ8-dE-WHn">
+                            <rect key="frame" x="349" y="12" width="95" height="32"/>
+                            <buttonCell key="cell" type="push" title="Statistics" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SEf-O1-VXi">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="showStatistics:" target="-2" id="BKu-3I-xAw"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="XWY-Ny-nZs" secondAttribute="centerY" id="692-7R-MHF"/>
+                        <constraint firstItem="HJ8-dE-WHn" firstAttribute="baseline" secondItem="XWY-Ny-nZs" secondAttribute="baseline" id="nbX-XE-4m0"/>
                         <constraint firstAttribute="height" constant="60" id="ujG-dT-Vbb"/>
+                        <constraint firstItem="HJ8-dE-WHn" firstAttribute="leading" secondItem="XWY-Ny-nZs" secondAttribute="trailing" constant="12" id="zHl-iv-KZO"/>
                         <constraint firstAttribute="centerX" secondItem="XWY-Ny-nZs" secondAttribute="centerX" id="zmm-b6-f8B"/>
                     </constraints>
                 </customView>

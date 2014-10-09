@@ -11,13 +11,23 @@
 #import "NCNdnRtcLibraryController.h"
 #import "NCStreamPreviewController.h"
 #import "NCActiveStreamViewer.h"
+#import "NCStatisticsWindowController.h"
+
+extern NSString* const NCStreamRebufferingNotification;
+extern NSString* const NCStreamObserverEventNotification;
+extern NSString* const kStreamObserverEventTypeKey;
+extern NSString* const kStreamObserverEventDataKey;
+
+extern NSString* const kNCLocalStreamsDictionaryKey;
+extern NSString* const kNCRemoteStreamsDictionaryKey;
 
 @protocol NCConversationViewControllerDelegate;
 
 @interface NCConversationViewController : NSViewController
 <NCStreamBrowserControllerDelegate,
 NCStreamPreviewControllerDelegate,
-NCActiveStreamViewerDelegate>
+NCActiveStreamViewerDelegate,
+NCStatisticsWindowControllerDelegate>
 
 //+(NSString*)textStatusFromSessionStatus:(NCSessionStatus)sessionStatus;
 
