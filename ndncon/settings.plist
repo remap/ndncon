@@ -25,7 +25,7 @@
 		<key>Skip incomplete frames</key>
 		<true/>
 		<key>Default prefix</key>
-		<string>/test</string>
+		<string>/ndn/edu/ucla/remap</string>
 		<key>Default username</key>
 		<string>jedi</string>
 		<key>NDN daemon</key>

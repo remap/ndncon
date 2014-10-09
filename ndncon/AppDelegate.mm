@@ -13,6 +13,7 @@
 #import "NCGeneralPreferencesViewController.h"
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"
+#import "User.h"
 
 #import "NCPreferencesController.h"
 
@@ -38,6 +39,7 @@
     {
         NSLog(@"First launch indeed!");
         [NCPreferencesController sharedInstance].firstLaunch = NO;
+        [self addTestUsers];
     }
     else
         NSLog(@"Not a first launch. We're friends already...");
@@ -236,6 +238,21 @@
     }
     
     return YES;
+}
+
+//******************************************************************************
+-(void)addTestUsers
+{
+    NSEntityDescription *userEntity = [[self.managedObjectModel entitiesByName] objectForKey:@"User"];
+    User *remapUser = [[User alloc] initWithEntity:userEntity
+                    insertIntoManagedObjectContext:self.managedObjectContext];
+    remapUser.name = @"remap";
+    remapUser.prefix = @"/ndn/edu/ucla/remap";
+    
+    User *remapUser2 = [[User alloc] initWithEntity:userEntity
+                    insertIntoManagedObjectContext:self.managedObjectContext];
+    remapUser2.name = @"remap2";
+    remapUser2.prefix = @"/ndn/edu/ucla/remap";
 }
 
 @end
