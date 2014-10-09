@@ -35,6 +35,6 @@
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUFeedURL</key>
-	<string>http://petergusev.com/ndncon/Appcast.xml</string>
+	<string>https://raw.githubusercontent.com/peetonn/ndncon/master/releases/Appcast.xml</string>
 </dict>
 </plist>

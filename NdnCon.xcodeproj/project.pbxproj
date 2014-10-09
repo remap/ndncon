@@ -42,6 +42,9 @@
 		AF744C8519E61F2900E92680 /* NSTimer+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744C8419E61F2900E92680 /* NSTimer+NCAdditions.m */; };
 		AF744C8A19E625B300E92680 /* NCStatisticsWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF744C8819E625B300E92680 /* NCStatisticsWindowController.mm */; };
 		AF744C8B19E625B300E92680 /* NCStatisticsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744C8919E625B300E92680 /* NCStatisticsWindow.xib */; };
+		AF744C8D19E71BEE00E92680 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744C8C19E71BEE00E92680 /* Sparkle.framework */; };
+		AF744C8E19E71C1F00E92680 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF744C8C19E71BEE00E92680 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AF744C9019E71DDC00E92680 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = AF744C8F19E71DDC00E92680 /* dsa_pub.pem */; };
 		AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
 		AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */; };
 		AF8A138F19BFB7C500010B20 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A138919BFB7C500010B20 /* MASPreferencesWindowController.m */; };
@@ -127,6 +130,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				AF744C8E19E71C1F00E92680 /* Sparkle.framework in CopyFiles */,
 				AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,6 +196,9 @@
 		AF744C8719E625B300E92680 /* NCStatisticsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCStatisticsWindowController.h; path = ndncon/NCStatisticsWindowController.h; sourceTree = SOURCE_ROOT; };
 		AF744C8819E625B300E92680 /* NCStatisticsWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCStatisticsWindowController.mm; path = ndncon/NCStatisticsWindowController.mm; sourceTree = SOURCE_ROOT; };
 		AF744C8919E625B300E92680 /* NCStatisticsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCStatisticsWindow.xib; path = ndncon/NCStatisticsWindow.xib; sourceTree = SOURCE_ROOT; };
+		AF744C8C19E71BEE00E92680 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = thirdparty/sparkle/Sparkle.framework; sourceTree = "<group>"; };
+		AF744C8F19E71DDC00E92680 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		AF744C9119E71EC900E92680 /* Appcast.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Appcast.xml; path = ../releases/Appcast.xml; sourceTree = "<group>"; };
 		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
@@ -299,6 +306,7 @@
 				AF7026DA19C3B5530087B605 /* AVFoundation.framework in Frameworks */,
 				AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */,
 				AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */,
+				AF744C8D19E71BEE00E92680 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,6 +618,7 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF744C8C19E71BEE00E92680 /* Sparkle.framework */,
 				AF11BAFA19D4E37E0011270F /* OpenGL.framework */,
 				AFA8520919C779180015A883 /* ApplicationServices.framework */,
 				AFA8520719C778E50015A883 /* Quartz.framework */,
@@ -658,6 +667,8 @@
 		AFD978F019BE546D0061AA24 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AF744C9119E71EC900E92680 /* Appcast.xml */,
+				AF744C8F19E71DDC00E92680 /* dsa_pub.pem */,
 				AFD9792219BE5C6E0061AA24 /* ndncon.iconset */,
 				AFD978F119BE546D0061AA24 /* NdnCon-Info.plist */,
 				AFD978F219BE546D0061AA24 /* InfoPlist.strings */,
@@ -797,6 +808,7 @@
 				AFD9790519BE546D0061AA24 /* Images.xcassets in Resources */,
 				AFC99BEA19D26510005B75AB /* NCUserAudioStreamView.xib in Resources */,
 				AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */,
+				AF744C9019E71DDC00E92680 /* dsa_pub.pem in Resources */,
 				AF7026EC19C3CD560087B605 /* NCVideoThreadView.xib in Resources */,
 				AF7026BA19C251490087B605 /* NCStackEditorEntryView.xib in Resources */,
 				AF8A13A319BFB8E700010B20 /* NCAdvancedPreferencesView.xib in Resources */,
@@ -1024,6 +1036,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/thirdparty/sparkle",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
@@ -1049,6 +1065,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/thirdparty/sparkle",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
