@@ -29,6 +29,7 @@
                 <outlet property="userController" destination="H1Y-px-pwf" id="q6F-g4-C3L"/>
             </connections>
         </customObject>
+        <customObject id="dBI-Ba-GfI" customClass="SUUpdater"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
                 <outlet property="userListViewController" destination="N2m-Sp-SCk" id="9yd-5I-wiT"/>
@@ -207,9 +208,15 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="NdnCon Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                            <menuItem title="Check for updates..." id="FKE-Sm-Kum">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="showHelp:" target="-1" id="y7X-2Q-9no"/>
+                                    <action selector="checkForUpdates:" target="dBI-Ba-GfI" id="Riu-16-nHO"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="NdnCon Help" keyEquivalent="?" id="jDM-MI-PJD">
+                                <connections>
+                                    <action selector="showHelp:" target="-1" id="7ma-2q-6aM"/>
                                 </connections>
                             </menuItem>
                         </items>
