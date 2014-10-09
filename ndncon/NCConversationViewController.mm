@@ -297,12 +297,14 @@ private:
     NSArray *audioStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] audioStreamsConfigurations];
     NSArray *videoStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] videoStreamsConfigurations];
     
-    [self addRemoteAudioStreams: audioStreams withUserInfo:userInfo];
     [self addRemoteVideoStreams: videoStreams withUserInfo:userInfo];
-    
+
+    // select first video stream if no stream selected
     if (!hasRemoteParticipants)
         [self setStreamWithPrefixActive:[[self getStreamsForPariticpant:[userInfo valueForKeyPath:kNCSessionUsernameKey]
                                                                isRemote:YES].allKeys firstObject]];
+    
+    [self addRemoteAudioStreams: audioStreams withUserInfo:userInfo];
 }
 
 -(void)setParticipants:(NSArray *)participants
@@ -362,13 +364,14 @@ private:
 // NCStreamPreviewControllerDelegate
 -(void)streamPreviewControllerWasSelected:(NCStreamPreviewController *)streamPreviewController
 {
-    if (self.currentlySelectedPreview && [streamPreviewController isKindOfClass:[NCVideoPreviewController class]])
+    if ([streamPreviewController isKindOfClass:[NCVideoPreviewController class]])
     {
         NSString *streamPrefix = [streamPreviewController.userData valueForKey:kStreamPrefixKey];
         
         if (streamPrefix != self.activeStreamViewer.streamPrefix)
         {
-            [((NCVideoPreviewController*)self.currentlySelectedPreview) setPreviewForVideoRenderer:self.activeStreamViewer.renderer];
+            if ([self.currentlySelectedPreview isKindOfClass:[NCVideoPreviewController class]])
+                [((NCVideoPreviewController*)self.currentlySelectedPreview) setPreviewForVideoRenderer:self.activeStreamViewer.renderer];
             [self setStreamWithPrefixActive:streamPrefix];
         }
     }
@@ -732,7 +735,6 @@ private:
         NCAudioPreviewController *audioPreviewVc = (NCAudioPreviewController*)[self.remoteStreamViewer addStreamWithConfiguration:streamConfiguration
                                                                                                             andStreamPreviewClass:[NCAudioPreviewController class]
                                                                                                                   forStreamPrefix:streamPrefixStr];
-        audioPreviewVc.delegate = self;
         audioPreviewVc.userData = @{
                                     kStreamPrefixKey:streamPrefixStr
                                     };
