@@ -1055,6 +1055,8 @@
 					$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH,
 					"$(inherited)",
 				);
+				NDNRTC_INCLUDE_PATH = /Users/peetonn/Documents/Work/ndnrtc/cpp/debug/bin/include;
+				NDNRTC_LIB_PATH = /Users/peetonn/Documents/Work/ndnrtc/cpp/debug/bin/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1084,6 +1086,8 @@
 					$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH,
 					"$(inherited)",
 				);
+				NDNRTC_INCLUDE_PATH = /Users/peetonn/Documents/Work/ndnrtc/cpp/debug/bin/include;
+				NDNRTC_LIB_PATH = /Users/peetonn/Documents/Work/ndnrtc/cpp/debug/bin/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
