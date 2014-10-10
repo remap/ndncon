@@ -84,7 +84,6 @@
 		AFC99BED19D26510005B75AB /* NCUserVideoThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC99BE919D26510005B75AB /* NCUserVideoThreadView.xib */; };
 		AFC99BF019D29793005B75AB /* NCUserStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BEF19D29793005B75AB /* NCUserStreamViewController.m */; };
 		AFC99BF319D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BF219D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm */; };
-		AFC99BF719D36B89005B75AB /* NdnCon.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFD978E619BE546D0061AA24 /* NdnCon.app */; };
 		AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
 		AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
@@ -114,16 +113,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		AFC99BF619D36B5D005B75AB /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "/Users/peetonn/Documents/remap-dropbox/Dropbox/cocoa";
-			dstSubfolderSpec = 0;
-			files = (
-				AFC99BF719D36B89005B75AB /* NdnCon.app in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		AFC99BF819D36CF6005B75AB /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -649,7 +638,6 @@
 			children = (
 				AFA8520B19C7AA030015A883 /* General */,
 				AF8A138119BFB74300010B20 /* Controllers */,
-				AF3C6FA319BE98D300FAE40B /* Thirdparty */,
 				AFD978FB19BE546D0061AA24 /* AppDelegate.h */,
 				AFD978FC19BE546D0061AA24 /* AppDelegate.mm */,
 				AFC99BF119D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.h */,
@@ -659,6 +647,7 @@
 				AFD978FE19BE546D0061AA24 /* MainMenu.xib */,
 				AFD9790419BE546D0061AA24 /* Images.xcassets */,
 				AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */,
+				AF3C6FA319BE98D300FAE40B /* Thirdparty */,
 				AFD978F019BE546D0061AA24 /* Supporting Files */,
 			);
 			path = NdnCon;
@@ -720,7 +709,6 @@
 				AFD978E219BE546D0061AA24 /* Sources */,
 				AFD978E319BE546D0061AA24 /* Frameworks */,
 				AFD978E419BE546D0061AA24 /* Resources */,
-				AFC99BF619D36B5D005B75AB /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1055,9 +1043,10 @@
 					$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH,
 					"$(inherited)",
 				);
-				NDNRTC_INCLUDE_PATH = /Users/peetonn/Documents/Work/ndnrtc/cpp/debug/bin/include;
-				NDNRTC_LIB_PATH = /Users/peetonn/Documents/Work/ndnrtc/cpp/debug/bin/lib;
+				NDNRTC_INCLUDE_PATH = "";
+				NDNRTC_LIB_PATH = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RELEASES_FOLDER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1086,9 +1075,10 @@
 					$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH,
 					"$(inherited)",
 				);
-				NDNRTC_INCLUDE_PATH = /Users/peetonn/Documents/Work/ndnrtc/cpp/debug/bin/include;
-				NDNRTC_LIB_PATH = /Users/peetonn/Documents/Work/ndnrtc/cpp/debug/bin/lib;
+				NDNRTC_INCLUDE_PATH = "";
+				NDNRTC_LIB_PATH = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RELEASES_FOLDER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
