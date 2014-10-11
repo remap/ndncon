@@ -9,6 +9,8 @@
 #import "NCNdnRtcLibraryController.h"
 #import "NCPreferencesController.h"
 #import "NSObject+NCAdditions.h"
+#import "NCErrorController.h"
+#import "NSString+NdnRtcNamespace.h"
 
 #include <ndnrtc/ndnrtc-library.h>
 
@@ -28,6 +30,8 @@ NSString* const kNCSessionErrorCodeKey = @"errorCode";
 NSString* const kNCSessionErrorMessageKey = @"errorMessage";
 
 class SessionObserver;
+class LibraryObserver;
+
 static NCNdnRtcLibraryController *SharedInstance = NULL;
 
 //******************************************************************************
@@ -35,6 +39,7 @@ static NCNdnRtcLibraryController *SharedInstance = NULL;
 {
     NdnRtcLibrary *_ndnRtcLib;
     SessionObserver *_sessionObserverInstance;
+    LibraryObserver *_libObserver;
     NSString *_sessionPrefix;
 }
 
@@ -45,6 +50,22 @@ static NCNdnRtcLibraryController *SharedInstance = NULL;
 +(NCSessionStatus)ncStatus:(ndnrtc::SessionStatus)ndnrtcStatus;
 
 @end
+
+//******************************************************************************
+class LibraryObserver : public INdnRtcLibraryObserver
+{
+public:
+    void onStateChanged(const char *state, const char *args)
+    {
+        NSLog(@"Library state changed: %s - %s", state, args);
+    }
+    
+    void onErrorOccurred(int errorCode, const char* message)
+    {
+        [[NCErrorController sharedInstance] postErrorWithCode:errorCode
+                                                   andMessage:[NSString ncStringFromCString:message]];
+    }
+};
 
 //******************************************************************************
 class SessionObserver : public ISessionObserver
@@ -162,6 +183,9 @@ public:
 -(void)instantiateLibrary
 {
     _ndnRtcLib = new NdnRtcLibrary(NULL);
+    _libObserver = new LibraryObserver();
+    _ndnRtcLib->setObserver(_libObserver);
+    
     _sessionObserverInstance = new SessionObserver();
 }
 
