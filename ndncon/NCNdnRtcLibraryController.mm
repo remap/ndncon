@@ -10,7 +10,7 @@
 #import "NCPreferencesController.h"
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"
-#import "NSString+NdnRtcNamespace.h"
+#import "NSString+NCAdditions.h"
 
 #include <ndnrtc/ndnrtc-library.h>
 

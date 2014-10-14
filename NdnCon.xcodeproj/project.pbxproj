@@ -13,7 +13,7 @@
 		AF5D34A419DA1AF400227E75 /* NCGlView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A319DA1AF400227E75 /* NCGlView.m */; };
 		AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
 		AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AA19DA52E400227E75 /* NCClickableView.m */; };
-		AF5D34AE19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AD19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm */; };
+		AF5D34AE19DB7B4700227E75 /* NSString+NCAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AD19DB7B4700227E75 /* NSString+NCAdditions.mm */; };
 		AF5D34B419DE227D00227E75 /* NCErrorController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34B319DE227D00227E75 /* NCErrorController.m */; };
 		AF5D34B819DE22EF00227E75 /* PTNSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34B719DE22EF00227E75 /* PTNSingleton.m */; };
 		AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */; };
@@ -48,6 +48,9 @@
 		AF744CB419EC984E00E92680 /* libndn-cpp.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744CB319EC984E00E92680 /* libndn-cpp.0.dylib */; };
 		AF744CB719EC986C00E92680 /* libchrono-chat2013.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744CB519EC986C00E92680 /* libchrono-chat2013.0.dylib */; };
 		AF744CB819EC986C00E92680 /* libconference-discovery.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744CB619EC986C00E92680 /* libconference-discovery.0.dylib */; };
+		AF744CBB19EC996A00E92680 /* NCChatLibraryController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF744CBA19EC996A00E92680 /* NCChatLibraryController.mm */; };
+		AF744CBE19ECB0E400E92680 /* NCChatView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744CBD19ECB0E400E92680 /* NCChatView.xib */; };
+		AF744CC119ECB0FC00E92680 /* NCChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC019ECB0FC00E92680 /* NCChatViewController.m */; };
 		AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
 		AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */; };
 		AF8A138F19BFB7C500010B20 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A138919BFB7C500010B20 /* MASPreferencesWindowController.m */; };
@@ -140,8 +143,8 @@
 		AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCBlockDrawableView.m; path = ndncon/NCBlockDrawableView.m; sourceTree = SOURCE_ROOT; };
 		AF5D34A919DA52E400227E75 /* NCClickableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCClickableView.h; path = ndncon/NCClickableView.h; sourceTree = SOURCE_ROOT; };
 		AF5D34AA19DA52E400227E75 /* NCClickableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCClickableView.m; path = ndncon/NCClickableView.m; sourceTree = SOURCE_ROOT; };
-		AF5D34AC19DB7B4700227E75 /* NSString+NdnRtcNamespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+NdnRtcNamespace.h"; path = "ndncon/NSString+NdnRtcNamespace.h"; sourceTree = SOURCE_ROOT; };
-		AF5D34AD19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSString+NdnRtcNamespace.mm"; path = "ndncon/NSString+NdnRtcNamespace.mm"; sourceTree = SOURCE_ROOT; };
+		AF5D34AC19DB7B4700227E75 /* NSString+NCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+NCAdditions.h"; path = "ndncon/NSString+NCAdditions.h"; sourceTree = SOURCE_ROOT; };
+		AF5D34AD19DB7B4700227E75 /* NSString+NCAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSString+NCAdditions.mm"; path = "ndncon/NSString+NCAdditions.mm"; sourceTree = SOURCE_ROOT; };
 		AF5D34B219DE227C00227E75 /* NCErrorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCErrorController.h; path = ndncon/NCErrorController.h; sourceTree = SOURCE_ROOT; };
 		AF5D34B319DE227D00227E75 /* NCErrorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCErrorController.m; path = ndncon/NCErrorController.m; sourceTree = SOURCE_ROOT; };
 		AF5D34B619DE22EF00227E75 /* PTNSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNSingleton.h; sourceTree = "<group>"; };
@@ -194,6 +197,12 @@
 		AF744CB319EC984E00E92680 /* libndn-cpp.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libndn-cpp.0.dylib"; path = "../ndnrtc-thirdparty/ndn-cpp/build/lib/libndn-cpp.0.dylib"; sourceTree = "<group>"; };
 		AF744CB519EC986C00E92680 /* libchrono-chat2013.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libchrono-chat2013.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery-fork/build/lib/libchrono-chat2013.0.dylib"; sourceTree = "<group>"; };
 		AF744CB619EC986C00E92680 /* libconference-discovery.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libconference-discovery.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery-fork/build/lib/libconference-discovery.0.dylib"; sourceTree = "<group>"; };
+		AF744CB919EC996A00E92680 /* NCChatLibraryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCChatLibraryController.h; path = ndncon/NCChatLibraryController.h; sourceTree = SOURCE_ROOT; };
+		AF744CBA19EC996A00E92680 /* NCChatLibraryController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCChatLibraryController.mm; path = ndncon/NCChatLibraryController.mm; sourceTree = SOURCE_ROOT; };
+		AF744CBC19ECAD6C00E92680 /* NdnCon v0.2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.2.0.xcdatamodel"; sourceTree = "<group>"; };
+		AF744CBD19ECB0E400E92680 /* NCChatView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCChatView.xib; path = ndncon/NCChatView.xib; sourceTree = SOURCE_ROOT; };
+		AF744CBF19ECB0FC00E92680 /* NCChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCChatViewController.h; path = ndncon/NCChatViewController.h; sourceTree = SOURCE_ROOT; };
+		AF744CC019ECB0FC00E92680 /* NCChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCChatViewController.m; path = ndncon/NCChatViewController.m; sourceTree = SOURCE_ROOT; };
 		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
@@ -429,6 +438,8 @@
 			children = (
 				AFB35C2519CB6DEF00D8A2BC /* NCNdnRtcLibraryController.h */,
 				AFB35C2619CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm */,
+				AF744CB919EC996A00E92680 /* NCChatLibraryController.h */,
+				AF744CBA19EC996A00E92680 /* NCChatLibraryController.mm */,
 			);
 			name = "Lib controllers";
 			sourceTree = "<group>";
@@ -514,8 +525,8 @@
 				AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */,
 				AF5D34A919DA52E400227E75 /* NCClickableView.h */,
 				AF5D34AA19DA52E400227E75 /* NCClickableView.m */,
-				AF5D34AC19DB7B4700227E75 /* NSString+NdnRtcNamespace.h */,
-				AF5D34AD19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm */,
+				AF5D34AC19DB7B4700227E75 /* NSString+NCAdditions.h */,
+				AF5D34AD19DB7B4700227E75 /* NSString+NCAdditions.mm */,
 				AF5D34B219DE227C00227E75 /* NCErrorController.h */,
 				AF5D34B319DE227D00227E75 /* NCErrorController.m */,
 			);
@@ -587,6 +598,9 @@
 				AFC99BE319D25E94005B75AB /* NCUserView.xib */,
 				AF744C6E19E4899D00E92680 /* NCStreamViewerController.h */,
 				AF744C6F19E4899D00E92680 /* NCStreamViewerController.m */,
+				AF744CBD19ECB0E400E92680 /* NCChatView.xib */,
+				AF744CBF19ECB0FC00E92680 /* NCChatViewController.h */,
+				AF744CC019ECB0FC00E92680 /* NCChatViewController.m */,
 			);
 			name = "User view";
 			sourceTree = "<group>";
@@ -808,6 +822,7 @@
 				AFC99BE419D25E94005B75AB /* NCUserView.xib in Resources */,
 				AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */,
 				AF7026B819C250560087B605 /* NCStackEditorView.xib in Resources */,
+				AF744CBE19ECB0E400E92680 /* NCChatView.xib in Resources */,
 				AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */,
 				AF8A139419BFB85B00010B20 /* NCGeneralPreferencesView.xib in Resources */,
 				AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */,
@@ -871,6 +886,8 @@
 				AF7026E719C3CCBA0087B605 /* NCVideoThreadViewController.m in Sources */,
 				AF7026B719C250560087B605 /* NCStackEditorViewController.m in Sources */,
 				AFB35BF819C9FB4E00D8A2BC /* NCMainViewController.m in Sources */,
+				AF744CBB19EC996A00E92680 /* NCChatLibraryController.mm in Sources */,
+				AF744CC119ECB0FC00E92680 /* NCChatViewController.m in Sources */,
 				AF8A138F19BFB7C500010B20 /* MASPreferencesWindowController.m in Sources */,
 				AFD978FD19BE546D0061AA24 /* AppDelegate.mm in Sources */,
 				AFD9790319BE546D0061AA24 /* NdnCon.xcdatamodeld in Sources */,
@@ -896,7 +913,7 @@
 				AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */,
 				AFA8521419C8A6060015A883 /* NSObject+NCAdditions.m in Sources */,
 				AFC99BF319D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm in Sources */,
-				AF5D34AE19DB7B4700227E75 /* NSString+NdnRtcNamespace.mm in Sources */,
+				AF5D34AE19DB7B4700227E75 /* NSString+NCAdditions.mm in Sources */,
 				AFC99BDE19D22C01005B75AB /* NCConversationInfoView.m in Sources */,
 				AFB35C0E19CA095100D8A2BC /* NCStreamPreviewController.m in Sources */,
 				AF7026C319C259AE0087B605 /* NCProducerParametersViewController.m in Sources */,

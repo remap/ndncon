@@ -66,6 +66,8 @@ extern NSString* const kNdnPortKey;
 @property (nonatomic) NSArray *audioStreams;
 @property (nonatomic) NSArray *videoStreams;
 
+@property (nonatomic) NSString *chatBroadcastPrefix;
+
 -(NSDictionary*)producerConfigurationCopy;
 
 // NdnRtc library-specific

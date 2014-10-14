@@ -27,7 +27,7 @@
 #import "NSObject+NCAdditions.h"
 #import "NCUserListViewController.h"
 #import "NCVideoStreamRenderer.h"
-#import "NSString+NdnRtcNamespace.h"
+#import "NSString+NCAdditions.h"
 #import "NCErrorController.h"
 #import "NCStatisticsWindowController.h"
 

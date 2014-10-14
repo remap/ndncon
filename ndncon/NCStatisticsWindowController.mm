@@ -12,7 +12,7 @@
 #import "NCStatisticsWindowController.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NCConversationViewController.h"
-#import "NSString+NdnRtcNamespace.h"
+#import "NSString+NCAdditions.h"
 #import "NSTimer+NCAdditions.h"
 
 #define STAT_UPDATE_RATE 20 // per second

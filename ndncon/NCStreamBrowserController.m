@@ -8,7 +8,7 @@
 
 #import "NCStreamBrowserController.h"
 #import "NCStreamViewController.h"
-#import "NSString+NdnRtcNamespace.h"
+#import "NSString+NCAdditions.h"
 
 NSString* const kLocalUserName = @"local";
 NSString* const kUserNameKey = @"user";

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="ChatMessage" syncable="YES">
+        <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="chatRoom" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChatRoom" inverseName="messages" inverseEntity="ChatRoom" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="ChatRoom" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="roomId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChatMessage" inverseName="chatRoom" inverseEntity="ChatMessage" syncable="YES"/>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString="username" syncable="YES"/>
+        <attribute name="prefix" optional="YES" attributeType="String" defaultValueString="/ndn/edu/ucla/remap" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="User" positionX="-1944" positionY="-1089" width="128" height="73"/>
+        <element name="ChatMessage" positionX="-1908" positionY="-1035" width="128" height="118"/>
+        <element name="ChatRoom" positionX="-1881" positionY="-981" width="128" height="90"/>
+    </elements>
+</model>

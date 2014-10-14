@@ -111,7 +111,15 @@
     
     NSURL *url = [applicationFilesDirectory URLByAppendingPathComponent:@"NdnCon.storedata"];
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-    if (![coordinator addPersistentStoreWithType:NSXMLStoreType configuration:nil URL:url options:nil error:&error]) {
+    // enable automatic data model migration
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+    
+    if (![coordinator addPersistentStoreWithType:NSXMLStoreType
+                                   configuration:nil URL:url
+                                         options:options error:&error])
+    {
         [[NSApplication sharedApplication] presentError:error];
         return nil;
     }

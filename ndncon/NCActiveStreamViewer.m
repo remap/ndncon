@@ -8,7 +8,7 @@
 
 #import "NCActiveStreamViewer.h"
 #import "NCBlockDrawableView.h"
-#import "NSString+NdnRtcNamespace.h"
+#import "NSString+NCAdditions.h"
 #import "NCUserListViewController.h"
 #import "NCStreamViewController.h"
 #import "NCVideoThreadViewController.h"

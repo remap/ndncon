@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSString (NdnRtcNamespace)
+@interface NSString (NCAdditions)
 
 +(NSString*)ncStringFromCString:(const char*)cString;
 +(NSString*)keyPathByComponents:(NSString*)comp1, ...;
@@ -17,5 +17,7 @@
 -(NSString*)getNdnRtcUserName;
 -(NSString*)getNdnRtcStreamName;
 -(NSString*)getNdnRtcThreadName;
+
+-(NSString*)md5Hash;
 
 @end

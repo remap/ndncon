@@ -85,7 +85,7 @@
                     </connections>
                 </imageView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ITG-mn-B5f">
-                    <rect key="frame" x="195" y="357" width="93" height="32"/>
+                    <rect key="frame" x="265" y="357" width="93" height="32"/>
                     <buttonCell key="cell" type="push" title="Fetch all" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="OC4-ej-gKZ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -95,8 +95,15 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hMG-F2-Kdr">
-                    <rect key="frame" x="66" y="357" width="129" height="32"/>
+                    <rect key="frame" x="136" y="357" width="129" height="32"/>
                     <buttonCell key="cell" type="push" title="Fetch selected" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b0m-DJ-udi">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W2n-GX-nT5">
+                    <rect key="frame" x="66" y="357" width="70" height="32"/>
+                    <buttonCell key="cell" type="push" title="Chat" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SDz-8v-bxc">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -106,17 +113,19 @@
                 <constraint firstItem="F0O-SU-HHs" firstAttribute="top" secondItem="ITG-mn-B5f" secondAttribute="bottom" constant="4" id="7ld-LL-QVg"/>
                 <constraint firstItem="0ez-JX-NLm" firstAttribute="top" secondItem="Oxz-IJ-0rl" secondAttribute="bottom" constant="4" id="AvP-qq-aQG"/>
                 <constraint firstItem="Oxz-IJ-0rl" firstAttribute="leading" secondItem="0ez-JX-NLm" secondAttribute="leading" id="C3V-Wd-9Jj"/>
+                <constraint firstItem="hMG-F2-Kdr" firstAttribute="leading" secondItem="W2n-GX-nT5" secondAttribute="trailing" constant="12" id="FWE-Kf-Zhb"/>
                 <constraint firstItem="ITG-mn-B5f" firstAttribute="leading" secondItem="hMG-F2-Kdr" secondAttribute="trailing" constant="12" id="Ja6-R1-gZL"/>
                 <constraint firstItem="Tdx-Yt-s2m" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="QAc-S2-TEQ"/>
                 <constraint firstAttribute="trailing" secondItem="F0O-SU-HHs" secondAttribute="trailing" id="Qw7-Tk-Szm"/>
                 <constraint firstItem="Oxz-IJ-0rl" firstAttribute="leading" secondItem="Tdx-Yt-s2m" secondAttribute="trailing" constant="4" id="WvH-JX-wkN"/>
+                <constraint firstItem="W2n-GX-nT5" firstAttribute="leading" secondItem="Oxz-IJ-0rl" secondAttribute="leading" id="ZjY-9R-mC6"/>
                 <constraint firstItem="hMG-F2-Kdr" firstAttribute="baseline" secondItem="ITG-mn-B5f" secondAttribute="baseline" id="fyc-gv-LIn"/>
+                <constraint firstItem="hMG-F2-Kdr" firstAttribute="baseline" secondItem="W2n-GX-nT5" secondAttribute="baseline" id="hYc-5x-Dp5"/>
                 <constraint firstAttribute="bottom" secondItem="F0O-SU-HHs" secondAttribute="bottom" id="jZF-lI-2ma"/>
                 <constraint firstItem="Oxz-IJ-0rl" firstAttribute="top" secondItem="Tdx-Yt-s2m" secondAttribute="top" id="mom-X7-TuB"/>
                 <constraint firstItem="hMG-F2-Kdr" firstAttribute="top" secondItem="Tdx-Yt-s2m" secondAttribute="bottom" constant="4" id="mv1-Oy-e7X"/>
                 <constraint firstItem="F0O-SU-HHs" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="pNw-o3-RJN"/>
                 <constraint firstItem="Tdx-Yt-s2m" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="tQg-wj-wjh"/>
-                <constraint firstItem="hMG-F2-Kdr" firstAttribute="leading" secondItem="0ez-JX-NLm" secondAttribute="leading" id="tiw-XP-zce"/>
             </constraints>
             <point key="canvasLocation" x="365" y="328.5"/>
         </customView>
