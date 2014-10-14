@@ -1216,9 +1216,10 @@
 		AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				AF744CBC19ECAD6C00E92680 /* NdnCon v0.2.0.xcdatamodel */,
 				AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */,
 			);
-			currentVersion = AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */;
+			currentVersion = AF744CBC19ECAD6C00E92680 /* NdnCon v0.2.0.xcdatamodel */;
 			path = NdnCon.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
