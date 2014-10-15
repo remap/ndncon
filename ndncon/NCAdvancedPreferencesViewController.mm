@@ -9,6 +9,7 @@
 #import "NCAdvancedPreferencesViewController.h"
 #import "NCGeneralParametersViewController.h"
 #import "NCProducerParametersViewController.h"
+#import "NCDiscoveryParametersViewController.h"
 
 #import "AppDelegate.h"
 
@@ -16,6 +17,7 @@
 
 NSString* const kGeneralParameters = @"Advanced settings";
 NSString* const kProducerParameters = @"Media streams";
+NSString* const kChatAndDiscoveryParameters = @"Chat and discovery";
 
 @interface NCAdvancedPreferencesViewController ()
 
@@ -45,10 +47,13 @@ NSString* const kProducerParameters = @"Media streams";
     {
         NCGeneralParametersViewController *generalParameteresViewController = [[NCGeneralParametersViewController alloc] init];
         generalParameteresViewController.preferences = self.preferences;
+        NCDiscoveryParametersViewController *discoveryParametersViewController = [[NCDiscoveryParametersViewController alloc] init];
+        discoveryParametersViewController.preferences = self.preferences;
         
         self.advancedSettings = @[
                                   @{@"name":kGeneralParameters, @"controller":generalParameteresViewController},
-                                  @{@"name":kProducerParameters}
+                                  @{@"name":kProducerParameters},
+                                  @{@"name":kChatAndDiscoveryParameters, @"controller":discoveryParametersViewController}
                                   ];
     }
     return self;

@@ -16,6 +16,7 @@ extern NSString* const NCRemoteSessionErrorNotification;
 extern NSString* const kNCSessionUsernameKey;
 extern NSString* const kNCSessionPrefixKey;
 extern NSString* const kNCSessionStatusKey;
+extern NSString* const kNCSessionOldStatusKey;
 extern NSString* const kNCSessionErrorCodeKey;
 extern NSString* const kNCSessionErrorMessageKey;
 

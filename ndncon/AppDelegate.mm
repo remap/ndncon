@@ -14,6 +14,7 @@
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"
 #import "User.h"
+#import "NCChatLibraryController.h"
 
 #import "NCPreferencesController.h"
 
@@ -30,7 +31,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [NCPreferencesController sharedInstanceWithDefaultsFile:@"settings"];
-//    [[NCPreferencesController sharedInstance] resetDefaults];
+    [[NCPreferencesController sharedInstance] updateDefaults];
     [self.window setTitle:[NSString stringWithFormat:@"%@ v%@",
                            [NCPreferencesController sharedInstance].appName,
                            [NCPreferencesController sharedInstance].versionString]];
@@ -44,6 +45,7 @@
     else
         NSLog(@"Not a first launch. We're friends already...");
     
+    [NCChatLibraryController sharedInstance];
     [[NCNdnRtcLibraryController sharedInstance] startSession];
 }
 

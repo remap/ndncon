@@ -48,6 +48,11 @@
 		AF744CBB19EC996A00E92680 /* NCChatLibraryController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF744CBA19EC996A00E92680 /* NCChatLibraryController.mm */; };
 		AF744CBE19ECB0E400E92680 /* NCChatView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744CBD19ECB0E400E92680 /* NCChatView.xib */; };
 		AF744CC119ECB0FC00E92680 /* NCChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC019ECB0FC00E92680 /* NCChatViewController.m */; };
+		AF744CC419ED8EE100E92680 /* ChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC319ED8EE100E92680 /* ChatMessage.m */; };
+		AF744CC719ED8EE100E92680 /* ChatRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC619ED8EE100E92680 /* ChatRoom.m */; };
+		AF744CCB19ED99C100E92680 /* NCDiscoveryParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */; };
+		AF744CCC19ED99C100E92680 /* NCDiscoveryParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */; };
+		AF744CCF19EDD6B600E92680 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD978FE19BE546D0061AA24 /* MainMenu.xib */; };
 		AF744CDD19EDF6C200E92680 /* libchrono-chat2013.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744CDC19EDF6C200E92680 /* libchrono-chat2013.0.dylib */; };
 		AF744CDE19EDF7C100E92680 /* libchrono-chat2013.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF744CDC19EDF6C200E92680 /* libchrono-chat2013.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF744CE019EDF9CE00E92680 /* libndn-cpp.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */; };
@@ -97,7 +102,6 @@
 		AFD978F619BE546D0061AA24 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.mm */; };
 		AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F819BE546D0061AA24 /* Credits.rtf */; };
 		AFD978FD19BE546D0061AA24 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978FC19BE546D0061AA24 /* AppDelegate.mm */; };
-		AFD9790019BE546D0061AA24 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD978FE19BE546D0061AA24 /* MainMenu.xib */; };
 		AFD9790319BE546D0061AA24 /* NdnCon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */; };
 		AFD9790519BE546D0061AA24 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFD9790419BE546D0061AA24 /* Images.xcassets */; };
 		AFD9790C19BE546E0061AA24 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD9790B19BE546E0061AA24 /* XCTest.framework */; };
@@ -203,6 +207,13 @@
 		AF744CBD19ECB0E400E92680 /* NCChatView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCChatView.xib; path = ndncon/NCChatView.xib; sourceTree = SOURCE_ROOT; };
 		AF744CBF19ECB0FC00E92680 /* NCChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCChatViewController.h; path = ndncon/NCChatViewController.h; sourceTree = SOURCE_ROOT; };
 		AF744CC019ECB0FC00E92680 /* NCChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCChatViewController.m; path = ndncon/NCChatViewController.m; sourceTree = SOURCE_ROOT; };
+		AF744CC219ED8EE100E92680 /* ChatMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatMessage.h; path = ndncon/ChatMessage.h; sourceTree = SOURCE_ROOT; };
+		AF744CC319ED8EE100E92680 /* ChatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatMessage.m; path = ndncon/ChatMessage.m; sourceTree = SOURCE_ROOT; };
+		AF744CC519ED8EE100E92680 /* ChatRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatRoom.h; path = ndncon/ChatRoom.h; sourceTree = SOURCE_ROOT; };
+		AF744CC619ED8EE100E92680 /* ChatRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatRoom.m; path = ndncon/ChatRoom.m; sourceTree = SOURCE_ROOT; };
+		AF744CC819ED99C100E92680 /* NCDiscoveryParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCDiscoveryParametersViewController.h; path = ndncon/NCDiscoveryParametersViewController.h; sourceTree = SOURCE_ROOT; };
+		AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCDiscoveryParametersViewController.m; path = ndncon/NCDiscoveryParametersViewController.m; sourceTree = SOURCE_ROOT; };
+		AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCDiscoveryParametersView.xib; path = ndncon/NCDiscoveryParametersView.xib; sourceTree = SOURCE_ROOT; };
 		AF744CDC19EDF6C200E92680 /* libchrono-chat2013.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libchrono-chat2013.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery-fork/build/lib/libchrono-chat2013.0.dylib"; sourceTree = "<group>"; };
 		AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libndn-cpp.0.dylib"; path = "../ndnrtc-thirdparty/ndn-cpp/build/lib/libndn-cpp.0.dylib"; sourceTree = "<group>"; };
 		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
@@ -372,6 +383,9 @@
 				AF7026C019C259AE0087B605 /* NCProducerParametersViewController.h */,
 				AF7026C119C259AE0087B605 /* NCProducerParametersViewController.m */,
 				AF7026C219C259AE0087B605 /* NCProducerParametersView.xib */,
+				AF744CC819ED99C100E92680 /* NCDiscoveryParametersViewController.h */,
+				AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */,
+				AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */,
 			);
 			name = "Advanced preferences";
 			sourceTree = "<group>";
@@ -602,6 +616,10 @@
 				AF744CBD19ECB0E400E92680 /* NCChatView.xib */,
 				AF744CBF19ECB0FC00E92680 /* NCChatViewController.h */,
 				AF744CC019ECB0FC00E92680 /* NCChatViewController.m */,
+				AF744CC519ED8EE100E92680 /* ChatRoom.h */,
+				AF744CC619ED8EE100E92680 /* ChatRoom.m */,
+				AF744CC219ED8EE100E92680 /* ChatMessage.h */,
+				AF744CC319ED8EE100E92680 /* ChatMessage.m */,
 			);
 			name = "User view";
 			sourceTree = "<group>";
@@ -809,6 +827,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF744CCC19ED99C100E92680 /* NCDiscoveryParametersView.xib in Resources */,
 				AFC99BEC19D26510005B75AB /* NCUserVideoStreamView.xib in Resources */,
 				AF7026C419C259AE0087B605 /* NCProducerParametersView.xib in Resources */,
 				AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */,
@@ -832,10 +851,10 @@
 				AFC99BEA19D26510005B75AB /* NCUserAudioStreamView.xib in Resources */,
 				AFD978FA19BE546D0061AA24 /* Credits.rtf in Resources */,
 				AF744C9019E71DDC00E92680 /* dsa_pub.pem in Resources */,
+				AF744CCF19EDD6B600E92680 /* MainMenu.xib in Resources */,
 				AF7026EC19C3CD560087B605 /* NCVideoThreadView.xib in Resources */,
 				AF7026BA19C251490087B605 /* NCStackEditorEntryView.xib in Resources */,
 				AF8A13A319BFB8E700010B20 /* NCAdvancedPreferencesView.xib in Resources */,
-				AFD9790019BE546D0061AA24 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -870,6 +889,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF744CCB19ED99C100E92680 /* NCDiscoveryParametersViewController.m in Sources */,
 				AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */,
 				AFB35C1219CA096C00D8A2BC /* NCAudioPreviewController.m in Sources */,
 				AFC99BF019D29793005B75AB /* NCUserStreamViewController.m in Sources */,
@@ -880,6 +900,7 @@
 				AFB35C1C19CA1CA400D8A2BC /* NCUserStreamsController.m in Sources */,
 				AF8A13A219BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm in Sources */,
 				AFC99BE219D25E82005B75AB /* NCUserViewController.m in Sources */,
+				AF744CC719ED8EE100E92680 /* ChatRoom.m in Sources */,
 				AF7026E319C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.m in Sources */,
 				AF744C8A19E625B300E92680 /* NCStatisticsWindowController.mm in Sources */,
 				AF7026CD19C2B3940087B605 /* NCEditorEntryView.m in Sources */,
@@ -923,6 +944,7 @@
 				AF744C8519E61F2900E92680 /* NSTimer+NCAdditions.m in Sources */,
 				AFC99BD619D20489005B75AB /* User.m in Sources */,
 				AF8A14D119BFD70B00010B20 /* NCPreferencesController.mm in Sources */,
+				AF744CC419ED8EE100E92680 /* ChatMessage.m in Sources */,
 				AF7026D319C391B60087B605 /* NCStreamViewController.m in Sources */,
 				AFC99BD319D16E2E005B75AB /* NCCustomTextField.m in Sources */,
 			);

@@ -9,5 +9,8 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NCChatViewController : NSViewController
+<NSTableViewDataSource, NSTableViewDelegate>
+
+@property (nonatomic) NSString *chatRoomId;
 
 @end

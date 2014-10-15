@@ -4,6 +4,11 @@
 <dict>
 	<key>First launch</key>
 	<true/>
+	<key>Chat</key>
+	<dict>
+		<key>Chat broadcast prefix</key>
+		<string>/ndn/broadcast/chrono-chat0.3</string>
+	</dict>
 	<key>General</key>
 	<dict>
 		<key>Log level</key>

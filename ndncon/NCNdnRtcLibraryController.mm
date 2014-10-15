@@ -26,6 +26,7 @@ NSString* const NCRemoteSessionErrorNotification = @"NCRemoteSessionErrorNotific
 NSString* const kNCSessionUsernameKey = @"username";
 NSString* const kNCSessionPrefixKey = @"prefix";
 NSString* const kNCSessionStatusKey = @"status";
+NSString* const kNCSessionOldStatusKey = @"oldStatus";
 NSString* const kNCSessionErrorCodeKey = @"errorCode";
 NSString* const kNCSessionErrorMessageKey = @"errorMessage";
 
@@ -80,12 +81,16 @@ public:
     {
         if (![NCNdnRtcLibraryController sharedInstance].sessionPrefix)
             [NCNdnRtcLibraryController sharedInstance].sessionPrefix = [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding];
+
+        NCSessionStatus oldStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
         [NCNdnRtcLibraryController sharedInstance].sessionStatus = [NCNdnRtcLibraryController ncStatus:status];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[[NSObject alloc] init] notifyNowWithNotificationName:NCLocalSessionStatusUpdateNotification andUserInfo:@{kNCSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
-                                                                                                                   kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
-                                                                                                                   kNCSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status])}];
+            [[[NSObject alloc] init] notifyNowWithNotificationName:NCLocalSessionStatusUpdateNotification
+                                                       andUserInfo:@{kNCSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
+                                                                     kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
+                                                                     kNCSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
+                                                                     kNCSessionOldStatusKey: @(oldStatus)}];
         });
     }
 

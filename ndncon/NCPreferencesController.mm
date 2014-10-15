@@ -53,6 +53,9 @@ NSString* const kSegmentSizeKey = @"Segment size";
 NSString* const kAudioStreamsKey = @"Audio streams";
 NSString* const kVideoStreamsKey = @"Video streams";
 
+NSString* const kChatSectionKey = @"Chat";
+NSString* const kChatBroadcastPrefixKey = @"Chat broadcast prefix";
+
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
                                   kLogLevelDebug: @(ndnlog::NdnLoggerDetailLevelDebug),
                                   kLogLevelDefault: @(ndnlog::NdnLoggerDetailLevelDefault),
@@ -357,6 +360,11 @@ using namespace ndnrtc::new_api;
 -(void)setVideoStreams:(NSArray *)videoStreams
 {
     [self saveParam:videoStreams atPathByComponents:kProducerSectionKey, kVideoStreamsKey, nil];
+}
+
+-(NSString *)chatBroadcastPrefix
+{
+    return [self getParamAtPathByComponents:kChatSectionKey,kChatBroadcastPrefixKey, nil];
 }
 
 -(NSDictionary *)producerConfigurationCopy

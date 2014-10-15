@@ -9,10 +9,13 @@
 #import <Foundation/Foundation.h>
 
 /**
- * Base class for singletons. 
- * Derived class should override createInstance method and (optionally) 
- * sharedInstance. Base class will ensure creation of just one copy of the 
- * derived class.
+ * Base class for singletons.
+ * Derived class should override createInstance method, token method and
+ * (optionally) sharedInstance method. Base class will ensure creation of just
+ * one copy of the derived class.
+ * Base class maintains static token for one singleton, therefore if you're
+ * using several singletons derived from this class, you should ensure that
+ * you provide different tokens for each of them (by overriding token method).
  * Example:
  *      ...
  *      @interface MySingleton : PTNSingleton
@@ -29,6 +32,12 @@
  *      {
  *          return [[MySingleton alloc] init];
  *      }
+ *
+ *      +(dispatch_once_t)token
+ *      {
+ *          static dispatch_once_t token;
+ *          return token;
+ *      }
  *      @end
  *      ...
  * Usage:
@@ -40,5 +49,7 @@
 
 +(PTNSingleton*)sharedInstance;
 +(PTNSingleton*)createInstance;
+
++(dispatch_once_t)token;
 
 @end

@@ -23,8 +23,10 @@ extern NSString* const kChatMesageTypeText;
 
 +(NCChatLibraryController*)sharedInstance;
 
--(NSString*)startChatWithUser:(NSString*)username;
+-(NSString*)startChatWithUser:(NSString*)userPrefix;
 -(void)sendMessage:(NSString*)message toChat:(NSString*)chatId;
 -(void)leaveChat:(NSString*)chatId;
+-(void)initChatRooms;
+-(void)leaveAllChatRooms;
 
 @end

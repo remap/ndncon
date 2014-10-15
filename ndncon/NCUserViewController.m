@@ -14,13 +14,19 @@
 #import "NSObject+NCAdditions.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NCStreamViewerController.h"
+#import "NCChatViewController.h"
+#import "NCChatLibraryController.h"
 
 @interface NCUserViewController ()
 
 @property (weak) IBOutlet NSScrollView *scrollView;
-//@property (nonatomic) NCStreamEditorViewController *streamEditorController;
 @property (nonatomic) NCStreamViewerController *streamEditorController;
 @property (weak) IBOutlet NSButton *fetchAllButton;
+@property (nonatomic) NCChatViewController *chatViewController;
+@property (nonatomic) BOOL isChatVisible;
+
+@property (weak) IBOutlet NSButton *chatButton;
+@property (weak) IBOutlet NSButton *publishingInfoButton;
 
 @end
 
@@ -33,6 +39,7 @@
     if (self)
     {
         self.streamEditorController = [[NCStreamViewerController alloc] init];
+        self.chatViewController = [[NCChatViewController alloc] init];
         self.statusImage = [[NCNdnRtcLibraryController sharedInstance]
                             imageForSessionStatus:SessionStatusOffline];
 
@@ -57,6 +64,9 @@
 
     NCSessionStatus status = [[self.userInfo valueForKey:kNCSessionStatusKey] integerValue];
     [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
+    self.isChatVisible = YES;
+    
+    self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser: [self.userInfo valueForKey:kNCSessionUsernameKey]];
 }
 
 -(void)setUserInfo:(NSDictionary *)userInfo
@@ -82,11 +92,59 @@
     }
 }
 
-// private
 - (IBAction)fetchAll:(id)sender
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(userViewControllerFetchStreamsClicked:)])
         [self.delegate userViewControllerFetchStreamsClicked:self];
+}
+
+- (IBAction)showChat:(id)sender {
+    self.publishingInfoButton.state = !self.chatButton.state;
+    self.isChatVisible = !self.isChatVisible;
+}
+
+- (IBAction)showPublishingInfo:(id)sender
+{
+    self.chatButton.state = !self.publishingInfoButton.state;
+    self.isChatVisible = !self.isChatVisible;
+}
+
+// private
+-(void)setIsChatVisible:(BOOL)isChatVisible
+{
+    if (_isChatVisible != isChatVisible)
+    {
+        _isChatVisible = isChatVisible;
+        if (_isChatVisible)
+        {
+            [self.scrollView removeFromSuperview];
+            [self presentView: self.chatViewController.view];
+        }
+        else
+        {
+            [self.chatViewController.view removeFromSuperview];
+            [self presentView: self.scrollView];
+        }
+    }
+}
+
+-(void)presentView:(NSView*)view
+{
+    [self.view addSubview:view];
+    
+    NSButton *button = self.chatButton;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(view)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[view]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(view)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[button]-4-[view]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(button, view)]];
 }
 
 -(void)updateStreams

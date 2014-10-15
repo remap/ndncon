@@ -13,7 +13,7 @@
 +(PTNSingleton*)sharedInstance
 {
     static PTNSingleton *singleton = nil;
-    static dispatch_once_t onceToken;
+    dispatch_once_t onceToken = [[self class] token];
     
     dispatch_once(&onceToken, ^{
         singleton = [[self class] createInstance];
@@ -25,6 +25,12 @@
 +(PTNSingleton*)createInstance
 {
     return [[PTNSingleton alloc] init];
+}
+
++(dispatch_once_t)token
+{
+    static dispatch_once_t token;
+    return token;
 }
 
 @end

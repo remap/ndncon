@@ -69,6 +69,11 @@
  */
 - (void)registerDefaults;
 /**
+ * Update defaults with the values that it don't have yet (for instance, when 
+ * settings file was updated)
+ */
+- (void)updateDefaults;
+/**
  * Registers user defaults settings read from specified file
  */
 - (void)registerDefaultsFromFile:(NSString*)fileName;

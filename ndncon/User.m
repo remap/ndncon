@@ -9,6 +9,7 @@
 #import "User.h"
 #import "NCUserListViewController.h"
 #import "NCNdnRtcLibraryController.h"
+#import "NCErrorController.h"
 
 @implementation User
 {
@@ -17,6 +18,19 @@
 
 @dynamic name;
 @dynamic prefix;
+
++(NSArray *)allUsersFromContext:(NSManagedObjectContext*)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([User class])];
+    NSError *error = nil;
+    
+    NSArray *users = [context executeFetchRequest:request error:&error];
+    
+    if (!users)
+        [[NCErrorController sharedInstance] postError:error];
+
+    return users;
+}
 
 -(NSImage *)statusImage
 {
@@ -29,6 +43,11 @@
 -(void)setStatusImage:(NSImage *)statusImage
 {
     _statusImage = statusImage;
+}
+
+-(NSString *)userPrefix
+{
+    return [NSString stringWithFormat:@"%@/%@", self.prefix, self.name];
 }
 
 @end

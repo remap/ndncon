@@ -10,9 +10,12 @@
 
 @interface User : NSManagedObject
 
++(NSArray *)allUsersFromContext:(NSManagedObjectContext*)context;
+
 @property (nonatomic) NSString* name;
 @property (nonatomic) NSString* prefix;
 
 @property (nonatomic) NSImage* statusImage;
+@property (nonatomic, readonly) NSString *userPrefix;
 
 @end

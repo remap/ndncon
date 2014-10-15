@@ -83,6 +83,22 @@ static PTNStorage *sharedStorage = nil;
 {
     [self registerDefaultsFromFile:(_storageFile)?_storageFile:PTN_DEFAULT_PARAMS_FILE];
 }
+-(void)updateDefaults
+{
+    NSString *fileName = (_storageFile)?_storageFile:PTN_DEFAULT_PARAMS_FILE;
+    NSString *pathForPlistFile = [[NSBundle bundleForClass:[self class]]
+                                  pathForResource:fileName
+                                  ofType:@"plist"];
+    NSDictionary *params = [NSDictionary dictionaryWithContentsOfFile:pathForPlistFile];
+    
+    for (NSString *key in [params allKeys]){
+        id parameter = [params objectForKey:key];
+        NSDictionary *paramDictionary = [NSDictionary dictionaryWithObject:parameter
+                                                                    forKey:key];
+        if (![_defaultParams objectForKey:key])
+            [_defaultParams registerDefaults:paramDictionary];
+    }
+}
 -(void)registerDefaultsFromFile:(NSString *)fileName
 {
     NSString *pathForPlistFile = [[NSBundle bundleForClass:[self class]]
