@@ -20,6 +20,12 @@
     return [[NCErrorController alloc] init];
 }
 
++(dispatch_once_t *)token
+{
+    static dispatch_once_t token;
+    return &token;
+}
+
 -(void)postError:(NSError*)error
 {
     NSLog(@"error occurred: %@", error.localizedDescription);

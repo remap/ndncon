@@ -122,6 +122,7 @@ private:
     void
     onSessionInfoUpdate(const new_api::SessionInfo& sessionInfo)
     {
+        NCSessionStatus oldStatus = lastStatus_;
         nTimeouts_ = 0;
         freshStart_ = false;
         lastSessionInfo_ = sessionInfo;
@@ -129,10 +130,9 @@ private:
                        sessionInfo.videoStreams_.size() == 0)?SessionStatusOnlineNotPublishing:
         SessionStatusOnlinePublishing;
         NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
-        [userInfo setObject:@(lastStatus_)
-                     forKey:kNCSessionStatusKey];
-        [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo: (void*)&sessionInfo]
-                     forKey:kNCSessionInfoKey];
+        userInfo[kNCSessionStatusKey] = @(lastStatus_);
+        userInfo[kNCSessionOldStatusKey] = @(oldStatus);
+        userInfo[kNCSessionInfoKey] = [NCSessionInfoContainer containerWithSessionInfo: (void*)&sessionInfo];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[[NSObject alloc] init]
@@ -176,16 +176,15 @@ private:
     void
     notifyStatusUpdate(NCSessionStatus status)
     {
+        NCSessionStatus oldStatus = lastStatus_;
         lastStatus_ = status;
         
         NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
         
-        [userInfo setObject:@(status)
-                     forKey:kNCSessionStatusKey];
+        userInfo[kNCSessionStatusKey]= @(status);
+        userInfo[kNCSessionOldStatusKey] = @(oldStatus);
         
-        NSLog(@"status update %@", userInfo);
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"post status update");
             [[[NSObject alloc] init]
              notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
              andUserInfo:userInfo];

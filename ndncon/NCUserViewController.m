@@ -65,8 +65,8 @@
     NCSessionStatus status = [[self.userInfo valueForKey:kNCSessionStatusKey] integerValue];
     [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
     self.isChatVisible = YES;
-    
-    self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser: [self.userInfo valueForKey:kNCSessionUsernameKey]];
+    self.chatViewController.isActive = (status != SessionStatusOffline);
+    self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@:", self.userInfo[kNCSessionUsernameKey]];
 }
 
 -(void)setUserInfo:(NSDictionary *)userInfo
@@ -80,6 +80,11 @@
     self.statusImage = [[NCNdnRtcLibraryController sharedInstance]
                         imageForSessionStatus:status];
     [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
+    self.chatViewController.isActive = (status != SessionStatusOffline);
+    self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@", self.userInfo[kNCSessionUsernameKey]];
+
+//    if (status != SessionStatusOffline)
+        self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser:userInfo[kNCSessionPrefixKey]];
 }
 
 -(void)setSessionInfo:(NCSessionInfoContainer *)sessionInfo

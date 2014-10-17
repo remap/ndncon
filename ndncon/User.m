@@ -19,6 +19,7 @@
 @dynamic name;
 @dynamic prefix;
 
+
 +(NSArray *)allUsersFromContext:(NSManagedObjectContext*)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([User class])];
@@ -30,6 +31,21 @@
         [[NCErrorController sharedInstance] postError:error];
 
     return users;
+}
+
++(User *)userByName:(NSString *)userName fromContext:(NSManagedObjectContext *)context
+{
+    __block User *user = nil;
+    
+    [[self allUsersFromContext:context] enumerateObjectsUsingBlock:^(User* usr, NSUInteger idx, BOOL *stop) {
+        if ([usr.name isEqualTo:userName])
+        {
+            user = usr;
+            *stop = YES;
+        }
+    }];
+    
+    return user;
 }
 
 -(NSImage *)statusImage

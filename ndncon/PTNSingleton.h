@@ -50,6 +50,6 @@
 +(PTNSingleton*)sharedInstance;
 +(PTNSingleton*)createInstance;
 
-+(dispatch_once_t)token;
++(dispatch_once_t*)token;
 
 @end

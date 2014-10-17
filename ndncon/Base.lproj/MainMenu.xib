@@ -155,10 +155,21 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Edit" id="W48-6f-4Dl">
                         <items>
-                            <menuItem title="Add user" keyEquivalent="n" id="pa3-QI-u2k">
+                            <menuItem title="Copy" keyEquivalent="c" id="pa3-QI-u2k">
+                                <connections>
+                                    <action selector="copy:" target="-1" id="GKF-bp-3vt"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Paste" keyEquivalent="v" id="huj-UK-ECG">
+                                <connections>
+                                    <action selector="paste:" target="-1" id="X4T-qk-eC1"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="icy-Mk-cEk"/>
+                            <menuItem title="Add user" keyEquivalent="n" id="rO6-rC-eK1">
                                 <modifierMask key="keyEquivalentModifierMask" control="YES"/>
                                 <connections>
-                                    <action selector="add:" target="H1Y-px-pwf" id="STg-0Z-xMn"/>
+                                    <action selector="add:" target="H1Y-px-pwf" id="Zn7-N2-K4C"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Delete user" id="2gX-QU-NTF">
@@ -593,7 +604,7 @@ CA
                     <constraint firstItem="NFf-Xz-R6T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="qr4-RU-2VJ"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="139" y="251"/>
+            <point key="canvasLocation" x="120" y="48"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="AR2-Ub-wxp"/>
         <arrayController mode="entity" entityName="User" automaticallyPreparesContent="YES" id="H1Y-px-pwf">

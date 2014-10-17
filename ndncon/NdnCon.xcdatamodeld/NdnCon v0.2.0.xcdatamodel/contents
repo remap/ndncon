@@ -17,8 +17,8 @@
         <attribute name="prefix" optional="YES" attributeType="String" defaultValueString="/ndn/edu/ucla/remap" syncable="YES"/>
     </entity>
     <elements>
-        <element name="User" positionX="-1944" positionY="-1089" width="128" height="73"/>
-        <element name="ChatMessage" positionX="-1908" positionY="-1035" width="128" height="118"/>
+        <element name="ChatMessage" positionX="-1908" positionY="-1035" width="128" height="120"/>
         <element name="ChatRoom" positionX="-1881" positionY="-981" width="128" height="88"/>
+        <element name="User" positionX="-1944" positionY="-1089" width="128" height="73"/>
     </elements>
 </model>

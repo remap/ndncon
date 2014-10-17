@@ -10,7 +10,16 @@
 
 @interface User : NSManagedObject
 
+/**
+ * Returns all user from DB
+ */
 +(NSArray *)allUsersFromContext:(NSManagedObjectContext*)context;
+
+/**
+ * Returns frist user found to have the same username as provided string
+ */
++(User*)userByName:(NSString*)userName
+       fromContext:(NSManagedObjectContext*)context;
 
 @property (nonatomic) NSString* name;
 @property (nonatomic) NSString* prefix;

@@ -97,6 +97,7 @@
 		AFC99BF019D29793005B75AB /* NCUserStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BEF19D29793005B75AB /* NCUserStreamViewController.m */; };
 		AFC99BF319D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BF219D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm */; };
 		AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFD17DF219F03EDA00C8DD6E /* NSDate+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD17DF119F03EDA00C8DD6E /* NSDate+NCAdditions.m */; };
 		AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
 		AFD978F419BE546D0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
 		AFD978F619BE546D0061AA24 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.mm */; };
@@ -285,6 +286,8 @@
 		AFC99BEF19D29793005B75AB /* NCUserStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCUserStreamViewController.m; path = ndncon/NCUserStreamViewController.m; sourceTree = SOURCE_ROOT; };
 		AFC99BF119D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+NCNdnRtcAdditions.h"; path = "ndncon/NSDictionary+NCNdnRtcAdditions.h"; sourceTree = SOURCE_ROOT; };
 		AFC99BF219D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSDictionary+NCNdnRtcAdditions.mm"; path = "ndncon/NSDictionary+NCNdnRtcAdditions.mm"; sourceTree = SOURCE_ROOT; };
+		AFD17DF019F03EDA00C8DD6E /* NSDate+NCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+NCAdditions.h"; sourceTree = "<group>"; };
+		AFD17DF119F03EDA00C8DD6E /* NSDate+NCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NCAdditions.m"; sourceTree = "<group>"; };
 		AFD978E619BE546D0061AA24 /* NdnCon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NdnCon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFD978E919BE546D0061AA24 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AFD978EC19BE546D0061AA24 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -522,6 +525,8 @@
 		AFA8520B19C7AA030015A883 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				AFD17DF019F03EDA00C8DD6E /* NSDate+NCAdditions.h */,
+				AFD17DF119F03EDA00C8DD6E /* NSDate+NCAdditions.m */,
 				AF744C8319E61F2900E92680 /* NSTimer+NCAdditions.h */,
 				AF744C8419E61F2900E92680 /* NSTimer+NCAdditions.m */,
 				AF7026B319C250320087B605 /* Stack editor */,
@@ -904,6 +909,7 @@
 				AF7026E319C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.m in Sources */,
 				AF744C8A19E625B300E92680 /* NCStatisticsWindowController.mm in Sources */,
 				AF7026CD19C2B3940087B605 /* NCEditorEntryView.m in Sources */,
+				AFD17DF219F03EDA00C8DD6E /* NSDate+NCAdditions.m in Sources */,
 				AF7026E719C3CCBA0087B605 /* NCVideoThreadViewController.m in Sources */,
 				AF7026B719C250560087B605 /* NCStackEditorViewController.m in Sources */,
 				AFB35BF819C9FB4E00D8A2BC /* NCMainViewController.m in Sources */,
