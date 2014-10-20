@@ -116,7 +116,6 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
     
     glBindTexture(GL_TEXTURE_RECTANGLE_ARB, _texture);
     GetError();
-    
     glTexSubImage2D(GL_TEXTURE_RECTANGLE_ARB,
                     0,
                     0, 0,
@@ -202,7 +201,7 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
     glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-//    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_STORAGE_HINT_APPLE, GL_STORAGE_SHARED_APPLE);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_STORAGE_HINT_APPLE, GL_STORAGE_SHARED_APPLE);
     
     glEnable(GL_TEXTURE_RECTANGLE_ARB);
     glTexParameteri(GL_TEXTURE_RECTANGLE_ARB,
@@ -213,6 +212,7 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
     glViewport(0, 0,
                CGRectGetWidth(self.bounds),
                CGRectGetHeight(self.bounds));
+    [self clearCanvas];
     
     // Synchronize buffer swaps with vertical refresh rate
     GLint swapInt = 1;
@@ -226,37 +226,12 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
 {
     [_renderingLock lock];
     
-    glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    [self clearCanvas];
     
-    if (self.bufferUpdated)
+    if (_renderingBuffer)
     {
         self.bufferUpdated = NO;
-
-        GLfloat _startWidth = _renderingRect.origin.x/self.bounds.size.width,
-        _startHeight = _renderingRect.origin.y/self.bounds.size.height,
-        _stopWidth = CGRectGetMaxX(_renderingRect)/self.bounds.size.width,
-        _stopHeight = CGRectGetMaxY(_renderingRect)/self.bounds.size.height;
-
-        GLfloat xStart = 2.0f * _startWidth - 1.0f;
-        GLfloat xStop = 2.0f * _stopWidth - 1.0f;
-        GLfloat yStart = 1.0f - 2.0f * _stopHeight;
-        GLfloat yStop = 1.0f - 2.0f * _startHeight;
-        
-        glBindTexture(GL_TEXTURE_RECTANGLE_ARB, _texture);
-        glLoadIdentity();
-        
-        glBegin(GL_POLYGON);
-        {
-            glTexCoord2f(0.0, 0.0); glVertex2f(xStart, yStop);
-            glTexCoord2f(_width, 0.0); glVertex2f(xStop, yStop);
-            glTexCoord2f(_width, _height); glVertex2f(xStop, yStart);
-            glTexCoord2f(0.0, _height); glVertex2f(xStart, yStart);
-        }
-        glEnd();
-        glFinish();
-        
-        [self.openGLContext flushBuffer];
+        [self renderBuffer];
     }
     
     [_renderingLock unlock];
@@ -271,14 +246,47 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
                CGRectGetWidth(self.bounds),
                CGRectGetHeight(self.bounds));
     GetError();
-    glLoadIdentity();
-    GetError();
     
+    [self clearCanvas];
     _renderingRect = CGRectMakeRectFromRectWithRatio(self.bounds, _width, _height);
     
     [self update];
     
     [_renderingLock unlock];
+}
+
+-(void)clearCanvas
+{
+    glClearColor( 0.0, 0.0, 0.0, 1.0 );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+}
+
+-(void)renderBuffer
+{
+    GLfloat _startWidth = _renderingRect.origin.x/self.bounds.size.width,
+    _startHeight = _renderingRect.origin.y/self.bounds.size.height,
+    _stopWidth = CGRectGetMaxX(_renderingRect)/self.bounds.size.width,
+    _stopHeight = CGRectGetMaxY(_renderingRect)/self.bounds.size.height;
+    
+    GLfloat xStart = (2.0f * _startWidth - 1.0f);
+    GLfloat xStop = (2.0f * _stopWidth - 1.0f);
+    GLfloat yStart = (1.0f - 2.0f * _stopHeight);
+    GLfloat yStop = (1.0f - 2.0f * _startHeight);
+    
+    glBindTexture(GL_TEXTURE_RECTANGLE_ARB, _texture);
+    glLoadIdentity();
+    
+    glBegin(GL_POLYGON);
+    {
+        glTexCoord2f(0.0, 0.0); glVertex2f(xStart, yStop);
+        glTexCoord2f(_width, 0.0); glVertex2f(xStop, yStop);
+        glTexCoord2f(_width, _height); glVertex2f(xStop, yStart);
+        glTexCoord2f(0.0, _height); glVertex2f(xStart, yStart);
+    }
+    glEnd();
+    glFinish();
+    
+    [self.openGLContext flushBuffer];
 }
 
 @end
