@@ -37,6 +37,8 @@ extern NSString* const kNCHubPrefixKey;
                 withPrefix:(NSString*)prefix;
 
 -(void)clearSelection;
+-(NSDictionary*)userInfoDictionaryForUser:(NSString*)userName
+                               withPrefix:(NSString*)prefix;
 
 @end
 

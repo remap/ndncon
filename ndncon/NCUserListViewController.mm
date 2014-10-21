@@ -17,6 +17,7 @@
 #import "NCNdnRtcLibraryController.h"
 #import "NSDictionary+NCNdnRtcAdditions.h"
 #import "NSObject+NCAdditions.h"
+#import "NSString+NCAdditions.h"
 
 NSString* const kNCSessionInfoKey = @"sessionInfo";
 NSString* const kNCHubPrefixKey = @"hubPrefix";
@@ -234,6 +235,8 @@ private:
 
 -(void)awakeFromNib
 {
+    [self.tableView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
+     
     [self.userController addObserver:self forKeyPaths:@"arrangedObjects.name", @"arrangedObjects.prefix", nil];
 
     [[NCPreferencesController sharedInstance] addObserver:self
@@ -287,6 +290,14 @@ private:
         if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewController:userWasChosen:)])
             [self.delegate userListViewController:self userWasChosen:[self userInfoDictionaryForUser:[user name] withPrefix:[user prefix]]];
     }
+}
+
+// NSTableViewDataSource
+- (id <NSPasteboardWriting>)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
+{
+    id user = [self.userController.arrangedObjects objectAtIndex:row];
+    
+    return [NSString stringWithFormat:kNCNdnRtcUserUrlFormat, [user prefix], [user name]];
 }
 
 // private

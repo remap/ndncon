@@ -17,8 +17,22 @@ typedef enum : NSUInteger {
 
 @protocol NCConversationInfoViewDelegate;
 
+//******************************************************************************
 @interface NCConversationInfoView : NCClickableView
+<NSDraggingDestination>
 
+@property (nonatomic, weak) id<NCConversationInfoViewDelegate, NCClickableViewDelegate> delegate;
 @property (nonatomic) NCConversationInfoStatus status;
+
+@end
+
+//******************************************************************************
+@protocol NCConversationInfoViewDelegate <NSObject>
+
+@optional
+-(BOOL)conversationInfoView:(NCConversationInfoView*)view
+    shouldAcceptDraggedUrls:(NSArray*)nrtcUserUrlArray;
+-(void)conversationInfoView:(NCConversationInfoView*)view
+       didAcceptDraggedUrls:(NSArray*)nrtcUserUrlArray;
 
 @end
