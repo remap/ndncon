@@ -65,6 +65,7 @@
     [self subscribeForNotificationsAndSelectors:
      NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
      NCLocalSessionErrorNotification, @selector(onSessionError:),
+     NSApplicationWillTerminateNotification, @selector(onAppWillTerminate:),
      nil];
 }
 
@@ -169,6 +170,14 @@
     [self startConverstaionIfNotStarted];
     [self loadCurrentView:self.conversationViewController.view];
     [self.conversationViewController startFetchingWithConfiguration:userVc.userInfo];
+}
+
+-(void)onAppWillTerminate:(NSNotification*)notification
+{
+    if (self.conversationViewController.participants.count > 0)
+        [self.conversationViewController endConversation:nil];
+    
+    [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
 }
 
 // private

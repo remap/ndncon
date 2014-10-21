@@ -108,7 +108,8 @@ public:
         NSImage *image = [NSImage imageNamed: imageName];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [viewer_.statusImageView setImage: image];
+            if (viewer_)
+                [viewer_.statusImageView setImage: image];
         });
     }
     
@@ -193,7 +194,6 @@ private:
     
     [self subscribeForNotificationsAndSelectors:
      NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
-     NSApplicationWillTerminateNotification, @selector(onAppWillTerminate:),
      NCStreamObserverEventNotification, @selector(onStreamEvent:),
      NCStreamRebufferingNotification, @selector(onStreamEvent:),
      nil];
@@ -428,12 +428,6 @@ private:
         
         self.activeStreamViewer.renderer = renderer;
     }
-}
-
--(void)onAppWillTerminate:(NSNotification*)notification
-{
-    if (self.participants.count > 0)
-        [self endConversation:nil];
 }
 
 -(void)onSessionStatusUpdate:(NSNotification*)notification
