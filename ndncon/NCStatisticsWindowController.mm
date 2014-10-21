@@ -15,6 +15,7 @@
 #import "NSString+NCAdditions.h"
 #import "NSTimer+NCAdditions.h"
 
+#define INTEREST_AVERAGE_SIZE_BYTES 150
 #define STAT_UPDATE_RATE 20 // per second
 
 using namespace ndnrtc;
@@ -34,6 +35,7 @@ using namespace ndnrtc;
 @property (nonatomic) NSString *activeStreamPrefix;
 @property (nonatomic) NSTimer *statUpdateTimer;
 @property (nonatomic) NSString *activeThread;
+@property (weak) IBOutlet NSTextField *outRateEstimationLabel;
 
 @property (nonatomic) double nBytesPerSec, interestFrequency, segmentsFrequency;
 @property (nonatomic) double rttEstimation;
@@ -214,6 +216,8 @@ using namespace ndnrtc;
     self.nRebuffer = stat.pipelinerStat_.nRebuffer_;
     self.nRequested = stat.pipelinerStat_.nRequested_;
     self.nRequestedKey = stat.pipelinerStat_.nRequestedKey_;
+    
+    self.outRateEstimationLabel.stringValue = [[NSNumber numberWithDouble:(INTEREST_AVERAGE_SIZE_BYTES*stat.interestFrequency_*8/1000.)] stringValue];
 }
 
 -(NSString*)getShortNameForStream:(NSString*)prefix
