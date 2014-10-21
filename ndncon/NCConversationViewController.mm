@@ -292,13 +292,15 @@ private:
 
 -(void)startFetchingWithConfiguration:(NSDictionary *)userInfo
 {
-    if ([self getParticipantInfo:[userInfo valueForKey:kNCSessionUsernameKey]])
+    NSArray *missingStreams = [self getMissingStreamsForUser:userInfo];
+    
+    if (!missingStreams || missingStreams.count == 0)
         return;
     
     BOOL hasRemoteParticipants = ([self numberOfRemoteParticipants] > 0);
     
-    NSArray *audioStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] audioStreamsConfigurations];
-    NSArray *videoStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] videoStreamsConfigurations];
+    NSArray *audioStreams = [missingStreams firstObject];//[[userInfo valueForKeyPath:kNCSessionInfoKey] audioStreamsConfigurations];
+    NSArray *videoStreams = [missingStreams lastObject];//[[userInfo valueForKeyPath:kNCSessionInfoKey] videoStreamsConfigurations];
     
     [self addRemoteVideoStreams: videoStreams withUserInfo:userInfo];
 
@@ -317,7 +319,8 @@ private:
 }
 
 // NCActiveStreamViewerDelegate
--(void)activeStreamViewer:(NCActiveStreamViewer *)activeStreamViewer didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
+-(void)activeStreamViewer:(NCActiveStreamViewer *)activeStreamViewer
+didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 {
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->switchThread([activeStreamViewer.streamPrefix cStringUsingEncoding:NSASCIIStringEncoding],
@@ -612,6 +615,39 @@ private:
 {
     NSDictionary *participantInfo = [self getParticipantInfo:username];
     return (isRemote)?[participantInfo valueForKey:kNCRemoteStreamsDictionaryKey]:[participantInfo valueForKey:kNCLocalStreamsDictionaryKey];
+}
+
+// checks currently fetched streams and returns an array of two arrays:
+// @[ audioStreams, videoStreams]
+// which contain configurations for the user's streams that have to be fetched
+-(NSArray*)getMissingStreamsForUser:(NSDictionary*)userInfo
+{
+    NSDictionary *participantInfo = [self getParticipantInfo:userInfo[kNCSessionUsernameKey]];
+
+    // there is no such participants yet - return all stream configurations
+    if (!participantInfo)
+        return @[[userInfo[kNCSessionInfoKey] audioStreamsConfigurations],
+                 [userInfo[kNCSessionInfoKey] videoStreamsConfigurations]];
+    
+    NSArray *allAudioStreams = [NSMutableArray arrayWithArray:[userInfo[kNCSessionInfoKey] audioStreamsConfigurations]];
+    NSArray *allVideoStreams = [NSMutableArray arrayWithArray:[userInfo[kNCSessionInfoKey] videoStreamsConfigurations]];
+    NSArray *currentStreamNames = [[participantInfo[kNCRemoteStreamsDictionaryKey] allKeys]
+                                   valueForKey:NSStringFromSelector(@selector(getNdnRtcStreamName))];
+    
+    __block NSMutableArray *missingAudioStreams = [NSMutableArray array];
+    __block NSMutableArray *missingVideoStreams = [NSMutableArray array];
+    
+    [allAudioStreams enumerateObjectsUsingBlock:^(NSDictionary *streamConfiguration, NSUInteger idx, BOOL *stop) {
+        if (![currentStreamNames containsObject:streamConfiguration[kNameKey]])
+            [missingAudioStreams addObject:streamConfiguration];
+    }];
+    
+    [allVideoStreams enumerateObjectsUsingBlock:^(NSDictionary *streamConfiguration, NSUInteger idx, BOOL *stop) {
+        if (![currentStreamNames containsObject:streamConfiguration[kNameKey]])
+            [missingVideoStreams addObject:streamConfiguration];
+    }];
+    
+    return @[missingAudioStreams, missingVideoStreams];
 }
 
 // NdnRtc
