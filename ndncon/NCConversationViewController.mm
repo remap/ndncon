@@ -30,6 +30,7 @@
 #import "NSString+NCAdditions.h"
 #import "NCErrorController.h"
 #import "NCStatisticsWindowController.h"
+#import "NCDropScrollview.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -152,7 +153,7 @@ private:
 @property (nonatomic) NSMutableDictionary *localStreams;
 
 @property (weak) IBOutlet NSScrollView *localStreamsScrollView;
-@property (weak) IBOutlet NSScrollView *remoteStreamsScrollView;
+@property (weak) IBOutlet NCDropScrollView *remoteStreamsScrollView;
 @property (weak) IBOutlet NSView *activeStreamContentView;
 @property (strong) IBOutlet NSView *startPublishingView;
 
@@ -212,6 +213,8 @@ private:
 
 -(void)awakeFromNib
 {
+    self.remoteStreamsScrollView.delegate = self.delegate;
+    [self.remoteStreamsScrollView registerForDraggedTypes:@[NSStringPboardType]];    
     [self.remoteStreamsScrollView addStackView:self.remoteStreamViewer.stackView
                                withOrientation:NSUserInterfaceLayoutOrientationVertical];
     

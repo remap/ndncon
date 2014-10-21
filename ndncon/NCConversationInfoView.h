@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "NCClickableView.h"
+#import "NSView+NCDragAndDropAbility.h"
 
 typedef enum : NSUInteger {
     NCConversationInfoStatusOffline,
@@ -15,24 +16,11 @@ typedef enum : NSUInteger {
     NCConversationInfoStatusOnline,
 } NCConversationInfoStatus;
 
-@protocol NCConversationInfoViewDelegate;
-
 //******************************************************************************
 @interface NCConversationInfoView : NCClickableView
 <NSDraggingDestination>
 
-@property (nonatomic, weak) id<NCConversationInfoViewDelegate, NCClickableViewDelegate> delegate;
+@property (nonatomic, weak) id<NCDragAndDropViewDelegate, NCClickableViewDelegate> delegate;
 @property (nonatomic) NCConversationInfoStatus status;
-
-@end
-
-//******************************************************************************
-@protocol NCConversationInfoViewDelegate <NSObject>
-
-@optional
--(BOOL)conversationInfoView:(NCConversationInfoView*)view
-    shouldAcceptDraggedUrls:(NSArray*)nrtcUserUrlArray;
--(void)conversationInfoView:(NCConversationInfoView*)view
-       didAcceptDraggedUrls:(NSArray*)nrtcUserUrlArray;
 
 @end

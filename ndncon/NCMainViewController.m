@@ -82,6 +82,7 @@
     self.view.layer.borderColor = [NSColor darkGrayColor].CGColor;
     self.view.layer.borderWidth = 1.f;
     self.conversationInfoView.status = [NCMainViewController fromSessionSatus:[NCNdnRtcLibraryController sharedInstance].sessionStatus];
+    [self.conversationInfoView registerForDraggedTypes: @[NSStringPboardType]];
 }
 
 - (IBAction)changeStatus:(id)sender
@@ -138,7 +139,7 @@
     }
 }
 
--(BOOL)conversationInfoView:(NCConversationInfoView *)view shouldAcceptDraggedUrls:(NSArray *)nrtcUserUrlArray
+-(BOOL)dragAndDropView:(NSView *)view shouldAcceptDraggedUrls:(NSArray *)nrtcUserUrlArray
 {
     __block BOOL hasOnline = NO;
     
@@ -160,7 +161,7 @@
     return hasOnline;
 }
 
--(void)conversationInfoView:(NCConversationInfoView *)view didAcceptDraggedUrls:(NSArray *)nrtcUserUrlArray
+-(void)dragAndDropView:(NSView *)view didAcceptDraggedUrls:(NSArray *)nrtcUserUrlArray
 {
     [nrtcUserUrlArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *username = [obj userNameFromNrtcUrlString];

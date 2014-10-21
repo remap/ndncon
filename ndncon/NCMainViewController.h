@@ -17,7 +17,7 @@
 NCClickableViewDelegate,
 NCUserListViewControllerDelegate,
 NCUserViewControllerDelegate,
-NCConversationInfoViewDelegate>
+NCDragAndDropViewDelegate>
 
 @property (nonatomic, weak) IBOutlet NCUserListViewController *userListViewController;
 @property (nonatomic, strong) IBOutlet NSView *initialView;
