@@ -376,9 +376,11 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
         
         if (streamPrefix != self.activeStreamViewer.streamPrefix)
         {
-            if ([self.currentlySelectedPreview isKindOfClass:[NCVideoPreviewController class]])
-                [((NCVideoPreviewController*)self.currentlySelectedPreview) setPreviewForVideoRenderer:self.activeStreamViewer.renderer];
+            NCVideoStreamRenderer *renderer = self.activeStreamViewer.renderer;
+            NCStreamPreviewController *lastSelectedPreview = self.currentlySelectedPreview;
+            
             [self setStreamWithPrefixActive:streamPrefix];
+            [(NCVideoPreviewController*)lastSelectedPreview setPreviewForVideoRenderer:renderer];
         }
     }
 }

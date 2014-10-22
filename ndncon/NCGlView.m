@@ -16,10 +16,10 @@ for ( GLenum Error = glGetError( ); ( GL_NO_ERROR != Error ); Error = glGetError
 {\
 switch ( Error )\
 {\
-case GL_INVALID_ENUM:      printf( "\n%s\n\n", "GL_INVALID_ENUM"      ); assert( 0 ); break;\
-case GL_INVALID_VALUE:     printf( "\n%s\n\n", "GL_INVALID_VALUE"     ); assert( 0 ); break;\
-case GL_INVALID_OPERATION: printf( "\n%s\n\n", "GL_INVALID_OPERATION" ); assert( 0 ); break;\
-case GL_OUT_OF_MEMORY:     printf( "\n%s\n\n", "GL_OUT_OF_MEMORY"     ); assert( 0 ); break;\
+case GL_INVALID_ENUM:      printf( "\n%s\n\n", "GL_INVALID_ENUM"      ); assert( 1 ); break;\
+case GL_INVALID_VALUE:     printf( "\n%s\n\n", "GL_INVALID_VALUE"     ); assert( 1 ); break;\
+case GL_INVALID_OPERATION: printf( "\n%s\n\n", "GL_INVALID_OPERATION" ); assert( 1 ); break;\
+case GL_OUT_OF_MEMORY:     printf( "\n%s\n\n", "GL_OUT_OF_MEMORY"     ); assert( 1 ); break;\
 default:                                                                              break;\
 }\
 }\
@@ -53,6 +53,8 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
 @interface NCGlView ()
 {
     NSRect _renderingRect;
+    NSLock *_renderingLock;
+    BOOL _openGlReady;
 }
 
 @end
@@ -65,6 +67,7 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
     
     if (self)
     {
+        _openGlReady = NO;
         _renderingLock = [[NSLock alloc] init];
     }
     
@@ -73,17 +76,19 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
 
 -(void)dealloc
 {
+    [_renderingLock lock];
     [self.openGLContext makeCurrentContext];
     
     if (glIsTexture(_texture))
         glDeleteTextures(1, (const GLuint*) &_texture);
     
     free(_renderingBuffer);
+    [_renderingLock unlock];
 }
 
 -(uint8_t*)bufferForWidth:(int)width andHeight:(int)height
 {
-    if (!self.openGLContext)
+    if (!self.openGLContext || !_openGlReady)
         return NULL;
     
     BOOL sizeChanged = (width != _width) || (height != _height);
@@ -101,17 +106,16 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
         
         [self createTexture];
     }
-    
+
     return _renderingBuffer;
 }
 
 -(void)updateBuffer
 {
-    if (!self.openGLContext)
+    if (!self.openGLContext || !_openGlReady)
         return;
     
     [_renderingLock lock];
-    
     [self.openGLContext makeCurrentContext];
     
     glBindTexture(GL_TEXTURE_RECTANGLE_ARB, _texture);
@@ -132,7 +136,6 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
 -(void)createTexture
 {
     [_renderingLock lock];
-
     [self.openGLContext makeCurrentContext];
     
     if (glIsTexture(_texture))
@@ -179,8 +182,8 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
 
 -(void)prepareOpenGL
 {
-    [_renderingLock lock];
-
+    BOOL locked = [_renderingLock tryLock];
+    
     // Disable not needed functionality to increase performance
     glDisable(GL_DITHER);
     glDisable(GL_ALPHA_TEST);
@@ -212,14 +215,15 @@ CGRect CGRectMakeRectFromRectWithRatio(CGRect rect, CGFloat w, CGFloat h)
     glViewport(0, 0,
                CGRectGetWidth(self.bounds),
                CGRectGetHeight(self.bounds));
-    [self clearCanvas];
     
     // Synchronize buffer swaps with vertical refresh rate
     GLint swapInt = 1;
     [self.openGLContext setValues:&swapInt
                      forParameter:NSOpenGLCPSwapInterval];
     
-    [_renderingLock unlock];
+    _openGlReady = YES;
+    
+    if (locked) [_renderingLock unlock];
 }
 
 -(void)drawRect:(NSRect)dirtyRect
