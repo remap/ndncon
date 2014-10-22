@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF11BAFA19D4E37E0011270F /* OpenGL.framework */; };
 		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
+		AF3D2CFA19F708AA00A0D274 /* NSView+NCDragAndDropAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */; };
+		AF3D2CFD19F70C9E00A0D274 /* NCDropScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */; };
 		AF3E074519D4A86300028E26 /* NCVideoStreamRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3E074419D4A86300028E26 /* NCVideoStreamRenderer.mm */; };
 		AF5D34A419DA1AF400227E75 /* NCGlView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A319DA1AF400227E75 /* NCGlView.m */; };
 		AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
@@ -143,6 +145,10 @@
 /* Begin PBXFileReference section */
 		AF11BAFA19D4E37E0011270F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
+		AF3D2CF819F708AA00A0D274 /* NSView+NCDragAndDropAbility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+NCDragAndDropAbility.h"; path = "ndncon/NSView+NCDragAndDropAbility.h"; sourceTree = SOURCE_ROOT; };
+		AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+NCDragAndDropAbility.m"; path = "ndncon/NSView+NCDragAndDropAbility.m"; sourceTree = SOURCE_ROOT; };
+		AF3D2CFB19F70C9E00A0D274 /* NCDropScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCDropScrollView.h; path = ndncon/NCDropScrollView.h; sourceTree = SOURCE_ROOT; };
+		AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCDropScrollView.m; path = ndncon/NCDropScrollView.m; sourceTree = SOURCE_ROOT; };
 		AF3E074319D4A86300028E26 /* NCVideoStreamRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCVideoStreamRenderer.h; path = ndncon/NCVideoStreamRenderer.h; sourceTree = SOURCE_ROOT; };
 		AF3E074419D4A86300028E26 /* NCVideoStreamRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCVideoStreamRenderer.mm; path = ndncon/NCVideoStreamRenderer.mm; sourceTree = SOURCE_ROOT; };
 		AF5D34A219DA1AF400227E75 /* NCGlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGlView.h; path = ndncon/NCGlView.h; sourceTree = SOURCE_ROOT; };
@@ -549,6 +555,10 @@
 				AF5D34AD19DB7B4700227E75 /* NSString+NCAdditions.mm */,
 				AF5D34B219DE227C00227E75 /* NCErrorController.h */,
 				AF5D34B319DE227D00227E75 /* NCErrorController.m */,
+				AF3D2CF819F708AA00A0D274 /* NSView+NCDragAndDropAbility.h */,
+				AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */,
+				AF3D2CFB19F70C9E00A0D274 /* NCDropScrollView.h */,
+				AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -925,11 +935,13 @@
 				AF7026D719C392E80087B605 /* NCAudioStreamViewController.m in Sources */,
 				AFB35BFF19C9FDFE00D8A2BC /* NCConversationViewController.mm in Sources */,
 				AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */,
+				AF3D2CFA19F708AA00A0D274 /* NSView+NCDragAndDropAbility.m in Sources */,
 				AFB35C1519CA099800D8A2BC /* NCVideoPreviewController.m in Sources */,
 				AF5D34B819DE22EF00227E75 /* PTNSingleton.m in Sources */,
 				AFB8DE9519CD049B008F691B /* NCCameraCapturer.mm in Sources */,
 				AF7026C919C279A80087B605 /* NCVideoStreamViewController.m in Sources */,
 				AF8A139719BFB89B00010B20 /* NCGeneralPreferencesViewController.m in Sources */,
+				AF3D2CFD19F70C9E00A0D274 /* NCDropScrollView.m in Sources */,
 				AFD978F619BE546D0061AA24 /* main.mm in Sources */,
 				AF7026BE19C252B50087B605 /* NCStackEditorEntryViewController.m in Sources */,
 				AF5D34B419DE227D00227E75 /* NCErrorController.m in Sources */,

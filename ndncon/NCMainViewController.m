@@ -13,6 +13,7 @@
 #import "NCConversationInfoView.h"
 #import "NCErrorController.h"
 #import "AppDelegate.h"
+#import "NSString+NCAdditions.h"
 
 #define STATUS_POPUP_OFFLINE_IDX 0
 #define STATUS_POPUP_PASSIVE_IDX 1
@@ -65,6 +66,7 @@
     [self subscribeForNotificationsAndSelectors:
      NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
      NCLocalSessionErrorNotification, @selector(onSessionError:),
+     NSApplicationWillTerminateNotification, @selector(onAppWillTerminate:),
      nil];
 }
 
@@ -80,6 +82,7 @@
     self.view.layer.borderColor = [NSColor darkGrayColor].CGColor;
     self.view.layer.borderWidth = 1.f;
     self.conversationInfoView.status = [NCMainViewController fromSessionSatus:[NCNdnRtcLibraryController sharedInstance].sessionStatus];
+    [self.conversationInfoView registerForDraggedTypes: @[NSStringPboardType]];
 }
 
 - (IBAction)changeStatus:(id)sender
@@ -136,6 +139,47 @@
     }
 }
 
+-(BOOL)dragAndDropView:(NSView *)view shouldAcceptDraggedUrls:(NSArray *)nrtcUserUrlArray
+{
+    __block BOOL hasOnline = NO;
+    
+    [nrtcUserUrlArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *username = [obj userNameFromNrtcUrlString];
+        NSString *prefix = [obj prefixFromNrtcUrlString];
+        
+        NSDictionary *userInfo = [self.userListViewController userInfoDictionaryForUser:username
+                                                                             withPrefix:prefix];
+        
+        if (userInfo)
+        {
+            NCSessionStatus status = [userInfo[kNCSessionStatusKey] integerValue];
+            hasOnline = (status == SessionStatusOnlinePublishing);
+        }
+        *stop = hasOnline;
+    }];
+    
+    return hasOnline;
+}
+
+-(void)dragAndDropView:(NSView *)view didAcceptDraggedUrls:(NSArray *)nrtcUserUrlArray
+{
+    [nrtcUserUrlArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *username = [obj userNameFromNrtcUrlString];
+        NSString *prefix = [obj prefixFromNrtcUrlString];
+        
+        NSDictionary *userInfo = [self.userListViewController userInfoDictionaryForUser:username
+                                                                             withPrefix:prefix];
+        
+        if (userInfo)
+        {
+            NCSessionStatus status = [userInfo[kNCSessionStatusKey] integerValue];
+            if (status == SessionStatusOnlinePublishing)
+                [self startFetchingFromUser:userInfo];
+        }
+
+    }];
+}
+
 // NCUserListViewControllerDelegate
 -(void)userListViewController:(NCUserListViewController *)userListViewController
                 userWasChosen:(NSDictionary *)user
@@ -165,13 +209,26 @@
 // NCUserViewControllerDelegate
 -(void)userViewControllerFetchStreamsClicked:(NCUserViewController *)userVc
 {
-    [self.userListViewController clearSelection];
-    [self startConverstaionIfNotStarted];
-    [self loadCurrentView:self.conversationViewController.view];
-    [self.conversationViewController startFetchingWithConfiguration:userVc.userInfo];
+    [self startFetchingFromUser:userVc.userInfo];
+}
+
+-(void)onAppWillTerminate:(NSNotification*)notification
+{
+    if (self.conversationViewController.participants.count > 0)
+        [self.conversationViewController endConversation:nil];
+    
+    [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
 }
 
 // private
+-(void)startFetchingFromUser:(NSDictionary*)userInfo
+{
+    [self.userListViewController clearSelection];
+    [self startConverstaionIfNotStarted];
+    [self loadCurrentView:self.conversationViewController.view];
+    [self.conversationViewController startFetchingWithConfiguration:userInfo];
+}
+
 -(void)startConverstaionIfNotStarted
 {
     if (!self.conversationViewController)

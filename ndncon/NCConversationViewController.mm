@@ -30,6 +30,7 @@
 #import "NSString+NCAdditions.h"
 #import "NCErrorController.h"
 #import "NCStatisticsWindowController.h"
+#import "NCDropScrollview.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -108,7 +109,8 @@ public:
         NSImage *image = [NSImage imageNamed: imageName];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [viewer_.statusImageView setImage: image];
+            if (viewer_)
+                [viewer_.statusImageView setImage: image];
         });
     }
     
@@ -151,7 +153,7 @@ private:
 @property (nonatomic) NSMutableDictionary *localStreams;
 
 @property (weak) IBOutlet NSScrollView *localStreamsScrollView;
-@property (weak) IBOutlet NSScrollView *remoteStreamsScrollView;
+@property (weak) IBOutlet NCDropScrollView *remoteStreamsScrollView;
 @property (weak) IBOutlet NSView *activeStreamContentView;
 @property (strong) IBOutlet NSView *startPublishingView;
 
@@ -193,7 +195,6 @@ private:
     
     [self subscribeForNotificationsAndSelectors:
      NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
-     NSApplicationWillTerminateNotification, @selector(onAppWillTerminate:),
      NCStreamObserverEventNotification, @selector(onStreamEvent:),
      NCStreamRebufferingNotification, @selector(onStreamEvent:),
      nil];
@@ -212,6 +213,8 @@ private:
 
 -(void)awakeFromNib
 {
+    self.remoteStreamsScrollView.delegate = self.delegate;
+    [self.remoteStreamsScrollView registerForDraggedTypes:@[NSStringPboardType]];    
     [self.remoteStreamsScrollView addStackView:self.remoteStreamViewer.stackView
                                withOrientation:NSUserInterfaceLayoutOrientationVertical];
     
@@ -289,13 +292,15 @@ private:
 
 -(void)startFetchingWithConfiguration:(NSDictionary *)userInfo
 {
-    if ([self getParticipantInfo:[userInfo valueForKey:kNCSessionUsernameKey]])
+    NSArray *missingStreams = [self getMissingStreamsForUser:userInfo];
+    
+    if (!missingStreams || missingStreams.count == 0)
         return;
     
     BOOL hasRemoteParticipants = ([self numberOfRemoteParticipants] > 0);
     
-    NSArray *audioStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] audioStreamsConfigurations];
-    NSArray *videoStreams = [[userInfo valueForKeyPath:kNCSessionInfoKey] videoStreamsConfigurations];
+    NSArray *audioStreams = [missingStreams firstObject];//[[userInfo valueForKeyPath:kNCSessionInfoKey] audioStreamsConfigurations];
+    NSArray *videoStreams = [missingStreams lastObject];//[[userInfo valueForKeyPath:kNCSessionInfoKey] videoStreamsConfigurations];
     
     [self addRemoteVideoStreams: videoStreams withUserInfo:userInfo];
 
@@ -314,7 +319,8 @@ private:
 }
 
 // NCActiveStreamViewerDelegate
--(void)activeStreamViewer:(NCActiveStreamViewer *)activeStreamViewer didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
+-(void)activeStreamViewer:(NCActiveStreamViewer *)activeStreamViewer
+didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 {
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->switchThread([activeStreamViewer.streamPrefix cStringUsingEncoding:NSASCIIStringEncoding],
@@ -370,9 +376,11 @@ private:
         
         if (streamPrefix != self.activeStreamViewer.streamPrefix)
         {
-            if ([self.currentlySelectedPreview isKindOfClass:[NCVideoPreviewController class]])
-                [((NCVideoPreviewController*)self.currentlySelectedPreview) setPreviewForVideoRenderer:self.activeStreamViewer.renderer];
+            NCVideoStreamRenderer *renderer = self.activeStreamViewer.renderer;
+            NCStreamPreviewController *lastSelectedPreview = self.currentlySelectedPreview;
+            
             [self setStreamWithPrefixActive:streamPrefix];
+            [(NCVideoPreviewController*)lastSelectedPreview setPreviewForVideoRenderer:renderer];
         }
     }
 }
@@ -428,12 +436,6 @@ private:
         
         self.activeStreamViewer.renderer = renderer;
     }
-}
-
--(void)onAppWillTerminate:(NSNotification*)notification
-{
-    if (self.participants.count > 0)
-        [self endConversation:nil];
 }
 
 -(void)onSessionStatusUpdate:(NSNotification*)notification
@@ -615,6 +617,39 @@ private:
 {
     NSDictionary *participantInfo = [self getParticipantInfo:username];
     return (isRemote)?[participantInfo valueForKey:kNCRemoteStreamsDictionaryKey]:[participantInfo valueForKey:kNCLocalStreamsDictionaryKey];
+}
+
+// checks currently fetched streams and returns an array of two arrays:
+// @[ audioStreams, videoStreams]
+// which contain configurations for the user's streams that have to be fetched
+-(NSArray*)getMissingStreamsForUser:(NSDictionary*)userInfo
+{
+    NSDictionary *participantInfo = [self getParticipantInfo:userInfo[kNCSessionUsernameKey]];
+
+    // there is no such participants yet - return all stream configurations
+    if (!participantInfo)
+        return @[[userInfo[kNCSessionInfoKey] audioStreamsConfigurations],
+                 [userInfo[kNCSessionInfoKey] videoStreamsConfigurations]];
+    
+    NSArray *allAudioStreams = [NSMutableArray arrayWithArray:[userInfo[kNCSessionInfoKey] audioStreamsConfigurations]];
+    NSArray *allVideoStreams = [NSMutableArray arrayWithArray:[userInfo[kNCSessionInfoKey] videoStreamsConfigurations]];
+    NSArray *currentStreamNames = [[participantInfo[kNCRemoteStreamsDictionaryKey] allKeys]
+                                   valueForKey:NSStringFromSelector(@selector(getNdnRtcStreamName))];
+    
+    __block NSMutableArray *missingAudioStreams = [NSMutableArray array];
+    __block NSMutableArray *missingVideoStreams = [NSMutableArray array];
+    
+    [allAudioStreams enumerateObjectsUsingBlock:^(NSDictionary *streamConfiguration, NSUInteger idx, BOOL *stop) {
+        if (![currentStreamNames containsObject:streamConfiguration[kNameKey]])
+            [missingAudioStreams addObject:streamConfiguration];
+    }];
+    
+    [allVideoStreams enumerateObjectsUsingBlock:^(NSDictionary *streamConfiguration, NSUInteger idx, BOOL *stop) {
+        if (![currentStreamNames containsObject:streamConfiguration[kNameKey]])
+            [missingVideoStreams addObject:streamConfiguration];
+    }];
+    
+    return @[missingAudioStreams, missingVideoStreams];
 }
 
 // NdnRtc

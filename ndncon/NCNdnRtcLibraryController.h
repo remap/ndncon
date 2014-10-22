@@ -34,6 +34,7 @@ typedef enum : NSUInteger {
 +(NCNdnRtcLibraryController*)sharedInstance;
 
 -(void*)getLibraryObject;
+-(void)releaseLibrary;
 
 -(BOOL)startSession;
 -(BOOL)stopSession;
