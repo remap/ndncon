@@ -21,6 +21,10 @@
 +(User*)userByName:(NSString*)userName
        fromContext:(NSManagedObjectContext*)context;
 
++(User*)newUserWithName:(NSString*)userName
+              andPrefix:(NSString*)prefix
+              inContext:(NSManagedObjectContext*)context;
+
 @property (nonatomic) NSString* name;
 @property (nonatomic) NSString* prefix;
 

@@ -9,6 +9,11 @@
 		<key>Chat broadcast prefix</key>
 		<string>/ndn/broadcast/chrono-chat0.3</string>
 	</dict>
+	<key>Conference</key>
+	<dict>
+		<key>Conference broadcast prefix</key>
+		<string>/ndn/broadcast/ndnrtc/conferences</string>
+	</dict>
 	<key>General</key>
 	<dict>
 		<key>Log level</key>

@@ -18,6 +18,7 @@
 #import "ChatRoom.h"
 #import "ChatMessage.h"
 #import "AppDelegate.h"
+#import "NCFaceSingleton.h"
 
 NSString* const NCChatMessageNotification = @"NCChatMessageNotification";
 NSString* const NCChatMessageTypeKey = @"type";
@@ -34,10 +35,6 @@ typedef std::map<std::string, ptr_lib::shared_ptr<NCChatObserver>> ChatIdToObser
 @interface NCChatLibraryController ()
 {
     ChatIdToObserverMap _chatIdToObserver;
-    ndn::Face* _chatFace;
-    ndn::KeyChain* _chatKeyChain;
-    dispatch_queue_t _faceQueue;
-    BOOL _isRunningFace;
 }
 
 @property (nonatomic, readonly) NSManagedObjectContext *context;
@@ -140,15 +137,10 @@ private:
     
     if (self)
     {
-        _faceQueue = dispatch_queue_create("chat.queue", DISPATCH_QUEUE_SERIAL);
-        _chatFace = NULL;
-        _chatKeyChain = NULL;
-        
-        if (![self initFace])
+        if (![NCFaceSingleton sharedInstance])
             return nil;
         
-        _isRunningFace = YES;
-        [self runFace];
+        [[NCFaceSingleton sharedInstance] startProcessingEvents];
         [[NCPreferencesController sharedInstance] addObserver:self
                                                   forKeyPaths:
          NSStringFromSelector(@selector(chatBroadcastPrefix)),
@@ -169,12 +161,7 @@ private:
      NSStringFromSelector(@selector(chatBroadcastPrefix)),
      nil];
     
-    _isRunningFace = NO;
-
     [self leaveAllChatRooms];
-    
-    delete _chatKeyChain;
-    delete _chatFace;
 }
 
 // public
@@ -209,11 +196,13 @@ private:
         ptr_lib::shared_ptr<ChatObserver> observer(new NCChatObserver(chatRoomId));
         __block Chat* chat;
         
-        dispatch_sync(_faceQueue, ^{
+        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
             chat = new Chat(broadcastPrefixName, screenName, chatRoom,
-                            hubPrefixName, observer, *_chatFace, *_chatKeyChain,
-                            _chatKeyChain->getDefaultCertificateName());
-        });
+                            hubPrefixName, observer,
+                            *[[NCFaceSingleton sharedInstance] getFace],
+                            *[[NCFaceSingleton sharedInstance] getKeyChain],
+                            [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName());
+        }];
         
         dynamic_pointer_cast<NCChatObserver>(observer)->setChat(chat);
         
@@ -250,9 +239,10 @@ private:
     message = [[NSString alloc] initWithData:strData encoding:NSASCIIStringEncoding];
     
     const std::string msg([message cStringUsingEncoding:NSASCIIStringEncoding]);
-    dispatch_sync(_faceQueue, ^{
+    
+    [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
         it->second->getChat()->sendMessage(msg);
-    });
+    }];
 }
 
 -(void)leaveChat:(NSString *)chatId
@@ -264,10 +254,11 @@ private:
         return;
 
     NSLog(@"left chatroom %s", it->first.c_str());
-    dispatch_async(_faceQueue, ^{
+    
+    [[NCFaceSingleton sharedInstance] performSynchronizedWithFace:^{
         it->second->getChat()->leave();
         _chatIdToObserver.erase(it);
-    });
+    }];
 }
 
 -(void)initChatRooms
@@ -285,9 +276,9 @@ private:
          it != _chatIdToObserver.end(); it++)
     {
         NSLog(@"left chatroom %s", it->first.c_str());
-        dispatch_sync(_faceQueue, ^{
+        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
             it->second->getChat()->leave();
-        });
+        }];
     }
     
     _chatIdToObserver.clear();
@@ -364,55 +355,9 @@ private:
     [self.context save:&error];
 }
 
--(void)runFace
-{
-    NCChatLibraryController* strongSelf = self;
-    dispatch_async(_faceQueue, ^{
-        try {
-            strongSelf->_chatFace->processEvents();
-            usleep(10000);
-        } catch (std::exception& exception) {
-            NSLog(@"got exception from ndn-cpp face: %s", exception.what());
-        }
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (strongSelf->_isRunningFace)
-                [strongSelf runFace];            
-        });
-    });
-}
-
--(BOOL)initFace
-{
-    if (_chatFace)
-        delete _chatFace;
-    
-    if (_chatKeyChain)
-        delete _chatKeyChain;
-    
-    const char* host = [[NCPreferencesController sharedInstance].daemonHost cStringUsingEncoding:NSASCIIStringEncoding];
-    unsigned short port = (unsigned short)([NCPreferencesController sharedInstance].daemonPort.intValue);
-    
-    try {
-        _chatFace = new Face(host, port);
-        _chatKeyChain = new KeyChain();
-        _chatFace->setCommandSigningInfo(*_chatKeyChain, _chatKeyChain->getDefaultCertificateName());
-    }
-    catch (std::exception &exception)
-    {
-        [[NCErrorController sharedInstance]
-         postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
-        
-        return NO;
-    }
-    
-    return YES;
-}
-
 -(void)reJoinRooms
 {
     [self leaveAllChatRooms];
-    [self initFace];
     [self initChatRooms];
 }
 

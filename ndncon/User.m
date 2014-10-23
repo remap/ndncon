@@ -48,6 +48,22 @@
     return user;
 }
 
++(User *)newUserWithName:(NSString *)userName andPrefix:(NSString *)prefix inContext:(NSManagedObjectContext *)context
+{
+    User *user = [self userByName:userName fromContext:context];
+    
+    if (user == nil)
+    {
+        user = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([User class])
+                                             inManagedObjectContext:context];
+        user.name = userName;
+        user.prefix = prefix;
+        [context save:NULL];
+    }
+    
+    return user;
+}
+
 -(NSImage *)statusImage
 {
     NCSessionStatus status = [NCUserListViewController sessionStatusForUser:self.name

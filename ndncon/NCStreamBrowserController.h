@@ -11,6 +11,7 @@
 #import "NCStreamPreviewController.h"
 
 extern NSString* const kLocalUserName;
+extern NSString* const kUserNameKey;
 extern NSString* const kStreamPrefixKey;
 
 @protocol NCStreamBrowserControllerDelegate;

@@ -15,7 +15,7 @@
 #import "NCErrorController.h"
 #import "User.h"
 #import "NCChatLibraryController.h"
-
+#import "NCDiscoveryLibraryController.h"
 #import "NCPreferencesController.h"
 
 @interface AppDelegate()
@@ -46,6 +46,7 @@
         NSLog(@"Not a first launch. We're friends already...");
     
     [NCChatLibraryController sharedInstance];
+    [NCDiscoveryLibraryController sharedInstance]; 
     [[NCNdnRtcLibraryController sharedInstance] startSession];
 }
 

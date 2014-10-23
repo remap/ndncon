@@ -11,7 +11,12 @@
 		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
 		AF3D2CFA19F708AA00A0D274 /* NSView+NCDragAndDropAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */; };
 		AF3D2CFD19F70C9E00A0D274 /* NCDropScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */; };
+		AF3D2D0019F8312500A0D274 /* NCDiscoveryLibraryController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CFF19F8312500A0D274 /* NCDiscoveryLibraryController.mm */; };
 		AF3E074519D4A86300028E26 /* NCVideoStreamRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3E074419D4A86300028E26 /* NCVideoStreamRenderer.mm */; };
+		AF3EEA3C19F83BA900039A56 /* NCFaceSingleton.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA3B19F83BA900039A56 /* NCFaceSingleton.mm */; };
+		AF3EEA4019F8610E00039A56 /* Conference.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA3F19F8610E00039A56 /* Conference.m */; };
+		AF3EEA4519F8671600039A56 /* NCConferenceListViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA4419F8671600039A56 /* NCConferenceListViewController.mm */; };
+		AF3EEA4819F889E000039A56 /* libconference-discovery.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */; };
 		AF5D34A419DA1AF400227E75 /* NCGlView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A319DA1AF400227E75 /* NCGlView.m */; };
 		AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
 		AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AA19DA52E400227E75 /* NCClickableView.m */; };
@@ -149,8 +154,18 @@
 		AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+NCDragAndDropAbility.m"; path = "ndncon/NSView+NCDragAndDropAbility.m"; sourceTree = SOURCE_ROOT; };
 		AF3D2CFB19F70C9E00A0D274 /* NCDropScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCDropScrollView.h; path = ndncon/NCDropScrollView.h; sourceTree = SOURCE_ROOT; };
 		AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCDropScrollView.m; path = ndncon/NCDropScrollView.m; sourceTree = SOURCE_ROOT; };
+		AF3D2CFE19F8312500A0D274 /* NCDiscoveryLibraryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCDiscoveryLibraryController.h; path = ndncon/NCDiscoveryLibraryController.h; sourceTree = SOURCE_ROOT; };
+		AF3D2CFF19F8312500A0D274 /* NCDiscoveryLibraryController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCDiscoveryLibraryController.mm; path = ndncon/NCDiscoveryLibraryController.mm; sourceTree = SOURCE_ROOT; };
 		AF3E074319D4A86300028E26 /* NCVideoStreamRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCVideoStreamRenderer.h; path = ndncon/NCVideoStreamRenderer.h; sourceTree = SOURCE_ROOT; };
 		AF3E074419D4A86300028E26 /* NCVideoStreamRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCVideoStreamRenderer.mm; path = ndncon/NCVideoStreamRenderer.mm; sourceTree = SOURCE_ROOT; };
+		AF3EEA3A19F83BA900039A56 /* NCFaceSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCFaceSingleton.h; path = ndncon/NCFaceSingleton.h; sourceTree = SOURCE_ROOT; };
+		AF3EEA3B19F83BA900039A56 /* NCFaceSingleton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCFaceSingleton.mm; path = ndncon/NCFaceSingleton.mm; sourceTree = SOURCE_ROOT; };
+		AF3EEA3D19F8605000039A56 /* NdnCon v0.3.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.0.xcdatamodel"; sourceTree = "<group>"; };
+		AF3EEA3E19F8610E00039A56 /* Conference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Conference.h; path = ndncon/Conference.h; sourceTree = SOURCE_ROOT; };
+		AF3EEA3F19F8610E00039A56 /* Conference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Conference.m; path = ndncon/Conference.m; sourceTree = SOURCE_ROOT; };
+		AF3EEA4319F8671600039A56 /* NCConferenceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConferenceListViewController.h; path = ndncon/NCConferenceListViewController.h; sourceTree = SOURCE_ROOT; };
+		AF3EEA4419F8671600039A56 /* NCConferenceListViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCConferenceListViewController.mm; path = ndncon/NCConferenceListViewController.mm; sourceTree = SOURCE_ROOT; };
+		AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libconference-discovery.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libconference-discovery.0.dylib"; sourceTree = "<group>"; };
 		AF5D34A219DA1AF400227E75 /* NCGlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGlView.h; path = ndncon/NCGlView.h; sourceTree = SOURCE_ROOT; };
 		AF5D34A319DA1AF400227E75 /* NCGlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGlView.m; path = ndncon/NCGlView.m; sourceTree = SOURCE_ROOT; };
 		AF5D34A519DA29C800227E75 /* NCBlockDrawableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCBlockDrawableView.h; path = ndncon/NCBlockDrawableView.h; sourceTree = SOURCE_ROOT; };
@@ -325,6 +340,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF3EEA4819F889E000039A56 /* libconference-discovery.0.dylib in Frameworks */,
 				AF744CE019EDF9CE00E92680 /* libndn-cpp.0.dylib in Frameworks */,
 				AF744CDD19EDF6C200E92680 /* libchrono-chat2013.0.dylib in Frameworks */,
 				AF744C7119E5DAA300E92680 /* CoreFoundation.framework in Frameworks */,
@@ -369,6 +385,30 @@
 				AF8A138219BFB7C500010B20 /* maspreferences */,
 			);
 			name = Thirdparty;
+			sourceTree = "<group>";
+		};
+		AF3EEA4119F8613700039A56 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AFC99BD419D20489005B75AB /* User.h */,
+				AFC99BD519D20489005B75AB /* User.m */,
+				AF744CC519ED8EE100E92680 /* ChatRoom.h */,
+				AF744CC619ED8EE100E92680 /* ChatRoom.m */,
+				AF744CC219ED8EE100E92680 /* ChatMessage.h */,
+				AF744CC319ED8EE100E92680 /* ChatMessage.m */,
+				AF3EEA3E19F8610E00039A56 /* Conference.h */,
+				AF3EEA3F19F8610E00039A56 /* Conference.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		AF3EEA4219F866E700039A56 /* Conference list */ = {
+			isa = PBXGroup;
+			children = (
+				AF3EEA4319F8671600039A56 /* NCConferenceListViewController.h */,
+				AF3EEA4419F8671600039A56 /* NCConferenceListViewController.mm */,
+			);
+			name = "Conference list";
 			sourceTree = "<group>";
 		};
 		AF5D34B519DE22DE00227E75 /* ptnsingleton */ = {
@@ -464,6 +504,8 @@
 				AFB35C2619CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm */,
 				AF744CB919EC996A00E92680 /* NCChatLibraryController.h */,
 				AF744CBA19EC996A00E92680 /* NCChatLibraryController.mm */,
+				AF3D2CFE19F8312500A0D274 /* NCDiscoveryLibraryController.h */,
+				AF3D2CFF19F8312500A0D274 /* NCDiscoveryLibraryController.mm */,
 			);
 			name = "Lib controllers";
 			sourceTree = "<group>";
@@ -513,6 +555,7 @@
 				AFB35BFC19C9FDE600D8A2BC /* Conversation view */,
 				AFB35BF619C9FB4E00D8A2BC /* NCMainViewController.h */,
 				AFB35BF719C9FB4E00D8A2BC /* NCMainViewController.m */,
+				AF3EEA4219F866E700039A56 /* Conference list */,
 				AFC99BD019D15C0B005B75AB /* User list */,
 			);
 			name = "Main window";
@@ -559,6 +602,8 @@
 				AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */,
 				AF3D2CFB19F70C9E00A0D274 /* NCDropScrollView.h */,
 				AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */,
+				AF3EEA3A19F83BA900039A56 /* NCFaceSingleton.h */,
+				AF3EEA3B19F83BA900039A56 /* NCFaceSingleton.mm */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -613,8 +658,6 @@
 				AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.mm */,
 				AFC99BD119D16E2E005B75AB /* NCCustomTextField.h */,
 				AFC99BD219D16E2E005B75AB /* NCCustomTextField.m */,
-				AFC99BD419D20489005B75AB /* User.h */,
-				AFC99BD519D20489005B75AB /* User.m */,
 			);
 			name = "User list";
 			sourceTree = "<group>";
@@ -631,10 +674,6 @@
 				AF744CBD19ECB0E400E92680 /* NCChatView.xib */,
 				AF744CBF19ECB0FC00E92680 /* NCChatViewController.h */,
 				AF744CC019ECB0FC00E92680 /* NCChatViewController.m */,
-				AF744CC519ED8EE100E92680 /* ChatRoom.h */,
-				AF744CC619ED8EE100E92680 /* ChatRoom.m */,
-				AF744CC219ED8EE100E92680 /* ChatMessage.h */,
-				AF744CC319ED8EE100E92680 /* ChatMessage.m */,
 			);
 			name = "User view";
 			sourceTree = "<group>";
@@ -674,6 +713,7 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */,
 				AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */,
 				AF744CDC19EDF6C200E92680 /* libchrono-chat2013.0.dylib */,
 				AF744C8C19E71BEE00E92680 /* Sparkle.framework */,
@@ -705,6 +745,7 @@
 		AFD978EF19BE546D0061AA24 /* NdnCon */ = {
 			isa = PBXGroup;
 			children = (
+				AF3EEA4119F8613700039A56 /* Models */,
 				AFA8520B19C7AA030015A883 /* General */,
 				AF8A138119BFB74300010B20 /* Controllers */,
 				AFD978FB19BE546D0061AA24 /* AppDelegate.h */,
@@ -906,6 +947,7 @@
 			files = (
 				AF744CCB19ED99C100E92680 /* NCDiscoveryParametersViewController.m in Sources */,
 				AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */,
+				AF3D2D0019F8312500A0D274 /* NCDiscoveryLibraryController.mm in Sources */,
 				AFB35C1219CA096C00D8A2BC /* NCAudioPreviewController.m in Sources */,
 				AFC99BF019D29793005B75AB /* NCUserStreamViewController.m in Sources */,
 				AFB35C0A19CA072000D8A2BC /* NSScrollView+NCAdditions.m in Sources */,
@@ -934,6 +976,7 @@
 				AFFED07919D62B92000974FF /* NCActiveStreamViewer.m in Sources */,
 				AF7026D719C392E80087B605 /* NCAudioStreamViewController.m in Sources */,
 				AFB35BFF19C9FDFE00D8A2BC /* NCConversationViewController.mm in Sources */,
+				AF3EEA4019F8610E00039A56 /* Conference.m in Sources */,
 				AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */,
 				AF3D2CFA19F708AA00A0D274 /* NSView+NCDragAndDropAbility.m in Sources */,
 				AFB35C1519CA099800D8A2BC /* NCVideoPreviewController.m in Sources */,
@@ -957,9 +1000,11 @@
 				AFB35C0E19CA095100D8A2BC /* NCStreamPreviewController.m in Sources */,
 				AF7026C319C259AE0087B605 /* NCProducerParametersViewController.m in Sources */,
 				AFB35BFB19C9FB6F00D8A2BC /* NCUserListViewController.mm in Sources */,
+				AF3EEA3C19F83BA900039A56 /* NCFaceSingleton.mm in Sources */,
 				AF3E074519D4A86300028E26 /* NCVideoStreamRenderer.mm in Sources */,
 				AFB35C0619CA010700D8A2BC /* NCStreamBrowserController.m in Sources */,
 				AF744C8519E61F2900E92680 /* NSTimer+NCAdditions.m in Sources */,
+				AF3EEA4519F8671600039A56 /* NCConferenceListViewController.mm in Sources */,
 				AFC99BD619D20489005B75AB /* User.m in Sources */,
 				AF8A14D119BFD70B00010B20 /* NCPreferencesController.mm in Sources */,
 				AF744CC419ED8EE100E92680 /* ChatMessage.m in Sources */,
@@ -1256,10 +1301,11 @@
 		AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				AF3EEA3D19F8605000039A56 /* NdnCon v0.3.0.xcdatamodel */,
 				AF744CBC19ECAD6C00E92680 /* NdnCon v0.2.0.xcdatamodel */,
 				AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */,
 			);
-			currentVersion = AF744CBC19ECAD6C00E92680 /* NdnCon v0.2.0.xcdatamodel */;
+			currentVersion = AF3EEA3D19F8605000039A56 /* NdnCon v0.3.0.xcdatamodel */;
 			path = NdnCon.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
