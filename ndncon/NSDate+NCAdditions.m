@@ -37,6 +37,20 @@
     
     return res;
 }
+-(bool)isTomorrow
+{
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    NSDate *today = [NSDate date];
+    
+    NSDateComponents *todayComp = [cal components:(kCFCalendarUnitYear|kCFCalendarUnitMonth|kCFCalendarUnitDay) fromDate:today];
+    NSDateComponents *selfComp = [cal components:(kCFCalendarUnitYear|kCFCalendarUnitMonth|kCFCalendarUnitDay) fromDate:self];
+    
+    bool res = [todayComp year]==[selfComp year] &&
+    [todayComp month] == [selfComp month] &&
+    [todayComp day] + 1 == [selfComp day];
+    
+    return res;
+}
 -(NSUInteger)day
 {
     NSCalendar *cal = [NSCalendar currentCalendar];

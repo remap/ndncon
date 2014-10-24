@@ -19,6 +19,10 @@
  */
 -(bool)isYesterday;
 /**
+ * Returns true if current data is tomorrow
+ */
+-(bool)isTomorrow;
+/**
  * Checks if dates are equal (does not take care about time)
  */
 -(bool)isEqualToDateOnly:(NSDate*)dateTime;

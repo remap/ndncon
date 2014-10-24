@@ -20,3 +20,9 @@
 @property (nonatomic, setter=setActive:) BOOL isActive;
 
 @end
+
+@interface NCChatMessageCell : NSTableCellView
+
++(NSString*)textRepresentationForDate:(NSDate*)date;
+
+@end

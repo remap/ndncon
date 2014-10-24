@@ -80,6 +80,8 @@
 		AFA8521719C8B2FF0015A883 /* NCEmbeddedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521619C8B2FF0015A883 /* NCEmbeddedScrollView.m */; };
 		AFA8521A19C8F1E40015A883 /* NCAudioThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */; };
 		AFA8521D19C8F3220015A883 /* NCAudioThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */; };
+		AFAFD1B219F98F6F00213EEE /* NCConferenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFAFD1B019F98F6F00213EEE /* NCConferenceViewController.m */; };
+		AFAFD1B319F98F6F00213EEE /* NCConferenceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFAFD1B119F98F6F00213EEE /* NCConferenceView.xib */; };
 		AFB35BF819C9FB4E00D8A2BC /* NCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BF719C9FB4E00D8A2BC /* NCMainViewController.m */; };
 		AFB35BFB19C9FB6F00D8A2BC /* NCUserListViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.mm */; };
 		AFB35BFF19C9FDFE00D8A2BC /* NCConversationViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BFE19C9FDFE00D8A2BC /* NCConversationViewController.mm */; };
@@ -267,6 +269,10 @@
 		AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCAudioThreadView.xib; path = ndncon/NCAudioThreadView.xib; sourceTree = SOURCE_ROOT; };
 		AFA8521B19C8F3220015A883 /* NCAudioThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCAudioThreadViewController.h; path = ndncon/NCAudioThreadViewController.h; sourceTree = SOURCE_ROOT; };
 		AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCAudioThreadViewController.m; path = ndncon/NCAudioThreadViewController.m; sourceTree = SOURCE_ROOT; };
+		AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.1.xcdatamodel"; sourceTree = "<group>"; };
+		AFAFD1AF19F98F6F00213EEE /* NCConferenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConferenceViewController.h; path = ndncon/NCConferenceViewController.h; sourceTree = SOURCE_ROOT; };
+		AFAFD1B019F98F6F00213EEE /* NCConferenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCConferenceViewController.m; path = ndncon/NCConferenceViewController.m; sourceTree = SOURCE_ROOT; };
+		AFAFD1B119F98F6F00213EEE /* NCConferenceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCConferenceView.xib; path = ndncon/NCConferenceView.xib; sourceTree = SOURCE_ROOT; };
 		AFB35BF619C9FB4E00D8A2BC /* NCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCMainViewController.h; path = ndncon/NCMainViewController.h; sourceTree = SOURCE_ROOT; };
 		AFB35BF719C9FB4E00D8A2BC /* NCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCMainViewController.m; path = ndncon/NCMainViewController.m; sourceTree = SOURCE_ROOT; };
 		AFB35BF919C9FB6F00D8A2BC /* NCUserListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCUserListViewController.h; path = ndncon/NCUserListViewController.h; sourceTree = SOURCE_ROOT; };
@@ -551,6 +557,7 @@
 		AF8A139219BFB81E00010B20 /* Main window */ = {
 			isa = PBXGroup;
 			children = (
+				AFAFD1AE19F98F5E00213EEE /* Conference view */,
 				AFC99BDF19D25E6A005B75AB /* User view */,
 				AFB35BFC19C9FDE600D8A2BC /* Conversation view */,
 				AFB35BF619C9FB4E00D8A2BC /* NCMainViewController.h */,
@@ -606,6 +613,16 @@
 				AF3EEA3B19F83BA900039A56 /* NCFaceSingleton.mm */,
 			);
 			name = General;
+			sourceTree = "<group>";
+		};
+		AFAFD1AE19F98F5E00213EEE /* Conference view */ = {
+			isa = PBXGroup;
+			children = (
+				AFAFD1AF19F98F6F00213EEE /* NCConferenceViewController.h */,
+				AFAFD1B019F98F6F00213EEE /* NCConferenceViewController.m */,
+				AFAFD1B119F98F6F00213EEE /* NCConferenceView.xib */,
+			);
+			name = "Conference view";
 			sourceTree = "<group>";
 		};
 		AFB35BFC19C9FDE600D8A2BC /* Conversation view */ = {
@@ -888,6 +905,7 @@
 				AF7026C419C259AE0087B605 /* NCProducerParametersView.xib in Resources */,
 				AF7026A819C11C550087B605 /* NCGeneralParametersView.xib in Resources */,
 				AFD9792319BE5C6E0061AA24 /* ndncon.iconset in Resources */,
+				AFAFD1B319F98F6F00213EEE /* NCConferenceView.xib in Resources */,
 				AF744C8B19E625B300E92680 /* NCStatisticsWindow.xib in Resources */,
 				AFA8521A19C8F1E40015A883 /* NCAudioThreadView.xib in Resources */,
 				AFC99BED19D26510005B75AB /* NCUserVideoThreadView.xib in Resources */,
@@ -1008,6 +1026,7 @@
 				AFC99BD619D20489005B75AB /* User.m in Sources */,
 				AF8A14D119BFD70B00010B20 /* NCPreferencesController.mm in Sources */,
 				AF744CC419ED8EE100E92680 /* ChatMessage.m in Sources */,
+				AFAFD1B219F98F6F00213EEE /* NCConferenceViewController.m in Sources */,
 				AF7026D319C391B60087B605 /* NCStreamViewController.m in Sources */,
 				AFC99BD319D16E2E005B75AB /* NCCustomTextField.m in Sources */,
 			);
@@ -1302,10 +1321,11 @@
 			isa = XCVersionGroup;
 			children = (
 				AF3EEA3D19F8605000039A56 /* NdnCon v0.3.0.xcdatamodel */,
+				AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.1.xcdatamodel */,
 				AF744CBC19ECAD6C00E92680 /* NdnCon v0.2.0.xcdatamodel */,
 				AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */,
 			);
-			currentVersion = AF3EEA3D19F8605000039A56 /* NdnCon v0.3.0.xcdatamodel */;
+			currentVersion = AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.1.xcdatamodel */;
 			path = NdnCon.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -14,6 +14,7 @@
 #import "NCErrorController.h"
 #import "AppDelegate.h"
 #import "NSString+NCAdditions.h"
+#import "NCConferenceViewController.h"
 
 #define STATUS_POPUP_OFFLINE_IDX 0
 #define STATUS_POPUP_PASSIVE_IDX 1
@@ -29,6 +30,7 @@
 @property (weak) IBOutlet NSTextField *conversationInfoStatusLabel;
 @property (nonatomic, strong) NCUserViewController *userViewController;
 @property (weak) IBOutlet NSButton *startPublishingButton;
+@property (nonatomic, strong) NCConferenceViewController *conferenceViewController;
 
 @end
 
@@ -119,7 +121,22 @@
     NSLog(@"customize...");
 }
 
-// NCConversationViewControllerDelegate
+#pragma mark - NCConferenceListViewControllerDelegate
+-(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
+               didAddConference:(Conference *)conference
+{
+    
+}
+
+-(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
+            didSelectConference:(Conference *)conference
+{
+    self.conferenceViewController = [[NCConferenceViewController alloc] init];
+    [self loadCurrentView:self.conferenceViewController.view];
+    self.conferenceViewController.conference = conference;    
+}
+
+#pragma mark - NCConversationViewControllerDelegate
 -(void)viewWasClicked:(NCClickableView *)view
 {
     if (self.conversationInfoView == view)
@@ -180,7 +197,7 @@
     }];
 }
 
-// NCUserListViewControllerDelegate
+#pragma mark - NCUserListViewControllerDelegate
 -(void)userListViewController:(NCUserListViewController *)userListViewController
                 userWasChosen:(NSDictionary *)user
 {
@@ -199,14 +216,14 @@
     [(AppDelegate*)[NSApp delegate] commitManagedContext];
 }
 
-// NCConversationViewControllerDelegate
+#pragma mark - NCConversationViewControllerDelegate
 -(void)conversationViewControllerDidEndConversation:(NCConversationViewController *)converstaionVc
 {
     self.conversationViewController = nil;
     [self loadCurrentView:self.initialView];
 }
 
-// NCUserViewControllerDelegate
+#pragma mark - NCUserViewControllerDelegate
 -(void)userViewControllerFetchStreamsClicked:(NCUserViewController *)userVc
 {
     [self startFetchingFromUser:userVc.userInfo];

@@ -22,7 +22,7 @@ typedef enum _NCChatMessageCellType {
     NCChatMessageCellTypeLast
 } NCChatMessageCellType;
 
-@interface NCChatMessageCell : NSTableCellView
+@interface NCChatMessageCell ()
 
 @property (nonatomic, weak) IBOutlet id<NCChatMessageCellDelegate> delegate;
 @property (nonatomic) NCChatMessageCellType type;
@@ -397,6 +397,8 @@ typedef enum _NCChatMessageCellType {
     }
     else if ([date isYesterday])
         return @"yesterday";
+    if ([date isTomorrow])
+        return @"tomorrow";
     else
     {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
