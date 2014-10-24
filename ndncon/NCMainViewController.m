@@ -31,6 +31,9 @@
 @property (nonatomic, strong) NCUserViewController *userViewController;
 @property (weak) IBOutlet NSButton *startPublishingButton;
 @property (nonatomic, strong) NCConferenceViewController *conferenceViewController;
+@property (nonatomic, readonly) NSManagedObjectContext *context;
+@property (weak) IBOutlet NSTabView *userlistTabView;
+@property (weak) IBOutlet NCConferenceListViewController *conferenceListViewController;
 
 @end
 
@@ -125,15 +128,56 @@
 -(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
                didAddConference:(Conference *)conference
 {
+    self.conferenceViewController = [[NCConferenceViewController alloc] init];
+    self.conferenceViewController.delegate = self;
+    [self loadCurrentView:self.conferenceViewController.view];
     
+    self.conferenceViewController.isOwner = YES;
+    self.conferenceViewController.isEditable = YES;
+    self.conferenceViewController.conference = conference;
+    
+    [self toggleUserList:YES];
+    [self.userListViewController clearSelection];
 }
 
 -(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
             didSelectConference:(Conference *)conference
 {
     self.conferenceViewController = [[NCConferenceViewController alloc] init];
+    self.conferenceViewController.delegate = self;
     [self loadCurrentView:self.conferenceViewController.view];
+
+    self.conferenceViewController.isOwner = YES;
+    self.conferenceViewController.isEditable = NO;
     self.conferenceViewController.conference = conference;    
+}
+-(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
+            wantsDeleteConference:(Conference *)conference
+{
+    [self loadCurrentView:self.initialView];
+}
+
+
+#pragma mark - NCConferenceViewControllerDelegate
+-(void)conferenceViewControllerDidCancelConference:(NCConferenceViewController *)conferenceViewController
+{
+    Conference *conference = conferenceViewController.conference;
+    [self.context deleteObject:conference];
+    [self.context save:NULL];
+    [self toggleUserList:NO];
+    [self loadCurrentView:self.initialView];
+}
+
+-(void)conferenceViewControllerDidJoinConference:(NCConferenceViewController *)conferenceViewController
+{
+    
+}
+
+-(void)conferenceViewControllerDidPublishConference:(NCConferenceViewController *)conferenceViewController
+{
+    [self.context save:NULL];
+    [self toggleUserList:NO];
+    [self.conferenceListViewController reloadData];
 }
 
 #pragma mark - NCConversationViewControllerDelegate
@@ -238,6 +282,16 @@
 }
 
 // private
+-(void)toggleUserList:(BOOL)userListVisible
+{
+    [self.userlistTabView selectTabViewItemWithIdentifier:(userListVisible)?@"UserList":@"ConferencesList"];
+}
+
+-(NSManagedObjectContext *)context
+{
+    return [(AppDelegate*)[NSApp delegate] managedObjectContext];
+}
+
 -(void)startFetchingFromUser:(NSDictionary*)userInfo
 {
     [self.userListViewController clearSelection];

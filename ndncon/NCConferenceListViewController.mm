@@ -202,6 +202,10 @@ NSString* const kNoConferences = @"no conferences";
 {
     [self prepareContents];
     [self.tableView reloadData];
+    
+    NSResponder *nextResponder = self.tableView.nextResponder;
+    [self.tableView setNextResponder:self];
+    [self setNextResponder:nextResponder];
 }
 
 #pragma mark - public
@@ -214,6 +218,12 @@ NSString* const kNoConferences = @"no conferences";
 -(void)clearSelection
 {
     [self.tableView deselectAll:nil];
+}
+
+-(void)reloadData
+{
+    [self prepareContents];
+    [self.tableView reloadData];
 }
 
 #pragma mark - NCPopoverControllerDelegate
@@ -235,10 +245,6 @@ NSString* const kNoConferences = @"no conferences";
     ChatRoom *chatRoom = [ChatRoom newChatRoomWithId:conference.name
                                            inContext:self.context];
     conference.chatRoom = chatRoom;
-    [self.context save:NULL];
-    
-    [self prepareContents];
-    [self.tableView reloadData];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceListController:didAddConference:)])
         [self.delegate conferenceListController:self didAddConference:conference];
@@ -259,6 +265,8 @@ NSString* const kNoConferences = @"no conferences";
             [view setWantsLayer:YES];
             [view.layer setBackgroundColor:[NSColor colorWithRed:250./255. green:230./255. blue:180./255. alpha:1.].CGColor];
         }
+        else
+            [view.layer setBackgroundColor:[NSColor whiteColor].CGColor];
 
         view.textField.stringValue = [data valueForKey:kCellDataKey];
     }
@@ -313,8 +321,26 @@ NSString* const kNoConferences = @"no conferences";
     return self.tableContents.count;
 }
 
-
 #pragma mark - private
+- (IBAction)deleteSelectedEntry:(id)sender
+{
+    id conference = [self.tableContents objectAtIndex:self.tableView.selectedRow];
+
+    if ([conference isKindOfClass:[Conference class]])
+    {
+        if (![self.pastConferences containsObject:conference])
+        {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceListController:wantsDeleteConference:)])
+            {
+                [self.context deleteObject:conference];
+                [self.context save:NULL];
+                [self reloadData];
+                [self.delegate conferenceListController:self wantsDeleteConference:conference];
+            }
+        }
+    }
+}
+
 -(NSManagedObjectContext *)context
 {
     return [(AppDelegate*)[NSApp delegate] managedObjectContext];
@@ -325,14 +351,14 @@ NSString* const kNoConferences = @"no conferences";
     NSArray *allConferences = [[Conference allConferencesFromContext:self.context]
                                sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(startDate)) ascending:NO]]];
     
-    NSArray *futureConferences = [allConferences filteredArrayUsingPredicate:
+    self.futureConferences = [allConferences filteredArrayUsingPredicate:
                                   [NSPredicate predicateWithBlock:^BOOL(Conference *conference, NSDictionary *bindings)
     {
         NSDate *conferenceDate = [conference valueForKey:NSStringFromSelector(@selector(startDate))];
         return ([conferenceDate compare:[NSDate date]] == NSOrderedDescending);
     }]];
     
-    NSArray *currentConferences = [allConferences filteredArrayUsingPredicate:
+    self.currentConferences = [allConferences filteredArrayUsingPredicate:
                                    [NSPredicate predicateWithBlock:^BOOL(Conference *conference, NSDictionary *bindings)
     {
         NSDate *conferenceDate = [conference valueForKey:NSStringFromSelector(@selector(startDate))];
@@ -343,7 +369,7 @@ NSString* const kNoConferences = @"no conferences";
         ([conferenceEndDate compare:[NSDate date]] == NSOrderedDescending);
     }]];
     
-    NSArray *pastConferences = [allConferences filteredArrayUsingPredicate:
+    self.pastConferences = [allConferences filteredArrayUsingPredicate:
                                 [NSPredicate predicateWithBlock:^BOOL(Conference *conference, NSDictionary *bindings)
     {
         NSDate *conferenceDate = [conference valueForKey:NSStringFromSelector(@selector(startDate))];
@@ -358,8 +384,8 @@ NSString* const kNoConferences = @"no conferences";
         [contents addObject:@{kCellTypeKey:kCellTypeHeader,
                               kCellDataKey:[kFutureConferencesHeader uppercaseString]}];
         
-        if (futureConferences.count)
-            [contents addObjectsFromArray:futureConferences];
+        if (self.futureConferences.count)
+            [contents addObjectsFromArray:self.futureConferences];
         else
             [contents addObject:@{kCellTypeKey:kCellTypeData,
                                   kCellDataKey:kNoConferences}];
@@ -368,8 +394,8 @@ NSString* const kNoConferences = @"no conferences";
         [contents addObject:@{kCellTypeKey: kCellTypeHeader,
                               kCellDataKey: [kCurrentConferencesHeader uppercaseString]}];
         
-        if (currentConferences.count)
-            [contents addObjectsFromArray:currentConferences];
+        if (self.currentConferences.count)
+            [contents addObjectsFromArray:self.currentConferences];
         else
             [contents addObject:@{kCellTypeKey:kCellTypeData,
                                   kCellDataKey:kNoConferences}];
@@ -378,8 +404,8 @@ NSString* const kNoConferences = @"no conferences";
         [contents addObject:@{kCellTypeKey: kCellTypeHeader,
                               kCellDataKey: [kPastConferencesHeader uppercaseString]}];
         
-        if (pastConferences.count)
-            [contents addObjectsFromArray:pastConferences];
+        if (self.pastConferences.count)
+            [contents addObjectsFromArray:self.pastConferences];
         else
             [contents addObject:@{kCellTypeKey:kCellTypeData,
                                   kCellDataKey:kNoConferences}];

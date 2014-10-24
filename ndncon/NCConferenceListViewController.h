@@ -19,6 +19,7 @@
 @property (nonatomic, weak) IBOutlet id<NCConferenceListViewControllerDelegate> delegate;
 
 -(void)clearSelection;
+-(void)reloadData;
 
 @end
 
@@ -30,5 +31,7 @@
                didAddConference:(Conference*)conference;
 -(void)conferenceListController:(NCConferenceListViewController*)conferenceListController
             didSelectConference:(Conference*)conference;
+-(void)conferenceListController:(NCConferenceListViewController*)conferenceListController
+            wantsDeleteConference:(Conference*)conference;
 
 @end

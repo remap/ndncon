@@ -9,6 +9,10 @@
 #import "NCConferenceViewController.h"
 #import "NSDate+NCAdditions.h"
 #import "User.h"
+#import "NSString+NCAdditions.h"
+#import "User.h"
+#import "AppDelegate.h"
+#import "NSView+NCDragAndDropAbility.h"
 
 //******************************************************************************
 @interface NCConferenceViewController ()
@@ -24,8 +28,13 @@
 @property (nonatomic) NSArray *durationsArray;
 
 @property (nonatomic, readonly) NSArray *orderedParticipants;
+@property (weak) IBOutlet NSView *timeInfoView;
+@property (weak) IBOutlet NSTextField *timeInfoLabel;
+@property (weak) IBOutlet NSButton *publishButton;
+@property (weak) IBOutlet NSButton *cancelButton;
+@property (weak) IBOutlet NSButton *joinButton;
 
-
+@property (nonatomic, readonly) NSManagedObjectContext *context;
 
 @end
 
@@ -45,6 +54,15 @@
     return self;
 }
 
+-(void)awakeFromNib
+{
+    [self.participantsTableView registerForDraggedTypes:@[NSStringPboardType]];
+    
+    NSResponder *nextResponder = self.participantsTableView.nextResponder;
+    [self.participantsTableView setNextResponder:self];
+    [self setNextResponder:nextResponder];
+}
+
 -(void)setConference:(Conference *)conference
 {
     if (_conference != conference)
@@ -58,46 +76,139 @@
                             (unsigned long)conference.startDate.minute];
         self.amPm = (([conference.startDate hour] > 11)?@"PM":@"AM");
         self.duration = [NCConferenceViewController stringRepresentationForConferenceDuration:conference.duration];
+        self.timeInfoLabel.stringValue = [NSString stringWithFormat:@"%@:%@ %@ (%@)",
+                                          self.startHour, self.startMinute, self.amPm, self.duration];
+        [self.participantsTableView reloadData];
     }
 }
 
 -(void)setIsEditable:(BOOL)isEditable
 {
-    if (_isEditable != isEditable)
+    _isEditable = isEditable;
+    
+    [self.conferenceNameTextField setEditable:isEditable];
+    [self.conferenceDescriptionTextField setEditable:isEditable];
+    [self.timeInfoLabel setHidden:isEditable];
+    [self.timeInfoView setHidden:!isEditable];
+    [self.publishButton setHidden:!isEditable];
+    
+    if (isEditable)
+        [self.cancelButton setHidden:NO];
+    
+    if (!isEditable)
     {
-        _isEditable = isEditable;
+        //            [self.conferenceNameTextField sizeToFit];
+        //            [self.conferenceNameTextField setNeedsDisplay];
+        //            [self.conferenceNameTextField updateConstraints];
+        // this is strange - this call actually updates autolayout
+        // contstraints
+//        [self.conferenceNameTextField mouseDown:nil];
+    }
+}
 
-        if (isEditable)
-        {
-            [self.conferenceNameTextField setEditable:YES];
-            [self.conferenceDescriptionTextField setEditable:YES];
+-(void)setIsOwner:(BOOL)isOwner
+{
+    _isOwner = isOwner;
+    
+    if (!isOwner)
+        self.isEditable = NO;
+    
+    [self.cancelButton setHidden:!_isOwner];
+}
 
-        }
-        else
-        {
-            
-        }
+- (IBAction)publishConference:(id)sender
+{
+    self.isEditable = !self.isEditable;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceViewControllerDidPublishConference:)])
+        [self.delegate conferenceViewControllerDidPublishConference:self];
+}
+
+- (IBAction)cancelConference:(id)sender
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceViewControllerDidCancelConference:)])
+        [self.delegate conferenceViewControllerDidCancelConference:self];
+}
+
+- (IBAction)joinConference:(id)sender
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceViewControllerDidJoinConference:)])
+        [self.delegate conferenceViewControllerDidJoinConference:self];
+}
+
+- (IBAction)deleteSelectedEntry:(id)sender
+{
+    if (self.isEditable && self.isOwner)
+    {
+        User *user = [self.orderedParticipants objectAtIndex:self.participantsTableView.selectedRow];
+        [self.conference removeParticipantsObject:user];
+        [self.context save:NULL];
+        [self.participantsTableView reloadData];
     }
 }
 
 # pragma mark - NSTableViewDataSource
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
+    if (self.isEditable)
+        return (self.conference.participants.count)?self.conference.participants.count:1;
+    
     return self.conference.participants.count;
 }
 
 # pragma mark - NSTableViewDelegate
+-(BOOL)tableView:(NSTableView *)tableView
+      acceptDrop:(id<NSDraggingInfo>)info
+             row:(NSInteger)row
+   dropOperation:(NSTableViewDropOperation)dropOperation
+{
+    NSArray *nrtcUserUrlArray = [NSView validUrlsFromPasteBoard:[info draggingPasteboard]];
+    
+    [nrtcUserUrlArray enumerateObjectsUsingBlock:^(NSString *userUrl, NSUInteger idx, BOOL *stop) {
+        User *user = [User userByName:[userUrl userNameFromNrtcUrlString] fromContext:self.context];
+        [self.conference addParticipantsObject:user];
+    }];
+    
+    [self.participantsTableView reloadData];
+    
+    return YES;
+}
+
+-(NSDragOperation)tableView:(NSTableView *)tableView validateDrop:(id<NSDraggingInfo>)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)dropOperation
+{
+    NSArray *nrtcUserUrlArray = [NSView validUrlsFromPasteBoard:[info draggingPasteboard]];
+    
+    if (nrtcUserUrlArray.count)
+        return NSDragOperationCopy;
+    
+    return NSDragOperationNone;
+}
+
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    User *participant = [self.orderedParticipants objectAtIndex:row];
-    NSTableCellView *cellView = [self.participantsTableView makeViewWithIdentifier:@"ParticipantCell" owner:nil];
+    NSTableCellView *cellView = nil;
     
-    cellView.textField.stringValue = participant.name;
+    if (self.conference.participants.count)
+    {
+        User *participant = [self.orderedParticipants objectAtIndex:row];
+        cellView = [self.participantsTableView makeViewWithIdentifier:@"ParticipantCell" owner:nil];
+        cellView.textField.stringValue = participant.name;
+    }
+    else
+    {
+        cellView = [self.participantsTableView makeViewWithIdentifier:@"InfoCell" owner:nil];
+        cellView.textField.stringValue = @"To add particiapnts to the conference, drag&drop users from the user list...";
+    }
     
     return cellView;
 }
 
 #pragma mark - private
+-(NSManagedObjectContext *)context
+{
+    return [(AppDelegate*)[NSApp delegate] managedObjectContext];
+}
+
 -(NSArray *)orderedParticipants
 {
     return [self.conference.participants sortedArrayUsingDescriptors:

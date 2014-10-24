@@ -15,7 +15,7 @@
 
 -(NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender
 {
-    NSArray *validUrls = [self validUrlsFromPasteBoard:[sender draggingPasteboard]];
+    NSArray *validUrls = [NSView validUrlsFromPasteBoard:[sender draggingPasteboard]];
     
     if (validUrls.count &&
         [self delegate] && [[self delegate] respondsToSelector:@selector(dragAndDropView:shouldAcceptDraggedUrls:)])
@@ -31,7 +31,7 @@
 
 -(BOOL)performDragOperation:(id<NSDraggingInfo>)sender
 {
-    NSArray *validUrls = [self validUrlsFromPasteBoard:[sender draggingPasteboard]];
+    NSArray *validUrls = [NSView validUrlsFromPasteBoard:[sender draggingPasteboard]];
     
     if ([self delegate] && [[self delegate] respondsToSelector:@selector(dragAndDropView:didAcceptDraggedUrls:)])
         [[self delegate] dragAndDropView:self didAcceptDraggedUrls:validUrls];
@@ -39,7 +39,7 @@
     return YES;
 }
 
--(NSArray*)validUrlsFromPasteBoard:(NSPasteboard*)pasteboard
++(NSArray*)validUrlsFromPasteBoard:(NSPasteboard*)pasteboard
 {
     __block NSMutableArray *validUrls = [[NSMutableArray alloc] init];
     

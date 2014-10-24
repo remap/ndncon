@@ -25,6 +25,8 @@
 @interface NSView (NCDragAndDropAbility)
 <NSDraggingDestination, NCDragAndDropView>
 
++(NSArray*)validUrlsFromPasteBoard:(NSPasteboard*)pasteboard;
+
 @end
 
 //******************************************************************************

@@ -13,12 +13,14 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="AUf-oW-1iz" customClass="NCMainViewController">
             <connections>
+                <outlet property="conferenceListViewController" destination="zvN-co-QBV" id="0MC-yl-1Xo"/>
                 <outlet property="conversationInfoView" destination="LaF-x4-xuG" id="jcX-Zs-K9Q"/>
                 <outlet property="currentView" destination="TKg-kF-Bmm" id="V6e-zu-8AF"/>
                 <outlet property="initialView" destination="TKg-kF-Bmm" id="973-dB-bZf"/>
                 <outlet property="startPublishingButton" destination="kDK-pq-K8u" id="WPu-hf-dg0"/>
                 <outlet property="statusPopUpButton" destination="35b-QO-dZa" id="1re-mk-W7n"/>
                 <outlet property="userListViewController" destination="N2m-Sp-SCk" id="QZU-ip-R2c"/>
+                <outlet property="userlistTabView" destination="xws-q8-qH0" id="pgB-64-PR4"/>
                 <outlet property="view" destination="GBH-vm-oGF" id="OHz-7R-FR9"/>
             </connections>
         </customObject>
@@ -181,13 +183,13 @@
                                     <action selector="add:" target="H1Y-px-pwf" id="Zn7-N2-K4C"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Delete user" id="2gX-QU-NTF">
+                            <menuItem title="Delete" id="2gX-QU-NTF">
                                 <string key="keyEquivalent" base64-UTF8="YES">
 CA
 </string>
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="remove:" target="H1Y-px-pwf" id="9uN-LZ-O8V"/>
+                                    <action selector="deleteSelectedEntry:" target="-1" id="wJ3-AG-SOf"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -289,8 +291,8 @@ CA
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="LaF-x4-xuG" customClass="NCConversationInfoView">
                                         <rect key="frame" x="0.0" y="516" width="212" height="40"/>
                                         <subviews>
-                                            <textField verticalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-oS-QNn">
-                                                <rect key="frame" x="18" y="12" width="177" height="16"/>
+                                            <textField verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-oS-QNn">
+                                                <rect key="frame" x="18" y="12" width="176.5" height="16"/>
                                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Current conversation:" id="EAn-qm-I0n">
                                                     <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -321,7 +323,7 @@ CA
                                         <rect key="frame" x="-7" y="-10" width="226" height="532"/>
                                         <font key="font" metaFont="system"/>
                                         <tabViewItems>
-                                            <tabViewItem label="User list" identifier="1" id="dfe-DC-pv2">
+                                            <tabViewItem label="User list" identifier="UserList" id="dfe-DC-pv2">
                                                 <view key="view" id="0oH-Gr-iWX">
                                                     <rect key="frame" x="10" y="33" width="206" height="486"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -335,7 +337,7 @@ CA
                                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" viewBased="YES" id="Ei1-FY-IiO">
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                                        <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                         <tableColumns>
                                                                             <tableColumn identifier="UserCell" width="201" minWidth="40" maxWidth="1000" id="0ll-hr-hff">
@@ -448,7 +450,7 @@ CA
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="remove:" target="H1Y-px-pwf" id="ATg-RX-TbN"/>
+                                                                        <action selector="remove:" target="H1Y-px-pwf" id="x9R-Yf-fLW"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -475,7 +477,7 @@ CA
                                                     </constraints>
                                                 </view>
                                             </tabViewItem>
-                                            <tabViewItem label="Conferences" identifier="2" id="dXo-2M-3jr">
+                                            <tabViewItem label="Conferences" identifier="ConferencesList" id="dXo-2M-3jr">
                                                 <view key="view" id="1k5-zB-tzF">
                                                     <rect key="frame" x="10" y="33" width="206" height="486"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -540,7 +542,7 @@ CA
                                                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                                                 </textFieldCell>
                                                                                             </textField>
-                                                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eci-X7-2Wh">
+                                                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eci-X7-2Wh">
                                                                                                 <rect key="frame" x="1" y="6" width="199" height="14"/>
                                                                                                 <constraints>
                                                                                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="34" id="QmQ-Ew-uag"/>
@@ -613,11 +615,11 @@ CA
                                                                 </subviews>
                                                                 <nil key="backgroundColor"/>
                                                             </clipView>
-                                                            <scroller key="horizontalScroller" hidden="YES" appearanceType="vibrantLight" verticalHuggingPriority="750" horizontal="YES" id="UGC-9M-3fg">
+                                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="UGC-9M-3fg">
                                                                 <rect key="frame" x="1" y="119" width="223" height="15"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                             </scroller>
-                                                            <scroller key="verticalScroller" hidden="YES" appearanceType="vibrantLight" verticalHuggingPriority="750" horizontal="NO" id="ukM-QS-Qd6">
+                                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="ukM-QS-Qd6">
                                                                 <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                             </scroller>

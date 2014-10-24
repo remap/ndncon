@@ -29,7 +29,7 @@ extern NSString* const kNCHubPrefixKey;
 //******************************************************************************
 @protocol NCUserListViewControllerDelegate;
 
-@interface NCUserListViewController : NSObject
+@interface NCUserListViewController : NSViewController
 
 @property (nonatomic, weak) IBOutlet id<NCUserListViewControllerDelegate> delegate;
 

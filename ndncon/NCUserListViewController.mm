@@ -241,6 +241,14 @@ private:
     [[NCPreferencesController sharedInstance] addObserver:self
                                               forKeyPaths:NSStringFromSelector(@selector(daemonHost)),
      NSStringFromSelector(@selector(daemonPort)), nil];
+    
+    NSResponder *nextResponder = [self.tableView nextResponder];
+
+    if (self != nextResponder)
+    {
+        [self.tableView setNextResponder:self];
+        [self setNextResponder:nextResponder];
+    }
 }
 
 -(void)initialize
@@ -300,6 +308,12 @@ private:
 }
 
 // private
+- (IBAction)deleteSelectedEntry:(id)sender
+{
+    [self.userController remove:nil];
+    [self.tableView reloadData];
+}
+
 -(void)sessionDidUpdateStatus:(NSNotification*)notification
 {
     NSString *userName = [notification.userInfo objectForKey:kNCSessionUsernameKey];
