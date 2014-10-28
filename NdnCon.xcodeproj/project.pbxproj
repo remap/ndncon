@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF11BAFA19D4E37E0011270F /* OpenGL.framework */; };
+		AF179D3019FB21170067F5FA /* libconference-discovery.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AF179D3219FB28520067F5FA /* libchrono-chat2013.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF179D3119FB28520067F5FA /* libchrono-chat2013.0.dylib */; };
+		AF179D3319FB28600067F5FA /* libchrono-chat2013.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF179D3119FB28520067F5FA /* libchrono-chat2013.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
 		AF3D2CFA19F708AA00A0D274 /* NSView+NCDragAndDropAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */; };
 		AF3D2CFD19F70C9E00A0D274 /* NCDropScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */; };
@@ -60,8 +63,6 @@
 		AF744CCB19ED99C100E92680 /* NCDiscoveryParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */; };
 		AF744CCC19ED99C100E92680 /* NCDiscoveryParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */; };
 		AF744CCF19EDD6B600E92680 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD978FE19BE546D0061AA24 /* MainMenu.xib */; };
-		AF744CDD19EDF6C200E92680 /* libchrono-chat2013.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744CDC19EDF6C200E92680 /* libchrono-chat2013.0.dylib */; };
-		AF744CDE19EDF7C100E92680 /* libchrono-chat2013.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF744CDC19EDF6C200E92680 /* libchrono-chat2013.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF744CE019EDF9CE00E92680 /* libndn-cpp.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */; };
 		AF744CE119EDF9E100E92680 /* libndn-cpp.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
@@ -143,7 +144,8 @@
 				AF744C8E19E71C1F00E92680 /* Sparkle.framework in CopyFiles */,
 				AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */,
 				AF744CE119EDF9E100E92680 /* libndn-cpp.0.dylib in CopyFiles */,
-				AF744CDE19EDF7C100E92680 /* libchrono-chat2013.0.dylib in CopyFiles */,
+				AF179D3319FB28600067F5FA /* libchrono-chat2013.0.dylib in CopyFiles */,
+				AF179D3019FB21170067F5FA /* libconference-discovery.0.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +153,7 @@
 
 /* Begin PBXFileReference section */
 		AF11BAFA19D4E37E0011270F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		AF179D3119FB28520067F5FA /* libchrono-chat2013.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libchrono-chat2013.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libchrono-chat2013.0.dylib"; sourceTree = "<group>"; };
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
 		AF3D2CF819F708AA00A0D274 /* NSView+NCDragAndDropAbility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+NCDragAndDropAbility.h"; path = "ndncon/NSView+NCDragAndDropAbility.h"; sourceTree = SOURCE_ROOT; };
 		AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+NCDragAndDropAbility.m"; path = "ndncon/NSView+NCDragAndDropAbility.m"; sourceTree = SOURCE_ROOT; };
@@ -162,7 +165,7 @@
 		AF3E074419D4A86300028E26 /* NCVideoStreamRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCVideoStreamRenderer.mm; path = ndncon/NCVideoStreamRenderer.mm; sourceTree = SOURCE_ROOT; };
 		AF3EEA3A19F83BA900039A56 /* NCFaceSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCFaceSingleton.h; path = ndncon/NCFaceSingleton.h; sourceTree = SOURCE_ROOT; };
 		AF3EEA3B19F83BA900039A56 /* NCFaceSingleton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCFaceSingleton.mm; path = ndncon/NCFaceSingleton.mm; sourceTree = SOURCE_ROOT; };
-		AF3EEA3D19F8605000039A56 /* NdnCon v0.3.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.0.xcdatamodel"; sourceTree = "<group>"; };
+		AF3EEA3D19F8605000039A56 /* NdnCon v0.3.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.1.xcdatamodel"; sourceTree = "<group>"; };
 		AF3EEA3E19F8610E00039A56 /* Conference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Conference.h; path = ndncon/Conference.h; sourceTree = SOURCE_ROOT; };
 		AF3EEA3F19F8610E00039A56 /* Conference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Conference.m; path = ndncon/Conference.m; sourceTree = SOURCE_ROOT; };
 		AF3EEA4319F8671600039A56 /* NCConferenceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConferenceListViewController.h; path = ndncon/NCConferenceListViewController.h; sourceTree = SOURCE_ROOT; };
@@ -238,7 +241,6 @@
 		AF744CC819ED99C100E92680 /* NCDiscoveryParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCDiscoveryParametersViewController.h; path = ndncon/NCDiscoveryParametersViewController.h; sourceTree = SOURCE_ROOT; };
 		AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCDiscoveryParametersViewController.m; path = ndncon/NCDiscoveryParametersViewController.m; sourceTree = SOURCE_ROOT; };
 		AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCDiscoveryParametersView.xib; path = ndncon/NCDiscoveryParametersView.xib; sourceTree = SOURCE_ROOT; };
-		AF744CDC19EDF6C200E92680 /* libchrono-chat2013.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libchrono-chat2013.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery-fork/build/lib/libchrono-chat2013.0.dylib"; sourceTree = "<group>"; };
 		AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libndn-cpp.0.dylib"; path = "../ndnrtc-thirdparty/ndn-cpp/build/lib/libndn-cpp.0.dylib"; sourceTree = "<group>"; };
 		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
@@ -269,7 +271,7 @@
 		AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCAudioThreadView.xib; path = ndncon/NCAudioThreadView.xib; sourceTree = SOURCE_ROOT; };
 		AFA8521B19C8F3220015A883 /* NCAudioThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCAudioThreadViewController.h; path = ndncon/NCAudioThreadViewController.h; sourceTree = SOURCE_ROOT; };
 		AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCAudioThreadViewController.m; path = ndncon/NCAudioThreadViewController.m; sourceTree = SOURCE_ROOT; };
-		AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.1.xcdatamodel"; sourceTree = "<group>"; };
+		AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.0.xcdatamodel"; sourceTree = "<group>"; };
 		AFAFD1AF19F98F6F00213EEE /* NCConferenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConferenceViewController.h; path = ndncon/NCConferenceViewController.h; sourceTree = SOURCE_ROOT; };
 		AFAFD1B019F98F6F00213EEE /* NCConferenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCConferenceViewController.m; path = ndncon/NCConferenceViewController.m; sourceTree = SOURCE_ROOT; };
 		AFAFD1B119F98F6F00213EEE /* NCConferenceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCConferenceView.xib; path = ndncon/NCConferenceView.xib; sourceTree = SOURCE_ROOT; };
@@ -346,9 +348,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF179D3219FB28520067F5FA /* libchrono-chat2013.0.dylib in Frameworks */,
 				AF3EEA4819F889E000039A56 /* libconference-discovery.0.dylib in Frameworks */,
 				AF744CE019EDF9CE00E92680 /* libndn-cpp.0.dylib in Frameworks */,
-				AF744CDD19EDF6C200E92680 /* libchrono-chat2013.0.dylib in Frameworks */,
 				AF744C7119E5DAA300E92680 /* CoreFoundation.framework in Frameworks */,
 				AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */,
 				AFA8520A19C779180015A883 /* ApplicationServices.framework in Frameworks */,
@@ -730,9 +732,9 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF179D3119FB28520067F5FA /* libchrono-chat2013.0.dylib */,
 				AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */,
 				AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */,
-				AF744CDC19EDF6C200E92680 /* libchrono-chat2013.0.dylib */,
 				AF744C8C19E71BEE00E92680 /* Sparkle.framework */,
 				AF11BAFA19D4E37E0011270F /* OpenGL.framework */,
 				AFA8520919C779180015A883 /* ApplicationServices.framework */,
@@ -954,7 +956,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# change rpath for NDN-RTC library\ninstall_name_tool -id @rpath/libndnrtc.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change rpath for chrono-chat library\ninstall_name_tool -id @rpath/libchrono-chat2013.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib\n# change rpath for ndn-cpp library\ninstall_name_tool -id @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndn-cpp.0.dylib\n# change ndn-cpp dependency path in NDN-RTC library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change ndn-cpp dependency path in chorno-chat library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib";
+			shellScript = "# change rpath for NDN-RTC library\ninstall_name_tool -id @rpath/libndnrtc.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change rpath for chrono-chat library\ninstall_name_tool -id @rpath/libchrono-chat2013.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib\n# change rpath for conference-discovery library\ninstall_name_tool -id @rpath/libconference-discovery.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libconference-discovery.0.dylib\n# change rpath for ndn-cpp library\ninstall_name_tool -id @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndn-cpp.0.dylib\n# change ndn-cpp dependency path in NDN-RTC library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change ndn-cpp dependency path in chorno-chat library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib\n# change ndn-cpp dependency for conference-discovery library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib  $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libconference-discovery.0.dylib";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1320,12 +1322,12 @@
 		AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				AF3EEA3D19F8605000039A56 /* NdnCon v0.3.0.xcdatamodel */,
-				AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.1.xcdatamodel */,
+				AF3EEA3D19F8605000039A56 /* NdnCon v0.3.1.xcdatamodel */,
+				AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.0.xcdatamodel */,
 				AF744CBC19ECAD6C00E92680 /* NdnCon v0.2.0.xcdatamodel */,
 				AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */,
 			);
-			currentVersion = AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.1.xcdatamodel */;
+			currentVersion = AF3EEA3D19F8605000039A56 /* NdnCon v0.3.1.xcdatamodel */;
 			path = NdnCon.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

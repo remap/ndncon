@@ -11,6 +11,7 @@
 #import "NCNdnRtcLibraryController.h"
 #import "NCErrorController.h"
 
+//******************************************************************************
 @implementation User
 {
     NSImage *_statusImage;
@@ -39,6 +40,23 @@
     
     [[self allUsersFromContext:context] enumerateObjectsUsingBlock:^(User* usr, NSUInteger idx, BOOL *stop) {
         if ([usr.name isEqualTo:userName])
+        {
+            user = usr;
+            *stop = YES;
+        }
+    }];
+    
+    return user;
+}
+
++(User*)userByName:(NSString *)userName
+         andPrefix:(NSString *)prefix
+       fromContext:(NSManagedObjectContext *)context
+{
+    __block User *user = nil;
+    
+    [[self allUsersFromContext:context] enumerateObjectsUsingBlock:^(User* usr, NSUInteger idx, BOOL *stop) {
+        if ([usr.name isEqualTo:userName] && [usr.prefix isEqualTo:prefix])
         {
             user = usr;
             *stop = YES;
@@ -81,5 +99,11 @@
 {
     return [NSString stringWithFormat:@"%@/%@", self.prefix, self.name];
 }
+
+@end
+
+//******************************************************************************
+@implementation UserStub
+
 
 @end

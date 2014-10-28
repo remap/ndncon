@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "NCNdnRtcLibraryController.h"
 
-extern NSString* const kNCSessionInfoKey;
-extern NSString* const kNCHubPrefixKey;
+extern NSString* const kSessionInfoKey;
+extern NSString* const kHubPrefixKey;
 
 //******************************************************************************
 @interface NCSessionInfoContainer : NSObject

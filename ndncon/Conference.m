@@ -12,13 +12,16 @@
 #import "NCErrorController.h"
 
 NSString* const kConferenceNameKey = @"name";
-NSString* const kConferenceDescriptionKey = @"description";
+NSString* const kConferenceDescriptionKey = @"conferenceDescription";
 NSString* const kConferenceParticipantsKey = @"participants";
 NSString* const kConferenceParticipantNameKey = @"username";
 NSString* const kConferenceParticipantPrefixKey = @"prefix";
 NSString* const kConferenceStartDateKey = @"startDate";
 NSString* const kConferenceDurationKey = @"duration";
 NSString* const kConferenceChatKey = @"chat";
+NSString* const kConferenceOrganizerNameKey = @"organizer";
+NSString* const kConferenceOrganizerPrefixKey = @"orgprefix";
+
 
 //******************************************************************************
 @implementation Conference
@@ -29,6 +32,7 @@ NSString* const kConferenceChatKey = @"chat";
 @dynamic duration;
 @dynamic participants;
 @dynamic chatRoom;
+@dynamic organizer;
 
 +(NSArray*)allConferencesFromContext:(NSManagedObjectContext *)context
 {
@@ -106,6 +110,35 @@ NSString* const kConferenceChatKey = @"chat";
     return conference;
 }
 
++(Conference *)newConferenceFromRemoteCopy:(NCRemoteConference *)remoteConference
+                                 inContext:(NSManagedObjectContext*)context
+{
+    Conference *conference = [self newConferenceWithName:remoteConference.name
+                                               inContext:context];
+    conference.conferenceDescription = remoteConference.conferenceDescription;
+    conference.startDate = remoteConference.startDate;
+    conference.duration = remoteConference.duration;
+    conference.chatRoom = [ChatRoom newChatRoomWithId:remoteConference.name
+                                            inContext:context];
+
+    for (UserStub *user in remoteConference.participants)
+    {
+        User *userLocal = [User newUserWithName:user.name
+                                      andPrefix:user.prefix
+                                      inContext:context];
+        [conference addParticipantsObject:userLocal];
+    }
+    
+    User *organizer = [User newUserWithName:remoteConference.organizer.name
+                                  andPrefix:remoteConference.organizer.prefix
+                                  inContext:context];
+    conference.organizer = organizer;
+    
+    [context save:NULL];
+    
+    return conference;
+}
+
 -(NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *conferenceDictionary = [NSMutableDictionary dictionary];
@@ -126,6 +159,115 @@ NSString* const kConferenceChatKey = @"chat";
     conferenceDictionary[kConferenceDurationKey] = self.duration;
     
     return conferenceDictionary;
+}
+
+-(BOOL)isRemote
+{
+    return (self.organizer != nil);
+}
+
+-(BOOL)hasParticipant:(NSString*)username withPrefix:(NSString*)prefix
+{
+    __block BOOL found = NO;
+    [self.participants enumerateObjectsUsingBlock:^(User *user, BOOL *stop) {
+        if ([user.name isEqualToString:username] &&
+            [user.prefix isEqualToString:prefix])
+        {
+            *stop = YES;
+            found = YES;
+        }
+    }];
+    
+    return found;
+}
+
+@end
+
+//******************************************************************************
+@interface NCRemoteConference ()
+
+@property (nonatomic) NSDictionary *conferenceDictionary;
+
+@end
+
+//******************************************************************************
+@implementation NCRemoteConference
+
+-(id)initWithDictionary:(NSDictionary *)conferenceDictionary
+{
+    self = [super init];
+    
+    if (self)
+    {
+        self.conferenceDictionary = conferenceDictionary;
+    }
+    
+    return self;
+}
+
+-(NSString *)name
+{
+    return self.conferenceDictionary[kConferenceNameKey];
+}
+
+-(NSString *)conferenceDescription
+{
+    return self.conferenceDictionary[kConferenceDescriptionKey];
+}
+
+-(NSDate *)startDate
+{
+    return [NSDate dateWithNaturalLanguageString:self.conferenceDictionary[kConferenceStartDateKey]];
+}
+
+-(NSNumber *)duration
+{
+    return @([self.conferenceDictionary[kConferenceDurationKey] integerValue]);
+}
+
+-(NSSet *)participants
+{
+    __block NSMutableSet *set = [[NSMutableSet alloc] init];
+    
+    [self.conferenceDictionary[kConferenceParticipantsKey] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        UserStub *user = [[UserStub alloc] init];
+        user.name = [obj valueForKey:kConferenceParticipantNameKey];
+        user.prefix = [obj valueForKey:kConferenceParticipantPrefixKey];
+        [set addObject:user];
+    }];
+    
+    [set addObject:self.organizer];
+    
+    return [NSSet setWithSet:set];
+}
+
+-(ChatRoom *)chatRoom
+{
+    ChatRoom *room = [[ChatRoom alloc] init];
+    
+    room.roomId = self.name;
+    room.created = self.startDate;
+    
+    return room;
+}
+
+-(UserStub *)organizer
+{
+    UserStub *organizer = [[UserStub alloc] init];
+    organizer.name = self.conferenceDictionary[kConferenceOrganizerNameKey];
+    organizer.prefix = self.conferenceDictionary[kConferenceOrganizerPrefixKey];
+    
+    return organizer;
+}
+
+-(BOOL)isRemote
+{
+    return YES;
+}
+
+-(NSDictionary *)dictionaryRepresentation
+{
+    return self.conferenceDictionary;
 }
 
 @end

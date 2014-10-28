@@ -16,7 +16,7 @@
 
 @property (nonatomic, weak) id<NCConferenceViewControllerDelegate> delegate;
 
-@property (nonatomic) Conference *conference;
+@property (nonatomic) id<ConferenceEntityProtocol> conference;
 @property (nonatomic) BOOL isEditable;
 @property (nonatomic) BOOL isOwner;
 

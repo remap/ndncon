@@ -13,6 +13,7 @@
 #import "NCActiveStreamViewer.h"
 #import "NCStatisticsWindowController.h"
 #import "NCDropScrollview.h"
+#import "Conference.h"
 
 extern NSString* const NCStreamRebufferingNotification;
 extern NSString* const NCStreamObserverEventNotification;
@@ -63,6 +64,11 @@ NCStatisticsWindowControllerDelegate>
  *
  */
 -(void)startFetchingWithConfiguration:(NSDictionary*)userInfo;
+
+/**
+ * Starts conference
+ */
+-(void)startConference:(Conference*)conference;
 
 - (IBAction)endConversation:(id)sender;
 

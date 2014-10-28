@@ -13,12 +13,12 @@ extern NSString* const NCLocalSessionErrorNotification;
 extern NSString* const NCRemoteSessionStatusUpdateNotification;
 extern NSString* const NCRemoteSessionErrorNotification;
 
-extern NSString* const kNCSessionUsernameKey;
-extern NSString* const kNCSessionPrefixKey;
-extern NSString* const kNCSessionStatusKey;
-extern NSString* const kNCSessionOldStatusKey;
-extern NSString* const kNCSessionErrorCodeKey;
-extern NSString* const kNCSessionErrorMessageKey;
+extern NSString* const kSessionUsernameKey;
+extern NSString* const kSessionPrefixKey;
+extern NSString* const kSessionStatusKey;
+extern NSString* const kSessionOldStatusKey;
+extern NSString* const kSessionErrorCodeKey;
+extern NSString* const kSessionErrorMessageKey;
 
 typedef enum : NSUInteger {
     SessionStatusOffline,

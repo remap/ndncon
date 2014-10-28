@@ -9,10 +9,12 @@
 #import "NCConferenceViewController.h"
 #import "NSDate+NCAdditions.h"
 #import "User.h"
+#import "ChatRoom.h"
 #import "NSString+NCAdditions.h"
 #import "User.h"
 #import "AppDelegate.h"
 #import "NSView+NCDragAndDropAbility.h"
+#import "NCDiscoveryLibraryController.h"
 
 //******************************************************************************
 @interface NCConferenceViewController ()
@@ -63,18 +65,25 @@
     [self setNextResponder:nextResponder];
 }
 
--(void)setConference:(Conference *)conference
+-(void)setConference:(id<ConferenceEntityProtocol>)conference
 {
     if (_conference != conference)
     {
         _conference = conference;
-        self.conferenceNameTextField.stringValue = conference.name;
+        if ([conference isRemote])
+            self.conferenceNameTextField.stringValue = [NSString stringWithFormat:@"%@ (by %@)",
+                                                        conference.name, conference.organizer.name];
+        else
+            self.conferenceNameTextField.stringValue = conference.name;
+
         self.conferenceDescriptionTextField.stringValue = conference.conferenceDescription;
+
+        NSDate *startDate = conference.startDate;
         self.startHour = [NSString stringWithFormat:@"%lu",
-                          (unsigned long)conference.startDate.hour%12];
+                          (unsigned long)startDate.hour%12];
         self.startMinute = [NSString stringWithFormat:@"%.2lu",
-                            (unsigned long)conference.startDate.minute];
-        self.amPm = (([conference.startDate hour] > 11)?@"PM":@"AM");
+                            (unsigned long)startDate.minute];
+        self.amPm = (([startDate hour] > 11)?@"PM":@"AM");
         self.duration = [NCConferenceViewController stringRepresentationForConferenceDuration:conference.duration];
         self.timeInfoLabel.stringValue = [NSString stringWithFormat:@"%@:%@ %@ (%@)",
                                           self.startHour, self.startMinute, self.amPm, self.duration];
@@ -114,11 +123,15 @@
         self.isEditable = NO;
     
     [self.cancelButton setHidden:!_isOwner];
+    [self.joinButton setHidden:isOwner];
 }
 
 - (IBAction)publishConference:(id)sender
 {
     self.isEditable = !self.isEditable;
+    [self.context save:NULL];
+    [[NCDiscoveryLibraryController sharedInstance]
+     announceConference:self.conference];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceViewControllerDidPublishConference:)])
         [self.delegate conferenceViewControllerDidPublishConference:self];
@@ -132,6 +145,14 @@
 
 - (IBAction)joinConference:(id)sender
 {
+    // check if conference is remote - if so, create local copy of it
+    if ([self.conference isKindOfClass:[NCRemoteConference class]])
+    {
+        Conference *conference = [Conference newConferenceFromRemoteCopy:self.conference
+                                                               inContext:self.context];
+        _conference = conference;
+    }
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceViewControllerDidJoinConference:)])
         [self.delegate conferenceViewControllerDidJoinConference:self];
 }
@@ -141,7 +162,7 @@
     if (self.isEditable && self.isOwner)
     {
         User *user = [self.orderedParticipants objectAtIndex:self.participantsTableView.selectedRow];
-        [self.conference removeParticipantsObject:user];
+        [(Conference*)self.conference removeParticipantsObject:user];
         [self.context save:NULL];
         [self.participantsTableView reloadData];
     }
@@ -150,10 +171,12 @@
 # pragma mark - NSTableViewDataSource
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    if (self.isEditable)
-        return (self.conference.participants.count)?self.conference.participants.count:1;
+    NSSet *participants = self.conference.participants;
     
-    return self.conference.participants.count;
+    if (self.isEditable)
+        return (participants.count)?participants.count:1;
+    
+    return participants.count;
 }
 
 # pragma mark - NSTableViewDelegate
@@ -166,7 +189,7 @@
     
     [nrtcUserUrlArray enumerateObjectsUsingBlock:^(NSString *userUrl, NSUInteger idx, BOOL *stop) {
         User *user = [User userByName:[userUrl userNameFromNrtcUrlString] fromContext:self.context];
-        [self.conference addParticipantsObject:user];
+        [(Conference*)self.conference addParticipantsObject:user];
     }];
     
     [self.participantsTableView reloadData];
@@ -187,12 +210,13 @@
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     NSTableCellView *cellView = nil;
+    NSSet *participants = self.conference.participants;
     
-    if (self.conference.participants.count)
+    if (participants.count)
     {
-        User *participant = [self.orderedParticipants objectAtIndex:row];
+        id participant = [self.orderedParticipants objectAtIndex:row];
         cellView = [self.participantsTableView makeViewWithIdentifier:@"ParticipantCell" owner:nil];
-        cellView.textField.stringValue = participant.name;
+        cellView.textField.stringValue = [participant valueForKey:NSStringFromSelector(@selector(name))];
     }
     else
     {
@@ -211,7 +235,9 @@
 
 -(NSArray *)orderedParticipants
 {
-    return [self.conference.participants sortedArrayUsingDescriptors:
+    NSSet *participants = self.conference.participants;
+    
+    return [participants sortedArrayUsingDescriptors:
             @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
 }
 

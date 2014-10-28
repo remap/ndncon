@@ -15,6 +15,7 @@
 #import "AppDelegate.h"
 #import "NSString+NCAdditions.h"
 #import "NCConferenceViewController.h"
+#import "NCDiscoveryLibraryController.h"
 
 #define STATUS_POPUP_OFFLINE_IDX 0
 #define STATUS_POPUP_PASSIVE_IDX 1
@@ -141,41 +142,39 @@
 }
 
 -(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
-            didSelectConference:(Conference *)conference
+            didSelectConference:(id)conference
 {
     self.conferenceViewController = [[NCConferenceViewController alloc] init];
     self.conferenceViewController.delegate = self;
     [self loadCurrentView:self.conferenceViewController.view];
 
-    self.conferenceViewController.isOwner = YES;
+    self.conferenceViewController.isOwner = ![conference isRemote];
     self.conferenceViewController.isEditable = NO;
     self.conferenceViewController.conference = conference;    
 }
 -(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
             wantsDeleteConference:(Conference *)conference
 {
-    [self loadCurrentView:self.initialView];
+    [self withdrawConference:conference];
 }
 
 
 #pragma mark - NCConferenceViewControllerDelegate
 -(void)conferenceViewControllerDidCancelConference:(NCConferenceViewController *)conferenceViewController
 {
-    Conference *conference = conferenceViewController.conference;
-    [self.context deleteObject:conference];
-    [self.context save:NULL];
+    [self withdrawConference:conferenceViewController.conference];
     [self toggleUserList:NO];
-    [self loadCurrentView:self.initialView];
 }
 
 -(void)conferenceViewControllerDidJoinConference:(NCConferenceViewController *)conferenceViewController
 {
-    
+    [self startConverstaionIfNotStarted];
+    [self loadCurrentView:self.conversationViewController.view];
+    [self.conversationViewController startConference:conferenceViewController.conference];
 }
 
 -(void)conferenceViewControllerDidPublishConference:(NCConferenceViewController *)conferenceViewController
 {
-    [self.context save:NULL];
     [self toggleUserList:NO];
     [self.conferenceListViewController reloadData];
 }
@@ -213,7 +212,7 @@
         
         if (userInfo)
         {
-            NCSessionStatus status = [userInfo[kNCSessionStatusKey] integerValue];
+            NCSessionStatus status = [userInfo[kSessionStatusKey] integerValue];
             hasOnline = (status == SessionStatusOnlinePublishing);
         }
         *stop = hasOnline;
@@ -233,7 +232,7 @@
         
         if (userInfo)
         {
-            NCSessionStatus status = [userInfo[kNCSessionStatusKey] integerValue];
+            NCSessionStatus status = [userInfo[kSessionStatusKey] integerValue];
             if (status == SessionStatusOnlinePublishing)
                 [self startFetchingFromUser:userInfo];
         }
@@ -245,7 +244,7 @@
 -(void)userListViewController:(NCUserListViewController *)userListViewController
                 userWasChosen:(NSDictionary *)user
 {
-    NCSessionInfoContainer *sessionInfo = [user valueForKey:kNCSessionInfoKey];
+    NCSessionInfoContainer *sessionInfo = [user valueForKey:kSessionInfoKey];
     
     self.userViewController = [[NCUserViewController alloc] init];
     self.userViewController.userInfo = user;    
@@ -281,7 +280,23 @@
     [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
 }
 
+#pragma mark - NCConferenceListViewControllerDelegate
+-(void)conferenceListController:(NCConferenceListViewController *)conferenceListController remoteConferenceWithdrawed:(id<ConferenceEntityProtocol>)conference
+{
+    if (self.conferenceViewController.conference == conference)
+        [self loadCurrentView:self.initialView];
+}
+
 // private
+-(void)withdrawConference:(Conference*)conference
+{
+    [[NCDiscoveryLibraryController sharedInstance] withdrawConference:conference];
+    [self.context deleteObject:conference];
+    [self.context save:NULL];
+    [self.conferenceListViewController reloadData];
+    [self loadCurrentView:self.initialView];
+}
+
 -(void)toggleUserList:(BOOL)userListVisible
 {
     [self.userlistTabView selectTabViewItemWithIdentifier:(userListVisible)?@"UserList":@"ConferencesList"];
@@ -329,19 +344,19 @@
 
 -(void)onSessionStatusUpdate:(NSNotification*)notification
 {
-    [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
-    self.conversationInfoView.status = [NCMainViewController fromSessionSatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+    [self updateSessionStatus:[[notification.userInfo objectForKey:kSessionStatusKey] intValue]];
+    self.conversationInfoView.status = [NCMainViewController fromSessionSatus:[[notification.userInfo objectForKey:kSessionStatusKey] intValue]];
     [self.conversationInfoView setNeedsDisplay:YES];
-    [self.startPublishingButton setEnabled:([[notification.userInfo objectForKey:kNCSessionStatusKey] intValue] != SessionStatusOffline)];
+    [self.startPublishingButton setEnabled:([[notification.userInfo objectForKey:kSessionStatusKey] intValue] != SessionStatusOffline)];
 }
 
 -(void)onSessionError:(NSNotification*)notification
 {
     [[NCErrorController sharedInstance]
-     postErrorWithCode:[[notification.userInfo objectForKey:kNCSessionErrorCodeKey] intValue]
-     andMessage:[notification.userInfo objectForKey:kNCSessionErrorMessageKey]];
+     postErrorWithCode:[[notification.userInfo objectForKey:kSessionErrorCodeKey] intValue]
+     andMessage:[notification.userInfo objectForKey:kSessionErrorMessageKey]];
     
-    [self updateSessionStatus:[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue]];
+    [self updateSessionStatus:[[notification.userInfo objectForKey:kSessionStatusKey] intValue]];
 }
 
 -(void)updateSessionStatus:(NCSessionStatus)status
@@ -406,7 +421,7 @@
         return @"no one";
     
     __block NSString *outputString = @"";
-    NSArray *participants = [value valueForKeyPath:kNCSessionUsernameKey];
+    NSArray *participants = [value valueForKeyPath:kSessionUsernameKey];
     
     if ([participants containsObject:[NCPreferencesController sharedInstance].userName])
         outputString = (participants.count == 1)?@"only me":@"me";

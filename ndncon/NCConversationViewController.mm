@@ -165,6 +165,8 @@ private:
 @property (nonatomic, strong) NCStatisticsWindowController *statisticsController;
 @property (weak) IBOutlet NSButton *statisticsButton;
 
+@property (nonatomic, strong) Conference *conference;
+
 @end
 
 @implementation NCConversationViewController
@@ -209,6 +211,7 @@ private:
     
     self.localStreamViewer = nil;
     self.remoteStreamViewer = nil;
+    self.conference = nil;
 }
 
 -(void)awakeFromNib
@@ -256,6 +259,9 @@ private:
     [self.localStreamViewer closeAllStreams];    
     
     self.participants = @[];
+    
+    [self stopWatchingParticipants];
+    self.conference = nil;
     
     if (self.statisticsController)
     {
@@ -306,10 +312,17 @@ private:
 
     // select first video stream if no stream selected
     if (!hasRemoteParticipants)
-        [self setStreamWithPrefixActive:[[self getStreamsForPariticpant:[userInfo valueForKeyPath:kNCSessionUsernameKey]
+        [self setStreamWithPrefixActive:[[self getStreamsForPariticpant:[userInfo valueForKeyPath:kSessionUsernameKey]
                                                                isRemote:YES].allKeys firstObject]];
     
     [self addRemoteAudioStreams: audioStreams withUserInfo:userInfo];
+}
+
+-(void)startConference:(Conference*)conference
+{
+    self.conference = conference;
+    [self startWatchingParticipants:conference.participants];
+    [self startPublishing:nil];
 }
 
 -(void)setParticipants:(NSArray *)participants
@@ -397,6 +410,48 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 }
 
 // private
+-(void)startWatchingParticipants:(NSSet*)participants
+{
+    [self subscribeForNotificationsAndSelectors:
+     NCRemoteSessionStatusUpdateNotification, @selector(onRemoteSessionStatusUpdate:),
+     nil];
+}
+
+-(void)stopWatchingParticipants
+{
+    [self unsubscribeFromNotifications:NCRemoteSessionStatusUpdateNotification,
+     nil];
+}
+
+-(void)onRemoteSessionStatusUpdate:(NSNotification*)notification
+{
+    NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
+    NCSessionStatus newStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];
+    
+    if (newStatus == SessionOnlinePublishing ||
+        oldStatus == SessionOnlinePublishing)
+    {
+        // check if notification affects any of the current paticipants
+        NSString *username = notification.userInfo[kSessionUsernameKey];
+        NSString *prefix = notification.userInfo[kSessionPrefixKey];
+        
+        if (self.conference &&
+            [self.conference hasParticipant:username withPrefix:prefix])
+        {
+            if (oldStatus == SessionOnlinePublishing)
+            {
+                // stop fetching from user and remove him from the view
+//                [self ]
+            }
+            else if (newStatus == SessionOnlinePublishing)
+            {
+                // start fetching from user
+                [self startFetchingWithConfiguration:notification.userInfo];
+            }
+        }
+    }
+}
+
 -(void)setStreamWithPrefixActive:(NSString*)streamPrefix
 {
     NSMutableDictionary *participantInfo = [self getParticipantInfoForStream:streamPrefix];
@@ -440,7 +495,7 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 
 -(void)onSessionStatusUpdate:(NSNotification*)notification
 {
-    _currentConversationStatus = (NCSessionStatus)[[notification.userInfo valueForKey:kNCSessionStatusKey] integerValue];
+    _currentConversationStatus = (NCSessionStatus)[[notification.userInfo valueForKey:kSessionStatusKey] integerValue];
 }
 
 -(void)onStreamEvent:(NSNotification*)notification
@@ -475,8 +530,8 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 
 -(void)removeUserFromConversation:(NSMutableDictionary*)participantInfo
 {
-    if ([[self.participants valueForKeyPath:kNCSessionPrefixKey]
-         containsObject:[participantInfo valueForKeyPath:kNCSessionPrefixKey]])
+    if ([[self.participants valueForKeyPath:kSessionPrefixKey]
+         containsObject:[participantInfo valueForKeyPath:kSessionPrefixKey]])
     {
         self.participants = [self.participants arrayByRemovingObject:participantInfo];
     }
@@ -487,11 +542,11 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
                       isRemote:(BOOL)isStreamRemote
                       userInfo:(id)userInfo
 {
-    NSString *sessionPrefix = [userDictionary objectForKey:kNCSessionPrefixKey];
+    NSString *sessionPrefix = [userDictionary objectForKey:kSessionPrefixKey];
     NSString *streamsArrayKey = (isStreamRemote)?kNCRemoteStreamsDictionaryKey:kNCLocalStreamsDictionaryKey;
     NSString *otherStreamsArrayKey = (isStreamRemote)?kNCLocalStreamsDictionaryKey:kNCRemoteStreamsDictionaryKey;
     
-    if ([[self.participants valueForKeyPath:kNCSessionPrefixKey]
+    if ([[self.participants valueForKeyPath:kSessionPrefixKey]
          containsObject:sessionPrefix])
     {
         NSArray *participantArray = [self.participants filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"prefix==%@", sessionPrefix]];
@@ -501,7 +556,7 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
         [[participantInfo valueForKey:streamsArrayKey] setObject:userInfo forKey:streamPrefix];
         
         // update session info
-        [participantInfo setValue:[userDictionary valueForKey:kNCSessionInfoKey] forKey:kNCSessionInfoKey];
+        [participantInfo setValue:[userDictionary valueForKey:kSessionInfoKey] forKey:kSessionInfoKey];
     }
     else
     {
@@ -586,7 +641,7 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 {
     return [[self.participants filteredArrayUsingPredicate:
      [NSPredicate predicateWithFormat:@"self.%@==%@",
-      kNCSessionUsernameKey, username]] firstObject];
+      kSessionUsernameKey, username]] firstObject];
 }
 
 -(NSMutableDictionary*)getParticipantInfoForStream:(NSString*)streamPrefix
@@ -609,7 +664,7 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 {
     return [self.participants filteredArrayUsingPredicate:
             [NSPredicate predicateWithFormat:@"self.%@!=%@",
-             kNCSessionUsernameKey,
+             kSessionUsernameKey,
              [NCPreferencesController sharedInstance].userName]].count;
 }
 
@@ -624,15 +679,15 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 // which contain configurations for the user's streams that have to be fetched
 -(NSArray*)getMissingStreamsForUser:(NSDictionary*)userInfo
 {
-    NSDictionary *participantInfo = [self getParticipantInfo:userInfo[kNCSessionUsernameKey]];
+    NSDictionary *participantInfo = [self getParticipantInfo:userInfo[kSessionUsernameKey]];
 
     // there is no such participants yet - return all stream configurations
     if (!participantInfo)
-        return @[[userInfo[kNCSessionInfoKey] audioStreamsConfigurations],
-                 [userInfo[kNCSessionInfoKey] videoStreamsConfigurations]];
+        return @[[userInfo[kSessionInfoKey] audioStreamsConfigurations],
+                 [userInfo[kSessionInfoKey] videoStreamsConfigurations]];
     
-    NSArray *allAudioStreams = [NSMutableArray arrayWithArray:[userInfo[kNCSessionInfoKey] audioStreamsConfigurations]];
-    NSArray *allVideoStreams = [NSMutableArray arrayWithArray:[userInfo[kNCSessionInfoKey] videoStreamsConfigurations]];
+    NSArray *allAudioStreams = [NSMutableArray arrayWithArray:[userInfo[kSessionInfoKey] audioStreamsConfigurations]];
+    NSArray *allVideoStreams = [NSMutableArray arrayWithArray:[userInfo[kSessionInfoKey] videoStreamsConfigurations]];
     NSArray *currentStreamNames = [[participantInfo[kNCRemoteStreamsDictionaryKey] allKeys]
                                    valueForKey:NSStringFromSelector(@selector(getNdnRtcStreamName))];
     
@@ -673,8 +728,8 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
                                     };
         [self addStreamToConversation:streamPrefixStr
                              userDict:@{
-                                        kNCSessionPrefixKey:[NCNdnRtcLibraryController sharedInstance].sessionPrefix,
-                                        kNCSessionUsernameKey:[NCPreferencesController sharedInstance].userName
+                                        kSessionPrefixKey:[NCNdnRtcLibraryController sharedInstance].sessionPrefix,
+                                        kSessionUsernameKey:[NCPreferencesController sharedInstance].userName
                                         }
                              isRemote:NO
                              userInfo:audioPreviewVc];
@@ -730,8 +785,8 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
                                         };
             [self addStreamToConversation:streamPrefixStr
                                  userDict:@{
-                                            kNCSessionPrefixKey:[NCNdnRtcLibraryController sharedInstance].sessionPrefix,
-                                            kNCSessionUsernameKey:[NCPreferencesController sharedInstance].userName
+                                            kSessionPrefixKey:[NCNdnRtcLibraryController sharedInstance].sessionPrefix,
+                                            kSessionUsernameKey:[NCPreferencesController sharedInstance].userName
                                             }
                                  isRemote:NO
                                  userInfo:videoPreviewVc];
@@ -758,7 +813,7 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
                                  andUserInfo:(NSDictionary*)userInfo
 {
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    std::string sessionPrefix([[userInfo valueForKeyPath:kNCSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
+    std::string sessionPrefix([[userInfo valueForKeyPath:kSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
     std::string streamPrefix = lib->addRemoteStream(sessionPrefix,
                                                     [streamConfiguration asAudioStreamParams],
                                                     [self generalParams],
@@ -786,7 +841,7 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
                                  andUserInfo:(NSDictionary*)userInfo
 {
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    std::string sessionPrefix([[userInfo valueForKeyPath:kNCSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
+    std::string sessionPrefix([[userInfo valueForKeyPath:kSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
     NCVideoStreamRenderer *renderer = [[NCVideoStreamRenderer alloc] init];
     
     std::string streamPrefix = lib->addRemoteStream(sessionPrefix,

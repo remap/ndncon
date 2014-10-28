@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -364,8 +365,8 @@ CA
                                                                                                     <binding destination="kjG-HO-HvN" name="value" keyPath="objectValue.statusImage" id="6Zg-Ix-lBT"/>
                                                                                                 </connections>
                                                                                             </imageView>
-                                                                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="17" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQW-5e-xB0" customClass="NCCustomTextField">
-                                                                                                <rect key="frame" x="42" y="28" width="171" height="17"/>
+                                                                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="17" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQW-5e-xB0" customClass="NCCustomTextField">
+                                                                                                <rect key="frame" x="42" y="28" width="157" height="17"/>
                                                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="User" usesSingleLineMode="YES" id="Ikh-wP-ggq">
                                                                                                     <font key="font" metaFont="system"/>
                                                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -376,8 +377,8 @@ CA
                                                                                                     <outlet property="nextKeyView" destination="rX1-cy-J5c" id="Yjl-5k-sOt"/>
                                                                                                 </connections>
                                                                                             </textField>
-                                                                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" placeholderIntrinsicWidth="140" placeholderIntrinsicHeight="14" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rX1-cy-J5c" customClass="NCCustomTextField">
-                                                                                                <rect key="frame" x="42" y="12" width="171" height="14"/>
+                                                                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" placeholderIntrinsicWidth="140" placeholderIntrinsicHeight="14" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rX1-cy-J5c" customClass="NCCustomTextField">
+                                                                                                <rect key="frame" x="42" y="12" width="157" height="14"/>
                                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="prefix" usesSingleLineMode="YES" id="5wz-f4-i0T">
                                                                                                     <font key="font" metaFont="smallSystem"/>
                                                                                                     <color key="textColor" red="0.57308274872448983" green="0.57308274872448983" blue="0.57308274872448983" alpha="1" colorSpace="calibratedRGB"/>
@@ -385,7 +386,6 @@ CA
                                                                                                 </textFieldCell>
                                                                                                 <connections>
                                                                                                     <binding destination="kjG-HO-HvN" name="value" keyPath="objectValue.prefix" id="Ufr-fx-Ppk"/>
-                                                                                                    <outlet property="nextKeyView" destination="OQW-5e-xB0" id="bb6-1l-1f1"/>
                                                                                                 </connections>
                                                                                             </textField>
                                                                                         </subviews>

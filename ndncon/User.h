@@ -8,7 +8,16 @@
 
 #import <CoreData/CoreData.h>
 
-@interface User : NSManagedObject
+//******************************************************************************
+@protocol UserEntityProtocol <NSObject>
+
+@property (nonatomic) NSString* name;
+@property (nonatomic) NSString* prefix;
+
+@end
+
+//******************************************************************************
+@interface User : NSManagedObject<UserEntityProtocol>
 
 /**
  * Returns all user from DB
@@ -21,6 +30,11 @@
 +(User*)userByName:(NSString*)userName
        fromContext:(NSManagedObjectContext*)context;
 
++(User*)userByName:(NSString*)userName
+         andPrefix:(NSString*)prefix
+       fromContext:(NSManagedObjectContext*)context;
+
+
 +(User*)newUserWithName:(NSString*)userName
               andPrefix:(NSString*)prefix
               inContext:(NSManagedObjectContext*)context;
@@ -30,5 +44,13 @@
 
 @property (nonatomic) NSImage* statusImage;
 @property (nonatomic, readonly) NSString *userPrefix;
+
+@end
+
+//******************************************************************************
+@interface UserStub : NSObject<UserEntityProtocol>
+
+@property (nonatomic) NSString* name;
+@property (nonatomic) NSString* prefix;
 
 @end

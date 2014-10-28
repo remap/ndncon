@@ -20,10 +20,10 @@
     [self setEditable:YES];
 }
 
--(BOOL)resignFirstResponder
-{
-    [self setEditable:NO];
-    return [super resignFirstResponder];
-}
+//-(BOOL)resignFirstResponder
+//{
+//    [self setEditable:NO];
+//    return [super resignFirstResponder];
+//}
 
 @end

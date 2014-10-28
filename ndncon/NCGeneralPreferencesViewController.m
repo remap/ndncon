@@ -91,7 +91,7 @@
 // private
 -(void)onLocalSessionStatusUpdate:(NSNotification*)notification
 {
-    self.connectionStatusLabel.stringValue = [self stringFromSessionStatus:[[notification.userInfo valueForKey:kNCSessionStatusKey] integerValue]];
+    self.connectionStatusLabel.stringValue = [self stringFromSessionStatus:[[notification.userInfo valueForKey:kSessionStatusKey] integerValue]];
 }
 
 -(NSString*)stringFromSessionStatus:(NCSessionStatus)status

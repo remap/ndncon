@@ -18,6 +18,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="chatRoom" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChatRoom" syncable="YES"/>
+        <relationship name="organizer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
         <relationship name="participants" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
@@ -27,7 +28,7 @@
     <elements>
         <element name="ChatMessage" positionX="-1908" positionY="-1035" width="128" height="120"/>
         <element name="ChatRoom" positionX="-1881" positionY="-981" width="128" height="88"/>
+        <element name="Conference" positionX="-1908" positionY="-1008" width="128" height="150"/>
         <element name="User" positionX="-1944" positionY="-1089" width="128" height="73"/>
-        <element name="Conference" positionX="-1908" positionY="-1008" width="128" height="135"/>
     </elements>
 </model>

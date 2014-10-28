@@ -30,8 +30,10 @@
 -(void)conferenceListController:(NCConferenceListViewController*)conferenceListController
                didAddConference:(Conference*)conference;
 -(void)conferenceListController:(NCConferenceListViewController*)conferenceListController
-            didSelectConference:(Conference*)conference;
+            didSelectConference:(id)conference;
 -(void)conferenceListController:(NCConferenceListViewController*)conferenceListController
             wantsDeleteConference:(Conference*)conference;
+-(void)conferenceListController:(NCConferenceListViewController*)conferenceListController
+     remoteConferenceWithdrawed:(id<ConferenceEntityProtocol>)conference;
 
 @end

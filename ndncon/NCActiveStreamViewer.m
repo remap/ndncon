@@ -96,7 +96,7 @@
 {
     NSArray *streams = [self.userInfo valueForKeyPath:
                        [NSString keyPathByComponents:
-                        kNCSessionInfoKey,
+                        kSessionInfoKey,
                         NSStringFromSelector(@selector(videoStreamsConfigurations)),
                         nil]];
     

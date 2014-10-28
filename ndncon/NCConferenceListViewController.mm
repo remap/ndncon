@@ -11,9 +11,11 @@
 #import "NSDate+NCAdditions.h"
 #import "Conference.h"
 #import "ChatRoom.h"
+#import "User.h"
 #import "AppDelegate.h"
 #import "NCChatViewController.h"
 #import "NCConferenceViewController.h"
+#import "NSObject+NCAdditions.h"
 
 NSString* const kCellTypeKey = @"cellType";
 NSString* const kCellDataKey = @"cellData";
@@ -193,9 +195,18 @@ NSString* const kNoConferences = @"no conferences";
     
     if (self)
     {
+        [self subscribeForNotificationsAndSelectors:
+         NCConferenceWithdrawedNotification, @selector(onConferenceWithdrawed:),
+         NCConferenceDiscoveredNotification, @selector(onConferenceDiscovered:),
+         nil];
     }
     
     return self;
+}
+
+-(void)dealloc
+{
+    [self unsubscribeFromNotifications];
 }
 
 -(void)awakeFromNib
@@ -272,13 +283,20 @@ NSString* const kNoConferences = @"no conferences";
     }
     else
     {
+        id<ConferenceEntityProtocol> conference = data;
+        
         view = [self.tableView makeViewWithIdentifier:@"ConferenceCell" owner:nil];
-        view.textField.stringValue = [data valueForKey:NSStringFromSelector(@selector(name))];
-        ((NCConferenceListCell*)view).conferenceDescriptionLabel.stringValue = [data valueForKey:NSStringFromSelector(@selector(conferenceDescription))];
+        if ([data isKindOfClass:[NSDictionary class]])
+            view.textField.stringValue = [NSString stringWithFormat:@"%@ (by %@)",
+                                          conference.name,
+                                          conference.organizer.name];
+        else
+            view.textField.stringValue = conference.name;
+        ((NCConferenceListCell*)view).conferenceDescriptionLabel.stringValue = conference.conferenceDescription;
 
-        NSDate *conferenceStartDate = [data valueForKey:NSStringFromSelector(@selector(startDate))];
+        NSDate *conferenceStartDate = conference.startDate;
         NSString *conferenceStartDateString = [NCChatMessageCell textRepresentationForDate:conferenceStartDate];
-        NSNumber *conferenceDuration = [data valueForKey:NSStringFromSelector(@selector(duration))];
+        NSNumber *conferenceDuration = conference.duration;
         
         ((NCConferenceListCell*)view).conferenceTimeInfoLabel.stringValue = [NSString stringWithFormat:@"%@ (%@)",
                                                                              conferenceStartDateString,
@@ -292,7 +310,8 @@ NSString* const kNoConferences = @"no conferences";
 {
     id data = [self.tableContents objectAtIndex:row];
     
-    if ([data isKindOfClass:[NSDictionary class]])
+    if ([data isKindOfClass:[NSDictionary class]] &&
+        [data objectForKey:kCellTypeKey])
         return 30.;
     
     return 60.;
@@ -302,7 +321,7 @@ NSString* const kNoConferences = @"no conferences";
 {
     id data = [self.tableContents objectAtIndex:row];
     
-    return ![data isKindOfClass:[NSDictionary class]];
+    return !([data isKindOfClass:[NSDictionary class]] && [data objectForKey:kCellTypeKey]);
 }
 
 -(void)tableViewSelectionDidChange:(NSNotification *)notification
@@ -322,6 +341,37 @@ NSString* const kNoConferences = @"no conferences";
 }
 
 #pragma mark - private
+-(void)onConferenceDiscovered:(NSNotification*)notification
+{
+    NSLog(@"New conference: %@", notification.userInfo);
+    [self reloadData];
+}
+
+-(void)onConferenceWithdrawed:(NSNotification*)notification
+{
+    NSLog(@"Conference gone: %@", notification.userInfo);
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceListController:remoteConferenceWithdrawed:)])
+    {
+        NSDictionary *conferenceDict = notification.userInfo;
+        __block NCRemoteConference *remoteConference = nil;
+        
+        [self.tableContents enumerateObjectsUsingBlock:
+         ^(id<ConferenceEntityProtocol> obj, NSUInteger idx, BOOL *stop) {
+            if ([obj isKindOfClass:[NCRemoteConference class]] &&
+                [[obj name] isEqualToString:[conferenceDict valueForKey:kConferenceNameKey]] &&
+                [[obj organizer].name isEqualToString:[conferenceDict valueForKey:kConferenceOrganizerNameKey]] &&
+                [[obj organizer].prefix isEqualToString:[conferenceDict valueForKey:kConferenceOrganizerPrefixKey]])
+                remoteConference = obj;
+        }];
+        
+        [self.delegate conferenceListController:self
+                     remoteConferenceWithdrawed:remoteConference];
+    }
+    
+    [self reloadData];
+}
+
 - (IBAction)deleteSelectedEntry:(id)sender
 {
     id conference = [self.tableContents objectAtIndex:self.tableView.selectedRow];
@@ -332,9 +382,6 @@ NSString* const kNoConferences = @"no conferences";
         {
             if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceListController:wantsDeleteConference:)])
             {
-                [self.context deleteObject:conference];
-                [self.context save:NULL];
-                [self reloadData];
                 [self.delegate conferenceListController:self wantsDeleteConference:conference];
             }
         }
@@ -348,21 +395,27 @@ NSString* const kNoConferences = @"no conferences";
 
 -(void)prepareContents
 {
-    NSArray *allConferences = [[Conference allConferencesFromContext:self.context]
-                               sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(startDate)) ascending:NO]]];
+    NSArray *myConferences = [Conference allConferencesFromContext:self.context];
+    NSArray *remoteConferences = [[NCDiscoveryLibraryController sharedInstance] discoveredConferences];
+    NSMutableArray *allConferences = [myConferences mutableCopy];
+    
+    [allConferences addObjectsFromArray:remoteConferences];
+    [allConferences sortUsingDescriptors:@[[NSSortDescriptor
+                                            sortDescriptorWithKey:NSStringFromSelector(@selector(startDate))
+                                            ascending:NO]]];
     
     self.futureConferences = [allConferences filteredArrayUsingPredicate:
-                                  [NSPredicate predicateWithBlock:^BOOL(Conference *conference, NSDictionary *bindings)
+                                  [NSPredicate predicateWithBlock:^BOOL(id<ConferenceEntityProtocol> conference, NSDictionary *bindings)
     {
-        NSDate *conferenceDate = [conference valueForKey:NSStringFromSelector(@selector(startDate))];
+        NSDate *conferenceDate = conference.startDate;
         return ([conferenceDate compare:[NSDate date]] == NSOrderedDescending);
     }]];
     
     self.currentConferences = [allConferences filteredArrayUsingPredicate:
-                                   [NSPredicate predicateWithBlock:^BOOL(Conference *conference, NSDictionary *bindings)
+                                   [NSPredicate predicateWithBlock:^BOOL(id<ConferenceEntityProtocol> conference, NSDictionary *bindings)
     {
-        NSDate *conferenceDate = [conference valueForKey:NSStringFromSelector(@selector(startDate))];
-        NSNumber *conferenceDuration = [conference valueForKey:NSStringFromSelector(@selector(duration))];
+        NSDate *conferenceDate = conference.startDate;
+        NSNumber *conferenceDuration = conference.duration;
         NSDate *conferenceEndDate = [conferenceDate dateByAddingTimeInterval:[conferenceDuration doubleValue]];
         
         return ([conferenceDate compare:[NSDate date]] == NSOrderedAscending) &&
@@ -372,8 +425,8 @@ NSString* const kNoConferences = @"no conferences";
     self.pastConferences = [allConferences filteredArrayUsingPredicate:
                                 [NSPredicate predicateWithBlock:^BOOL(Conference *conference, NSDictionary *bindings)
     {
-        NSDate *conferenceDate = [conference valueForKey:NSStringFromSelector(@selector(startDate))];
-        NSNumber *conferenceDuration = [conference valueForKey:NSStringFromSelector(@selector(duration))];
+        NSDate *conferenceDate = conference.startDate;
+        NSNumber *conferenceDuration = conference.duration;
         NSDate *conferenceEndDate = [conferenceDate dateByAddingTimeInterval:[conferenceDuration doubleValue]];
         
         return ([conferenceEndDate compare:[NSDate date]] == NSOrderedAscending);
