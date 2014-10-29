@@ -91,6 +91,8 @@ CVReturn displayCallback(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow,
 
 -(void)dealloc
 {
+    self.renderingView = nil;
+    [self.openGlView removeFromSuperview];
     delete _renderer;
     self.openGlView = nil;
     [self releaseDisplayLink];

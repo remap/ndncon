@@ -17,9 +17,10 @@
 #import "NCNdnRtcLibraryController.h"
 #import "NSDictionary+NCNdnRtcAdditions.h"
 #import "NSObject+NCAdditions.h"
+#import "NSString+NCAdditions.h"
 
-NSString* const kNCSessionInfoKey = @"sessionInfo";
-NSString* const kNCHubPrefixKey = @"hubPrefix";
+NSString* const kSessionInfoKey = @"sessionInfo";
+NSString* const kHubPrefixKey = @"hubPrefix";
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -114,31 +115,35 @@ private:
     
     NSDictionary* sessionUserInfo()
     {
-        return @{kNCSessionUsernameKey: [NSString stringWithCString:username_.c_str() encoding:NSASCIIStringEncoding],
-                 kNCHubPrefixKey: [NSString stringWithCString:prefix_.c_str() encoding:NSASCIIStringEncoding],
-                 kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix_.c_str() encoding:NSASCIIStringEncoding]};
+        return @{kSessionUsernameKey: [NSString ncStringFromCString:username_.c_str()],
+                 kHubPrefixKey: [NSString ncStringFromCString:prefix_.c_str()],
+                 kSessionPrefixKey: [NSString ncStringFromCString:sessionPrefix_.c_str()]};
     }
     
     void
     onSessionInfoUpdate(const new_api::SessionInfo& sessionInfo)
     {
+        NCSessionStatus oldStatus = lastStatus_;
         nTimeouts_ = 0;
         freshStart_ = false;
         lastSessionInfo_ = sessionInfo;
         lastStatus_ = (sessionInfo.audioStreams_.size() == 0 &&
                        sessionInfo.videoStreams_.size() == 0)?SessionStatusOnlineNotPublishing:
         SessionStatusOnlinePublishing;
-        NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
-        [userInfo setObject:@(lastStatus_)
-                     forKey:kNCSessionStatusKey];
-        [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo: (void*)&sessionInfo]
-                     forKey:kNCSessionInfoKey];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[NSObject alloc] init]
-             notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
-             andUserInfo:userInfo];
-        });
+        if (oldStatus != lastStatus_)
+        {
+            NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
+            userInfo[kSessionStatusKey] = @(lastStatus_);
+            userInfo[kSessionOldStatusKey] = @(oldStatus);
+            userInfo[kSessionInfoKey] = [NCSessionInfoContainer containerWithSessionInfo: (void*)&sessionInfo];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[[NSObject alloc] init]
+                 notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
+                 andUserInfo:userInfo];
+            });
+        }
     }
     
     void
@@ -159,7 +164,7 @@ private:
         
         [userInfo setObject:[NSString stringWithCString:errMsg
                                                encoding:NSASCIIStringEncoding]
-                     forKey: kNCSessionErrorMessageKey];
+                     forKey: kSessionErrorMessageKey];
         
         // check for specific error codes
         if (errCode == NRTC_ERR_LIBERROR)
@@ -176,16 +181,15 @@ private:
     void
     notifyStatusUpdate(NCSessionStatus status)
     {
+        NCSessionStatus oldStatus = lastStatus_;
         lastStatus_ = status;
         
         NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
         
-        [userInfo setObject:@(status)
-                     forKey:kNCSessionStatusKey];
+        userInfo[kSessionStatusKey]= @(status);
+        userInfo[kSessionOldStatusKey] = @(oldStatus);
         
-        NSLog(@"status update %@", userInfo);
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"post status update");
             [[[NSObject alloc] init]
              notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
              andUserInfo:userInfo];
@@ -234,11 +238,21 @@ private:
 
 -(void)awakeFromNib
 {
+    [self.tableView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
+     
     [self.userController addObserver:self forKeyPaths:@"arrangedObjects.name", @"arrangedObjects.prefix", nil];
 
     [[NCPreferencesController sharedInstance] addObserver:self
                                               forKeyPaths:NSStringFromSelector(@selector(daemonHost)),
      NSStringFromSelector(@selector(daemonPort)), nil];
+    
+    NSResponder *nextResponder = [self.tableView nextResponder];
+
+    if (self != nextResponder)
+    {
+        [self.tableView setNextResponder:self];
+        [self setNextResponder:nextResponder];
+    }
 }
 
 -(void)initialize
@@ -289,12 +303,26 @@ private:
     }
 }
 
+// NSTableViewDataSource
+- (id <NSPasteboardWriting>)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
+{
+    id user = [self.userController.arrangedObjects objectAtIndex:row];
+    
+    return [NSString stringWithFormat:kNCNdnRtcUserUrlFormat, [user prefix], [user name]];
+}
+
 // private
+- (IBAction)deleteSelectedEntry:(id)sender
+{
+    [self.userController remove:nil];
+    [self.tableView reloadData];
+}
+
 -(void)sessionDidUpdateStatus:(NSNotification*)notification
 {
-    NSString *userName = [notification.userInfo objectForKey:kNCSessionUsernameKey];
-    NSString *prefix = [notification.userInfo objectForKey:kNCHubPrefixKey];
-    NCSessionStatus status = (NCSessionStatus)[[notification.userInfo objectForKey:kNCSessionStatusKey] intValue];
+    NSString *userName = [notification.userInfo objectForKey:kSessionUsernameKey];
+    NSString *prefix = [notification.userInfo objectForKey:kHubPrefixKey];
+    NCSessionStatus status = (NCSessionStatus)[[notification.userInfo objectForKey:kSessionStatusKey] intValue];
     
     if (userName && prefix)
     {
@@ -435,16 +463,16 @@ private:
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     
-    [userInfo setObject:userName forKey:kNCSessionUsernameKey];
-    [userInfo setObject:prefix forKey:kNCHubPrefixKey];
+    [userInfo setObject:userName forKey:kSessionUsernameKey];
+    [userInfo setObject:prefix forKey:kHubPrefixKey];
     
     RemoteSessionObserver *observer = [self observerForUser:userName andPrefix:prefix];
     
     if (observer)
     {
-        [userInfo setObject:@(observer->lastStatus_) forKey:kNCSessionStatusKey];
-        [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo:(void*)&observer->lastSessionInfo_] forKey:kNCSessionInfoKey];
-        [userInfo setObject:[NSString stringWithCString:observer->sessionPrefix_.c_str() encoding:NSASCIIStringEncoding] forKey:kNCSessionPrefixKey];
+        [userInfo setObject:@(observer->lastStatus_) forKey:kSessionStatusKey];
+        [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo:(void*)&observer->lastSessionInfo_] forKey:kSessionInfoKey];
+        [userInfo setObject:[NSString stringWithCString:observer->sessionPrefix_.c_str() encoding:NSASCIIStringEncoding] forKey:kSessionPrefixKey];
     }
     
     return userInfo;

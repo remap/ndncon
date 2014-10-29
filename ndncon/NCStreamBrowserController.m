@@ -50,6 +50,15 @@ NSString* const kPreviewControllerKey = @"previewController";
     return streamPreviewController;
 }
 
+-(void)closeStreamsForController:(NCStreamPreviewController *)streamPreviewController
+{
+    [self removeEntriesSatisfyingRule:^BOOL(NCStackEditorEntryViewController *vc) {
+        return (vc.contentViewController == streamPreviewController);
+    }];
+    
+    [self.userPreviewControllers removeObjectForKey:streamPreviewController.userData[kStreamPrefixKey]];
+}
+
 -(void)closeAllStreams
 {
     [super removeAllEntries];

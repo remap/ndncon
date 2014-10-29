@@ -8,14 +8,49 @@
 
 #import <CoreData/CoreData.h>
 
-@interface User : NSManagedObject
+//******************************************************************************
+@protocol UserEntityProtocol <NSObject>
 
+@property (nonatomic) NSString* name;
+@property (nonatomic) NSString* prefix;
+
+@end
+
+//******************************************************************************
+@interface User : NSManagedObject<UserEntityProtocol>
+
+/**
+ * Returns all user from DB
+ */
 +(NSArray *)allUsersFromContext:(NSManagedObjectContext*)context;
+
+/**
+ * Returns frist user found to have the same username as provided string
+ */
++(User*)userByName:(NSString*)userName
+       fromContext:(NSManagedObjectContext*)context;
+
++(User*)userByName:(NSString*)userName
+         andPrefix:(NSString*)prefix
+       fromContext:(NSManagedObjectContext*)context;
+
+
++(User*)newUserWithName:(NSString*)userName
+              andPrefix:(NSString*)prefix
+              inContext:(NSManagedObjectContext*)context;
 
 @property (nonatomic) NSString* name;
 @property (nonatomic) NSString* prefix;
 
 @property (nonatomic) NSImage* statusImage;
 @property (nonatomic, readonly) NSString *userPrefix;
+
+@end
+
+//******************************************************************************
+@interface UserStub : NSObject<UserEntityProtocol>
+
+@property (nonatomic) NSString* name;
+@property (nonatomic) NSString* prefix;
 
 @end

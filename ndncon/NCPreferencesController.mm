@@ -56,6 +56,9 @@ NSString* const kVideoStreamsKey = @"Video streams";
 NSString* const kChatSectionKey = @"Chat";
 NSString* const kChatBroadcastPrefixKey = @"Chat broadcast prefix";
 
+NSString* const kConferenceSectionKey = @"Conference";
+NSString* const kConferenceBroadcastPrefixKey = @"Conference broadcast prefix";
+
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
                                   kLogLevelDebug: @(ndnlog::NdnLoggerDetailLevelDebug),
                                   kLogLevelDefault: @(ndnlog::NdnLoggerDetailLevelDefault),
@@ -365,6 +368,23 @@ using namespace ndnrtc::new_api;
 -(NSString *)chatBroadcastPrefix
 {
     return [self getParamAtPathByComponents:kChatSectionKey,kChatBroadcastPrefixKey, nil];
+}
+
+-(void)setChatBroadcastPrefix:(NSString *)chatBroadcastPrefix
+{
+    [self saveParam:chatBroadcastPrefix atPathByComponents:
+     kChatSectionKey, kChatBroadcastPrefixKey];
+}
+
+-(NSString *)conferenceBroadcastPrefix
+{
+    return [self getParamAtPathByComponents:kConferenceSectionKey, kConferenceBroadcastPrefixKey, nil];
+}
+
+-(void)setConferenceBroadcastPrefix:(NSString *)conferenceBroadcastPrefix
+{
+    [self saveParam:conferenceBroadcastPrefix atPathByComponents:
+     kConferenceSectionKey, kConferenceBroadcastPrefixKey];
 }
 
 -(NSDictionary *)producerConfigurationCopy

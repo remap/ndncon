@@ -62,24 +62,29 @@
                   withOrientation:NSUserInterfaceLayoutOrientationVertical];
     [self.streamEditorController awakeFromNib];
 
-    NCSessionStatus status = [[self.userInfo valueForKey:kNCSessionStatusKey] integerValue];
+    NCSessionStatus status = [[self.userInfo valueForKey:kSessionStatusKey] integerValue];
     [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
     self.isChatVisible = YES;
-    
-    self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser: [self.userInfo valueForKey:kNCSessionUsernameKey]];
+    self.chatViewController.isActive = (status != SessionStatusOffline);
+    self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@:", self.userInfo[kSessionUsernameKey]];
 }
 
 -(void)setUserInfo:(NSDictionary *)userInfo
 {
     _userInfo = userInfo;
-    self.streamEditorController.userName = [userInfo valueForKey:kNCSessionUsernameKey];
-    self.streamEditorController.userPrefix = [userInfo valueForKey:kNCHubPrefixKey];
+    self.streamEditorController.userName = [userInfo valueForKey:kSessionUsernameKey];
+    self.streamEditorController.userPrefix = [userInfo valueForKey:kHubPrefixKey];
     
-    NCSessionStatus status = [[_userInfo valueForKey:kNCSessionStatusKey] integerValue];
+    NCSessionStatus status = [[_userInfo valueForKey:kSessionStatusKey] integerValue];
     
     self.statusImage = [[NCNdnRtcLibraryController sharedInstance]
                         imageForSessionStatus:status];
     [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
+    self.chatViewController.isActive = (status != SessionStatusOffline);
+    self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@", self.userInfo[kSessionUsernameKey]];
+
+//    if (status != SessionStatusOffline)
+        self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser:userInfo[kSessionPrefixKey]];
 }
 
 -(void)setSessionInfo:(NCSessionInfoContainer *)sessionInfo
@@ -155,11 +160,11 @@
 
 -(void)onSessionStatusUpdate:(NSNotification*)notification
 {
-    if ([[self.userInfo objectForKey:kNCSessionPrefixKey]
-         isEqualTo:[notification.userInfo objectForKey:kNCSessionPrefixKey]])
+    if ([[self.userInfo objectForKey:kSessionPrefixKey]
+         isEqualTo:[notification.userInfo objectForKey:kSessionPrefixKey]])
     {
         self.userInfo = notification.userInfo;
-        self.sessionInfo = [self.userInfo valueForKey:kNCSessionInfoKey];
+        self.sessionInfo = [self.userInfo valueForKey:kSessionInfoKey];
     }
 }
 

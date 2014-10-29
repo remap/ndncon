@@ -22,7 +22,7 @@
 
 +(ChatRoom*)chatRoomWithId:(NSString*)roomId
                fromContext:(NSManagedObjectContext*)context;
-+(ChatRoom*)createChatRoomWithId:(NSString*)roomId
++(ChatRoom*)newChatRoomWithId:(NSString*)roomId
                        inContext:(NSManagedObjectContext*)context;
 
 - (void)addMessagesObject:(ChatMessage *)value;

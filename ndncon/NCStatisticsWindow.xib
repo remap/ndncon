@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCStatisticsWindowController">
             <connections>
+                <outlet property="outRateEstimationLabel" destination="V24-ui-XOO" id="bEz-nM-epO"/>
                 <outlet property="window" destination="8Lm-mZ-01f" id="k2m-eS-vOd"/>
             </connections>
         </customObject>
@@ -15,14 +16,14 @@
         <window title="Consumer statistics" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="8Lm-mZ-01f" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="90" y="125" width="408" height="572"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="contentRect" x="90" y="125" width="422" height="572"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="X0n-XJ-q9N">
-                <rect key="frame" x="0.0" y="0.0" width="408" height="572"/>
+                <rect key="frame" x="0.0" y="0.0" width="422" height="572"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-aC-KZ0">
-                        <rect key="frame" x="59" y="545" width="120" height="19"/>
+                        <rect key="frame" x="60" y="545" width="120" height="19"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="120" id="IKI-aV-fla"/>
                         </constraints>
@@ -38,24 +39,24 @@
                             </menu>
                         </popUpButtonCell>
                         <connections>
+                            <binding destination="-2" name="selectedObject" keyPath="self.selectedStream" previousBinding="D85-Fm-z7e" id="i4O-by-tvj"/>
                             <binding destination="-2" name="content" keyPath="self.streamsArray" id="D85-Fm-z7e">
                                 <dictionary key="options">
                                     <string key="NSValueTransformerName">NCStatisticsStreamEntryValueTransformer</string>
                                 </dictionary>
                             </binding>
-                            <binding destination="-2" name="selectedObject" keyPath="self.selectedStream" previousBinding="D85-Fm-z7e" id="i4O-by-tvj"/>
                         </connections>
                     </popUpButton>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5pa-46-hVb">
-                        <rect key="frame" x="8" y="548" width="45" height="14"/>
+                        <rect key="frame" x="8" y="548" width="46" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Stream:" id="KAi-pO-SFO">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <box autoresizesSubviews="NO" verticalHuggingPriority="750" misplaced="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="mus-6P-w1z">
-                        <rect key="frame" x="12" y="537" width="364" height="5"/>
+                    <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="mus-6P-w1z">
+                        <rect key="frame" x="12" y="537" width="400" height="5"/>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <font key="titleFont" metaFont="system"/>
@@ -69,7 +70,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IwG-OT-JGn">
-                        <rect key="frame" x="8" y="495" width="61" height="14"/>
+                        <rect key="frame" x="8" y="495" width="59" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Full prefix:" id="eTl-GH-KRr">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -77,7 +78,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="H3B-da-zrI">
-                        <rect key="frame" x="136" y="472" width="80" height="14"/>
+                        <rect key="frame" x="143" y="472" width="80" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Producer rate:" id="kW4-EL-qy2">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -85,7 +86,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="30c-K3-Byk">
-                        <rect key="frame" x="56" y="450" width="160" height="14"/>
+                        <rect key="frame" x="65" y="450" width="158" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Incoming data rate (seg/sec):" id="XVU-jQ-a7I">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -93,15 +94,15 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="1uB-an-qvO">
-                        <rect key="frame" x="94" y="406" width="122" height="14"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Pipeliner interest rate:" id="0e6-W7-63Q">
+                        <rect key="frame" x="62" y="406" width="161" height="14"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Interest rate (intrst/kbps est.):" id="0e6-W7-63Q">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="B70-52-Sl3">
-                        <rect key="frame" x="97" y="384" width="119" height="14"/>
+                        <rect key="frame" x="105" y="384" width="118" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Jitter target size (ms):" id="qae-Bn-e9H">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -109,7 +110,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="j0a-Jw-WGz">
-                        <rect key="frame" x="84" y="362" width="132" height="14"/>
+                        <rect key="frame" x="90" y="362" width="133" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Jitter estimate size (ms):" id="NQN-TV-2QR">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -117,7 +118,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="6bO-rR-fXQ">
-                        <rect key="frame" x="85" y="340" width="131" height="14"/>
+                        <rect key="frame" x="91" y="340" width="132" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Jitter playable size (ms):" id="xuI-A9-KwR">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -125,15 +126,15 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="HFe-Zv-YpT">
-                        <rect key="frame" x="84" y="428" width="132" height="14"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Incoming bitrate (kbps):" id="30d-Kb-LNI">
+                        <rect key="frame" x="81" y="428" width="142" height="14"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Raw incoming rate (kbps):" id="30d-Kb-LNI">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="vkJ-y2-Mh9">
-                        <rect key="frame" x="144" y="318" width="72" height="14"/>
+                        <rect key="frame" x="152" y="318" width="71" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Rebufferings" id="tdR-Vc-gb4">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -141,7 +142,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FHw-kb-ssX">
-                        <rect key="frame" x="50" y="296" width="166" height="14"/>
+                        <rect key="frame" x="59" y="296" width="164" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Assembled frames (delta/key):" id="KnE-9J-qDJ">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -149,7 +150,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="cnw-yq-leE">
-                        <rect key="frame" x="64" y="274" width="152" height="14"/>
+                        <rect key="frame" x="71" y="274" width="152" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Rescued frames (delta/key):" id="ONI-bV-DxX">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -157,7 +158,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="SKy-NA-6j0">
-                        <rect key="frame" x="53" y="252" width="163" height="14"/>
+                        <rect key="frame" x="61" y="252" width="162" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Recovered frames (delta/key):" id="uF6-uR-xFH">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -165,7 +166,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="MoP-Hc-NQD">
-                        <rect key="frame" x="48" y="230" width="168" height="14"/>
+                        <rect key="frame" x="59" y="230" width="164" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Incomplete frames (delta/key):" id="KAp-l2-KW9">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -173,7 +174,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ykh-Ym-jdo">
-                        <rect key="frame" x="62" y="208" width="154" height="14"/>
+                        <rect key="frame" x="72" y="208" width="151" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="# played frames (delta/key):" id="VR0-db-tqK">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -181,7 +182,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="isC-q2-VQD">
-                        <rect key="frame" x="110" y="186" width="106" height="14"/>
+                        <rect key="frame" x="119" y="186" width="104" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="# skipped (no key):" id="Vvi-KF-MO7">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -189,7 +190,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="gFN-0D-2Mg">
-                        <rect key="frame" x="36" y="164" width="180" height="14"/>
+                        <rect key="frame" x="47" y="164" width="176" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="# skipped incomplete (delta/key)" id="CKE-0j-8FP">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -197,7 +198,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="bfi-n7-ib6">
-                        <rect key="frame" x="99" y="142" width="117" height="14"/>
+                        <rect key="frame" x="105" y="142" width="118" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="# skipped (bad GOP):" id="UN7-aC-JVR">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -205,7 +206,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="QxM-Ce-bGS">
-                        <rect key="frame" x="151" y="120" width="65" height="14"/>
+                        <rect key="frame" x="159" y="120" width="64" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="# acquired:" id="Txt-RK-RCM">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -213,7 +214,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-e9-Cn9">
-                        <rect key="frame" x="92" y="517" width="39" height="14"/>
+                        <rect key="frame" x="92" y="517" width="38" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="thread" id="zr0-Rv-uQT">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -223,14 +224,14 @@
                             <binding destination="-2" name="value" keyPath="self.activeThread" id="jUb-I2-uvs"/>
                         </connections>
                     </textField>
-                    <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="SzO-t3-ADj">
-                        <rect key="frame" x="10" y="488" width="388" height="5"/>
+                    <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="SzO-t3-ADj">
+                        <rect key="frame" x="10" y="488" width="402" height="5"/>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <font key="titleFont" metaFont="system"/>
                     </box>
                     <textField verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVX-LR-UAV">
-                        <rect key="frame" x="92" y="495" width="308" height="14"/>
+                        <rect key="frame" x="92" y="495" width="322" height="14"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="/some/prefix" id="zUx-0o-JgP">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -250,7 +251,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bXM-w8-l49">
-                        <rect key="frame" x="222" y="472" width="11" height="14"/>
+                        <rect key="frame" x="229" y="472" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="Cqy-c1-gwo"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="qRn-DA-bAj">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="w0f-zL-94E"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -262,7 +266,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KwG-8P-ZuH">
-                        <rect key="frame" x="222" y="450" width="11" height="14"/>
+                        <rect key="frame" x="229" y="450" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="l2P-gA-9tj"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="mdc-Wb-cBp">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="jXp-DA-gRK"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -277,7 +284,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2hO-xp-doG">
-                        <rect key="frame" x="222" y="428" width="11" height="14"/>
+                        <rect key="frame" x="229" y="428" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="jvd-Fa-41R"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="688-Hv-kue">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="GNS-Df-9ox"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -289,7 +299,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vsi-XZ-sXr">
-                        <rect key="frame" x="222" y="406" width="11" height="14"/>
+                        <rect key="frame" x="229" y="406" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="Etq-gd-wGq"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="NtB-Ve-6hg">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="3cu-CB-kjO"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -301,7 +314,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OjC-gu-rpX">
-                        <rect key="frame" x="222" y="384" width="11" height="14"/>
+                        <rect key="frame" x="229" y="384" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="hyM-l1-mLJ"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="Kk4-NL-rYc">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="bTW-VP-tMH"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -313,7 +329,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gNe-uh-qow">
-                        <rect key="frame" x="222" y="362" width="11" height="14"/>
+                        <rect key="frame" x="229" y="362" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="3jh-Q3-ovQ"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="XD8-3r-ARj">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="uCw-8M-bc8"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -325,7 +344,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d2S-Q1-17z">
-                        <rect key="frame" x="222" y="340" width="11" height="14"/>
+                        <rect key="frame" x="229" y="340" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="zgj-9u-SBW"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="i9b-qa-hqg">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="jUb-7Z-1Eh"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -337,7 +359,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JeC-fR-k73">
-                        <rect key="frame" x="222" y="318" width="11" height="14"/>
+                        <rect key="frame" x="229" y="318" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="UV6-eX-tzH"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="e0A-ap-xpx">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="Tr2-sK-Hpv"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -349,7 +374,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qk5-Kv-zgD">
-                        <rect key="frame" x="222" y="296" width="11" height="14"/>
+                        <rect key="frame" x="229" y="296" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="bA2-m4-CeC"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="NJd-kn-ntT">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="RGt-VF-EgQ"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -361,7 +389,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hEq-Im-nm1">
-                        <rect key="frame" x="222" y="274" width="11" height="14"/>
+                        <rect key="frame" x="229" y="274" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="27X-P4-0kP"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="Buw-ly-QSb">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="kgR-c7-Ah8"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -373,7 +404,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kOq-aC-va5">
-                        <rect key="frame" x="222" y="252" width="11" height="14"/>
+                        <rect key="frame" x="229" y="252" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="zSr-jD-a3t"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="uo8-j7-7np">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="GCh-TT-aio"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -385,7 +419,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9LA-GW-6ay">
-                        <rect key="frame" x="222" y="230" width="11" height="14"/>
+                        <rect key="frame" x="229" y="230" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="46Z-y7-UDQ"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="TI1-Wz-ERP">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="tuV-Gu-oV0"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -397,7 +434,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PEL-X9-NTv">
-                        <rect key="frame" x="222" y="208" width="11" height="14"/>
+                        <rect key="frame" x="229" y="208" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="w5u-6B-lzG"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="hhF-b0-gE8">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="cH4-CS-wHt"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -409,7 +449,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="m47-65-6Bd">
-                        <rect key="frame" x="222" y="186" width="11" height="14"/>
+                        <rect key="frame" x="229" y="186" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="RIk-L3-3i9"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="XmZ-mY-SPT">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="Cdy-jT-vPP"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -421,7 +464,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qdj-PN-63P">
-                        <rect key="frame" x="222" y="164" width="11" height="14"/>
+                        <rect key="frame" x="229" y="164" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="WEe-aH-hkc"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="i6Y-kc-zdv">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="QmL-6S-LBD"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -433,7 +479,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6aD-EF-Yw7">
-                        <rect key="frame" x="222" y="142" width="11" height="14"/>
+                        <rect key="frame" x="229" y="142" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="XGk-Lb-K5H"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="gec-Y5-Lbj">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="tv9-u8-xVX"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -445,7 +494,10 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hcY-fa-rHb">
-                        <rect key="frame" x="222" y="120" width="11" height="14"/>
+                        <rect key="frame" x="229" y="120" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="pq8-V8-evM"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="YLM-Tg-efm">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="rP1-GE-Sna"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -457,7 +509,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="omU-R9-ajv">
-                        <rect key="frame" x="244" y="296" width="11" height="14"/>
+                        <rect key="frame" x="264" y="296" width="11" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="QR1-KT-Qhe">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="9vh-Rq-4TQ"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -469,7 +521,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="YKT-bN-qbe">
-                        <rect key="frame" x="150" y="98" width="66" height="14"/>
+                        <rect key="frame" x="158" y="98" width="65" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="# outdated:" id="NbK-QF-bon">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -477,7 +529,10 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="r65-m9-tiF">
-                        <rect key="frame" x="222" y="98" width="11" height="14"/>
+                        <rect key="frame" x="229" y="98" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="sSM-fd-WAD"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="4n2-5K-NYV">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="elv-y8-BCj"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -489,7 +544,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="J6k-iK-seU">
-                        <rect key="frame" x="115" y="76" width="101" height="14"/>
+                        <rect key="frame" x="122" y="76" width="101" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="# retransmissions:" id="M6X-DP-TN0">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -497,7 +552,10 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2cU-jZ-3b0">
-                        <rect key="frame" x="222" y="76" width="11" height="14"/>
+                        <rect key="frame" x="229" y="76" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="j4h-uE-OVG"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="Eqo-Zs-JRK">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="mBm-3B-VIk"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -509,7 +567,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Rqf-IC-xa7">
-                        <rect key="frame" x="72" y="54" width="144" height="14"/>
+                        <rect key="frame" x="78" y="54" width="145" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Retransmission frequency:" id="4uU-Ji-xLq">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -517,7 +575,10 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YMJ-fH-ONI">
-                        <rect key="frame" x="222" y="54" width="11" height="14"/>
+                        <rect key="frame" x="229" y="54" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="Jot-VX-TjM"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="F30-k2-etW">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="dhc-qU-zhI"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -529,7 +590,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="QcU-CE-c9K">
-                        <rect key="frame" x="8" y="32" width="208" height="14"/>
+                        <rect key="frame" x="18" y="32" width="205" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Average segments number (delta-key)" id="103-io-yYF">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -537,7 +598,10 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gAZ-Ns-g6u">
-                        <rect key="frame" x="222" y="32" width="11" height="14"/>
+                        <rect key="frame" x="229" y="32" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="lVg-1N-W7e"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="3ny-jW-Vf4">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="FRZ-Jl-8po"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -549,7 +613,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="L8G-3z-Blg">
-                        <rect key="frame" x="129" y="10" width="87" height="14"/>
+                        <rect key="frame" x="136" y="10" width="87" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="RTT estimation:" id="RcI-Br-7nQ">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -557,7 +621,10 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WkX-wU-Wyz">
-                        <rect key="frame" x="222" y="10" width="11" height="14"/>
+                        <rect key="frame" x="229" y="10" width="24" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="28j-rc-KLt"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="FyA-h1-L6z">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="3Ym-9y-Dh6"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -569,7 +636,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zT9-tK-Bd7">
-                        <rect key="frame" x="244" y="274" width="11" height="14"/>
+                        <rect key="frame" x="264" y="274" width="11" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="hHx-Cx-geX">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="T3j-zl-mCd"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -581,7 +648,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="09d-YX-f9C">
-                        <rect key="frame" x="244" y="252" width="11" height="14"/>
+                        <rect key="frame" x="264" y="252" width="11" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="9kI-nS-DuO">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="4ze-OO-cq8"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -593,7 +660,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20M-tF-QJv">
-                        <rect key="frame" x="244" y="230" width="11" height="14"/>
+                        <rect key="frame" x="264" y="230" width="11" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="vl8-s1-ZPC">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="Wpi-bB-ksd"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -605,7 +672,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OY5-ld-cJA">
-                        <rect key="frame" x="244" y="208" width="11" height="14"/>
+                        <rect key="frame" x="264" y="208" width="11" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="9Ql-CA-aGr">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="APa-bV-ySV"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -617,7 +684,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZBx-Bw-UtB">
-                        <rect key="frame" x="244" y="164" width="11" height="14"/>
+                        <rect key="frame" x="264" y="164" width="11" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="Ecg-R6-G71">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="i0v-Vm-HLY"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -629,7 +696,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oBa-2R-G1a">
-                        <rect key="frame" x="244" y="32" width="11" height="14"/>
+                        <rect key="frame" x="264" y="32" width="11" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="2FZ-JG-JLN">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="9j7-YW-mFa"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -641,7 +708,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xHN-pg-NQ4">
-                        <rect key="frame" x="244" y="120" width="11" height="14"/>
+                        <rect key="frame" x="264" y="120" width="11" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="Unv-GI-s2J">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="XRf-HM-Aoj"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -653,7 +720,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="02Y-k2-iE6">
-                        <rect key="frame" x="244" y="98" width="11" height="14"/>
+                        <rect key="frame" x="264" y="98" width="11" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="96b-YA-H2h">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="KNd-Rh-p3k"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -664,10 +731,23 @@
                             <binding destination="-2" name="value" keyPath="self.nDroppedKey" id="2yt-tL-Nkv"/>
                         </connections>
                     </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V24-ui-XOO">
+                        <rect key="frame" x="264" y="406" width="11" height="14"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="3vw-IU-8vY">
+                            <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#.##" negativeFormat="#.##" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="2" id="t1d-Iu-XRd"/>
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="-2" name="value" keyPath="self.interestFrequency" id="8zx-de-ddw"/>
+                        </connections>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="gFN-0D-2Mg" firstAttribute="trailing" secondItem="X0n-XJ-q9N" secondAttribute="centerX" constant="10" id="0Oo-w6-7id"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="KwG-8P-ZuH" secondAttribute="trailing" constant="20" id="0UL-gW-xcX"/>
+                    <constraint firstItem="V24-ui-XOO" firstAttribute="leading" secondItem="Vsi-XZ-sXr" secondAttribute="trailing" constant="15" id="0Yy-Zb-Psg"/>
                     <constraint firstItem="r65-m9-tiF" firstAttribute="leading" secondItem="YKT-bN-qbe" secondAttribute="trailing" constant="10" id="0fT-am-AfI"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9LA-GW-6ay" secondAttribute="trailing" constant="20" id="0oX-IA-bdl"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kOq-aC-va5" secondAttribute="trailing" constant="20" id="18I-i5-tvh"/>
@@ -716,6 +796,7 @@
                     <constraint firstItem="B70-52-Sl3" firstAttribute="trailing" secondItem="X0n-XJ-q9N" secondAttribute="centerX" constant="10" id="FR0-HH-HdZ"/>
                     <constraint firstItem="Qdj-PN-63P" firstAttribute="leading" secondItem="gFN-0D-2Mg" secondAttribute="trailing" constant="10" id="Fok-xz-GYJ"/>
                     <constraint firstItem="QcU-CE-c9K" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="X0n-XJ-q9N" secondAttribute="leading" constant="10" id="GGk-5C-usa"/>
+                    <constraint firstItem="V24-ui-XOO" firstAttribute="baseline" secondItem="Vsi-XZ-sXr" secondAttribute="baseline" id="GTN-Gj-uzp"/>
                     <constraint firstItem="vkJ-y2-Mh9" firstAttribute="baseline" secondItem="JeC-fR-k73" secondAttribute="baseline" id="Gaj-p3-VJX"/>
                     <constraint firstItem="IwG-OT-JGn" firstAttribute="top" secondItem="zOe-g3-fuJ" secondAttribute="bottom" constant="8" id="GwF-02-p90"/>
                     <constraint firstItem="gNe-uh-qow" firstAttribute="baseline" secondItem="j0a-Jw-WGz" secondAttribute="baseline" id="HZL-Xv-bkB"/>
@@ -834,7 +915,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="CTv-3X-fT8"/>
             </connections>
-            <point key="canvasLocation" x="144" y="274"/>
+            <point key="canvasLocation" x="114" y="274"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="44D-sW-KNN"/>
     </objects>

@@ -41,7 +41,7 @@
     return nil;
 }
 
-+(ChatRoom *)createChatRoomWithId:(NSString *)roomId
++(ChatRoom *)newChatRoomWithId:(NSString *)roomId
                         inContext:(NSManagedObjectContext *)context
 {
     ChatRoom *newChatRoom = [self chatRoomWithId:roomId fromContext:context];

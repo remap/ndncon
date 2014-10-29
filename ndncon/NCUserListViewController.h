@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "NCNdnRtcLibraryController.h"
 
-extern NSString* const kNCSessionInfoKey;
-extern NSString* const kNCHubPrefixKey;
+extern NSString* const kSessionInfoKey;
+extern NSString* const kHubPrefixKey;
 
 //******************************************************************************
 @interface NCSessionInfoContainer : NSObject
@@ -29,14 +29,17 @@ extern NSString* const kNCHubPrefixKey;
 //******************************************************************************
 @protocol NCUserListViewControllerDelegate;
 
-@interface NCUserListViewController : NSObject
+@interface NCUserListViewController : NSViewController
 
 @property (nonatomic, weak) IBOutlet id<NCUserListViewControllerDelegate> delegate;
 
++(NCUserListViewController *)sharedInstance;
 +(NCSessionStatus)sessionStatusForUser:(NSString*)user
                 withPrefix:(NSString*)prefix;
 
 -(void)clearSelection;
+-(NSDictionary*)userInfoDictionaryForUser:(NSString*)userName
+                               withPrefix:(NSString*)prefix;
 
 @end
 

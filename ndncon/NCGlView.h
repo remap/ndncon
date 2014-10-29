@@ -13,7 +13,6 @@
     uint _bufferSize, _width, _height;
     uint8_t *_renderingBuffer;
     GLuint _texture;
-    NSLock *_renderingLock;
 }
 
 @property (nonatomic) BOOL bufferUpdated;

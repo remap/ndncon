@@ -78,7 +78,7 @@
         self.buttonTrailingSpaceConstraint.constant = 10.;
     }
     
-    [self.contentViewController loadView];
+    [self.contentViewController view];
 }
 
 -(void)setCaption:(NSString *)caption

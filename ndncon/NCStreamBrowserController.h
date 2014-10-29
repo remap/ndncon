@@ -11,6 +11,7 @@
 #import "NCStreamPreviewController.h"
 
 extern NSString* const kLocalUserName;
+extern NSString* const kUserNameKey;
 extern NSString* const kStreamPrefixKey;
 
 @protocol NCStreamBrowserControllerDelegate;
@@ -23,7 +24,7 @@ extern NSString* const kStreamPrefixKey;
 -(NCStreamPreviewController*)addStreamWithConfiguration:(NSDictionary*)configuration
                                   andStreamPreviewClass:(Class)streamPreviewClass
                                         forStreamPrefix:(NSString*)streamPrefix;
-
+-(void)closeStreamsForController:(NCStreamPreviewController*)streamPreviewController;
 -(void)closeAllStreams;
 
 @end

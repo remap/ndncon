@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="ChatMessage" representedClassName="ChatMessage" syncable="YES">
         <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
@@ -17,8 +17,8 @@
         <attribute name="prefix" optional="YES" attributeType="String" defaultValueString="/ndn/edu/ucla/remap" syncable="YES"/>
     </entity>
     <elements>
-        <element name="User" positionX="-1944" positionY="-1089" width="128" height="73"/>
-        <element name="ChatMessage" positionX="-1908" positionY="-1035" width="128" height="118"/>
+        <element name="ChatMessage" positionX="-1908" positionY="-1035" width="128" height="120"/>
         <element name="ChatRoom" positionX="-1881" positionY="-981" width="128" height="88"/>
+        <element name="User" positionX="-1944" positionY="-1089" width="128" height="73"/>
     </elements>
 </model>

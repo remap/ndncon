@@ -12,6 +12,8 @@
 #import "NCStreamPreviewController.h"
 #import "NCActiveStreamViewer.h"
 #import "NCStatisticsWindowController.h"
+#import "NCDropScrollview.h"
+#import "Conference.h"
 
 extern NSString* const NCStreamRebufferingNotification;
 extern NSString* const NCStreamObserverEventNotification;
@@ -31,7 +33,7 @@ NCStatisticsWindowControllerDelegate>
 
 //+(NSString*)textStatusFromSessionStatus:(NCSessionStatus)sessionStatus;
 
-@property (nonatomic, weak) id<NCConversationViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<NCConversationViewControllerDelegate, NCDragAndDropViewDelegate> delegate;
 @property (nonatomic, readonly) NCSessionStatus currentConversationStatus;
 
 // participants array:
@@ -62,6 +64,11 @@ NCStatisticsWindowControllerDelegate>
  *
  */
 -(void)startFetchingWithConfiguration:(NSDictionary*)userInfo;
+
+/**
+ * Starts conference
+ */
+-(void)startConference:(Conference*)conference;
 
 - (IBAction)endConversation:(id)sender;
 

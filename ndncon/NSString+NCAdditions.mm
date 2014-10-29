@@ -13,6 +13,10 @@
 
 using namespace ndnrtc;
 
+#define NRTC_PREFIX @"nrtc"
+NSString* const kNrtcUrlRegExp = @"nrtc:([//[A-z0-9-+@]+]*):([A-z0-9-+@]+)";
+NSString* const kNCNdnRtcUserUrlFormat = @"nrtc:%@:%@";
+
 @interface NSString (NCAdditions_Private)
 
 -(BOOL)hasNdnRtcNameComponent:(const std::string&)component index:(NSUInteger&)index;
@@ -20,19 +24,6 @@ using namespace ndnrtc;
 @end
 
 @implementation NSString (NCAdditions)
-
--(BOOL)hasNdnRtcNameComponent:(std::string&)component index:(NSUInteger&)index;
-{
-    NSArray *components = [self pathComponents];
-    
-    if ([components containsObject:[NSString ncStringFromCString:component.c_str()]])
-    {
-        index = [components indexOfObject:[NSString ncStringFromCString:component.c_str()]];
-        return YES;
-    }
-    
-    return NO;
-}
 
 +(NSString*)ncStringFromCString:(const char*)cString
 {
@@ -126,6 +117,60 @@ using namespace ndnrtc;
             result[8], result[9], result[10], result[11],
             result[12], result[13], result[14], result[15]
             ];
+}
+
+-(NSString*)prefixFromNrtcUrlString
+{
+    if ([self isValidNrtcUrl])
+    {
+        NSRegularExpression *urlRegex = [NSRegularExpression regularExpressionWithPattern:kNrtcUrlRegExp
+                                                                                  options:NSRegularExpressionCaseInsensitive error:nil];
+        NSArray *matches = [urlRegex matchesInString:self options:0 range:NSMakeRange(0, [self length])];
+        return [self  substringWithRange:[matches[0] rangeAtIndex:1]];
+    }
+    
+    return nil;
+}
+
+-(NSString*)userNameFromNrtcUrlString
+{
+    if ([self isValidNrtcUrl])
+    {
+        NSRegularExpression *urlRegex = [NSRegularExpression regularExpressionWithPattern:kNrtcUrlRegExp
+                                                                                  options:NSRegularExpressionCaseInsensitive error:nil];
+        NSArray *matches = [urlRegex matchesInString:self options:0 range:NSMakeRange(0, [self length])];
+        return [self  substringWithRange:[matches[0] rangeAtIndex:2]];
+    }
+    
+    return nil;
+}
+
+#pragma mark - private
+-(BOOL)hasNdnRtcNameComponent:(std::string&)component index:(NSUInteger&)index;
+{
+    NSArray *components = [self pathComponents];
+    
+    if ([components containsObject:[NSString ncStringFromCString:component.c_str()]])
+    {
+        index = [components indexOfObject:[NSString ncStringFromCString:component.c_str()]];
+        return YES;
+    }
+    
+    return NO;
+}
+
+-(BOOL)isValidNrtcUrl
+{
+    NSRegularExpression *urlRegex = [NSRegularExpression regularExpressionWithPattern:kNrtcUrlRegExp
+                                                                              options:NSRegularExpressionCaseInsensitive error:nil];
+    NSArray *matches = [urlRegex matchesInString:self options:0 range:NSMakeRange(0, [self length])];
+    
+    if (matches)
+        for (NSTextCheckingResult *match in matches)
+            if ([match numberOfRanges] == 3)
+                return YES;
+    
+    return NO;
 }
 
 @end

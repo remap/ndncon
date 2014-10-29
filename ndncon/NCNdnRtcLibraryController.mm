@@ -23,12 +23,12 @@ NSString* const NCLocalSessionErrorNotification = @"NCLocalSessionErrorNotificai
 NSString* const NCRemoteSessionStatusUpdateNotification = @"NCRemoteSessionStatusUpdateNotificaiton";
 NSString* const NCRemoteSessionErrorNotification = @"NCRemoteSessionErrorNotificaiton";
 
-NSString* const kNCSessionUsernameKey = @"username";
-NSString* const kNCSessionPrefixKey = @"prefix";
-NSString* const kNCSessionStatusKey = @"status";
-NSString* const kNCSessionOldStatusKey = @"oldStatus";
-NSString* const kNCSessionErrorCodeKey = @"errorCode";
-NSString* const kNCSessionErrorMessageKey = @"errorMessage";
+NSString* const kSessionUsernameKey = @"username";
+NSString* const kSessionPrefixKey = @"prefix";
+NSString* const kSessionStatusKey = @"status";
+NSString* const kSessionOldStatusKey = @"oldStatus";
+NSString* const kSessionErrorCodeKey = @"errorCode";
+NSString* const kSessionErrorMessageKey = @"errorMessage";
 
 class SessionObserver;
 class LibraryObserver;
@@ -87,10 +87,10 @@ public:
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[[NSObject alloc] init] notifyNowWithNotificationName:NCLocalSessionStatusUpdateNotification
-                                                       andUserInfo:@{kNCSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
-                                                                     kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
-                                                                     kNCSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
-                                                                     kNCSessionOldStatusKey: @(oldStatus)}];
+                                                       andUserInfo:@{kSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
+                                                                     kSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
+                                                                     kSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
+                                                                     kSessionOldStatusKey: @(oldStatus)}];
         });
     }
 
@@ -103,11 +103,11 @@ public:
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[[NSObject alloc] init] notifyNowWithNotificationName: NCLocalSessionErrorNotification
-                                                       andUserInfo:@{kNCSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
-                        kNCSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
-                        kNCSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
-                        kNCSessionErrorCodeKey: @(errorCode),
-                        kNCSessionErrorMessageKey: [NSString stringWithCString:errorMessage encoding:NSASCIIStringEncoding]}];
+                                                       andUserInfo:@{kSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
+                        kSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
+                        kSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
+                        kSessionErrorCodeKey: @(errorCode),
+                        kSessionErrorMessageKey: [NSString stringWithCString:errorMessage encoding:NSASCIIStringEncoding]}];
             
         });
     }

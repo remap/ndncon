@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* const kNCNdnRtcUserUrlFormat;
+
 @interface NSString (NCAdditions)
 
 +(NSString*)ncStringFromCString:(const char*)cString;
@@ -19,5 +21,12 @@
 -(NSString*)getNdnRtcThreadName;
 
 -(NSString*)md5Hash;
+
+// returns a prefix if the receiver is a NRTC URL string
+// @see kNCNdnRtcUserUrlFormat
+-(NSString*)prefixFromNrtcUrlString;
+// returns a username if the receiver is a NRTC URL string
+// @see kNCNdnRtcUserUrlFormat
+-(NSString*)userNameFromNrtcUrlString;
 
 @end

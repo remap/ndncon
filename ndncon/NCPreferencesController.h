@@ -67,6 +67,7 @@ extern NSString* const kNdnPortKey;
 @property (nonatomic) NSArray *videoStreams;
 
 @property (nonatomic) NSString *chatBroadcastPrefix;
+@property (nonatomic) NSString *conferenceBroadcastPrefix;
 
 -(NSDictionary*)producerConfigurationCopy;
 

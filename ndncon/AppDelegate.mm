@@ -15,7 +15,7 @@
 #import "NCErrorController.h"
 #import "User.h"
 #import "NCChatLibraryController.h"
-
+#import "NCDiscoveryLibraryController.h"
 #import "NCPreferencesController.h"
 
 @interface AppDelegate()
@@ -28,9 +28,13 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
++(void)initialize
 {
     [NCPreferencesController sharedInstanceWithDefaultsFile:@"settings"];
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
     [[NCPreferencesController sharedInstance] updateDefaults];
     [self.window setTitle:[NSString stringWithFormat:@"%@ v%@",
                            [NCPreferencesController sharedInstance].appName,
@@ -46,6 +50,7 @@
         NSLog(@"Not a first launch. We're friends already...");
     
     [NCChatLibraryController sharedInstance];
+    [NCDiscoveryLibraryController sharedInstance];
     [[NCNdnRtcLibraryController sharedInstance] startSession];
 }
 

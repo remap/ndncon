@@ -11,7 +11,17 @@
 
 @class User;
 
+extern NSString* const kChatMesageTypeJoin;
+extern NSString* const kChatMesageTypeLeave;
+extern NSString* const kChatMesageTypeText;
+
 @interface ChatMessage : NSManagedObject
+
++(ChatMessage*)newChatMessageFromUser:(User*)user
+                            ofType:(NSString*)messageType
+                   withMessageBody:(NSString*)body
+                            inContext:(NSManagedObjectContext*)context;
++(NSNumber*)typeFromString:(NSString*)typeStr;
 
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * body;

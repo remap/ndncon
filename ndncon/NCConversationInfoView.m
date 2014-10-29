@@ -7,6 +7,7 @@
 //
 
 #import "NCConversationInfoView.h"
+#import "NSString+NCAdditions.h"
 
 @interface NCConversationInfoView()
 
@@ -14,14 +15,39 @@
 
 @implementation NCConversationInfoView
 
+-(id)init
+{
+    self = [super init];
+    
+    if (self)
+        [self initialize];
+    
+    return self;
+}
+
+-(id)initWithFrame:(NSRect)frameRect
+{
+    self = [super initWithFrame:frameRect];
+    
+    if (self)
+        [self initialize];
+    
+    return self;
+}
+
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     
     if (self)
-        self.status = NCConversationInfoStatusOffline;
+        [self initialize];
     
     return self;
+}
+
+-(void)initialize
+{
+    self.status = NCConversationInfoStatusOffline;
 }
 
 - (void)drawRect:(NSRect)dirtyRect
