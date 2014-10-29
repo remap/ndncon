@@ -228,7 +228,7 @@ NSString* const kNoConferences = @"no conferences";
 
 -(void)clearSelection
 {
-    [self.tableView deselectAll:nil];
+//    [self.tableView deselectAll:nil];
 }
 
 -(void)reloadData

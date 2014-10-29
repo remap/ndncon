@@ -31,6 +31,7 @@
 #import "NCErrorController.h"
 #import "NCStatisticsWindowController.h"
 #import "NCDropScrollview.h"
+#import "User.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -412,6 +413,23 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 // private
 -(void)startWatchingParticipants:(NSSet*)participants
 {
+    // check current statuses of the participants
+    
+    for (User *user in participants)
+    {
+        NCSessionStatus status = [NCUserListViewController
+                                  sessionStatusForUser:user.name
+                                  withPrefix:user.prefix];
+        
+        if (status == SessionOnlinePublishing)
+        {
+            NSDictionary *userInfoDict = [[NCUserListViewController sharedInstance]
+                                          userInfoDictionaryForUser:user.name
+                                          withPrefix:user.prefix];
+            [self startFetchingWithConfiguration:userInfoDict];
+        }
+    }
+    
     [self subscribeForNotificationsAndSelectors:
      NCRemoteSessionStatusUpdateNotification, @selector(onRemoteSessionStatusUpdate:),
      nil];
@@ -425,15 +443,15 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 
 -(void)onRemoteSessionStatusUpdate:(NSNotification*)notification
 {
-    NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
-    NCSessionStatus newStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];
+    NCSessionStatus newStatus = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
+    NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];
     
     if (newStatus == SessionOnlinePublishing ||
         oldStatus == SessionOnlinePublishing)
     {
         // check if notification affects any of the current paticipants
         NSString *username = notification.userInfo[kSessionUsernameKey];
-        NSString *prefix = notification.userInfo[kSessionPrefixKey];
+        NSString *prefix = notification.userInfo[kHubPrefixKey];
         
         if (self.conference &&
             [self.conference hasParticipant:username withPrefix:prefix])
@@ -441,7 +459,12 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
             if (oldStatus == SessionOnlinePublishing)
             {
                 // stop fetching from user and remove him from the view
-//                [self ]
+                NSDictionary *userStreams = [[self getParticipantInfo:username][kNCRemoteStreamsDictionaryKey] copy];
+                [userStreams.allKeys enumerateObjectsUsingBlock:
+                 ^(id obj, NSUInteger idx, BOOL *stop) {
+                     [self.remoteStreamViewer closeStreamsForController:userStreams[obj]];
+                     [self removeRemoteStreamWithPrefix:obj];
+                }];
             }
             else if (newStatus == SessionOnlinePublishing)
             {
@@ -553,18 +576,17 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
         NSAssert((participantArray.count == 1), @"should have 1 object");
         
         NSMutableDictionary *participantInfo = [participantArray firstObject];
-        [[participantInfo valueForKey:streamsArrayKey] setObject:userInfo forKey:streamPrefix];
+        participantInfo[streamsArrayKey][streamPrefix] = userInfo;
         
         // update session info
-        [participantInfo setValue:[userDictionary valueForKey:kSessionInfoKey] forKey:kSessionInfoKey];
+        if (userDictionary[kSessionInfoKey])
+            participantInfo[kSessionInfoKey] = userDictionary[kSessionInfoKey];
     }
     else
     {
         NSMutableDictionary *newParticipantDict = [userDictionary deepMutableCopy];
-        [newParticipantDict setValue:[@{streamPrefix:userInfo} deepMutableCopy]
-                              forKey:streamsArrayKey];
-        [newParticipantDict setValue:[@{} mutableCopy]
-                              forKey:otherStreamsArrayKey];
+        newParticipantDict[streamsArrayKey] = [@{streamPrefix:userInfo} deepMutableCopy];
+        newParticipantDict[otherStreamsArrayKey] = [@{} mutableCopy];
         [self addUserToConversation:newParticipantDict];
     }
 }
@@ -873,13 +895,18 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 
 -(void)removeRemoteStreamWithPrefix:(NSString*)streamPrefix
 {
-    NSLog(@"*** removing stream %@", streamPrefix);
-    
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->removeRemoteStream([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
     
     [self removeStreamFromConversation:streamPrefix isRemote:YES];
-    
+    if ([self.activeStreamViewer.streamPrefix isEqualToString:streamPrefix])
+    {
+        // clear stream viewer
+        [self.activeStreamViewer clear];
+        self.currentlySelectedPreview = nil;
+        
+        // select any other video stream if exists
+    }
 }
 
 @end

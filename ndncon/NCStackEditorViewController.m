@@ -77,6 +77,20 @@
     [self.entryControllers removeAllObjects];
 }
 
+-(void)removeEntriesSatisfyingRule:(NCStackEditorFilterBlock)filterBlock
+{
+    NSMutableArray *forRemoval = [NSMutableArray array];
+    
+    for (NCStackEditorEntryViewController *vc in self.entryControllers)
+        if (filterBlock(vc))
+        {
+            [self.stackView removeView:vc.view];
+            [forRemoval addObject:vc];
+        }
+    
+    [self.entryControllers removeObjectsInArray:forRemoval];
+}
+
 -(void)highlightEntryWithcontroller:(NSViewController*)viewController
 {
     [self.entryControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

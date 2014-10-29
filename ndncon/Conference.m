@@ -10,6 +10,7 @@
 #import "ChatRoom.h"
 #import "User.h"
 #import "NCErrorController.h"
+#import "NCPreferencesController.h"
 
 NSString* const kConferenceNameKey = @"name";
 NSString* const kConferenceDescriptionKey = @"conferenceDescription";
@@ -121,18 +122,29 @@ NSString* const kConferenceOrganizerPrefixKey = @"orgprefix";
     conference.chatRoom = [ChatRoom newChatRoomWithId:remoteConference.name
                                             inContext:context];
 
-    for (UserStub *user in remoteConference.participants)
+    NSMutableArray *allParticipants = [NSMutableArray arrayWithArray:[remoteConference.participants allObjects]];
+    [allParticipants addObject:remoteConference.organizer];
+    
+    for (UserStub *user in allParticipants)
     {
-        User *userLocal = [User newUserWithName:user.name
-                                      andPrefix:user.prefix
-                                      inContext:context];
-        [conference addParticipantsObject:userLocal];
+        if (!([user.name isEqualToString:[NCPreferencesController sharedInstance].userName] &&
+            [user.prefix isEqualToString:[NCPreferencesController sharedInstance].prefix]))
+        {
+            User *userLocal = [User newUserWithName:user.name
+                                          andPrefix:user.prefix
+                                          inContext:context];
+            [conference addParticipantsObject:userLocal];
+        }
     }
     
-    User *organizer = [User newUserWithName:remoteConference.organizer.name
-                                  andPrefix:remoteConference.organizer.prefix
-                                  inContext:context];
-    conference.organizer = organizer;
+    if (!([conference.organizer.name isEqualToString:[NCPreferencesController sharedInstance].userName] &&
+        [conference.organizer.prefix isEqualToString:[NCPreferencesController sharedInstance].prefix]))
+    {
+        User *organizer = [User newUserWithName:remoteConference.organizer.name
+                                      andPrefix:remoteConference.organizer.prefix
+                                      inContext:context];
+        conference.organizer = organizer;        
+    }
     
     [context save:NULL];
     
@@ -169,14 +181,19 @@ NSString* const kConferenceOrganizerPrefixKey = @"orgprefix";
 -(BOOL)hasParticipant:(NSString*)username withPrefix:(NSString*)prefix
 {
     __block BOOL found = NO;
-    [self.participants enumerateObjectsUsingBlock:^(User *user, BOOL *stop) {
-        if ([user.name isEqualToString:username] &&
-            [user.prefix isEqualToString:prefix])
-        {
-            *stop = YES;
-            found = YES;
-        }
-    }];
+    
+    found = ([self.organizer.name isEqualToString:username] &&
+             [self.organizer.prefix isEqualToString:prefix]);
+    
+    if (!found)
+        [self.participants enumerateObjectsUsingBlock:^(User *user, BOOL *stop) {
+            if ([user.name isEqualToString:username] &&
+                [user.prefix isEqualToString:prefix])
+            {
+                *stop = YES;
+                found = YES;
+            }
+        }];
     
     return found;
 }
@@ -217,7 +234,9 @@ NSString* const kConferenceOrganizerPrefixKey = @"orgprefix";
 
 -(NSDate *)startDate
 {
-    return [NSDate dateWithNaturalLanguageString:self.conferenceDictionary[kConferenceStartDateKey]];
+    return [NSDate dateWithTimeIntervalSince1970:
+            [self.conferenceDictionary[kConferenceStartDateKey] doubleValue]];
+    //[NSDate dateWithNaturalLanguageString:self.conferenceDictionary[kConferenceStartDateKey]];
 }
 
 -(NSNumber *)duration

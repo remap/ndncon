@@ -30,6 +30,7 @@
 
 -(void)clearStreamEventView;
 -(void)renderStreamEvent:(NSString*)eventDescription;
+-(void)clear;
 
 @end
 

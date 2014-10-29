@@ -130,16 +130,20 @@ private:
         lastStatus_ = (sessionInfo.audioStreams_.size() == 0 &&
                        sessionInfo.videoStreams_.size() == 0)?SessionStatusOnlineNotPublishing:
         SessionStatusOnlinePublishing;
-        NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
-        userInfo[kSessionStatusKey] = @(lastStatus_);
-        userInfo[kSessionOldStatusKey] = @(oldStatus);
-        userInfo[kSessionInfoKey] = [NCSessionInfoContainer containerWithSessionInfo: (void*)&sessionInfo];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[NSObject alloc] init]
-             notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
-             andUserInfo:userInfo];
-        });
+        if (oldStatus != lastStatus_)
+        {
+            NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
+            userInfo[kSessionStatusKey] = @(lastStatus_);
+            userInfo[kSessionOldStatusKey] = @(oldStatus);
+            userInfo[kSessionInfoKey] = [NCSessionInfoContainer containerWithSessionInfo: (void*)&sessionInfo];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[[NSObject alloc] init]
+                 notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
+                 andUserInfo:userInfo];
+            });
+        }
     }
     
     void

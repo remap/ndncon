@@ -24,7 +24,7 @@ extern NSString* const kStreamPrefixKey;
 -(NCStreamPreviewController*)addStreamWithConfiguration:(NSDictionary*)configuration
                                   andStreamPreviewClass:(Class)streamPreviewClass
                                         forStreamPrefix:(NSString*)streamPrefix;
-
+-(void)closeStreamsForController:(NCStreamPreviewController*)streamPreviewController;
 -(void)closeAllStreams;
 
 @end

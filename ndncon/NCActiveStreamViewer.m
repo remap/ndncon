@@ -151,6 +151,15 @@
     [self.streamEventsTextView setString:@""];
 }
 
+-(void)clear
+{
+    [self clearStreamEventView];
+    self.streamPrefix = nil;
+    self.userInfo = nil;
+    self.currentThreadIdx = @(0);
+    self.renderer = nil;
+}
+
 -(void)renderStreamEvent:(NSString*)eventDescription
 {
     if (!self.isStreamEventsViewVisible)

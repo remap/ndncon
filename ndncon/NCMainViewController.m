@@ -171,6 +171,7 @@
     [self startConverstaionIfNotStarted];
     [self loadCurrentView:self.conversationViewController.view];
     [self.conversationViewController startConference:conferenceViewController.conference];
+    [self.conferenceListViewController clearSelection];
 }
 
 -(void)conferenceViewControllerDidPublishConference:(NCConferenceViewController *)conferenceViewController
@@ -196,6 +197,7 @@
         }
         
         [self.userListViewController clearSelection];
+        [self.conferenceListViewController clearSelection];
     }
 }
 

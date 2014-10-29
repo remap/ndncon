@@ -33,6 +33,7 @@ extern NSString* const kHubPrefixKey;
 
 @property (nonatomic, weak) IBOutlet id<NCUserListViewControllerDelegate> delegate;
 
++(NCUserListViewController *)sharedInstance;
 +(NCSessionStatus)sessionStatusForUser:(NSString*)user
                 withPrefix:(NSString*)prefix;
 

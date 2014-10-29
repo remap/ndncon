@@ -84,7 +84,7 @@ public:
         
         [data appendBytesFromString:conference.name];
         [data appendBytesFromString:conference.conferenceDescription];
-        [data appendBytesFromString:[conference.startDate descriptionWithLocale:[NSLocale currentLocale]]];
+        [data appendBytesFromString:[@([conference.startDate timeIntervalSince1970]) stringValue]];
         [data appendBytesFromString:conference.duration.stringValue];
         [data appendBytesFromString:organizerName];
         [data appendBytesFromString:organizerPrefix];
