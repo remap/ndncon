@@ -100,6 +100,7 @@
     [self.timeInfoLabel setHidden:isEditable];
     [self.timeInfoView setHidden:!isEditable];
     [self.publishButton setHidden:!isEditable];
+    [self.joinButton setHidden:isEditable];
     
     if (isEditable)
         [self.cancelButton setHidden:NO];
@@ -123,7 +124,6 @@
         self.isEditable = NO;
     
     [self.cancelButton setHidden:!_isOwner];
-    [self.joinButton setHidden:isOwner];
 }
 
 - (IBAction)publishConference:(id)sender

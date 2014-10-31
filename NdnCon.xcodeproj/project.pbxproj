@@ -338,6 +338,7 @@
 		AFD9791419BE546E0061AA24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AFD9791619BE546E0061AA24 /* NdnConTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NdnConTests.m; path = "ndncon-tests/NdnConTests.m"; sourceTree = "<group>"; };
 		AFD9792219BE5C6E0061AA24 /* ndncon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = ndncon.iconset; sourceTree = "<group>"; };
+		AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.2.xcdatamodel"; sourceTree = "<group>"; };
 		AFFED07719D62B92000974FF /* NCActiveStreamViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCActiveStreamViewer.h; path = ndncon/NCActiveStreamViewer.h; sourceTree = SOURCE_ROOT; };
 		AFFED07819D62B92000974FF /* NCActiveStreamViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCActiveStreamViewer.m; path = ndncon/NCActiveStreamViewer.m; sourceTree = SOURCE_ROOT; };
 		AFFED07A19D62BA2000974FF /* NCActiveStreamView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCActiveStreamView.xib; path = ndncon/NCActiveStreamView.xib; sourceTree = SOURCE_ROOT; };
@@ -1322,12 +1323,13 @@
 		AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */,
 				AF3EEA3D19F8605000039A56 /* NdnCon v0.3.1.xcdatamodel */,
 				AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.0.xcdatamodel */,
 				AF744CBC19ECAD6C00E92680 /* NdnCon v0.2.0.xcdatamodel */,
 				AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */,
 			);
-			currentVersion = AF3EEA3D19F8605000039A56 /* NdnCon v0.3.1.xcdatamodel */;
+			currentVersion = AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */;
 			path = NdnCon.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

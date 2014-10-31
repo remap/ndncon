@@ -44,6 +44,7 @@
 
 @property (nonatomic) NSImage* statusImage;
 @property (nonatomic, readonly) NSString *userPrefix;
+@property (nonatomic, readonly) NSString *privateChatRoomId;
 
 @end
 

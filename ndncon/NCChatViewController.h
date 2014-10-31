@@ -8,21 +8,34 @@
 
 #import <Cocoa/Cocoa.h>
 
-@protocol NCChatMessageCellDelegate;
+@protocol NCChatViewControllerDelegate;
 
+//******************************************************************************
 @interface NCChatViewController : NSViewController
-<NSTableViewDataSource, NSTableViewDelegate, NCChatMessageCellDelegate>
+<NSTableViewDataSource, NSTableViewDelegate>
 
+@property (weak) id<NCChatViewControllerDelegate> delegate;
 @property (nonatomic) NSString *chatRoomId;
 @property (weak) IBOutlet NSTextField *chatInfoTextField;
 
 // chat room should be active only when both users are online
 @property (nonatomic, setter=setActive:) BOOL isActive;
 
+-(void)newChatMessage:(NSNotification*)notification;
+
 @end
 
+//******************************************************************************
 @interface NCChatMessageCell : NSTableCellView
 
 +(NSString*)textRepresentationForDate:(NSDate*)date;
+
+@end
+
+//******************************************************************************
+@protocol NCChatViewControllerDelegate <NSObject>
+
+@optional
+-(void)chatViewControllerDidFinishLoadingMessages:(NCChatViewController*)chatViewController;
 
 @end

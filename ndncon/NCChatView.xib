@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCChatViewController">
@@ -40,9 +41,9 @@
                     <rect key="frame" x="0.0" y="0.0" width="644" height="418"/>
                     <subviews>
                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="57" horizontalPageScroll="10" verticalLineScroll="57" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="0u2-cY-SXu">
-                            <rect key="frame" x="0.0" y="0.0" width="644" height="335"/>
+                            <rect key="frame" x="0.0" y="0.0" width="644" height="336.5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <clipView key="contentView" misplaced="YES" id="5Ar-nX-PUW">
+                            <clipView key="contentView" id="5Ar-nX-PUW">
                                 <rect key="frame" x="1" y="17" width="238" height="117"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -70,7 +71,7 @@
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fto-D3-XnM">
-                                                                <rect key="frame" x="13" y="32" width="72" height="17"/>
+                                                                <rect key="frame" x="13" y="32" width="71" height="17"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Username" id="xHG-GS-qiz">
                                                                     <font key="font" metaFont="systemBold"/>
                                                                     <color key="textColor" red="0.14668367346938771" green="0.14668367346938771" blue="0.14668367346938771" alpha="1" colorSpace="calibratedRGB"/>
@@ -78,7 +79,7 @@
                                                                 </textFieldCell>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6aG-Ht-oka">
-                                                                <rect key="frame" x="85" y="32" width="76" height="16"/>
+                                                                <rect key="frame" x="84" y="32" width="75" height="16"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(Timestamp)" id="tkd-fW-NSF">
                                                                     <font key="font" metaFont="cellTitle"/>
                                                                     <color key="textColor" red="0.33434311224489799" green="0.33434311224489799" blue="0.33434311224489799" alpha="1" colorSpace="calibratedRGB"/>
@@ -86,7 +87,7 @@
                                                                 </textFieldCell>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cja-tC-5Td">
-                                                                <rect key="frame" x="605" y="35" width="30" height="14"/>
+                                                                <rect key="frame" x="606" y="35" width="29" height="14"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Type" id="wFr-Nb-8Jo">
                                                                     <font key="font" size="11" name="LucidaGrande"/>
                                                                     <color key="textColor" red="0.33434311220000001" green="0.33434311220000001" blue="0.33434311220000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -128,12 +129,12 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
-                        <customView misplaced="YES" id="CrJ-tv-pWy">
-                            <rect key="frame" x="0.0" y="336" width="644" height="82"/>
+                        <customView id="CrJ-tv-pWy">
+                            <rect key="frame" x="0.0" y="337.5" width="644" height="80.5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <subviews>
                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="HIN-5u-ht5">
-                                    <rect key="frame" x="10" y="10" width="614" height="60"/>
+                                    <rect key="frame" x="10" y="10.5" width="624" height="60"/>
                                     <textFieldCell key="cell" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="type your message here..." drawsBackground="YES" id="9lr-TN-LDo">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -149,7 +150,7 @@
                                 <constraint firstItem="HIN-5u-ht5" firstAttribute="top" secondItem="CrJ-tv-pWy" secondAttribute="top" constant="10" id="IIT-Eu-xaU"/>
                                 <constraint firstAttribute="bottom" secondItem="HIN-5u-ht5" secondAttribute="bottom" constant="10" id="OL1-Mb-qPX"/>
                                 <constraint firstItem="HIN-5u-ht5" firstAttribute="leading" secondItem="CrJ-tv-pWy" secondAttribute="leading" constant="10" id="fxB-MG-FoZ"/>
-                                <constraint firstAttribute="trailing" secondItem="HIN-5u-ht5" secondAttribute="trailing" constant="20" id="xIV-ib-JJj"/>
+                                <constraint firstAttribute="trailing" secondItem="HIN-5u-ht5" secondAttribute="trailing" constant="10" id="xIV-ib-JJj"/>
                             </constraints>
                         </customView>
                     </subviews>

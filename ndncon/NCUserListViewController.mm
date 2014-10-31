@@ -18,6 +18,9 @@
 #import "NSDictionary+NCNdnRtcAdditions.h"
 #import "NSObject+NCAdditions.h"
 #import "NSString+NCAdditions.h"
+#import "ChatRoom.h"
+#import "ChatMessage.h"
+#import "NCStreamBrowserController.h"
 
 NSString* const kSessionInfoKey = @"sessionInfo";
 NSString* const kHubPrefixKey = @"hubPrefix";
@@ -208,6 +211,7 @@ private:
 
 @property (weak) IBOutlet NSArrayController *userController;
 @property (weak) IBOutlet NSTableView *tableView;
+@property (weak) User *selectedUser;
 
 @end
 
@@ -253,6 +257,8 @@ private:
         [self.tableView setNextResponder:self];
         [self setNextResponder:nextResponder];
     }
+    
+    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 }
 
 -(void)initialize
@@ -288,7 +294,17 @@ private:
 
 -(void)clearSelection
 {
+    self.selectedUser = nil;
     [self.tableView deselectAll:nil];
+}
+
+// NCChatViewControllerDelegate
+-(void)chatViewControllerDidFinishLoadingMessages:(NCChatViewController *)chatViewController
+{
+    NSInteger selected = [self.tableView selectedRow];
+    
+    [self.tableView reloadData];
+    [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:selected] byExtendingSelection:NO];
 }
 
 // NSTableViewDelegate
@@ -298,8 +314,13 @@ private:
     {
         id user = [self.userController.arrangedObjects objectAtIndex:self.tableView.selectedRow];
         
-        if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewController:userWasChosen:)])
-            [self.delegate userListViewController:self userWasChosen:[self userInfoDictionaryForUser:[user name] withPrefix:[user prefix]]];
+        if (user != self.selectedUser)
+        {
+            self.selectedUser = user;
+            
+            if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewController:userWasChosen:)])
+                [self.delegate userListViewController:self userWasChosen:[self userInfoDictionaryForUser:[user name] withPrefix:[user prefix]]];
+        }
     }
 }
 
@@ -309,6 +330,20 @@ private:
     id user = [self.userController.arrangedObjects objectAtIndex:row];
     
     return [NSString stringWithFormat:kNCNdnRtcUserUrlFormat, [user prefix], [user name]];
+}
+
+// NSUserNotificationCenterDelegate
+-(BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification
+{
+    return YES;
+}
+
+-(void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification
+{
+    User *user = [User userByName:notification.userInfo[kUserNameKey]
+                        andPrefix:notification.userInfo[kHubPrefixKey]
+                      fromContext:self.userController.managedObjectContext];
+    [self.userController setSelectedObjects:@[user]];
 }
 
 // private
@@ -478,6 +513,12 @@ private:
     return userInfo;
 }
 
+-(void)updateCellBadgeNumber:(NSUInteger)number
+             forCellWithUser:(User*)user
+{
+    [self.tableView reloadData];
+}
+
 -(void)restartObservers
 {
     NSLog(@"restarting observers");
@@ -496,7 +537,36 @@ private:
 
 @interface NCUserListCell : NSTableCellView
 
-@property (nonatomic, weak) IBOutlet NSTextField *hintTextField;
+@property (nonatomic, weak) IBOutlet NSImageView *unreadMessagesBackImageView;
+@property (nonatomic, weak) IBOutlet NSTextField *unreadMessagesTextField;
 
+@end
+
+@implementation NCUserListCell
+
+-(void)setObjectValue:(id)objectValue
+{
+    [super setObjectValue:objectValue];
+    
+    if (objectValue)
+    {
+        NSManagedObjectContext *context = [(AppDelegate*)[NSApp delegate] managedObjectContext];
+        ChatRoom *chatRoom = [ChatRoom chatRoomWithId:[objectValue privateChatRoomId]
+                                          fromContext:context];
+        NSArray *unreadMessages = [ChatMessage unreadTextMessagesFromUser:objectValue inChatroom:chatRoom];
+        
+        if (unreadMessages.count)
+        {
+            self.unreadMessagesBackImageView.hidden = NO;
+            self.unreadMessagesTextField.hidden = NO;
+            self.unreadMessagesTextField.stringValue = [NSString stringWithFormat:@"%lu", (unsigned long)unreadMessages.count];
+        }
+        else
+        {
+            self.unreadMessagesBackImageView.hidden = YES;
+            self.unreadMessagesTextField.hidden = YES;
+        }
+    }
+}
 
 @end

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class ChatMessage;
+@class ChatMessage, User;
 
 @interface ChatRoom : NSManagedObject
 
@@ -29,5 +29,7 @@
 - (void)removeMessagesObject:(ChatMessage *)value;
 - (void)addMessages:(NSSet *)values;
 - (void)removeMessages:(NSSet *)values;
+
+-(BOOL)hasParitcipant:(User*)user;
 
 @end

@@ -15,10 +15,12 @@ extern NSString* const NCChatMessageUsernameKey;
 extern NSString* const NCChatMessageTimestampKey;
 extern NSString* const NCChatMessageBodyKey;
 extern NSString* const NCChatRoomIdKey;
+extern NSString* const NCChatMessageUserKey;
 
 @interface NCChatLibraryController : PTNSingleton
 
 +(NCChatLibraryController*)sharedInstance;
++(NSString*)privateChatRoomIdWithUser:(NSString*)userPrefix;
 
 -(NSString*)startChatWithUser:(NSString*)userPrefix;
 -(void)sendMessage:(NSString*)message toChat:(NSString*)chatId;

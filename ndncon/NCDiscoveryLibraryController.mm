@@ -328,10 +328,9 @@ private:
 -(void)publishConference:(Conference*)conference
 {
     std::string conferenceName([conference.name cStringUsingEncoding:NSASCIIStringEncoding]);
-    std::string conferencePrefix([[NCPreferencesController sharedInstance].prefix
+    std::string conferencePrefix([[NCDiscoveryLibraryController
+                                  conferencesAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
                                   cStringUsingEncoding:NSASCIIStringEncoding]);
-    std::string broadcastPrefix([[NCPreferencesController sharedInstance].conferenceBroadcastPrefix
-                                 cStringUsingEncoding:NSASCIIStringEncoding]);
     shared_ptr<EntityBroadcasterObserver> observer(new ConferenceBroadcasterObserver(false));
     shared_ptr<IDiscoverableEntity> conferenceDescription(new ConferenceDescription(conference));
     
@@ -357,7 +356,7 @@ private:
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
         discoverer = new EntityBroadcaster(broadcastPrefix,
-                                           dynamic_pointer_cast<EntityBroadcasterObserver>(_conferenceBroadcasterObserver),
+                                           _conferenceBroadcasterObserver.get(),
                                            _conferenceDescriptionSerializer,
                                            *[[NCFaceSingleton sharedInstance] getFace],
                                            *[[NCFaceSingleton sharedInstance] getKeyChain],
@@ -380,6 +379,12 @@ private:
     [ongoingAndFutureConferences enumerateObjectsUsingBlock:^(Conference *conference, NSUInteger idx, BOOL *stop) {
         [self publishConference:conference];
     }];
+}
+
++(NSString*)conferencesAppPrefixWithHubPrefix:(NSString*)hubPrefix
+{
+    return [NSString stringWithFormat:@"%@/%@/conference",
+            hubPrefix, [NSString ndnRtcAppNameComponent]];;
 }
 
 @end

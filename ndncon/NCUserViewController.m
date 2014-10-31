@@ -14,15 +14,14 @@
 #import "NSObject+NCAdditions.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NCStreamViewerController.h"
-#import "NCChatViewController.h"
 #import "NCChatLibraryController.h"
+#import "NSString+NCAdditions.h"
 
 @interface NCUserViewController ()
 
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (nonatomic) NCStreamViewerController *streamEditorController;
 @property (weak) IBOutlet NSButton *fetchAllButton;
-@property (nonatomic) NCChatViewController *chatViewController;
 @property (nonatomic) BOOL isChatVisible;
 
 @property (weak) IBOutlet NSButton *chatButton;
@@ -83,8 +82,15 @@
     self.chatViewController.isActive = (status != SessionStatusOffline);
     self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@", self.userInfo[kSessionUsernameKey]];
 
-//    if (status != SessionStatusOffline)
-        self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser:userInfo[kSessionPrefixKey]];
+    // user prefix is not the same as session prefix!
+    // example session prefix:
+    //    /ndn/edu/ucla/remap/ndnrtc/user/alex
+    // example user prefix:
+    //    /ndn/edu/ucla/remap/alex
+    NSString *userPrefix = [NSString stringWithFormat:@"%@/%@",
+                            [userInfo[kSessionPrefixKey] getNdnRtcHubPrefix],
+                            [userInfo[kSessionPrefixKey] getNdnRtcUserName]];
+    self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser:userPrefix];
 }
 
 -(void)setSessionInfo:(NCSessionInfoContainer *)sessionInfo

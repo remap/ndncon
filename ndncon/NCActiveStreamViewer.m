@@ -71,7 +71,7 @@
     }];
     
     self.viewUpdated = NO;
-    self.isStreamEventsViewVisible = YES;
+    self.isStreamEventsViewVisible = NO;
 }
 
 -(void)awakeFromNib

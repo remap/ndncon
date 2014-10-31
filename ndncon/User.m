@@ -10,6 +10,7 @@
 #import "NCUserListViewController.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NCErrorController.h"
+#import "NCChatLibraryController.h"
 
 //******************************************************************************
 @implementation User
@@ -98,6 +99,11 @@
 -(NSString *)userPrefix
 {
     return [NSString stringWithFormat:@"%@/%@", self.prefix, self.name];
+}
+
+-(NSString *)privateChatRoomId
+{
+    return [NCChatLibraryController privateChatRoomIdWithUser:self.userPrefix];
 }
 
 @end

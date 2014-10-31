@@ -16,6 +16,10 @@
 #import "NSString+NCAdditions.h"
 #import "NCConferenceViewController.h"
 #import "NCDiscoveryLibraryController.h"
+#import "NCChatLibraryController.h"
+#import "ChatMessage.h"
+#import "ChatRoom.h"
+#import "User.h"
 
 #define STATUS_POPUP_OFFLINE_IDX 0
 #define STATUS_POPUP_PASSIVE_IDX 1
@@ -73,6 +77,7 @@
      NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
      NCLocalSessionErrorNotification, @selector(onSessionError:),
      NSApplicationWillTerminateNotification, @selector(onAppWillTerminate:),
+     NCChatMessageNotification, @selector(onNewChatMessage:),
      nil];
 }
 
@@ -249,7 +254,8 @@
     NCSessionInfoContainer *sessionInfo = [user valueForKey:kSessionInfoKey];
     
     self.userViewController = [[NCUserViewController alloc] init];
-    self.userViewController.userInfo = user;    
+    self.userViewController.chatViewController.delegate = self.userListViewController;
+    self.userViewController.userInfo = user;
     self.userViewController.sessionInfo = sessionInfo;
     self.userViewController.delegate = self;
     
@@ -290,6 +296,39 @@
 }
 
 // private
+-(void)onNewChatMessage:(NSNotification*)notification
+{
+    NSString *chatRoomId = notification.userInfo[NCChatRoomIdKey];
+    User *user = notification.userInfo[NCChatMessageUserKey];
+    
+    if ([chatRoomId isEqualTo:self.userViewController.chatViewController.chatRoomId] &&
+        self.userViewController.view == self.currentView)
+    {
+        [self.userViewController.chatViewController newChatMessage:notification];
+    }
+    else if (user) // for messages from self - user is nil
+    {
+        if ([notification.userInfo[NCChatMessageTypeKey] isEqualTo:kChatMesageTypeText])
+        {
+            NSUserNotification *userNotification = [[NSUserNotification alloc] init];
+            userNotification.title = user.name;
+            userNotification.informativeText = notification.userInfo[NCChatMessageBodyKey];
+            userNotification.soundName = NSUserNotificationDefaultSoundName;
+            userNotification.userInfo = @{kUserNameKey:user.name,
+                                          kHubPrefixKey:user.prefix};
+            
+            [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
+        }
+        
+        ChatRoom *chatRoom = [ChatRoom chatRoomWithId:chatRoomId
+                                          fromContext:self.context];
+        NSArray *unreadMessages = [ChatMessage unreadTextMessagesFromUser:user
+                                                               inChatroom:chatRoom];
+        // update cell and post notification
+        [self.userListViewController updateCellBadgeNumber:unreadMessages.count
+                                           forCellWithUser:user];
+    }
+}
 -(void)withdrawConference:(Conference*)conference
 {
     [[NCDiscoveryLibraryController sharedInstance] withdrawConference:conference];

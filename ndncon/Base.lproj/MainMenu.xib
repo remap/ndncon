@@ -292,8 +292,8 @@ CA
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="LaF-x4-xuG" customClass="NCConversationInfoView">
                                         <rect key="frame" x="0.0" y="516" width="212" height="40"/>
                                         <subviews>
-                                            <textField verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-oS-QNn">
-                                                <rect key="frame" x="18" y="12" width="176.5" height="16"/>
+                                            <textField verticalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-oS-QNn">
+                                                <rect key="frame" x="18" y="12" width="177" height="16"/>
                                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Current conversation:" id="EAn-qm-I0n">
                                                     <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -350,7 +350,7 @@ CA
                                                                                 <customCell key="dataCell" alignment="left" id="Fft-ru-f3N"/>
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
-                                                                                    <tableCellView identifier="UserCell" id="kjG-HO-HvN">
+                                                                                    <tableCellView identifier="UserCell" id="kjG-HO-HvN" customClass="NCUserListCell">
                                                                                         <rect key="frame" x="1" y="1" width="201" height="50"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
@@ -377,6 +377,14 @@ CA
                                                                                                     <outlet property="nextKeyView" destination="rX1-cy-J5c" id="Yjl-5k-sOt"/>
                                                                                                 </connections>
                                                                                             </textField>
+                                                                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="egu-V2-pML">
+                                                                                                <rect key="frame" x="177" y="15" width="20" height="20"/>
+                                                                                                <constraints>
+                                                                                                    <constraint firstAttribute="width" constant="20" id="6cg-o2-gcB"/>
+                                                                                                    <constraint firstAttribute="height" constant="20" id="PF6-6N-iim"/>
+                                                                                                </constraints>
+                                                                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="axesIndependently" image="unread_msg_plate" id="ZIA-H0-JuH"/>
+                                                                                            </imageView>
                                                                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" placeholderIntrinsicWidth="140" placeholderIntrinsicHeight="14" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rX1-cy-J5c" customClass="NCCustomTextField">
                                                                                                 <rect key="frame" x="42" y="12" width="157" height="14"/>
                                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="prefix" usesSingleLineMode="YES" id="5wz-f4-i0T">
@@ -388,21 +396,34 @@ CA
                                                                                                     <binding destination="kjG-HO-HvN" name="value" keyPath="objectValue.prefix" id="Ufr-fx-Ppk"/>
                                                                                                 </connections>
                                                                                             </textField>
+                                                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XfU-CJ-WJE">
+                                                                                                <rect key="frame" x="180" y="18" width="15" height="14"/>
+                                                                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="0" id="tvL-XH-MVG">
+                                                                                                    <font key="font" metaFont="smallSystemBold"/>
+                                                                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                </textFieldCell>
+                                                                                            </textField>
                                                                                         </subviews>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="OQW-5e-xB0" secondAttribute="trailing" priority="900" constant="4" id="1cF-jh-Al1"/>
                                                                                             <constraint firstAttribute="trailing" secondItem="rX1-cy-J5c" secondAttribute="trailing" constant="4" id="3XY-V2-caY"/>
                                                                                             <constraint firstItem="rX1-cy-J5c" firstAttribute="leading" secondItem="OQW-5e-xB0" secondAttribute="leading" id="6fG-Id-AMI"/>
+                                                                                            <constraint firstAttribute="trailing" secondItem="egu-V2-pML" secondAttribute="trailing" constant="4" id="Biv-ZI-K72"/>
                                                                                             <constraint firstAttribute="centerY" secondItem="Qsi-tD-Opm" secondAttribute="centerY" id="Dgb-fS-w2R"/>
+                                                                                            <constraint firstItem="XfU-CJ-WJE" firstAttribute="centerY" secondItem="egu-V2-pML" secondAttribute="centerY" id="Ep9-25-K29"/>
                                                                                             <constraint firstItem="Qsi-tD-Opm" firstAttribute="top" secondItem="OQW-5e-xB0" secondAttribute="top" id="PiH-Au-BAu"/>
                                                                                             <constraint firstItem="OQW-5e-xB0" firstAttribute="leading" secondItem="Qsi-tD-Opm" secondAttribute="trailing" constant="4" id="Sat-9c-qce"/>
                                                                                             <constraint firstItem="rX1-cy-J5c" firstAttribute="top" secondItem="OQW-5e-xB0" secondAttribute="bottom" constant="2" id="Snj-r1-T5Z"/>
+                                                                                            <constraint firstItem="egu-V2-pML" firstAttribute="centerX" secondItem="XfU-CJ-WJE" secondAttribute="centerX" id="YMP-qi-WP7"/>
                                                                                             <constraint firstItem="Qsi-tD-Opm" firstAttribute="leading" secondItem="kjG-HO-HvN" secondAttribute="leading" id="fq1-wo-Jo3"/>
+                                                                                            <constraint firstAttribute="centerY" secondItem="egu-V2-pML" secondAttribute="centerY" id="vAE-Ii-9pG"/>
                                                                                         </constraints>
                                                                                         <connections>
-                                                                                            <outlet property="hintTextField" destination="rX1-cy-J5c" id="nEI-nt-nSc"/>
                                                                                             <outlet property="imageView" destination="Qsi-tD-Opm" id="N13-Ny-fSv"/>
                                                                                             <outlet property="textField" destination="OQW-5e-xB0" id="QX8-Ya-UAL"/>
+                                                                                            <outlet property="unreadMessagesBackImageView" destination="egu-V2-pML" id="HNT-fE-Sx4"/>
+                                                                                            <outlet property="unreadMessagesTextField" destination="XfU-CJ-WJE" id="A04-lj-CkV"/>
                                                                                         </connections>
                                                                                     </tableCellView>
                                                                                 </prototypeCellViews>
@@ -970,5 +991,6 @@ CA
     <resources>
         <image name="session_offline" width="32" height="32"/>
         <image name="session_passive" width="32" height="32"/>
+        <image name="unread_msg_plate" width="9.6000003814697266" height="9.6000003814697266"/>
     </resources>
 </document>
