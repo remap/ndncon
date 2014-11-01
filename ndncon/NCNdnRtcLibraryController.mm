@@ -85,10 +85,12 @@ public:
         NCSessionStatus oldStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
         [NCNdnRtcLibraryController sharedInstance].sessionStatus = [NCNdnRtcLibraryController ncStatus:status];
         
+        NSString *usernameStr = [NSString ncStringFromCString:username];
+        NSString *sessionPrefixStr = [NSString ncStringFromCString:sessionPrefix];
         dispatch_async(dispatch_get_main_queue(), ^{
             [[[NSObject alloc] init] notifyNowWithNotificationName:NCLocalSessionStatusUpdateNotification
-                                                       andUserInfo:@{kSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
-                                                                     kSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
+                                                       andUserInfo:@{kSessionUsernameKey: usernameStr,
+                                                                     kSessionPrefixKey: sessionPrefixStr,
                                                                      kSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
                                                                      kSessionOldStatusKey: @(oldStatus)}];
         });

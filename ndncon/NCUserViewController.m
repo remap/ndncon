@@ -43,7 +43,7 @@
                             imageForSessionStatus:SessionStatusOffline];
 
         [self subscribeForNotificationsAndSelectors:
-         NCRemoteSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
+         NCRemoteSessionStatusUpdateNotification, @selector(onRemoteSessionStatusUpdate:),
          nil];
     }
     
@@ -164,7 +164,7 @@
                                  andVideoStreams:[NSMutableArray arrayWithArray:[self.sessionInfo videoStreamsConfigurations]]];
 }
 
--(void)onSessionStatusUpdate:(NSNotification*)notification
+-(void)onRemoteSessionStatusUpdate:(NSNotification*)notification
 {
     if ([[self.userInfo objectForKey:kSessionPrefixKey]
          isEqualTo:[notification.userInfo objectForKey:kSessionPrefixKey]])

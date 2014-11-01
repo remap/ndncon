@@ -16,6 +16,7 @@
 #import "User.h"
 #import "AppDelegate.h"
 #import "NSString+NCAdditions.h"
+#import "NCErrorController.h"
 
 NSString* const NCConferenceDiscoveredNotification = @"NCConferenceDiscoveredNotification";
 NSString* const NCConferenceWithdrawedNotification = @"NCConferenceWithdrawedNotification";
@@ -62,6 +63,9 @@ public:
     ConferenceDescription(NSDictionary *dictionary):conference_(nil),conferenceDictionary_(dictionary){}
     ~ConferenceDescription()
     {
+        if (conference_)
+            conference_ = nil;
+        
         if (conferenceDictionary_)
             conferenceDictionary_ = nil;
     }
@@ -163,7 +167,7 @@ public:
     { return conferenceDictionary_; }
     
 private:
-    __weak Conference *conference_;
+    Conference *conference_;
     NSDictionary *conferenceDictionary_;
 };
 
@@ -239,6 +243,7 @@ private:
     shared_ptr<IDiscoverableEntitySerializer> _conferenceDescriptionSerializer;
 }
 
+@property (nonatomic) BOOL initialized;
 @property (nonatomic, readonly) NSManagedObjectContext *context;
 
 @end
@@ -277,9 +282,11 @@ private:
             return nil;
         
         [[NCFaceSingleton sharedInstance] startProcessingEvents];
-        
-        [self initConferenceDiscovery];
-        [self publishConferences];
+
+        self.initialized = NO;
+        [self subscribeForNotificationsAndSelectors:
+         NCLocalSessionStatusUpdateNotification, @selector(onLocalSessionStatusChanged:),
+         nil];
     }
     
     return self;
@@ -287,6 +294,7 @@ private:
 
 -(void)dealloc
 {
+    [self unsubscribeFromNotifications];
 }
 
 #pragma mark - public
@@ -294,18 +302,21 @@ private:
 {
     __block NSMutableArray *conferences = [NSMutableArray array];
 
-    [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-        ConferenceMap conferenceMap = _conferenceBroadcasterObserver->getBroadcaster()->getDiscoveredConferenceList();
-        
-        ConferenceMap::iterator it = conferenceMap.begin();
-        while (it != conferenceMap.end())
-        {
-            shared_ptr<ConferenceDescription> conferenceDescription =
+    if (self.initialized)
+    {
+        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+            ConferenceMap conferenceMap = _conferenceBroadcasterObserver->getBroadcaster()->getDiscoveredConferenceList();
+            
+            ConferenceMap::iterator it = conferenceMap.begin();
+            while (it != conferenceMap.end())
+            {
+                shared_ptr<ConferenceDescription> conferenceDescription =
                 dynamic_pointer_cast<ConferenceDescription>(it->second);
-            [conferences addObject:[[NCRemoteConference alloc] initWithDictionary:conferenceDescription->getConferenceDictionary()]];
-            it++;
-        }
-    }];
+                [conferences addObject:[[NCRemoteConference alloc] initWithDictionary:conferenceDescription->getConferenceDictionary()]];
+                it++;
+            }
+        }];
+    }
     
     return [NSArray arrayWithArray:conferences];
 }
@@ -313,20 +324,47 @@ private:
 
 -(void)announceConference:(Conference*)conference
 {
-    [self publishConference:conference];
+    if (self.initialized)
+        [self publishConference:conference];
 }
 
 -(void)withdrawConference:(Conference*)conference
 {
-    std::string conferenceName([conference.name cStringUsingEncoding:NSASCIIStringEncoding]);
-    std::string conferencePrefix([[NCPreferencesController sharedInstance].prefix
-                                  cStringUsingEncoding:NSASCIIStringEncoding]);
-    _conferenceBroadcasterObserver->getBroadcaster()->stopPublishingConference(conferenceName, conferencePrefix);
+    assert(conference);
+    
+    if (self.initialized)
+    {
+        std::string conferenceName([conference.name cStringUsingEncoding:NSASCIIStringEncoding]);
+        std::string conferencePrefix([[NCDiscoveryLibraryController
+                                       conferencesAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
+                                      cStringUsingEncoding:NSASCIIStringEncoding]);
+        _conferenceBroadcasterObserver->getBroadcaster()->stopPublishingConference(conferenceName, conferencePrefix);
+        NSLog(@"withdrawed conference %@", conference.name);
+    }
 }
 
 #pragma mark - private
+-(void)onLocalSessionStatusChanged:(NSNotification*)notification
+{
+    NCSessionStatus status = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
+    
+    if (status == SessionStatusOffline)
+    {
+        [self withdrawConferences];
+    }
+    else
+    {
+        if (!self.initialized)
+            [self initConferenceDiscovery];
+        if (self.initialized)
+            [self publishConferences];
+    }
+}
+
 -(void)publishConference:(Conference*)conference
 {
+    assert(conference);
+    
     std::string conferenceName([conference.name cStringUsingEncoding:NSASCIIStringEncoding]);
     std::string conferencePrefix([[NCDiscoveryLibraryController
                                   conferencesAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
@@ -335,9 +373,16 @@ private:
     shared_ptr<IDiscoverableEntity> conferenceDescription(new ConferenceDescription(conference));
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-        _conferenceBroadcasterObserver->getBroadcaster()->publishConference(conferenceName,
-                                                                            conferencePrefix,
-                                                                            conferenceDescription);
+        try {
+            _conferenceBroadcasterObserver->getBroadcaster()->publishConference(conferenceName,
+                                                                                conferencePrefix,
+                                                                                conferenceDescription);
+            NSLog(@"published conference %@", conference.name);
+        } catch (std::exception &exception) {
+            NSLog(@"exception %@", [NSString ncStringFromCString:exception.what()]);
+//            [[NCErrorController sharedInstance]
+//             postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
+        }
     }];
     
 }
@@ -355,14 +400,25 @@ private:
     __block EntityBroadcaster *discoverer;
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-        discoverer = new EntityBroadcaster(broadcastPrefix,
-                                           _conferenceBroadcasterObserver.get(),
-                                           _conferenceDescriptionSerializer,
-                                           *[[NCFaceSingleton sharedInstance] getFace],
-                                           *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                           [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName());
+        try {
+            NSLog(@"initializing conference discovery..");
+            discoverer = new EntityBroadcaster(broadcastPrefix,
+                                               _conferenceBroadcasterObserver.get(),
+                                               _conferenceDescriptionSerializer,
+                                               *[[NCFaceSingleton sharedInstance] getFace],
+                                               *[[NCFaceSingleton sharedInstance] getKeyChain],
+                                               [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName());
+        }
+        catch (std::exception &exception) {
+            discoverer = NULL;
+            
+            NSLog(@"exception %@", [NSString ncStringFromCString:exception.what()]);            
+//            [[NCErrorController sharedInstance]
+//             postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
+        }
     }];
     
+    self.initialized = (discoverer != NULL);
     _conferenceBroadcasterObserver->setConferenceBroadcaster(discoverer);
 }
 
@@ -379,6 +435,22 @@ private:
     [ongoingAndFutureConferences enumerateObjectsUsingBlock:^(Conference *conference, NSUInteger idx, BOOL *stop) {
         [self publishConference:conference];
     }];
+}
+
+-(void)withdrawConferences
+{
+    if (self.initialized)
+    {
+        NSLog(@"Withdrawing all published conferences...");
+        
+        ConferenceMap hostedConferences = _conferenceBroadcasterObserver->getBroadcaster()->getHostedConferenceList();
+
+        for (ConferenceMap::iterator it = hostedConferences.begin(); it != hostedConferences.end(); ++it)
+        {
+            Conference *conference = dynamic_pointer_cast<ConferenceDescription>(it->second)->getConference();
+            [self withdrawConference:conference];
+        }
+    }
 }
 
 +(NSString*)conferencesAppPrefixWithHubPrefix:(NSString*)hubPrefix

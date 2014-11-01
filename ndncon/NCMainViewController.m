@@ -329,6 +329,7 @@
                                            forCellWithUser:user];
     }
 }
+
 -(void)withdrawConference:(Conference*)conference
 {
     [[NCDiscoveryLibraryController sharedInstance] withdrawConference:conference];

@@ -112,6 +112,24 @@ public:
     NCSessionStatus lastStatus_ = SessionStatusOffline;
     SessionInfo lastSessionInfo_;
     
+    void
+    notifyStatusUpdate(NCSessionStatus status)
+    {
+        NCSessionStatus oldStatus = lastStatus_;
+        lastStatus_ = status;
+        
+        NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
+        
+        userInfo[kSessionStatusKey]= @(status);
+        userInfo[kSessionOldStatusKey] = @(oldStatus);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[[NSObject alloc] init]
+             notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
+             andUserInfo:userInfo];
+        });
+    }
+    
 private:
     bool freshStart_ = true;
     unsigned int nTimeouts_;
@@ -177,24 +195,6 @@ private:
         dispatch_async(dispatch_get_main_queue(), ^{
             [[[NSObject alloc] init]
              notifyNowWithNotificationName:NCRemoteSessionErrorNotification
-             andUserInfo:userInfo];
-        });
-    }
-    
-    void
-    notifyStatusUpdate(NCSessionStatus status)
-    {
-        NCSessionStatus oldStatus = lastStatus_;
-        lastStatus_ = status;
-        
-        NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
-        
-        userInfo[kSessionStatusKey]= @(status);
-        userInfo[kSessionOldStatusKey] = @(oldStatus);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[NSObject alloc] init]
-             notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
              andUserInfo:userInfo];
         });
     }
@@ -265,8 +265,8 @@ private:
 {
     _observerQueue = dispatch_queue_create("queue.observers", DISPATCH_QUEUE_SERIAL);
     [self subscribeForNotificationsAndSelectors:
-     NCRemoteSessionStatusUpdateNotification,
-     @selector(sessionDidUpdateStatus:),
+     NCRemoteSessionStatusUpdateNotification, @selector(onRemoteSessionStatusUpdate:),
+     NCLocalSessionStatusUpdateNotification, @selector(onLocalSessionStatusUpdate:),
      nil];
 }
 
@@ -333,12 +333,14 @@ private:
 }
 
 // NSUserNotificationCenterDelegate
--(BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification
+-(BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
+    shouldPresentNotification:(NSUserNotification *)notification
 {
     return YES;
 }
 
--(void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification
+-(void)userNotificationCenter:(NSUserNotificationCenter *)center
+      didActivateNotification:(NSUserNotification *)notification
 {
     User *user = [User userByName:notification.userInfo[kUserNameKey]
                         andPrefix:notification.userInfo[kHubPrefixKey]
@@ -353,7 +355,7 @@ private:
     [self.tableView reloadData];
 }
 
--(void)sessionDidUpdateStatus:(NSNotification*)notification
+-(void)onRemoteSessionStatusUpdate:(NSNotification*)notification
 {
     NSString *userName = [notification.userInfo objectForKey:kSessionUsernameKey];
     NSString *prefix = [notification.userInfo objectForKey:kHubPrefixKey];
@@ -368,28 +370,52 @@ private:
     }
 }
 
+-(void)onLocalSessionStatusUpdate:(NSNotification*)notification
+{
+    NCSessionStatus status = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
+    
+    if (status == SessionStatusOffline)
+    {
+        dispatch_sync(_observerQueue, ^{
+            while (_sessionObservers.size())
+                [self stopObserver: _sessionObservers[0]];
+        });
+    }
+    else
+    {
+        [self.userController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *user = [obj name];
+            NSString *prefix = [obj prefix];
+            [self startObserverForUser:user andPrefix:prefix];
+        }];
+    }
+}
+
 -(void)checkAndUpdateSessionObservers
 {
     [self stopOldObservers];
     
-    BOOL updated = NO;
-    
-    for (id obj in self.userController.arrangedObjects)
+    if ([NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
     {
-        NSString *userName = [obj name];
-        NSString *prefix = [obj prefix];
+        BOOL updated = NO;
         
-        if (![userName isEqualToString:@"username"])
-            if (![self hasObserverForUser:userName andPrefix:prefix])
-            {
-                updated = YES;
-                [self startObserverForUser:userName andPrefix:prefix];
-            }
+        for (id obj in self.userController.arrangedObjects)
+        {
+            NSString *userName = [obj name];
+            NSString *prefix = [obj prefix];
+            
+            if (![userName isEqualToString:@"username"])
+                if (![self hasObserverForUser:userName andPrefix:prefix])
+                {
+                    updated = YES;
+                    [self startObserverForUser:userName andPrefix:prefix];
+                }
+        }
+        
+        if (updated)
+            if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
+                [self.delegate userListViewControllerUserListUpdated:self];
     }
-    
-    if (updated)
-        if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
-            [self.delegate userListViewControllerUserListUpdated:self];
 }
 
 -(void)stopOldObservers
@@ -443,7 +469,11 @@ private:
     while (*it != observer && it != _sessionObservers.end()) it++;
     
     if (it != _sessionObservers.end())
+    {
+        // we won't see user statuses while being offline
+        (*it)->notifyStatusUpdate(SessionStatusOffline);
         _sessionObservers.erase(it);
+    }
     
     NSLog(@"stopped observer for %s:%s", observer->prefix_.c_str(), observer->username_.c_str());
     delete observer;

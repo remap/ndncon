@@ -201,7 +201,7 @@ private:
     _activeStreamObserver = new StreamObserver(self.activeStreamViewer);
     
     [self subscribeForNotificationsAndSelectors:
-     NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
+     NCLocalSessionStatusUpdateNotification, @selector(onLocalSessionStatusUpdate:),
      NCStreamObserverEventNotification, @selector(onStreamEvent:),
      NCStreamRebufferingNotification, @selector(onStreamEvent:),
      nil];
