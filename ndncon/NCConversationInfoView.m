@@ -50,6 +50,12 @@
     self.status = NCConversationInfoStatusOffline;
 }
 
+-(void)setSelected:(BOOL)selected
+{
+    _selected = selected;
+    [self setNeedsDisplay:YES];
+}
+
 - (void)drawRect:(NSRect)dirtyRect
 {
     [[NSColor whiteColor] set];
@@ -75,6 +81,36 @@
 
     [insetPath1 stroke];
     [insetPath2 fill];
+    
+    if (self.selected)
+    {
+        [[NSColor colorWithRed:180./255. green:0. blue:0. alpha:1.] set];
+        [path stroke];
+        [insetPath2 stroke];
+    }
+}
+
+-(void)mouseDown:(NSEvent *)theEvent
+{
+    [[NSApp mainWindow] makeFirstResponder:self];
+    [super mouseDown:theEvent];
+}
+
+-(BOOL)acceptsFirstResponder
+{
+    return YES;
+}
+
+-(BOOL)becomeFirstResponder
+{
+    self.selected = YES;
+    return YES;
+}
+
+-(BOOL)resignFirstResponder
+{
+    self.selected = NO;
+    return YES;
 }
 
 @end

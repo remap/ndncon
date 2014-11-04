@@ -292,9 +292,9 @@ CA
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="LaF-x4-xuG" customClass="NCConversationInfoView">
                                         <rect key="frame" x="0.0" y="516" width="212" height="40"/>
                                         <subviews>
-                                            <textField verticalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-oS-QNn">
-                                                <rect key="frame" x="18" y="12" width="177" height="16"/>
-                                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Current conversation:" id="EAn-qm-I0n">
+                                            <textField verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-oS-QNn">
+                                                <rect key="frame" x="18" y="12" width="176" height="16"/>
+                                                <textFieldCell key="cell" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" alignment="center" title="Current conversation:" id="EAn-qm-I0n">
                                                     <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
