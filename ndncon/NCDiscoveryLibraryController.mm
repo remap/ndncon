@@ -184,8 +184,12 @@ public:
 class ConferenceBroadcasterObserver : public EntityBroadcasterObserver
 {
 public:
-    ConferenceBroadcasterObserver(bool isActive):isActive_(isActive){}
-    ~ConferenceBroadcasterObserver(){}
+    ConferenceBroadcasterObserver(bool isActive):isActive_(isActive),broadcaster_(NULL){}
+    ~ConferenceBroadcasterObserver()
+    {
+        if (broadcaster_)
+            delete broadcaster_;
+    }
     
     void
     onStateChanged(MessageTypes type, const char *msg, double timestamp)
@@ -351,6 +355,9 @@ private:
     if (status == SessionStatusOffline)
     {
         [self withdrawConferences];
+        self.initialized = NO;
+        _conferenceBroadcasterObserver.reset();
+        self.discoveredConferences = [NSArray array];
     }
     else
     {
@@ -426,7 +433,8 @@ private:
 {
     NSArray *conferences = [Conference allConferencesFromContext:self.context];
     NSArray *ongoingAndFutureConferences = [conferences filteredArrayUsingPredicate:
-                                            [NSPredicate predicateWithBlock:^BOOL(Conference *conference, NSDictionary *bindings) {
+                                            [NSPredicate predicateWithBlock:
+                                             ^BOOL(Conference *conference, NSDictionary *bindings) {
         NSDate *conferenceEndDate = [conference.startDate dateByAddingTimeInterval:[conference.duration doubleValue]];
         NSComparisonResult res = [conferenceEndDate compare:[NSDate date]];
         return (res == NSOrderedSame) || (res == NSOrderedDescending);

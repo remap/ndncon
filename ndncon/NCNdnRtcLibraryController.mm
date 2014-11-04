@@ -85,6 +85,7 @@ public:
         NCSessionStatus oldStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
         [NCNdnRtcLibraryController sharedInstance].sessionStatus = [NCNdnRtcLibraryController ncStatus:status];
         
+        NSLog(@"new local session status - %d", status);
         NSString *usernameStr = [NSString ncStringFromCString:username];
         NSString *sessionPrefixStr = [NSString ncStringFromCString:sessionPrefix];
         dispatch_async(dispatch_get_main_queue(), ^{

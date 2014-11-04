@@ -155,14 +155,22 @@
 
     self.conferenceViewController.isOwner = ![conference isRemote];
     self.conferenceViewController.isEditable = NO;
-    self.conferenceViewController.conference = conference;    
+    self.conferenceViewController.conference = conference;
+    [self.userListViewController clearSelection];
 }
+
 -(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
             wantsDeleteConference:(Conference *)conference
 {
     [self withdrawConference:conference];
 }
 
+-(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
+     remoteConferenceWithdrawed:(id<ConferenceEntityProtocol>)conference
+{
+    if (self.conferenceViewController.conference == conference)
+        [self loadCurrentView:self.initialView];
+}
 
 #pragma mark - NCConferenceViewControllerDelegate
 -(void)conferenceViewControllerDidCancelConference:(NCConferenceViewController *)conferenceViewController
@@ -259,6 +267,7 @@
     self.userViewController.sessionInfo = sessionInfo;
     self.userViewController.delegate = self;
     
+    [self.conferenceListViewController clearSelection];
     [self loadCurrentView:self.userViewController.view];
 }
 
@@ -286,13 +295,6 @@
         [self.conversationViewController endConversation:nil];
     
     [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
-}
-
-#pragma mark - NCConferenceListViewControllerDelegate
--(void)conferenceListController:(NCConferenceListViewController *)conferenceListController remoteConferenceWithdrawed:(id<ConferenceEntityProtocol>)conference
-{
-    if (self.conferenceViewController.conference == conference)
-        [self loadCurrentView:self.initialView];
 }
 
 // private

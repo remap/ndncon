@@ -332,6 +332,7 @@ private:
     if (status == SessionStatusOffline)
     {
         [self leaveAllChatRooms];
+        self.initialized = NO;
     }
     else
     {

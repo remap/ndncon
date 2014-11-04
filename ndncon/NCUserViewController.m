@@ -66,6 +66,19 @@
     self.isChatVisible = YES;
     self.chatViewController.isActive = (status != SessionStatusOffline);
     self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@:", self.userInfo[kSessionUsernameKey]];
+    
+    if (self.userInfo && !self.chatViewController.chatRoomId)
+    {
+        // user prefix is not the same as session prefix!
+        // example session prefix:
+        //    /ndn/edu/ucla/remap/ndnrtc/user/alex
+        // example user prefix:
+        //    /ndn/edu/ucla/remap/alex
+        NSString *userPrefix = [NSString stringWithFormat:@"%@/%@",
+                                [self.userInfo[kSessionPrefixKey] getNdnRtcHubPrefix],
+                                [self.userInfo[kSessionPrefixKey] getNdnRtcUserName]];
+        [self joinChatRoomForUserPrefix:userPrefix];
+    }
 }
 
 -(void)setUserInfo:(NSDictionary *)userInfo
@@ -82,15 +95,14 @@
     self.chatViewController.isActive = (status != SessionStatusOffline);
     self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@", self.userInfo[kSessionUsernameKey]];
 
-    // user prefix is not the same as session prefix!
-    // example session prefix:
-    //    /ndn/edu/ucla/remap/ndnrtc/user/alex
-    // example user prefix:
-    //    /ndn/edu/ucla/remap/alex
-    NSString *userPrefix = [NSString stringWithFormat:@"%@/%@",
-                            [userInfo[kSessionPrefixKey] getNdnRtcHubPrefix],
-                            [userInfo[kSessionPrefixKey] getNdnRtcUserName]];
-    self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser:userPrefix];
+    if (!self.chatViewController.chatRoomId)
+    
+    {
+        NSString *userPrefix = [NSString stringWithFormat:@"%@/%@",
+                                [self.userInfo[kSessionPrefixKey] getNdnRtcHubPrefix],
+                                [self.userInfo[kSessionPrefixKey] getNdnRtcUserName]];
+        [self joinChatRoomForUserPrefix:userPrefix];
+    }
 }
 
 -(void)setSessionInfo:(NCSessionInfoContainer *)sessionInfo
@@ -121,6 +133,11 @@
 }
 
 // private
+-(void)joinChatRoomForUserPrefix:(NSString*)userPrefix
+{
+    self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser:userPrefix];
+}
+
 -(void)setIsChatVisible:(BOOL)isChatVisible
 {
     if (_isChatVisible != isChatVisible)

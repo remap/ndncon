@@ -228,7 +228,7 @@ NSString* const kNoConferences = @"no conferences";
 
 -(void)clearSelection
 {
-//    [self.tableView deselectAll:nil];
+    [self.tableView deselectAll:nil];
 }
 
 -(void)reloadData
@@ -326,12 +326,16 @@ NSString* const kNoConferences = @"no conferences";
 
 -(void)tableViewSelectionDidChange:(NSNotification *)notification
 {
-    id conference = [self.tableContents objectAtIndex:self.tableView.selectedRow];
-    
-    if (self.delegate &&
-        [self.delegate respondsToSelector:@selector(conferenceListController:didSelectConference:)])
-        [self.delegate conferenceListController:self
-                            didSelectConference:conference];
+    if (self.tableView.selectedRow > 0 &&
+        self.tableView.selectedRow < self.tableContents.count)
+    {
+        id conference = [self.tableContents objectAtIndex:self.tableView.selectedRow];
+        
+        if (self.delegate &&
+            [self.delegate respondsToSelector:@selector(conferenceListController:didSelectConference:)])
+            [self.delegate conferenceListController:self
+                                didSelectConference:conference];
+    }
 }
 
 #pragma mark - NSTableViewDataSource

@@ -310,7 +310,9 @@ private:
 // NSTableViewDelegate
 -(void)tableViewSelectionDidChange:(NSNotification *)notification
 {
-    if (self.tableView.selectedRow < [self.userController.arrangedObjects count])
+    if (self.tableView.selectedRow == -1)
+        self.selectedUser = nil;
+    else if (self.tableView.selectedRow < [self.userController.arrangedObjects count])
     {
         id user = [self.userController.arrangedObjects objectAtIndex:self.tableView.selectedRow];
         
@@ -528,8 +530,8 @@ private:
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     
-    [userInfo setObject:userName forKey:kSessionUsernameKey];
-    [userInfo setObject:prefix forKey:kHubPrefixKey];
+    userInfo[kSessionUsernameKey] = userName;
+    userInfo[kHubPrefixKey] = prefix;
     
     RemoteSessionObserver *observer = [self observerForUser:userName andPrefix:prefix];
     
