@@ -86,5 +86,6 @@ extern NSString* const kConferenceOrganizerPrefixKey;
 @property (nonatomic, retain, readonly) UserStub *organizer;
 
 -(id)initWithDictionary:(NSDictionary *)conferenceDictionary;
+-(void)createLocalCopiesForMissingUsersInContext:(NSManagedObjectContext*)context;
 
 @end

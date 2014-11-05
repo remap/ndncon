@@ -46,9 +46,6 @@ typedef std::map<std::string, ndn::ptr_lib::shared_ptr<NCChatObserver>> ChatIdTo
                         messageBody:(NSString*)messageBody
                    inChatRoomWithId:(NSString*)chatRoomId;
 
--(void)addOutgoingChatMessageOfType:(NSString*)msgType
-                        messageBody:(NSString*)messageBody
-                   inChatRoomWithId:(NSString*)chatRoomId;
 @end
 
 //******************************************************************************
@@ -186,6 +183,7 @@ private:
 {
     NSString *chatRoomId = [NCChatLibraryController
                             privateChatRoomIdWithUser:userPrefix];
+#ifdef CHATS_ENABLED
     std::string broadcastPrefix([[NCPreferencesController sharedInstance].chatBroadcastPrefix
                                  cStringUsingEncoding:NSASCIIStringEncoding]);
     ndn::Name broadcastPrefixName(broadcastPrefix);
@@ -238,7 +236,7 @@ private:
         else
             self.initialized = NO;
     }
-    
+#endif
     return chatRoomId;
 }
 
@@ -342,7 +340,9 @@ private:
 // notificaitons
 -(void)onLocalSessionStatusChanged:(NSNotification*)notification
 {
+#ifdef CHATS_ENABLED
     NCSessionStatus status = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
+    NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];
     
     if (status == SessionStatusOffline)
     {
@@ -350,39 +350,16 @@ private:
         self.initialized = NO;
     }
     else
-    {
-        if (!self.initialized)
+        if (oldStatus == SessionStatusOffline)
         {
-            if (![NCFaceSingleton sharedInstance].isValid)
-                [[NCFaceSingleton sharedInstance] reset];
-            
-            [self initChatRooms];
+            if (!self.initialized)
+            {
+                if (![NCFaceSingleton sharedInstance].isValid)
+                    [[NCFaceSingleton sharedInstance] reset];
+                
+                [self initChatRooms];
+            }
         }
-    }
-}
-
--(void)remoteSessionStatusUpdate:(NSNotification*)notification
-{
-    NCSessionStatus oldStatus = (NCSessionStatus)[[notification.userInfo objectForKey:kSessionOldStatusKey] integerValue];
-    NCSessionStatus newStatus = (NCSessionStatus)[[notification.userInfo objectForKey:kSessionStatusKey] integerValue];
-#if 0
-    if (oldStatus == SessionStatusOffline &&
-        (newStatus == SessionStatusOnlinePublishing || newStatus == SessionStatusOnlineNotPublishing))
-    {
-        NSLog(@"user %@ is online", notification.userInfo[kSessionUsernameKey]);
-        [self startChatWithUser:notification.userInfo[kSessionPrefixKey]];
-    }
-    
-    if (newStatus == SessionStatusOffline &&
-        (oldStatus == SessionStatusOnlineNotPublishing || oldStatus == SessionStatusOnlinePublishing))
-    {
-        NSLog(@"user %@ is offline", notification.userInfo[kSessionUsernameKey]);
-        NSString *chatRoomId = [NCChatLibraryController
-                                privateChatRoomIdWithUser:notification.userInfo[kSessionPrefixKey]];
-        
-        if (chatRoomId)
-            [self leaveChat:chatRoomId];
-    }
 #endif
 }
 

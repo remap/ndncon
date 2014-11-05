@@ -347,7 +347,9 @@ private:
 #pragma mark - private
 -(void)onLocalSessionStatusChanged:(NSNotification*)notification
 {
+#ifdef CONFERENCES_ENABLED
     NCSessionStatus status = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
+    NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];
     
     if (status == SessionStatusOffline)
     {
@@ -367,18 +369,20 @@ private:
         self.discoveredConferences = [NSArray array];
     }
     else
-    {
-        if (!self.initialized)
+        if (oldStatus == SessionStatusOffline)
         {
-            if (![NCFaceSingleton sharedInstance].isValid)
-                [[NCFaceSingleton sharedInstance] reset];
+            if (!self.initialized)
+            {
+                if (![NCFaceSingleton sharedInstance].isValid)
+                    [[NCFaceSingleton sharedInstance] reset];
+                
+                [self initConferenceDiscovery];
+            }
             
-            [self initConferenceDiscovery];
+            if (self.initialized)
+                [self publishConferences];
         }
-        
-        if (self.initialized)
-            [self publishConferences];
-    }
+#endif
 }
 
 -(void)publishConference:(Conference*)conference

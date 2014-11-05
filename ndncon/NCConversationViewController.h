@@ -51,6 +51,11 @@ NCStatisticsWindowControllerDelegate>
 // ]
 //
 @property (nonatomic) NSArray *participants;
+/**
+ * Returns YES if there etiher currentConversationStatus is OnlinePublishing or
+ * there are participants in participants array
+ */
+@property (nonatomic) BOOL isConversationActive;
 
 -(void)startPublishingWithConfiguration:(NSDictionary*)streamsConfiguration;
 /**

@@ -182,10 +182,19 @@
 
 -(void)conferenceViewControllerDidJoinConference:(NCConferenceViewController *)conferenceViewController
 {
-    [self startConverstaionIfNotStarted];
-    [self loadCurrentView:self.conversationViewController.view];
-    [self.conversationViewController startConference:conferenceViewController.conference];
-    [self.conferenceListViewController clearSelection];
+    if (self.conversationViewController.isConversationActive)
+    {
+        [[NCErrorController sharedInstance]
+         postErrorWithMessage:@"You are in a conversation. Please end current "
+         "conversation before joining a conference"];
+    }
+    else
+    {
+        [self startConverstaionIfNotStarted];
+        [self loadCurrentView:self.conversationViewController.view];
+        [self.conversationViewController startConference:conferenceViewController.conference];
+        [self.conferenceListViewController clearSelection];
+    }
 }
 
 -(void)conferenceViewControllerDidPublishConference:(NCConferenceViewController *)conferenceViewController

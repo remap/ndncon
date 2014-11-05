@@ -58,6 +58,7 @@ public:
     
     ~StreamObserver()
     {
+        viewer_ = NULL;
         unregisterObserver();
     }
     
@@ -337,6 +338,12 @@ private:
 {
     _participants = participants;
     _currentConversationStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
+}
+
+-(BOOL)isConversationActive
+{
+    return (self.currentConversationStatus == SessionStatusOnlinePublishing ||
+            self.participants.count > 0);
 }
 
 // NCActiveStreamViewerDelegate

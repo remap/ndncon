@@ -158,9 +158,11 @@
     // check if conference is remote - if so, create local copy of it
     if ([self.conference isKindOfClass:[NCRemoteConference class]])
     {
-        Conference *conference = [Conference newConferenceFromRemoteCopy:self.conference
-                                                               inContext:self.context];
-        _conference = conference;
+        [(NCRemoteConference*)self.conference createLocalCopiesForMissingUsersInContext:self.context];
+        
+//        Conference *conference = [Conference newConferenceFromRemoteCopy:self.conference
+//                                                               inContext:self.context];
+//        _conference = conference;
     }
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceViewControllerDidJoinConference:)])

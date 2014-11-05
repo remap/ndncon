@@ -367,7 +367,7 @@ private:
     NSString *userName = [notification.userInfo objectForKey:kSessionUsernameKey];
     NSString *prefix = [notification.userInfo objectForKey:kHubPrefixKey];
     NCSessionStatus status = (NCSessionStatus)[[notification.userInfo objectForKey:kSessionStatusKey] intValue];
-    
+
     if (userName && prefix)
     {
         [self.userController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -380,6 +380,7 @@ private:
 -(void)onLocalSessionStatusUpdate:(NSNotification*)notification
 {
     NCSessionStatus status = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
+    NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];
     
     if (status == SessionStatusOffline)
     {
@@ -389,16 +390,17 @@ private:
         });
     }
     else
-    {
-        [self.userController.arrangedObjects enumerateObjectsUsingBlock:
-         ^(id obj, NSUInteger idx, BOOL *stop) {
-            NSString *user = [obj name];
-            NSString *prefix = [obj prefix];
-
-            if (user && prefix)
-                [self startObserverForUser:user andPrefix:prefix];
-        }];
-    }
+        if (oldStatus == SessionStatusOffline)
+        {
+            [self.userController.arrangedObjects enumerateObjectsUsingBlock:
+             ^(id obj, NSUInteger idx, BOOL *stop) {
+                 NSString *user = [obj name];
+                 NSString *prefix = [obj prefix];
+                 
+                 if (user && prefix)
+                     [self startObserverForUser:user andPrefix:prefix];
+             }];
+        }
 }
 
 -(void)checkAndUpdateSessionObservers
