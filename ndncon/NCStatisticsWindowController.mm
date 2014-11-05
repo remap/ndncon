@@ -163,61 +163,64 @@ using namespace ndnrtc;
 
 -(void)queryStatisticsForStream:(NSString*)aStreamPrefix
 {
-    NdnRtcLibrary *libHandle = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    ReceiverChannelPerformance stat;
-
-    [self.streamPrefixLock lock];
-    std::string streamPrefix([aStreamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
-    [self.streamPrefixLock unlock];
-    
-    libHandle->getRemoteStreamStatistics(streamPrefix, stat);
-    
-    std::string threadName = libHandle->getStreamThread(streamPrefix);
-    self.activeThread = [NSString ncStringFromCString:threadName.c_str()];
-
-    self.nBytesPerSec = (stat.nBytesPerSec_*8/1000);
-    self.interestFrequency = stat.interestFrequency_;
-    self.segmentsFrequency = stat.segmentsFrequency_;
-    self.rttEstimation = stat.rttEstimation_;
-    self.jitterEstimationMs = stat.jitterEstimationMs_;
-    self.jitterPlayableMs = stat.jitterPlayableMs_;
-    self.jitterTargetMs = stat.jitterTargetMs_;
-    self.actualProducerRate = stat.actualProducerRate_;
-    self.nDataReceived = stat.nDataReceived_;
-    self.nTimeouts = stat.nTimeouts_;
-    
-    self.nPlayed = stat.playoutStat_.nPlayed_;
-    self.nPlayedKey = stat.playoutStat_.nPlayedKey_;
-    self.nSkippedNoKey = stat.playoutStat_.nSkippedNoKey_;
-    self.nSkippedInvalidGop = stat.playoutStat_.nSkippedInvalidGop_;
-    self.nSkippedIncompleteKey = stat.playoutStat_.nSkippedIncompleteKey_;
-    self.nSkippedIncomplete = stat.playoutStat_.nSkippedIncomplete_;
-    self.latency = stat.playoutStat_.latency_;
-    
-    self.nAcquired = stat.bufferStat_.nAcquired_;
-    self.nAcquiredKey = stat.bufferStat_.nAcquiredKey_;
-    self.nDropped = stat.bufferStat_.nDropped_;
-    self.nDroppedKey = stat.bufferStat_.nDroppedKey_;
-    self.nAssembled  = stat.bufferStat_.nAssembled_;
-    self.nAssembledKey = stat.bufferStat_.nAssembledKey_;
-    self.nRescued = stat.bufferStat_.nRescued_;
-    self.nRescuedKey = stat.bufferStat_.nRescuedKey_;
-    self.nRecovered = stat.bufferStat_.nRecovered_;
-    self.nRecoveredKey = stat.bufferStat_.nRecoveredKey_;
-    self.nIncomplete = stat.bufferStat_.nIncomplete_;
-    self.nIncompleteKey = stat.bufferStat_.nIncompleteKey_;
-    
-    self.avgSegNum = stat.pipelinerStat_.avgSegNum_;
-    self.avgSegNumKey = stat.pipelinerStat_.avgSegNumKey_;
-    self.avgSegNumParity = stat.pipelinerStat_.avgSegNumParity_;
-    self.avgSegNumParityKey = stat.pipelinerStat_.avgSegNumParityKey_;
-    self.rtxFreq = stat.pipelinerStat_.rtxFreq_;
-    self.nRtx = stat.pipelinerStat_.nRtx_;
-    self.nRebuffer = stat.pipelinerStat_.nRebuffer_;
-    self.nRequested = stat.pipelinerStat_.nRequested_;
-    self.nRequestedKey = stat.pipelinerStat_.nRequestedKey_;
-    
-    self.outRateEstimationLabel.stringValue = [[NSNumber numberWithDouble:(INTEREST_AVERAGE_SIZE_BYTES*stat.interestFrequency_*8/1000.)] stringValue];
+    if (aStreamPrefix)
+    {
+        NdnRtcLibrary *libHandle = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+        ReceiverChannelPerformance stat;
+        
+        [self.streamPrefixLock lock];
+        std::string streamPrefix([aStreamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+        [self.streamPrefixLock unlock];
+        
+        libHandle->getRemoteStreamStatistics(streamPrefix, stat);
+        
+        std::string threadName = libHandle->getStreamThread(streamPrefix);
+        self.activeThread = [NSString ncStringFromCString:threadName.c_str()];
+        
+        self.nBytesPerSec = (stat.nBytesPerSec_*8/1000);
+        self.interestFrequency = stat.interestFrequency_;
+        self.segmentsFrequency = stat.segmentsFrequency_;
+        self.rttEstimation = stat.rttEstimation_;
+        self.jitterEstimationMs = stat.jitterEstimationMs_;
+        self.jitterPlayableMs = stat.jitterPlayableMs_;
+        self.jitterTargetMs = stat.jitterTargetMs_;
+        self.actualProducerRate = stat.actualProducerRate_;
+        self.nDataReceived = stat.nDataReceived_;
+        self.nTimeouts = stat.nTimeouts_;
+        
+        self.nPlayed = stat.playoutStat_.nPlayed_;
+        self.nPlayedKey = stat.playoutStat_.nPlayedKey_;
+        self.nSkippedNoKey = stat.playoutStat_.nSkippedNoKey_;
+        self.nSkippedInvalidGop = stat.playoutStat_.nSkippedInvalidGop_;
+        self.nSkippedIncompleteKey = stat.playoutStat_.nSkippedIncompleteKey_;
+        self.nSkippedIncomplete = stat.playoutStat_.nSkippedIncomplete_;
+        self.latency = stat.playoutStat_.latency_;
+        
+        self.nAcquired = stat.bufferStat_.nAcquired_;
+        self.nAcquiredKey = stat.bufferStat_.nAcquiredKey_;
+        self.nDropped = stat.bufferStat_.nDropped_;
+        self.nDroppedKey = stat.bufferStat_.nDroppedKey_;
+        self.nAssembled  = stat.bufferStat_.nAssembled_;
+        self.nAssembledKey = stat.bufferStat_.nAssembledKey_;
+        self.nRescued = stat.bufferStat_.nRescued_;
+        self.nRescuedKey = stat.bufferStat_.nRescuedKey_;
+        self.nRecovered = stat.bufferStat_.nRecovered_;
+        self.nRecoveredKey = stat.bufferStat_.nRecoveredKey_;
+        self.nIncomplete = stat.bufferStat_.nIncomplete_;
+        self.nIncompleteKey = stat.bufferStat_.nIncompleteKey_;
+        
+        self.avgSegNum = stat.pipelinerStat_.avgSegNum_;
+        self.avgSegNumKey = stat.pipelinerStat_.avgSegNumKey_;
+        self.avgSegNumParity = stat.pipelinerStat_.avgSegNumParity_;
+        self.avgSegNumParityKey = stat.pipelinerStat_.avgSegNumParityKey_;
+        self.rtxFreq = stat.pipelinerStat_.rtxFreq_;
+        self.nRtx = stat.pipelinerStat_.nRtx_;
+        self.nRebuffer = stat.pipelinerStat_.nRebuffer_;
+        self.nRequested = stat.pipelinerStat_.nRequested_;
+        self.nRequestedKey = stat.pipelinerStat_.nRequestedKey_;
+        
+        self.outRateEstimationLabel.stringValue = [[NSNumber numberWithDouble:(INTEREST_AVERAGE_SIZE_BYTES*stat.interestFrequency_*8/1000.)] stringValue];
+    }
 }
 
 -(NSString*)getShortNameForStream:(NSString*)prefix
