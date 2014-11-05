@@ -13,6 +13,7 @@
 #import "NSString+NCAdditions.h"
 
 #include <ndnrtc/ndnrtc-library.h>
+#include <ndnrtc/error-codes.h>
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -65,6 +66,18 @@ public:
     {
         [[NCErrorController sharedInstance] postErrorWithCode:errorCode
                                                    andMessage:[NSString ncStringFromCString:message]];
+        
+        switch (errorCode) {
+            case NRTC_ERR_SIGPIPE:
+            {
+                if ([NCNdnRtcLibraryController sharedInstance].sessionPrefix)
+                    [[NCNdnRtcLibraryController sharedInstance] stopSession];
+            }
+                break;
+            default:
+                // do nothing
+                break;
+        }
     }
 };
 
@@ -233,7 +246,12 @@ public:
 -(BOOL)stopSession
 {
     if (_ndnRtcLib)
-        return (_ndnRtcLib->stopSession([_sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]) == RESULT_OK);
+    {
+        int res = _ndnRtcLib->stopSession([_sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+        _sessionPrefix = nil;
+        
+        return (res == RESULT_OK);
+    }
     
     return NO;
 }

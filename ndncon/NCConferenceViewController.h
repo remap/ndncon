@@ -19,6 +19,7 @@
 @property (nonatomic) id<ConferenceEntityProtocol> conference;
 @property (nonatomic) BOOL isEditable;
 @property (nonatomic) BOOL isOwner;
+@property (nonatomic) BOOL canJoin;
 
 +(NSString*)stringRepresentationForConferenceDuration:(NSNumber*)durationInSeconds;
 

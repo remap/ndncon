@@ -8,6 +8,12 @@
 
 #import "NCErrorController.h"
 
+@interface NCErrorController ()
+
+@property (nonatomic) NSLock *alertLock;
+
+@end
+
 @implementation NCErrorController
 
 +(NCErrorController *)sharedInstance
@@ -24,6 +30,16 @@
 {
     static dispatch_once_t token;
     return &token;
+}
+
+-(instancetype)init
+{
+    self = [super init];
+    
+    if (self)
+        self.alertLock = [[NSLock alloc] init];
+    
+    return self;
 }
 
 -(void)postError:(NSError*)error
@@ -47,11 +63,18 @@
 -(void)showAlertWithErrorCode:(NSInteger)errorCode
                    andMessage:(NSString*)errorMessage
 {
-    NSAlert *alert = [[NSAlert alloc] init];
-    
-    alert.messageText = [NSString stringWithFormat:@"An error (%ld) has occurred:\n%@", errorCode, errorMessage];
-
-    [alert runModal];
+    if ([self.alertLock tryLock])
+    {
+        NSAlert *alert = [[NSAlert alloc] init];
+        
+        alert.messageText = [NSString stringWithFormat:@"An error (%ld) has occurred:\n%@", errorCode, errorMessage];
+        
+        [alert runModal];
+        [self.alertLock unlock];
+    }
+    else
+        NSLog(@"Error alert suppressed - alert window is active. Error supressed: %ld-%@",
+              (long)errorCode, errorMessage);
 }
 
 @end

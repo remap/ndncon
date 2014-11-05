@@ -224,10 +224,15 @@ private:
 
 +(NCSessionStatus)sessionStatusForUser:(NSString *)user withPrefix:(NSString *)prefix
 {
-    RemoteSessionObserver *observer = [[NCUserListViewController sharedInstance] observerForUser:user andPrefix:prefix];
-    NCSessionStatus status = (observer)?observer->lastStatus_:SessionStatusOffline;
+    if (user && prefix)
+    {
+        RemoteSessionObserver *observer = [[NCUserListViewController sharedInstance] observerForUser:user andPrefix:prefix];
+        NCSessionStatus status = (observer)?observer->lastStatus_:SessionStatusOffline;
+        
+        return status;
+    }
     
-    return status;
+    return SessionStatusOffline;
 }
 
 -(id)init
@@ -385,10 +390,13 @@ private:
     }
     else
     {
-        [self.userController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self.userController.arrangedObjects enumerateObjectsUsingBlock:
+         ^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *user = [obj name];
             NSString *prefix = [obj prefix];
-            [self startObserverForUser:user andPrefix:prefix];
+
+            if (user && prefix)
+                [self startObserverForUser:user andPrefix:prefix];
         }];
     }
 }
@@ -406,7 +414,8 @@ private:
             NSString *userName = [obj name];
             NSString *prefix = [obj prefix];
             
-            if (![userName isEqualToString:@"username"])
+            if (userName && prefix &&
+                ![userName isEqualToString:@"username"])
                 if (![self hasObserverForUser:userName andPrefix:prefix])
                 {
                     updated = YES;
@@ -528,21 +537,26 @@ private:
 
 -(NSDictionary*)userInfoDictionaryForUser:(NSString*)userName withPrefix:(NSString*)prefix
 {
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    
-    userInfo[kSessionUsernameKey] = userName;
-    userInfo[kHubPrefixKey] = prefix;
-    
-    RemoteSessionObserver *observer = [self observerForUser:userName andPrefix:prefix];
-    
-    if (observer)
+    if (userName && prefix)
     {
-        [userInfo setObject:@(observer->lastStatus_) forKey:kSessionStatusKey];
-        [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo:(void*)&observer->lastSessionInfo_] forKey:kSessionInfoKey];
-        [userInfo setObject:[NSString stringWithCString:observer->sessionPrefix_.c_str() encoding:NSASCIIStringEncoding] forKey:kSessionPrefixKey];
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        
+        userInfo[kSessionUsernameKey] = userName;
+        userInfo[kHubPrefixKey] = prefix;
+        
+        RemoteSessionObserver *observer = [self observerForUser:userName andPrefix:prefix];
+        
+        if (observer)
+        {
+            [userInfo setObject:@(observer->lastStatus_) forKey:kSessionStatusKey];
+            [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo:(void*)&observer->lastSessionInfo_] forKey:kSessionInfoKey];
+            [userInfo setObject:[NSString stringWithCString:observer->sessionPrefix_.c_str() encoding:NSASCIIStringEncoding] forKey:kSessionPrefixKey];
+        }
+        
+        return userInfo;
     }
     
-    return userInfo;
+    return nil;
 }
 
 -(void)updateCellBadgeNumber:(NSUInteger)number
@@ -558,10 +572,13 @@ private:
     [self.userController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *user = [obj name];
         NSString *prefix = [obj prefix];
-        
-        // remove observer
-        [self stopObserver:[self observerForUser:user andPrefix:prefix]];
-        [self startObserverForUser:user andPrefix:prefix];
+
+        if (user && prefix)
+        {
+            // remove observer
+            [self stopObserver:[self observerForUser:user andPrefix:prefix]];
+            [self startObserverForUser:user andPrefix:prefix];
+        }
     }];
 }
 

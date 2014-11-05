@@ -30,7 +30,7 @@ NSString* const NCChatMessageUserKey = @"user";
 
 using namespace chrono_chat;
 class NCChatObserver;
-typedef std::map<std::string, ptr_lib::shared_ptr<NCChatObserver>> ChatIdToObserverMap;
+typedef std::map<std::string, ndn::ptr_lib::shared_ptr<NCChatObserver>> ChatIdToObserverMap;
 
 //******************************************************************************
 @interface NCChatLibraryController ()
@@ -57,12 +57,7 @@ class NCChatObserver : public ChatObserver
 public:
     NCChatObserver(NSString *chatRoomId):chatRoomId_(chatRoomId), chat_(NULL){}
     virtual ~NCChatObserver()
-    {
-        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-            if (chat_)
-                delete chat_;
-        }];
-    }
+    {}
     
     void
     onStateChanged(MessageTypes type, const char *userHubPrefix,
@@ -113,15 +108,15 @@ public:
     }
     
     void
-    setChat(Chat *chat)
+    setChat(boost::shared_ptr<Chat> chat)
     { chat_ = chat; }
     
-    Chat*
+    boost::shared_ptr<Chat>
     getChat() { return chat_; }
     
 private:
     NSString *chatRoomId_;
-    Chat *chat_;
+    boost::shared_ptr<Chat> chat_;
 };
 
 //******************************************************************************
@@ -193,45 +188,45 @@ private:
                             privateChatRoomIdWithUser:userPrefix];
     std::string broadcastPrefix([[NCPreferencesController sharedInstance].chatBroadcastPrefix
                                  cStringUsingEncoding:NSASCIIStringEncoding]);
-    Name broadcastPrefixName(broadcastPrefix);
+    ndn::Name broadcastPrefixName(broadcastPrefix);
     const std::string screenName([[NCPreferencesController sharedInstance].userName
                                   cStringUsingEncoding:NSASCIIStringEncoding]);
     const std::string chatRoom([chatRoomId
                                 cStringUsingEncoding:NSASCIIStringEncoding]);
     std::string chatPrefix([[NCChatLibraryController chatsAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
                            cStringUsingEncoding:NSASCIIStringEncoding]);
-    Name chatPrefixName(chatPrefix);
+    ndn::Name chatPrefixName(chatPrefix);
     
     if (_chatIdToObserver.find(chatRoom) != _chatIdToObserver.end())
         return chatRoomId;
     else
     {
-        ptr_lib::shared_ptr<ChatObserver> observer(new NCChatObserver(chatRoomId));
-        __block Chat* chat;
+        ndn::ptr_lib::shared_ptr<ChatObserver> observer(new NCChatObserver(chatRoomId));
+        __block boost::shared_ptr<Chat> chat(new Chat(broadcastPrefixName, screenName, chatRoom,
+                                                      chatPrefixName, observer.get(),
+                                                      *[[NCFaceSingleton sharedInstance] getFace],
+                                                      *[[NCFaceSingleton sharedInstance] getKeyChain],
+                                                      [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
         __block BOOL success = YES;
         
         [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
             try {
-                chat = new Chat(broadcastPrefixName, screenName, chatRoom,
-                                chatPrefixName, observer.get(),
-                                *[[NCFaceSingleton sharedInstance] getFace],
-                                *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName());
+                chat->start();
             } catch (std::exception &exception) {
-                chat = NULL;
+                chat.reset();
                 success = NO;
-                NSLog(@"exception %@", [NSString ncStringFromCString:exception.what()]);
+                NSLog(@"Exception while starting chat: %@", [NSString ncStringFromCString:exception.what()]);
             }
         }];
         
         if (success)
         {
-            dynamic_pointer_cast<NCChatObserver>(observer)->setChat(chat);
+            boost::dynamic_pointer_cast<NCChatObserver>(observer)->setChat(chat);
             
             NSLog(@"joined chatroom %@ (%@-%@)", chatRoomId,
                   [[NCNdnRtcLibraryController sharedInstance] sessionPrefix], userPrefix);
             
-            _chatIdToObserver[chatRoom] = dynamic_pointer_cast<NCChatObserver>(observer);
+            _chatIdToObserver[chatRoom] = boost::dynamic_pointer_cast<NCChatObserver>(observer);
             
             if (![ChatRoom chatRoomWithId:chatRoomId fromContext:self.context])
             {
@@ -265,8 +260,13 @@ private:
     const std::string msg([message cStringUsingEncoding:NSASCIIStringEncoding]);
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-        NSLog(@"Send message to %@: %@", chatId, message);
-        it->second->getChat()->sendMessage(msg);
+        try {
+            NSLog(@"Send message to %@: %@", chatId, message);
+            it->second->getChat()->sendMessage(msg);
+        }
+        catch (std::exception &exception) {
+            NSLog(@"Exception while sending message to chat: %@", [NSString ncStringFromCString:exception.what()]);
+        }
     }];
 }
 
@@ -282,6 +282,7 @@ private:
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFace:^{
         it->second->getChat()->leave();
+        it->second->getChat()->shutdown();
         _chatIdToObserver.erase(it);
     }];
 }
@@ -308,8 +309,22 @@ private:
         {
             NSLog(@"left chatroom %s", it->first.c_str());
             [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-                if (it->second->getChat())
-                    it->second->getChat()->leave();
+                try {
+                    if (it->second->getChat())
+                    {
+                        it->second->getChat()->leave();
+                    }
+                }
+                catch (std::exception &exception) {
+                     NSLog(@"Exception while leaving chat: %@", [NSString ncStringFromCString:exception.what()]);
+                }
+                
+                try {
+                    it->second->getChat()->shutdown();
+                    NSLog(@"chat shut down");
+                } catch (std::exception &exception) {
+                    NSLog(@"Exception while shutting down chat: %@", [NSString ncStringFromCString:exception.what()]);
+                }
             }];
         }
         

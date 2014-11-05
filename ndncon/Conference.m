@@ -178,6 +178,11 @@ NSString* const kConferenceOrganizerPrefixKey = @"orgprefix";
     return (self.organizer != nil);
 }
 
+-(BOOL)isActive
+{
+    return ([NSDate date].timeIntervalSince1970 < ([self.startDate timeIntervalSince1970] + self.duration.doubleValue));
+}
+
 -(BOOL)hasParticipant:(NSString*)username withPrefix:(NSString*)prefix
 {
     __block BOOL found = NO;
@@ -283,6 +288,12 @@ NSString* const kConferenceOrganizerPrefixKey = @"orgprefix";
 {
     return YES;
 }
+
+-(BOOL)isActive
+{
+    return ([NSDate date].timeIntervalSince1970 < ([self.startDate timeIntervalSince1970] + self.duration.doubleValue));
+}
+
 
 -(NSDictionary *)dictionaryRepresentation
 {

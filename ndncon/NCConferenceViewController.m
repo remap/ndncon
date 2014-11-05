@@ -100,10 +100,12 @@
     [self.timeInfoLabel setHidden:isEditable];
     [self.timeInfoView setHidden:!isEditable];
     [self.publishButton setHidden:!isEditable];
-    [self.joinButton setHidden:isEditable];
     
     if (isEditable)
-        [self.cancelButton setHidden:NO];
+        [self.joinButton setHidden:YES];
+    
+    if (isEditable)
+        [self.cancelButton setHidden:self.isOwner&&self.canJoin];
     
     if (!isEditable)
     {
@@ -124,6 +126,14 @@
         self.isEditable = NO;
     
     [self.cancelButton setHidden:!_isOwner];
+}
+
+-(void)setCanJoin:(BOOL)canJoin
+{
+    _canJoin = canJoin;
+    
+    [self.joinButton setHidden:!canJoin];
+    [self.cancelButton setHidden:(!self.isOwner || !_canJoin)];
 }
 
 - (IBAction)publishConference:(id)sender

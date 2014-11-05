@@ -70,10 +70,10 @@ public:
             conferenceDictionary_ = nil;
     }
     
-    Blob
-    serialize(const ptr_lib::shared_ptr<IDiscoverableEntity> &description)
+    ndn::Blob
+    serialize(const boost::shared_ptr<IDiscoverableEntity> &description)
     {
-        shared_ptr<ConferenceDescription> conferenceDescription = dynamic_pointer_cast<ConferenceDescription>(description);
+        boost::shared_ptr<ConferenceDescription> conferenceDescription = boost::dynamic_pointer_cast<ConferenceDescription>(description);
         Conference *conference = conferenceDescription->getConference();
         NSString *organizerName = [NCPreferencesController sharedInstance].userName;
         NSString *organizerPrefix = [NCPreferencesController sharedInstance].prefix;
@@ -100,13 +100,13 @@ public:
             [data appendBytesFromString:user.prefix];
         }
         
-        return Blob((const uint8_t*)data.bytes, data.length);
+        return ndn::Blob((const uint8_t*)data.bytes, data.length);
     }
     
-    ptr_lib::shared_ptr<IDiscoverableEntity>
-    deserialize(Blob srcBlob)
+    boost::shared_ptr<IDiscoverableEntity>
+    deserialize(ndn::Blob srcBlob)
     {
-        shared_ptr<ConferenceDescription> description;
+        boost::shared_ptr<ConferenceDescription> description;
         
         if (srcBlob.isNull())
         {
@@ -185,17 +185,14 @@ class ConferenceBroadcasterObserver : public EntityBroadcasterObserver
 {
 public:
     ConferenceBroadcasterObserver(bool isActive):isActive_(isActive),broadcaster_(NULL){}
-    ~ConferenceBroadcasterObserver()
-    {
-        if (broadcaster_)
-            delete broadcaster_;
-    }
+    virtual ~ConferenceBroadcasterObserver()
+    {}
     
     void
     onStateChanged(MessageTypes type, const char *msg, double timestamp)
     {
         NSLog(@"DISCOVERY: type: %d, msg: %s, timestamp: %f", type, msg, timestamp);
-        shared_ptr<IDiscoverableEntity> description = broadcaster_->getConference(std::string(msg));
+        boost::shared_ptr<IDiscoverableEntity> description = broadcaster_->getConference(std::string(msg));
         
         switch (type) {
             case conference_discovery::MessageTypes::ADD:
@@ -205,7 +202,7 @@ public:
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[[NSObject alloc] init]
                          notifyNowWithNotificationName:NCConferenceDiscoveredNotification
-                         andUserInfo:dynamic_pointer_cast<ConferenceDescription>(description)->getConferenceDictionary()];
+                         andUserInfo:boost::dynamic_pointer_cast<ConferenceDescription>(description)->getConferenceDictionary()];
                     });
                 }
             }
@@ -217,7 +214,7 @@ public:
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[[NSObject alloc] init]
                          notifyNowWithNotificationName:NCConferenceWithdrawedNotification
-                         andUserInfo:dynamic_pointer_cast<ConferenceDescription>(description)->getConferenceDictionary()];
+                         andUserInfo:boost::dynamic_pointer_cast<ConferenceDescription>(description)->getConferenceDictionary()];
                     });
                 }
             }
@@ -228,23 +225,23 @@ public:
     }
     
     void
-    setConferenceBroadcaster(EntityBroadcaster *broadcaster)
+    setConferenceBroadcaster(boost::shared_ptr<EntityBroadcaster> broadcaster)
     { broadcaster_ = broadcaster; }
     
-    EntityBroadcaster*
+    boost::shared_ptr<EntityBroadcaster>
     getBroadcaster()
     { return broadcaster_; }
 
 private:
     bool isActive_;
-    EntityBroadcaster *broadcaster_;
+    boost::shared_ptr<EntityBroadcaster> broadcaster_;
 };
 
 //******************************************************************************
 @interface NCDiscoveryLibraryController()
 {
-    shared_ptr<ConferenceBroadcasterObserver> _conferenceBroadcasterObserver;
-    shared_ptr<IDiscoverableEntitySerializer> _conferenceDescriptionSerializer;
+    boost::shared_ptr<ConferenceBroadcasterObserver> _conferenceBroadcasterObserver;
+    boost::shared_ptr<IDiscoverableEntitySerializer> _conferenceDescriptionSerializer;
 }
 
 @property (nonatomic) BOOL initialized;
@@ -279,7 +276,7 @@ private:
     
     if (self)
     {
-        shared_ptr<ConferenceInfo> conferenceDescriptionInstance(new ConferenceDescription());
+        boost::shared_ptr<ConferenceInfo> conferenceDescriptionInstance(new ConferenceDescription());
         _conferenceDescriptionSerializer.reset(new ConferenceDescriptionSerializer(conferenceDescriptionInstance));
         
         if (![NCFaceSingleton sharedInstance])
@@ -314,8 +311,8 @@ private:
             ConferenceMap::iterator it = conferenceMap.begin();
             while (it != conferenceMap.end())
             {
-                shared_ptr<ConferenceDescription> conferenceDescription =
-                dynamic_pointer_cast<ConferenceDescription>(it->second);
+                boost::shared_ptr<ConferenceDescription> conferenceDescription =
+                boost::dynamic_pointer_cast<ConferenceDescription>(it->second);
                 [conferences addObject:[[NCRemoteConference alloc] initWithDictionary:conferenceDescription->getConferenceDictionary()]];
                 it++;
             }
@@ -356,6 +353,16 @@ private:
     {
         [self withdrawConferences];
         self.initialized = NO;
+
+        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+            try {
+                _conferenceBroadcasterObserver->getBroadcaster()->shutdown();
+                NSLog(@"conference discovery shut down");
+            } catch (std::exception &exception) {
+                NSLog(@"Exception while shutting down conference discovery: %@",
+                      [NSString ncStringFromCString:exception.what()]);
+            }
+        }];
         _conferenceBroadcasterObserver.reset();
         self.discoveredConferences = [NSArray array];
     }
@@ -376,8 +383,8 @@ private:
     std::string conferencePrefix([[NCDiscoveryLibraryController
                                   conferencesAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
                                   cStringUsingEncoding:NSASCIIStringEncoding]);
-    shared_ptr<EntityBroadcasterObserver> observer(new ConferenceBroadcasterObserver(false));
-    shared_ptr<IDiscoverableEntity> conferenceDescription(new ConferenceDescription(conference));
+    boost::shared_ptr<EntityBroadcasterObserver> observer(new ConferenceBroadcasterObserver(false));
+    boost::shared_ptr<IDiscoverableEntity> conferenceDescription(new ConferenceDescription(conference));
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
         try {
@@ -386,7 +393,7 @@ private:
                                                                                 conferenceDescription);
             NSLog(@"published conference %@", conference.name);
         } catch (std::exception &exception) {
-            NSLog(@"exception %@", [NSString ncStringFromCString:exception.what()]);
+            NSLog(@"Exception while publishing conference: %@", [NSString ncStringFromCString:exception.what()]);
 //            [[NCErrorController sharedInstance]
 //             postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
         }
@@ -404,28 +411,28 @@ private:
     std::string broadcastPrefix([[NCPreferencesController sharedInstance].conferenceBroadcastPrefix
                                  cStringUsingEncoding:NSASCIIStringEncoding]);
     _conferenceBroadcasterObserver.reset(new ConferenceBroadcasterObserver(true));
-    __block EntityBroadcaster *discoverer;
+    __block boost::shared_ptr<EntityBroadcaster> discoverer(new EntityBroadcaster(broadcastPrefix,
+                                                                                  _conferenceBroadcasterObserver.get(),
+                                                                                  _conferenceDescriptionSerializer,
+                                                                                  *[[NCFaceSingleton sharedInstance] getFace],
+                                                                                  *[[NCFaceSingleton sharedInstance] getKeyChain],
+                                                                                  [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
         try {
+            discoverer->start();
             NSLog(@"initializing conference discovery..");
-            discoverer = new EntityBroadcaster(broadcastPrefix,
-                                               _conferenceBroadcasterObserver.get(),
-                                               _conferenceDescriptionSerializer,
-                                               *[[NCFaceSingleton sharedInstance] getFace],
-                                               *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                               [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName());
         }
         catch (std::exception &exception) {
-            discoverer = NULL;
-            
-            NSLog(@"exception %@", [NSString ncStringFromCString:exception.what()]);            
+            discoverer.reset();
+            NSLog(@"Exception while initializing conference discovery: %@",
+                  [NSString ncStringFromCString:exception.what()]);
 //            [[NCErrorController sharedInstance]
 //             postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
         }
     }];
     
-    self.initialized = (discoverer != NULL);
+    self.initialized = (discoverer.get() != NULL);
     _conferenceBroadcasterObserver->setConferenceBroadcaster(discoverer);
 }
 
@@ -455,7 +462,7 @@ private:
 
         for (ConferenceMap::iterator it = hostedConferences.begin(); it != hostedConferences.end(); ++it)
         {
-            Conference *conference = dynamic_pointer_cast<ConferenceDescription>(it->second)->getConference();
+            Conference *conference = boost::dynamic_pointer_cast<ConferenceDescription>(it->second)->getConference();
             [self withdrawConference:conference];
         }
     }

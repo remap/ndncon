@@ -122,8 +122,8 @@
     unsigned short port = (unsigned short)([NCPreferencesController sharedInstance].daemonPort.intValue);
     
     try {
-        _face = new Face(host, port);
-        _keychain = new KeyChain();
+        _face = new ndn::Face(host, port);
+        _keychain = new ndn::KeyChain();
         _face->setCommandSigningInfo(*_keychain, _keychain->getDefaultCertificateName());
     }
     catch (std::exception &exception)

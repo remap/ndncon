@@ -154,6 +154,7 @@
     [self loadCurrentView:self.conferenceViewController.view];
 
     self.conferenceViewController.isOwner = ![conference isRemote];
+    self.conferenceViewController.canJoin = [conference isActive];
     self.conferenceViewController.isEditable = NO;
     self.conferenceViewController.conference = conference;
     [self.userListViewController clearSelection];
