@@ -641,10 +641,11 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 {
     if (self.participants.count == 0)
     {
+        [self resumeComputerSleep];
+        
+        // this call may delete self...
         if (self.delegate && [self.delegate respondsToSelector:@selector(conversationViewControllerDidEndConversation:)])
             [self.delegate conversationViewControllerDidEndConversation:self];
-        
-        [self resumeComputerSleep];
     }
 }
 
