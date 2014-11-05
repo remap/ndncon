@@ -11,8 +11,10 @@
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"
 #import "NSString+NCAdditions.h"
+#import "NCFaceSingleton.h"
 
 #include <ndnrtc/ndnrtc-library.h>
+#include <ndnrtc/error-codes.h>
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -65,6 +67,20 @@ public:
     {
         [[NCErrorController sharedInstance] postErrorWithCode:errorCode
                                                    andMessage:[NSString ncStringFromCString:message]];
+        
+        switch (errorCode) {
+            case NRTC_ERR_SIGPIPE:
+            {
+                if ([NCNdnRtcLibraryController sharedInstance].sessionPrefix)
+                    [[NCNdnRtcLibraryController sharedInstance] stopSession];
+                
+                [[NCFaceSingleton sharedInstance] markInvalid];
+            }
+                break;
+            default:
+                // do nothing
+                break;
+        }
     }
 };
 
@@ -85,10 +101,13 @@ public:
         NCSessionStatus oldStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
         [NCNdnRtcLibraryController sharedInstance].sessionStatus = [NCNdnRtcLibraryController ncStatus:status];
         
+        NSLog(@"new local session status - %d", status);
+        NSString *usernameStr = [NSString ncStringFromCString:username];
+        NSString *sessionPrefixStr = [NSString ncStringFromCString:sessionPrefix];
         dispatch_async(dispatch_get_main_queue(), ^{
             [[[NSObject alloc] init] notifyNowWithNotificationName:NCLocalSessionStatusUpdateNotification
-                                                       andUserInfo:@{kSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
-                                                                     kSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
+                                                       andUserInfo:@{kSessionUsernameKey: usernameStr,
+                                                                     kSessionPrefixKey: sessionPrefixStr,
                                                                      kSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
                                                                      kSessionOldStatusKey: @(oldStatus)}];
         });
@@ -230,7 +249,12 @@ public:
 -(BOOL)stopSession
 {
     if (_ndnRtcLib)
-        return (_ndnRtcLib->stopSession([_sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]) == RESULT_OK);
+    {
+        int res = _ndnRtcLib->stopSession([_sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+        _sessionPrefix = nil;
+        
+        return (res == RESULT_OK);
+    }
     
     return NO;
 }

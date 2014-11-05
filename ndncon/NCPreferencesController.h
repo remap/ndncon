@@ -8,6 +8,9 @@
 
 #import "PTNStorage.h"
 
+#define CHATS_ENABLED
+#define CONFERENCES_ENABLED
+
 #define KEYPATH(s1, s2) ([NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(s1)), NSStringFromSelector(s2)])
 
 #define KEYPATH2(s1, k2) ([NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(s1)), k2])

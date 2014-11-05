@@ -18,6 +18,9 @@
 #import "NSDictionary+NCNdnRtcAdditions.h"
 #import "NSObject+NCAdditions.h"
 #import "NSString+NCAdditions.h"
+#import "ChatRoom.h"
+#import "ChatMessage.h"
+#import "NCStreamBrowserController.h"
 
 NSString* const kSessionInfoKey = @"sessionInfo";
 NSString* const kHubPrefixKey = @"hubPrefix";
@@ -109,6 +112,24 @@ public:
     NCSessionStatus lastStatus_ = SessionStatusOffline;
     SessionInfo lastSessionInfo_;
     
+    void
+    notifyStatusUpdate(NCSessionStatus status)
+    {
+        NCSessionStatus oldStatus = lastStatus_;
+        lastStatus_ = status;
+        
+        NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
+        
+        userInfo[kSessionStatusKey]= @(status);
+        userInfo[kSessionOldStatusKey] = @(oldStatus);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[[NSObject alloc] init]
+             notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
+             andUserInfo:userInfo];
+        });
+    }
+    
 private:
     bool freshStart_ = true;
     unsigned int nTimeouts_;
@@ -177,24 +198,6 @@ private:
              andUserInfo:userInfo];
         });
     }
-    
-    void
-    notifyStatusUpdate(NCSessionStatus status)
-    {
-        NCSessionStatus oldStatus = lastStatus_;
-        lastStatus_ = status;
-        
-        NSMutableDictionary *userInfo = [sessionUserInfo() mutableCopy];
-        
-        userInfo[kSessionStatusKey]= @(status);
-        userInfo[kSessionOldStatusKey] = @(oldStatus);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[NSObject alloc] init]
-             notifyNowWithNotificationName:NCRemoteSessionStatusUpdateNotification
-             andUserInfo:userInfo];
-        });
-    }
 };
 
 //******************************************************************************
@@ -208,6 +211,7 @@ private:
 
 @property (weak) IBOutlet NSArrayController *userController;
 @property (weak) IBOutlet NSTableView *tableView;
+@property (weak) User *selectedUser;
 
 @end
 
@@ -220,10 +224,15 @@ private:
 
 +(NCSessionStatus)sessionStatusForUser:(NSString *)user withPrefix:(NSString *)prefix
 {
-    RemoteSessionObserver *observer = [[NCUserListViewController sharedInstance] observerForUser:user andPrefix:prefix];
-    NCSessionStatus status = (observer)?observer->lastStatus_:SessionStatusOffline;
+    if (user && prefix)
+    {
+        RemoteSessionObserver *observer = [[NCUserListViewController sharedInstance] observerForUser:user andPrefix:prefix];
+        NCSessionStatus status = (observer)?observer->lastStatus_:SessionStatusOffline;
+        
+        return status;
+    }
     
-    return status;
+    return SessionStatusOffline;
 }
 
 -(id)init
@@ -253,14 +262,16 @@ private:
         [self.tableView setNextResponder:self];
         [self setNextResponder:nextResponder];
     }
+    
+    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 }
 
 -(void)initialize
 {
     _observerQueue = dispatch_queue_create("queue.observers", DISPATCH_QUEUE_SERIAL);
     [self subscribeForNotificationsAndSelectors:
-     NCRemoteSessionStatusUpdateNotification,
-     @selector(sessionDidUpdateStatus:),
+     NCRemoteSessionStatusUpdateNotification, @selector(onRemoteSessionStatusUpdate:),
+     NCLocalSessionStatusUpdateNotification, @selector(onLocalSessionStatusUpdate:),
      nil];
 }
 
@@ -288,18 +299,35 @@ private:
 
 -(void)clearSelection
 {
+    self.selectedUser = nil;
     [self.tableView deselectAll:nil];
+}
+
+// NCChatViewControllerDelegate
+-(void)chatViewControllerDidFinishLoadingMessages:(NCChatViewController *)chatViewController
+{
+    NSInteger selected = [self.tableView selectedRow];
+    
+    [self.tableView reloadData];
+    [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:selected] byExtendingSelection:NO];
 }
 
 // NSTableViewDelegate
 -(void)tableViewSelectionDidChange:(NSNotification *)notification
 {
-    if (self.tableView.selectedRow < [self.userController.arrangedObjects count])
+    if (self.tableView.selectedRow == -1)
+        self.selectedUser = nil;
+    else if (self.tableView.selectedRow < [self.userController.arrangedObjects count])
     {
         id user = [self.userController.arrangedObjects objectAtIndex:self.tableView.selectedRow];
         
-        if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewController:userWasChosen:)])
-            [self.delegate userListViewController:self userWasChosen:[self userInfoDictionaryForUser:[user name] withPrefix:[user prefix]]];
+        if (user != self.selectedUser)
+        {
+            self.selectedUser = user;
+            
+            if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewController:userWasChosen:)])
+                [self.delegate userListViewController:self userWasChosen:[self userInfoDictionaryForUser:[user name] withPrefix:[user prefix]]];
+        }
     }
 }
 
@@ -311,6 +339,22 @@ private:
     return [NSString stringWithFormat:kNCNdnRtcUserUrlFormat, [user prefix], [user name]];
 }
 
+// NSUserNotificationCenterDelegate
+-(BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
+    shouldPresentNotification:(NSUserNotification *)notification
+{
+    return YES;
+}
+
+-(void)userNotificationCenter:(NSUserNotificationCenter *)center
+      didActivateNotification:(NSUserNotification *)notification
+{
+    User *user = [User userByName:notification.userInfo[kUserNameKey]
+                        andPrefix:notification.userInfo[kHubPrefixKey]
+                      fromContext:self.userController.managedObjectContext];
+    [self.userController setSelectedObjects:@[user]];
+}
+
 // private
 - (IBAction)deleteSelectedEntry:(id)sender
 {
@@ -318,12 +362,12 @@ private:
     [self.tableView reloadData];
 }
 
--(void)sessionDidUpdateStatus:(NSNotification*)notification
+-(void)onRemoteSessionStatusUpdate:(NSNotification*)notification
 {
     NSString *userName = [notification.userInfo objectForKey:kSessionUsernameKey];
     NSString *prefix = [notification.userInfo objectForKey:kHubPrefixKey];
     NCSessionStatus status = (NCSessionStatus)[[notification.userInfo objectForKey:kSessionStatusKey] intValue];
-    
+
     if (userName && prefix)
     {
         [self.userController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -333,28 +377,58 @@ private:
     }
 }
 
+-(void)onLocalSessionStatusUpdate:(NSNotification*)notification
+{
+    NCSessionStatus status = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
+    NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];
+    
+    if (status == SessionStatusOffline)
+    {
+        dispatch_sync(_observerQueue, ^{
+            while (_sessionObservers.size())
+                [self stopObserver: _sessionObservers[0]];
+        });
+    }
+    else
+        if (oldStatus == SessionStatusOffline)
+        {
+            [self.userController.arrangedObjects enumerateObjectsUsingBlock:
+             ^(id obj, NSUInteger idx, BOOL *stop) {
+                 NSString *user = [obj name];
+                 NSString *prefix = [obj prefix];
+                 
+                 if (user && prefix)
+                     [self startObserverForUser:user andPrefix:prefix];
+             }];
+        }
+}
+
 -(void)checkAndUpdateSessionObservers
 {
     [self stopOldObservers];
     
-    BOOL updated = NO;
-    
-    for (id obj in self.userController.arrangedObjects)
+    if ([NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
     {
-        NSString *userName = [obj name];
-        NSString *prefix = [obj prefix];
+        BOOL updated = NO;
         
-        if (![userName isEqualToString:@"username"])
-            if (![self hasObserverForUser:userName andPrefix:prefix])
-            {
-                updated = YES;
-                [self startObserverForUser:userName andPrefix:prefix];
-            }
+        for (id obj in self.userController.arrangedObjects)
+        {
+            NSString *userName = [obj name];
+            NSString *prefix = [obj prefix];
+            
+            if (userName && prefix &&
+                ![userName isEqualToString:@"username"])
+                if (![self hasObserverForUser:userName andPrefix:prefix])
+                {
+                    updated = YES;
+                    [self startObserverForUser:userName andPrefix:prefix];
+                }
+        }
+        
+        if (updated)
+            if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
+                [self.delegate userListViewControllerUserListUpdated:self];
     }
-    
-    if (updated)
-        if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
-            [self.delegate userListViewControllerUserListUpdated:self];
 }
 
 -(void)stopOldObservers
@@ -408,7 +482,11 @@ private:
     while (*it != observer && it != _sessionObservers.end()) it++;
     
     if (it != _sessionObservers.end())
+    {
+        // we won't see user statuses while being offline
+        (*it)->notifyStatusUpdate(SessionStatusOffline);
         _sessionObservers.erase(it);
+    }
     
     NSLog(@"stopped observer for %s:%s", observer->prefix_.c_str(), observer->username_.c_str());
     delete observer;
@@ -461,21 +539,32 @@ private:
 
 -(NSDictionary*)userInfoDictionaryForUser:(NSString*)userName withPrefix:(NSString*)prefix
 {
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    
-    [userInfo setObject:userName forKey:kSessionUsernameKey];
-    [userInfo setObject:prefix forKey:kHubPrefixKey];
-    
-    RemoteSessionObserver *observer = [self observerForUser:userName andPrefix:prefix];
-    
-    if (observer)
+    if (userName && prefix)
     {
-        [userInfo setObject:@(observer->lastStatus_) forKey:kSessionStatusKey];
-        [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo:(void*)&observer->lastSessionInfo_] forKey:kSessionInfoKey];
-        [userInfo setObject:[NSString stringWithCString:observer->sessionPrefix_.c_str() encoding:NSASCIIStringEncoding] forKey:kSessionPrefixKey];
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        
+        userInfo[kSessionUsernameKey] = userName;
+        userInfo[kHubPrefixKey] = prefix;
+        
+        RemoteSessionObserver *observer = [self observerForUser:userName andPrefix:prefix];
+        
+        if (observer)
+        {
+            [userInfo setObject:@(observer->lastStatus_) forKey:kSessionStatusKey];
+            [userInfo setObject:[NCSessionInfoContainer containerWithSessionInfo:(void*)&observer->lastSessionInfo_] forKey:kSessionInfoKey];
+            [userInfo setObject:[NSString stringWithCString:observer->sessionPrefix_.c_str() encoding:NSASCIIStringEncoding] forKey:kSessionPrefixKey];
+        }
+        
+        return userInfo;
     }
     
-    return userInfo;
+    return nil;
+}
+
+-(void)updateCellBadgeNumber:(NSUInteger)number
+             forCellWithUser:(User*)user
+{
+    [self.tableView reloadData];
 }
 
 -(void)restartObservers
@@ -485,10 +574,13 @@ private:
     [self.userController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *user = [obj name];
         NSString *prefix = [obj prefix];
-        
-        // remove observer
-        [self stopObserver:[self observerForUser:user andPrefix:prefix]];
-        [self startObserverForUser:user andPrefix:prefix];
+
+        if (user && prefix)
+        {
+            // remove observer
+            [self stopObserver:[self observerForUser:user andPrefix:prefix]];
+            [self startObserverForUser:user andPrefix:prefix];
+        }
     }];
 }
 
@@ -496,7 +588,36 @@ private:
 
 @interface NCUserListCell : NSTableCellView
 
-@property (nonatomic, weak) IBOutlet NSTextField *hintTextField;
+@property (nonatomic, weak) IBOutlet NSImageView *unreadMessagesBackImageView;
+@property (nonatomic, weak) IBOutlet NSTextField *unreadMessagesTextField;
 
+@end
+
+@implementation NCUserListCell
+
+-(void)setObjectValue:(id)objectValue
+{
+    [super setObjectValue:objectValue];
+    
+    if (objectValue)
+    {
+        NSManagedObjectContext *context = [(AppDelegate*)[NSApp delegate] managedObjectContext];
+        ChatRoom *chatRoom = [ChatRoom chatRoomWithId:[objectValue privateChatRoomId]
+                                          fromContext:context];
+        NSArray *unreadMessages = [ChatMessage unreadTextMessagesFromUser:objectValue inChatroom:chatRoom];
+        
+        if (unreadMessages.count)
+        {
+            self.unreadMessagesBackImageView.hidden = NO;
+            self.unreadMessagesTextField.hidden = NO;
+            self.unreadMessagesTextField.stringValue = [NSString stringWithFormat:@"%lu", (unsigned long)unreadMessages.count];
+        }
+        else
+        {
+            self.unreadMessagesBackImageView.hidden = YES;
+            self.unreadMessagesTextField.hidden = YES;
+        }
+    }
+}
 
 @end

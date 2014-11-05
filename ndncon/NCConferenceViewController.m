@@ -102,7 +102,10 @@
     [self.publishButton setHidden:!isEditable];
     
     if (isEditable)
-        [self.cancelButton setHidden:NO];
+        [self.joinButton setHidden:YES];
+    
+    if (isEditable)
+        [self.cancelButton setHidden:self.isOwner&&self.canJoin];
     
     if (!isEditable)
     {
@@ -123,7 +126,14 @@
         self.isEditable = NO;
     
     [self.cancelButton setHidden:!_isOwner];
-    [self.joinButton setHidden:isOwner];
+}
+
+-(void)setCanJoin:(BOOL)canJoin
+{
+    _canJoin = canJoin;
+    
+    [self.joinButton setHidden:!canJoin];
+    [self.cancelButton setHidden:(!self.isOwner || !_canJoin)];
 }
 
 - (IBAction)publishConference:(id)sender
@@ -148,9 +158,11 @@
     // check if conference is remote - if so, create local copy of it
     if ([self.conference isKindOfClass:[NCRemoteConference class]])
     {
-        Conference *conference = [Conference newConferenceFromRemoteCopy:self.conference
-                                                               inContext:self.context];
-        _conference = conference;
+        [(NCRemoteConference*)self.conference createLocalCopiesForMissingUsersInContext:self.context];
+        
+//        Conference *conference = [Conference newConferenceFromRemoteCopy:self.conference
+//                                                               inContext:self.context];
+//        _conference = conference;
     }
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceViewControllerDidJoinConference:)])

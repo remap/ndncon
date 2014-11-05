@@ -178,6 +178,11 @@ NSString* const kConferenceOrganizerPrefixKey = @"orgprefix";
     return (self.organizer != nil);
 }
 
+-(BOOL)isActive
+{
+    return ([NSDate date].timeIntervalSince1970 < ([self.startDate timeIntervalSince1970] + self.duration.doubleValue));
+}
+
 -(BOOL)hasParticipant:(NSString*)username withPrefix:(NSString*)prefix
 {
     __block BOOL found = NO;
@@ -284,9 +289,52 @@ NSString* const kConferenceOrganizerPrefixKey = @"orgprefix";
     return YES;
 }
 
+-(BOOL)isActive
+{
+    return ([NSDate date].timeIntervalSince1970 < ([self.startDate timeIntervalSince1970] + self.duration.doubleValue));
+}
+
+-(BOOL)hasParticipant:(NSString*)username withPrefix:(NSString*)prefix
+{
+    __block BOOL found = NO;
+    
+    found = ([self.organizer.name isEqualToString:username] &&
+             [self.organizer.prefix isEqualToString:prefix]);
+    
+    if (!found)
+        [self.participants enumerateObjectsUsingBlock:^(User *user, BOOL *stop) {
+            if ([user.name isEqualToString:username] &&
+                [user.prefix isEqualToString:prefix])
+            {
+                *stop = YES;
+                found = YES;
+            }
+        }];
+    
+    return found;
+}
+
 -(NSDictionary *)dictionaryRepresentation
 {
     return self.conferenceDictionary;
+}
+
+-(void)createLocalCopiesForMissingUsersInContext:(NSManagedObjectContext*)context
+{
+    NSMutableArray *allParticipants = [NSMutableArray arrayWithArray:[self.participants allObjects]];
+    [allParticipants addObject:self.organizer];
+    
+    for (UserStub *user in allParticipants)
+    {
+        if (!([user.name isEqualToString:[NCPreferencesController sharedInstance].userName] &&
+              [user.prefix isEqualToString:[NCPreferencesController sharedInstance].prefix]))
+        {
+            [User newUserWithName:user.name
+                        andPrefix:user.prefix
+                        inContext:context];
+            [context save:NULL];
+        }
+    }
 }
 
 @end

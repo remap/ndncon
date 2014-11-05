@@ -22,5 +22,6 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, weak) id<NCDragAndDropViewDelegate, NCClickableViewDelegate> delegate;
 @property (nonatomic) NCConversationInfoStatus status;
+@property (nonatomic) BOOL selected;
 
 @end

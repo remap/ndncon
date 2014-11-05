@@ -61,4 +61,15 @@
     return newChatRoom;
 }
 
+-(BOOL)hasParitcipant:(id)user
+{
+    for (ChatMessage *message in self.messages)
+    {
+        if (message.user == user)
+            return YES;
+    }
+    
+    return NO;
+}
+
 @end

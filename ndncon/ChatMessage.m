@@ -8,6 +8,7 @@
 
 #import "ChatMessage.h"
 #import "User.h"
+#import "ChatRoom.h"
 
 NSString* const kChatMesageTypeJoin = @"Join";
 NSString* const kChatMesageTypeLeave = @"Leave";
@@ -20,6 +21,7 @@ NSString* const kChatMesageTypeText = @"Text";
 @dynamic type;
 @dynamic chatRoom;
 @dynamic user;
+@dynamic read;
 
 +(ChatMessage *)newChatMessageFromUser:(User *)user
                                 ofType:(NSString *)messageType
@@ -37,6 +39,19 @@ NSString* const kChatMesageTypeText = @"Text";
     [context save:&error];
     
     return message;
+}
+
++(NSArray *)unreadTextMessagesFromUser:(User *)user
+                            inChatroom:(ChatRoom *)chatroom
+{
+    NSSet *unreadMessages = [chatroom.messages filteredSetUsingPredicate:
+     [NSPredicate predicateWithBlock:^BOOL(ChatMessage *message, NSDictionary *bindings) {
+        return (message.user == user) &&
+        (message.read == nil) &&
+        [message.type isEqual:[ChatMessage typeFromString:kChatMesageTypeText]];
+    }]];
+    
+    return [unreadMessages allObjects];
 }
 
 +(NSNumber*)typeFromString:(NSString*)typeStr

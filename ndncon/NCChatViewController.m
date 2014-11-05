@@ -14,6 +14,7 @@
 #import "NSObject+NCAdditions.h"
 #import "User.h"
 #import "NSDate+NCAdditions.h"
+#import "NCStreamBrowserController.h"
 
 //******************************************************************************
 typedef enum _NCChatMessageCellType {
@@ -24,7 +25,6 @@ typedef enum _NCChatMessageCellType {
 
 @interface NCChatMessageCell ()
 
-@property (nonatomic, weak) IBOutlet id<NCChatMessageCellDelegate> delegate;
 @property (nonatomic) NCChatMessageCellType type;
 @property (nonatomic) ChatMessage *message;
 @property (nonatomic) NSArray *messageGroup;
@@ -37,13 +37,6 @@ typedef enum _NCChatMessageCellType {
 +(NSString*)messageTextContentFromGroup:(NSArray*)msgGroup;
 +(NSRect)calculateTextRectForSize:(NSSize)size
                        andContent:(NSString*)content;
-@end
-
-@protocol NCChatMessageCellDelegate <NSObject>
-
-@optional
--(void)chatMessageCellHasChangedTextFrame:(NCChatMessageCell*)cell;
-
 @end
 
 //******************************************************************************
@@ -68,9 +61,6 @@ typedef enum _NCChatMessageCellType {
     
     if (self)
     {
-        [self subscribeForNotificationsAndSelectors:
-         NCChatMessageNotification, @selector(onNewChatMessage:),
-         nil];
     }
     
     return self;
@@ -94,6 +84,26 @@ typedef enum _NCChatMessageCellType {
         _chatRoomId = chatRoomId;
         self.chatRoom = [ChatRoom chatRoomWithId:chatRoomId fromContext:self.context];
         [self reloadData];
+        
+        {
+            // remove all user notifications from this user
+            NSMutableArray *notificationsForRemoval = [NSMutableArray array];
+            [[NSUserNotificationCenter defaultUserNotificationCenter].deliveredNotifications
+             enumerateObjectsUsingBlock:^(NSUserNotification *notification, NSUInteger idx, BOOL *stop)
+            {
+                 User *user = [User userByName:notification.userInfo[kUserNameKey]
+                                     andPrefix:notification.userInfo[kHubPrefixKey]
+                                   fromContext:self.context];
+
+                 if ([self.chatRoom hasParitcipant:user])
+                     [notificationsForRemoval addObject:notification];
+             }];
+            
+            [notificationsForRemoval enumerateObjectsUsingBlock:
+             ^(id obj, NSUInteger idx, BOOL *stop) {
+                 [[NSUserNotificationCenter defaultUserNotificationCenter] removeDeliveredNotification:obj];
+             }];
+        }
     }
 }
 
@@ -126,16 +136,16 @@ typedef enum _NCChatMessageCellType {
     }
 }
 
--(void)onNewChatMessage:(NSNotification*)notification
+-(void)newChatMessage:(NSNotification*)notification
 {
     NSString *chatRoomId = notification.userInfo[NCChatRoomIdKey];
     
-    NSLog(@"new chat messsage: %@", notification.userInfo);
-    
     if ([self.chatRoomId isEqualTo:chatRoomId])
     {
-        if ([notification.userInfo[NCChatMessageTypeKey] isEqualTo:[ChatMessage typeFromString:kChatMesageTypeText]])
+        if ([notification.userInfo[NCChatMessageTypeKey] isEqualTo:kChatMesageTypeText])
+        {
             [self reloadData];
+        }
     }
 }
 
@@ -151,7 +161,6 @@ typedef enum _NCChatMessageCellType {
     static NSString *cellIdentifier = @"MessageCell";
     NCChatMessageCell *cell = [self.tableView makeViewWithIdentifier:cellIdentifier owner:nil];
     [cell setWantsLayer:YES];
-    cell.delegate = self;
 
     if ([[msgGroup firstObject] user] == nil)
         cell.layer.backgroundColor = [NSColor colorWithWhite:1. alpha:1.].CGColor;
@@ -177,19 +186,16 @@ typedef enum _NCChatMessageCellType {
     return 55.;
 }
 
-// NCChatMessageCellDelegate
--(void)chatMessageCellHasChangedTextFrame:(NCChatMessageCell *)cell
-{
-//    NSIndexSet *set = [NSIndexSet indexSetWithIndex: [self.recentMessages indexOfObject:cell.messageGroup]];
-//    [self.tableView noteHeightOfRowsWithIndexesChanged:set];
-}
-
 // private
 -(void)reloadData
 {
     [self prepareMessages];
     [self.tableView reloadData];
     [self.tableView scrollRowToVisible:self.tableView.numberOfRows-1];
+    
+    if (self.delegate &&
+        [self.delegate respondsToSelector:@selector(chatViewControllerDidFinishLoadingMessages:)])
+        [self.delegate chatViewControllerDidFinishLoadingMessages:self];
 }
 
 -(void)prepareMessages
@@ -227,6 +233,10 @@ typedef enum _NCChatMessageCellType {
         
         lastUser = message.user;
         lastTime = message.timestamp;
+        
+        // set read timestamp
+        if (!message.read)
+            message.read = [NSDate date];
     }];
     
     if (currentGroup.count > 0)
@@ -248,9 +258,6 @@ typedef enum _NCChatMessageCellType {
 
 //******************************************************************************
 @interface NCChatMessageCell()
-{
-    CGFloat _lastTextViewHeight;
-}
 
 @end
 
@@ -264,7 +271,7 @@ typedef enum _NCChatMessageCellType {
     {
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.messageTextView = [[NSTextView alloc] init];
-//        self.messageTextView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.messageTextView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.messageTextView setBackgroundColor:[NSColor clearColor]];
         [self.messageTextView setVerticallyResizable:YES];
         [self.messageTextView.layoutManager ensureLayoutForTextContainer:self.messageTextView.textContainer];
@@ -280,24 +287,31 @@ typedef enum _NCChatMessageCellType {
     [self setWantsLayer: YES];
     
     [self addSubview:self.messageTextView];
-}
-
--(void)setFrame:(NSRect)frameRect
-{
-    NSRect textRect = [NCChatMessageCell calculateTextRectForSize:frameRect.size
-                                                       andContent:self.messageTextView.textStorage.string];
-    self.messageTextView.frame = NSMakeRect(30, 10, textRect.size.width, textRect.size.height);
-    [super setFrame:NSMakeRect(frameRect.origin.x, frameRect.origin.y,
-                               frameRect.size.width, textRect.size.height+40)];
     
-    if (_lastTextViewHeight != self.messageTextView.frame.size.height)
-    {
-        _lastTextViewHeight = self.messageTextView.frame.size.height;
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatMessageCellHasChangedTextFrame:)])
-            [self.delegate chatMessageCellHasChangedTextFrame:self];
-    }
+    NSView *textView = self.messageTextView;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[textView]-10-|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(textView)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[textView]-10-|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(textView)]];
 }
 
+//-(void)drawRect:(NSRect)dirtyRect
+//{
+//    {
+//        [[NSColor redColor] set];
+//        NSBezierPath *path = [NSBezierPath bezierPathWithRect:self.messageTextView.frame];
+//        [path stroke];
+//    }
+//    {
+//        [[NSColor greenColor] set];
+//        NSBezierPath *path = [NSBezierPath bezierPathWithRect:self.frame];
+//        [path stroke];
+//    }
+//}
 
 -(void)setMessage:(ChatMessage *)message
 {
@@ -309,8 +323,6 @@ typedef enum _NCChatMessageCellType {
     self.userNameTextField.stringValue = (message.user)?message.user.name:@"me";
     self.timestampTextField.stringValue = (message.timestamp)?[message.timestamp description]:@"";
     self.messageTypeTextField.stringValue = @"";
-    
-    _lastTextViewHeight = self.messageTextView.frame.size.height;
 }
 
 -(void)setMessageGroup:(NSArray *)messageGroup
@@ -324,8 +336,6 @@ typedef enum _NCChatMessageCellType {
     self.userNameTextField.stringValue = (message.user)?message.user.name:@"me";
     self.timestampTextField.stringValue = [NSString stringWithFormat:@"(%@):", [NCChatMessageCell textRepresentationForDate:message.timestamp]];
     self.messageTypeTextField.stringValue = @"";
-    
-    _lastTextViewHeight = self.messageTextView.frame.size.height;
 }
 
 +(NSDictionary *)textviewAttributes
@@ -381,7 +391,6 @@ typedef enum _NCChatMessageCellType {
     NSRect idealRect = [manager usedRectForTextContainer: container];
     
     return NSMakeRect(0, 0, idealRect.size.width, idealRect.size.height);
-    //(idealRect.size.height>55.)?(idealRect.size.height+40) : 55.;
 }
 
 +(NSString*)textRepresentationForDate:(NSDate*)date

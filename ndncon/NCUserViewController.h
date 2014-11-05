@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "NCUserListViewController.h"
+#import "NCChatViewController.h"
 
 @protocol NCUserViewControllerDelegate;
 
@@ -21,6 +22,7 @@
 @property (nonatomic) NCSessionInfoContainer *sessionInfo;
 @property (nonatomic) NSDictionary *userInfo;
 @property (nonatomic) NSImage *statusImage;
+@property (nonatomic) NCChatViewController *chatViewController;
 
 @end
 

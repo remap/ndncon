@@ -26,10 +26,11 @@ NSString* const NCChatMessageUsernameKey = @"username";
 NSString* const NCChatMessageTimestampKey = @"timestamp";
 NSString* const NCChatMessageBodyKey = @"msg_body";
 NSString* const NCChatRoomIdKey = @"chatroomId";
+NSString* const NCChatMessageUserKey = @"user";
 
 using namespace chrono_chat;
 class NCChatObserver;
-typedef std::map<std::string, ptr_lib::shared_ptr<NCChatObserver>> ChatIdToObserverMap;
+typedef std::map<std::string, ndn::ptr_lib::shared_ptr<NCChatObserver>> ChatIdToObserverMap;
 
 //******************************************************************************
 @interface NCChatLibraryController ()
@@ -37,16 +38,14 @@ typedef std::map<std::string, ptr_lib::shared_ptr<NCChatObserver>> ChatIdToObser
     ChatIdToObserverMap _chatIdToObserver;
 }
 
+@property (nonatomic) BOOL initialized;
 @property (nonatomic, readonly) NSManagedObjectContext *context;
 
--(void)addChatMessageOfType:(NSString*)msgType
-                   fromUser:(NSString*)userSessionPrefix
-                messageBody:(NSString*)messageBody
-           inChatRoomWithId:(NSString*)chatRoomId;
-
--(void)addOutgoingChatMessageOfType:(NSString*)msgType
+-(ChatMessage*)addChatMessageOfType:(NSString*)msgType
+                           fromUser:(NSString*)userSessionPrefix
                         messageBody:(NSString*)messageBody
                    inChatRoomWithId:(NSString*)chatRoomId;
+
 @end
 
 //******************************************************************************
@@ -54,18 +53,18 @@ class NCChatObserver : public ChatObserver
 {
 public:
     NCChatObserver(NSString *chatRoomId):chatRoomId_(chatRoomId), chat_(NULL){}
-    ~NCChatObserver()
-    {
-        if (chat_)
-            delete chat_;
-    }
+    virtual ~NCChatObserver()
+    {}
     
     void
-    onStateChanged(MessageTypes type, const char *userName, const char *msg,
-                   double timestamp)
+    onStateChanged(MessageTypes type, const char *userHubPrefix,
+                   const char *userName, const char *msg, double timestamp)
     {
         NSString *typeStr;
         NSString *userNameStr = [NSString ncStringFromCString:userName];
+        NSString *userPrefixStr = [NSString ncStringFromCString:userHubPrefix];
+        NSString *userSessionPrefix = [NSString userSessionPrefixForUser:userNameStr
+                                                           withHubPrefix:userPrefixStr];
         NSString *message = [NSString ncStringFromCString:msg];
         
         switch (type) {
@@ -75,41 +74,46 @@ public:
             case MessageTypes::LEAVE:
                 typeStr = kChatMesageTypeLeave;
                 break;
-            case MessageTypes::CHAT: // fall throw
+            case MessageTypes::CHAT: // fall through
             default:
                 typeStr = kChatMesageTypeText;
                 break;
         }
         
         NSLog(@"%@ - [%f] %@: %@", typeStr, timestamp, userNameStr, message);
-        [[NCChatLibraryController sharedInstance] addChatMessageOfType:typeStr
-                                                              fromUser:userNameStr
-                                                           messageBody:message
-                                                      inChatRoomWithId:chatRoomId_];
+        NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                          NCChatRoomIdKey: chatRoomId_,
+                                                                                          NCChatMessageTypeKey : typeStr,
+                                                                                          NCChatMessageTimestampKey: @(timestamp),
+                                                                                          NCChatMessageUsernameKey: userNameStr,
+                                                                                          NCChatMessageBodyKey: message
+                                                                                          }];
+
+        ChatMessage *chatMessage = [[NCChatLibraryController sharedInstance] addChatMessageOfType:typeStr
+                                                                                         fromUser:userSessionPrefix
+                                                                                      messageBody:message
+                                                                                 inChatRoomWithId:chatRoomId_];
+        
+        if (chatMessage.user)
+            userInfo[NCChatMessageUserKey] = chatMessage.user;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[[NSObject alloc] init]
              notifyNowWithNotificationName:NCChatMessageNotification
-             andUserInfo:@{
-                           NCChatRoomIdKey: chatRoomId_,
-                           NCChatMessageTypeKey : typeStr,
-                           NCChatMessageTimestampKey: @(timestamp),
-                           NCChatMessageUsernameKey: userNameStr,
-                           NCChatMessageBodyKey: message
-                           }];            
+             andUserInfo:userInfo];
         });
     }
     
     void
-    setChat(Chat *chat)
+    setChat(boost::shared_ptr<Chat> chat)
     { chat_ = chat; }
     
-    Chat*
+    boost::shared_ptr<Chat>
     getChat() { return chat_; }
     
 private:
     NSString *chatRoomId_;
-    Chat *chat_;
+    boost::shared_ptr<Chat> chat_;
 };
 
 //******************************************************************************
@@ -131,6 +135,15 @@ private:
     return &token;
 }
 
++(NSString*)privateChatRoomIdWithUser:(NSString*)userPrefix
+{
+    NSString *localPrefix = [NSString stringWithFormat:@"%@/%@",
+                             [NCPreferencesController sharedInstance].prefix,
+                             [NCPreferencesController sharedInstance].userName];
+    return [self chatRoomIdForUser:localPrefix
+                           andUser:userPrefix];
+}
+
 -(id)init
 {
     self = [super init];
@@ -141,13 +154,9 @@ private:
             return nil;
         
         [[NCFaceSingleton sharedInstance] startProcessingEvents];
-        [[NCPreferencesController sharedInstance] addObserver:self
-                                                  forKeyPaths:
-         NSStringFromSelector(@selector(chatBroadcastPrefix)),
-         nil];
-        
+
         [self subscribeForNotificationsAndSelectors:
-         NCRemoteSessionStatusUpdateNotification, @selector(remoteSessionStatusUpdate:),
+         NCLocalSessionStatusUpdateNotification, @selector(onLocalSessionStatusChanged:),
          nil];
     }
     
@@ -174,51 +183,60 @@ private:
 {
     NSString *chatRoomId = [NCChatLibraryController
                             privateChatRoomIdWithUser:userPrefix];
-    
-    if (!chatRoomId)
-        return nil;
-    
+#ifdef CHATS_ENABLED
     std::string broadcastPrefix([[NCPreferencesController sharedInstance].chatBroadcastPrefix
                                  cStringUsingEncoding:NSASCIIStringEncoding]);
-    Name broadcastPrefixName(broadcastPrefix);
+    ndn::Name broadcastPrefixName(broadcastPrefix);
     const std::string screenName([[NCPreferencesController sharedInstance].userName
                                   cStringUsingEncoding:NSASCIIStringEncoding]);
     const std::string chatRoom([chatRoomId
                                 cStringUsingEncoding:NSASCIIStringEncoding]);
-    std::string hubPrefix([[NCPreferencesController sharedInstance].prefix
+    std::string chatPrefix([[NCChatLibraryController chatsAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
                            cStringUsingEncoding:NSASCIIStringEncoding]);
-    Name hubPrefixName(hubPrefix);
+    ndn::Name chatPrefixName(chatPrefix);
     
     if (_chatIdToObserver.find(chatRoom) != _chatIdToObserver.end())
         return chatRoomId;
     else
     {
-        ptr_lib::shared_ptr<ChatObserver> observer(new NCChatObserver(chatRoomId));
-        __block Chat* chat;
+        ndn::ptr_lib::shared_ptr<ChatObserver> observer(new NCChatObserver(chatRoomId));
+        __block boost::shared_ptr<Chat> chat(new Chat(broadcastPrefixName, screenName, chatRoom,
+                                                      chatPrefixName, observer.get(),
+                                                      *[[NCFaceSingleton sharedInstance] getFace],
+                                                      *[[NCFaceSingleton sharedInstance] getKeyChain],
+                                                      [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
+        __block BOOL success = YES;
         
         [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-            chat = new Chat(broadcastPrefixName, screenName, chatRoom,
-                            hubPrefixName, observer,
-                            *[[NCFaceSingleton sharedInstance] getFace],
-                            *[[NCFaceSingleton sharedInstance] getKeyChain],
-                            [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName());
+            try {
+                chat->start();
+            } catch (std::exception &exception) {
+                chat.reset();
+                success = NO;
+                NSLog(@"Exception while starting chat: %@", [NSString ncStringFromCString:exception.what()]);
+            }
         }];
         
-        dynamic_pointer_cast<NCChatObserver>(observer)->setChat(chat);
-        
-        NSLog(@"joined chatroom %@ (%@-%@)", chatRoomId,
-              [[NCNdnRtcLibraryController sharedInstance] sessionPrefix], userPrefix);
-        
-        _chatIdToObserver[chatRoom] = dynamic_pointer_cast<NCChatObserver>(observer);
-        
-        if (![ChatRoom chatRoomWithId:chatRoomId fromContext:self.context])
+        if (success)
         {
-            ChatRoom *newChatRoom = [ChatRoom newChatRoomWithId:chatRoomId inContext:self.context];
-            newChatRoom.created = [NSDate date];
-            [self.context save:nil];
-        }
+            boost::dynamic_pointer_cast<NCChatObserver>(observer)->setChat(chat);
+            
+            NSLog(@"joined chatroom %@ (%@-%@)", chatRoomId,
+                  [[NCNdnRtcLibraryController sharedInstance] sessionPrefix], userPrefix);
+            
+            _chatIdToObserver[chatRoom] = boost::dynamic_pointer_cast<NCChatObserver>(observer);
+            
+            if (![ChatRoom chatRoomWithId:chatRoomId fromContext:self.context])
+            {
+                ChatRoom *newChatRoom = [ChatRoom newChatRoomWithId:chatRoomId inContext:self.context];
+                newChatRoom.created = [NSDate date];
+                [self.context save:nil];
+            }
+        } // if success
+        else
+            self.initialized = NO;
     }
-    
+#endif
     return chatRoomId;
 }
 
@@ -230,7 +248,6 @@ private:
     if (it == _chatIdToObserver.end())
     {
         NSLog(@"chat room %@ doesn't exist ", chatId);
-        [[NCErrorController sharedInstance] postErrorWithMessage:@"Chat room doesn't exist"];
         return;
     }
     
@@ -241,7 +258,13 @@ private:
     const std::string msg([message cStringUsingEncoding:NSASCIIStringEncoding]);
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-        it->second->getChat()->sendMessage(msg);
+        try {
+            NSLog(@"Send message to %@: %@", chatId, message);
+            it->second->getChat()->sendMessage(msg);
+        }
+        catch (std::exception &exception) {
+            NSLog(@"Exception while sending message to chat: %@", [NSString ncStringFromCString:exception.what()]);
+        }
     }];
 }
 
@@ -257,31 +280,54 @@ private:
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFace:^{
         it->second->getChat()->leave();
+        it->second->getChat()->shutdown();
         _chatIdToObserver.erase(it);
     }];
 }
 
 -(void)initChatRooms
 {
-    NSArray *users = [User allUsersFromContext:self.context];
+    NSLog(@"intializing chatrooms...");
     
-    [users enumerateObjectsUsingBlock:^(User* user, NSUInteger idx, BOOL *stop) {
+    self.initialized = YES;
+    [[User allUsersFromContext:self.context]
+     enumerateObjectsUsingBlock:^(User* user, NSUInteger idx, BOOL *stop) {
         [self startChatWithUser:user.userPrefix];
     }];
 }
 
 -(void)leaveAllChatRooms
 {
-    for (ChatIdToObserverMap::iterator it = _chatIdToObserver.begin();
-         it != _chatIdToObserver.end(); it++)
+    if (self.initialized)
     {
-        NSLog(@"left chatroom %s", it->first.c_str());
-        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-            it->second->getChat()->leave();
-        }];
+        NSLog(@"leaving all chatrooms...");
+        
+        for (ChatIdToObserverMap::iterator it = _chatIdToObserver.begin();
+             it != _chatIdToObserver.end(); it++)
+        {
+            NSLog(@"left chatroom %s", it->first.c_str());
+            [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+                try {
+                    if (it->second->getChat())
+                    {
+                        it->second->getChat()->leave();
+                    }
+                }
+                catch (std::exception &exception) {
+                     NSLog(@"Exception while leaving chat: %@", [NSString ncStringFromCString:exception.what()]);
+                }
+                
+                try {
+                    it->second->getChat()->shutdown();
+                    NSLog(@"chat shut down");
+                } catch (std::exception &exception) {
+                    NSLog(@"Exception while shutting down chat: %@", [NSString ncStringFromCString:exception.what()]);
+                }
+            }];
+        }
+        
+        _chatIdToObserver.clear();
     }
-    
-    _chatIdToObserver.clear();
 }
 
 // KVO
@@ -292,40 +338,32 @@ private:
 }
 
 // notificaitons
--(void)remoteSessionStatusUpdate:(NSNotification*)notification
+-(void)onLocalSessionStatusChanged:(NSNotification*)notification
 {
-    NCSessionStatus oldStatus = (NCSessionStatus)[[notification.userInfo objectForKey:kSessionOldStatusKey] integerValue];
-    NCSessionStatus newStatus = (NCSessionStatus)[[notification.userInfo objectForKey:kSessionStatusKey] integerValue];
-
-    if (oldStatus == SessionStatusOffline &&
-        (newStatus == SessionStatusOnlinePublishing || newStatus == SessionStatusOnlineNotPublishing))
-    {
-        NSLog(@"user %@ is online", notification.userInfo[kSessionUsernameKey]);
-        [self startChatWithUser:notification.userInfo[kSessionPrefixKey]];
-    }
+#ifdef CHATS_ENABLED
+    NCSessionStatus status = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
+    NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];
     
-    if (newStatus == SessionStatusOffline &&
-        (oldStatus == SessionStatusOnlineNotPublishing || oldStatus == SessionStatusOnlinePublishing))
+    if (status == SessionStatusOffline)
     {
-        NSLog(@"user %@ is offline", notification.userInfo[kSessionUsernameKey]);
-        NSString *chatRoomId = [NCChatLibraryController
-                                privateChatRoomIdWithUser:notification.userInfo[kSessionPrefixKey]];
-        
-        if (chatRoomId)
-            [self leaveChat:chatRoomId];
+        [self leaveAllChatRooms];
+        self.initialized = NO;
     }
+    else
+        if (oldStatus == SessionStatusOffline)
+        {
+            if (!self.initialized)
+            {
+                if (![NCFaceSingleton sharedInstance].isValid)
+                    [[NCFaceSingleton sharedInstance] reset];
+                
+                [self initChatRooms];
+            }
+        }
+#endif
 }
 
 // private
-+(NSString*)privateChatRoomIdWithUser:(NSString*)userPrefix
-{
-    if ([NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
-        return [self chatRoomIdForUser:[NCNdnRtcLibraryController sharedInstance].sessionPrefix
-                               andUser:userPrefix];
-    
-    return nil;
-}
-
 +(NSString*)chatRoomIdForUser:(NSString*)user1 andUser:(NSString*)user2
 {
     NSString *concatString = @"";
@@ -338,13 +376,13 @@ private:
     return [concatString md5Hash];
 }
 
--(void)addChatMessageOfType:(NSString*)msgType
+-(ChatMessage*)addChatMessageOfType:(NSString*)msgType
                    fromUser:(NSString*)userSessionPrefix
                 messageBody:(NSString*)messageBody
            inChatRoomWithId:(NSString*)chatRoomId
 {
-#warning fix this when we'll be getting real prefixes
-    User *user = [User userByName:userSessionPrefix //[userSessionPrefix getNdnRtcUserName]
+    User *user = [User userByName:[userSessionPrefix getNdnRtcUserName]
+                        andPrefix:[userSessionPrefix getNdnRtcHubPrefix]
                       fromContext:self.context];
     ChatMessage *chatMessage = [ChatMessage
                                 newChatMessageFromUser:user
@@ -357,12 +395,20 @@ private:
     
     NSError *error = nil;
     [self.context save:&error];
+    
+    return chatMessage;
 }
 
 -(void)reJoinRooms
 {
     [self leaveAllChatRooms];
     [self initChatRooms];
+}
+
++(NSString*)chatsAppPrefixWithHubPrefix:(NSString*)hubPrefix
+{
+    return [NSString stringWithFormat:@"%@/%@/chat",
+            hubPrefix, [NSString ndnRtcAppNameComponent]];
 }
 
 @end

@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "NCNdnRtcLibraryController.h"
+#import "NCChatViewController.h"
 
 extern NSString* const kSessionInfoKey;
 extern NSString* const kHubPrefixKey;
 
+@class User;
+
 //******************************************************************************
 @interface NCSessionInfoContainer : NSObject
-<NSTableViewDelegate, NSTableViewDataSource>
 
 +(NCSessionInfoContainer*)containerWithSessionInfo:(void*)sessionInfo;
 
@@ -30,6 +32,8 @@ extern NSString* const kHubPrefixKey;
 @protocol NCUserListViewControllerDelegate;
 
 @interface NCUserListViewController : NSViewController
+<NSTableViewDelegate, NSTableViewDataSource,
+NCChatViewControllerDelegate, NSUserNotificationCenterDelegate>
 
 @property (nonatomic, weak) IBOutlet id<NCUserListViewControllerDelegate> delegate;
 
@@ -40,6 +44,8 @@ extern NSString* const kHubPrefixKey;
 -(void)clearSelection;
 -(NSDictionary*)userInfoDictionaryForUser:(NSString*)userName
                                withPrefix:(NSString*)prefix;
+-(void)updateCellBadgeNumber:(NSUInteger)number
+             forCellWithUser:(User*)user;
 
 @end
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class User;
+@class User, ChatRoom;
 
 extern NSString* const kChatMesageTypeJoin;
 extern NSString* const kChatMesageTypeLeave;
@@ -21,9 +21,14 @@ extern NSString* const kChatMesageTypeText;
                             ofType:(NSString*)messageType
                    withMessageBody:(NSString*)body
                             inContext:(NSManagedObjectContext*)context;
+
++(NSArray*)unreadTextMessagesFromUser:(User*)user
+                           inChatroom:(ChatRoom*)chatroom;
+
 +(NSNumber*)typeFromString:(NSString*)typeStr;
 
 @property (nonatomic, retain) NSDate * timestamp;
+@property (nonatomic, retain) NSDate * read;
 @property (nonatomic, retain) NSString * body;
 @property (nonatomic, retain) NSNumber * type;
 @property (nonatomic, retain) NSManagedObject *chatRoom;

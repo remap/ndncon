@@ -16,6 +16,10 @@
 #import "NSString+NCAdditions.h"
 #import "NCConferenceViewController.h"
 #import "NCDiscoveryLibraryController.h"
+#import "NCChatLibraryController.h"
+#import "ChatMessage.h"
+#import "ChatRoom.h"
+#import "User.h"
 
 #define STATUS_POPUP_OFFLINE_IDX 0
 #define STATUS_POPUP_PASSIVE_IDX 1
@@ -73,6 +77,7 @@
      NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
      NCLocalSessionErrorNotification, @selector(onSessionError:),
      NSApplicationWillTerminateNotification, @selector(onAppWillTerminate:),
+     NCChatMessageNotification, @selector(onNewChatMessage:),
      nil];
 }
 
@@ -149,15 +154,24 @@
     [self loadCurrentView:self.conferenceViewController.view];
 
     self.conferenceViewController.isOwner = ![conference isRemote];
+    self.conferenceViewController.canJoin = [conference isActive];
     self.conferenceViewController.isEditable = NO;
-    self.conferenceViewController.conference = conference;    
+    self.conferenceViewController.conference = conference;
+    [self.userListViewController clearSelection];
 }
+
 -(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
             wantsDeleteConference:(Conference *)conference
 {
     [self withdrawConference:conference];
 }
 
+-(void)conferenceListController:(NCConferenceListViewController *)conferenceListController
+     remoteConferenceWithdrawed:(id<ConferenceEntityProtocol>)conference
+{
+    if (self.conferenceViewController.conference == conference)
+        [self loadCurrentView:self.initialView];
+}
 
 #pragma mark - NCConferenceViewControllerDelegate
 -(void)conferenceViewControllerDidCancelConference:(NCConferenceViewController *)conferenceViewController
@@ -168,10 +182,19 @@
 
 -(void)conferenceViewControllerDidJoinConference:(NCConferenceViewController *)conferenceViewController
 {
-    [self startConverstaionIfNotStarted];
-    [self loadCurrentView:self.conversationViewController.view];
-    [self.conversationViewController startConference:conferenceViewController.conference];
-    [self.conferenceListViewController clearSelection];
+    if (self.conversationViewController.isConversationActive)
+    {
+        [[NCErrorController sharedInstance]
+         postErrorWithMessage:@"You are in a conversation. Please end current "
+         "conversation before joining a conference"];
+    }
+    else
+    {
+        [self startConverstaionIfNotStarted];
+        [self loadCurrentView:self.conversationViewController.view];
+        [self.conversationViewController startConference:conferenceViewController.conference];
+        [self.conferenceListViewController clearSelection];
+    }
 }
 
 -(void)conferenceViewControllerDidPublishConference:(NCConferenceViewController *)conferenceViewController
@@ -249,10 +272,12 @@
     NCSessionInfoContainer *sessionInfo = [user valueForKey:kSessionInfoKey];
     
     self.userViewController = [[NCUserViewController alloc] init];
-    self.userViewController.userInfo = user;    
+    self.userViewController.chatViewController.delegate = self.userListViewController;
+    self.userViewController.userInfo = user;
     self.userViewController.sessionInfo = sessionInfo;
     self.userViewController.delegate = self;
     
+    [self.conferenceListViewController clearSelection];
     [self loadCurrentView:self.userViewController.view];
 }
 
@@ -282,14 +307,41 @@
     [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
 }
 
-#pragma mark - NCConferenceListViewControllerDelegate
--(void)conferenceListController:(NCConferenceListViewController *)conferenceListController remoteConferenceWithdrawed:(id<ConferenceEntityProtocol>)conference
+// private
+-(void)onNewChatMessage:(NSNotification*)notification
 {
-    if (self.conferenceViewController.conference == conference)
-        [self loadCurrentView:self.initialView];
+    NSString *chatRoomId = notification.userInfo[NCChatRoomIdKey];
+    User *user = notification.userInfo[NCChatMessageUserKey];
+    
+    if ([chatRoomId isEqualTo:self.userViewController.chatViewController.chatRoomId] &&
+        self.userViewController.view == self.currentView)
+    {
+        [self.userViewController.chatViewController newChatMessage:notification];
+    }
+    else if (user) // for messages from self - user is nil
+    {
+        if ([notification.userInfo[NCChatMessageTypeKey] isEqualTo:kChatMesageTypeText])
+        {
+            NSUserNotification *userNotification = [[NSUserNotification alloc] init];
+            userNotification.title = user.name;
+            userNotification.informativeText = notification.userInfo[NCChatMessageBodyKey];
+            userNotification.soundName = NSUserNotificationDefaultSoundName;
+            userNotification.userInfo = @{kUserNameKey:user.name,
+                                          kHubPrefixKey:user.prefix};
+            
+            [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
+        }
+        
+        ChatRoom *chatRoom = [ChatRoom chatRoomWithId:chatRoomId
+                                          fromContext:self.context];
+        NSArray *unreadMessages = [ChatMessage unreadTextMessagesFromUser:user
+                                                               inChatroom:chatRoom];
+        // update cell and post notification
+        [self.userListViewController updateCellBadgeNumber:unreadMessages.count
+                                           forCellWithUser:user];
+    }
 }
 
-// private
 -(void)withdrawConference:(Conference*)conference
 {
     [[NCDiscoveryLibraryController sharedInstance] withdrawConference:conference];

@@ -14,6 +14,9 @@ extern NSString* const kNCNdnRtcUserUrlFormat;
 
 +(NSString*)ncStringFromCString:(const char*)cString;
 +(NSString*)keyPathByComponents:(NSString*)comp1, ...;
++(NSString *)userSessionPrefixForUser:(NSString *)username
+                        withHubPrefix:(NSString *)hubPrefix;
++(NSString*)ndnRtcAppNameComponent;
 
 -(NSString*)getNdnRtcHubPrefix;
 -(NSString*)getNdnRtcUserName;

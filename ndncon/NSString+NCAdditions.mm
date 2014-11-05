@@ -47,6 +47,21 @@ NSString* const kNCNdnRtcUserUrlFormat = @"nrtc:%@:%@";
     return fullPath;
 }
 
++(NSString *)userSessionPrefixForUser:(NSString *)username
+                        withHubPrefix:(NSString *)hubPrefix
+{
+    return [self pathWithComponents:
+            @[hubPrefix,
+              [NSString ncStringFromCString:NameComponents::NameComponentApp.c_str()],
+              [NSString ncStringFromCString:NameComponents::NameComponentUser.c_str()],
+              username]];
+}
+
++(NSString*)ndnRtcAppNameComponent
+{
+    return [NSString ncStringFromCString:NameComponents::NameComponentApp.c_str()];
+}
+
 -(NSString*)getNdnRtcHubPrefix
 {
     NSUInteger idx = NSNotFound;

@@ -49,9 +49,9 @@
     else
         NSLog(@"Not a first launch. We're friends already...");
     
+    [[NCNdnRtcLibraryController sharedInstance] startSession];
     [NCChatLibraryController sharedInstance];
     [NCDiscoveryLibraryController sharedInstance];
-    [[NCNdnRtcLibraryController sharedInstance] startSession];
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ucla.edu.NdnCon" in the user's Application Support directory.
@@ -179,7 +179,7 @@
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    NSLog(@"terminating...");
+    [[NCChatLibraryController sharedInstance] leaveAllChatRooms];
     
     if (!_managedObjectContext) {
         return NSTerminateNow;
@@ -269,3 +269,4 @@
 }
 
 @end
+

@@ -35,7 +35,7 @@ extern NSString* const kConferenceOrganizerPrefixKey;
 @property (nonatomic) User *organizer;
 
 -(BOOL)isRemote;
-//-(NSDictionary*)dictionaryRepresentation;
+-(BOOL)isActive;
 
 @end
 
@@ -58,13 +58,10 @@ extern NSString* const kConferenceOrganizerPrefixKey;
 @interface Conference (CoreDataGeneratedAccessors)
 
 +(NSArray*)allConferencesFromContext:(NSManagedObjectContext*)context;
-
 +(Conference*)conferenceWithName:(NSString*)name
                      fromContext:(NSManagedObjectContext*)context;
 +(Conference*)newConferenceWithName:(NSString*)name
                           inContext:(NSManagedObjectContext*)context;
-//+(Conference*)newConferenceWithDictionaryRepresentation:(NSDictionary*)dictionary
-//                                              inContext:(NSManagedObjectContext*)context;
 +(Conference*)newConferenceFromRemoteCopy:(NCRemoteConference*)remoteConference
                                 inContext:(NSManagedObjectContext*)context;
 
@@ -89,5 +86,6 @@ extern NSString* const kConferenceOrganizerPrefixKey;
 @property (nonatomic, retain, readonly) UserStub *organizer;
 
 -(id)initWithDictionary:(NSDictionary *)conferenceDictionary;
+-(void)createLocalCopiesForMissingUsersInContext:(NSManagedObjectContext*)context;
 
 @end

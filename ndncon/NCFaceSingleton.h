@@ -15,8 +15,12 @@ typedef void(^NCFaceSynchronizedBlock)();
 
 +(NCFaceSingleton*)sharedInstance;
 
+@property (nonatomic, readonly) BOOL isValid;
+
 -(void)startProcessingEvents;
 -(void)stopProcessingEvents;
+-(void)markInvalid;
+-(void)reset;
 
 -(void)performSynchronizedWithFace:(NCFaceSynchronizedBlock)block;
 -(void)performSynchronizedWithFaceBlocking:(NCFaceSynchronizedBlock)block;

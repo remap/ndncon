@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
+#import <IOKit/pwr_mgt/IOPMLib.h>
+
 #include <ndnrtc/ndnrtc-library.h>
 #include <ndnrtc/params.h>
 
@@ -32,6 +34,7 @@
 #import "NCStatisticsWindowController.h"
 #import "NCDropScrollview.h"
 #import "User.h"
+#import "NSTimer+NCAdditions.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -55,6 +58,7 @@ public:
     
     ~StreamObserver()
     {
+        viewer_ = NULL;
         unregisterObserver();
     }
     
@@ -167,6 +171,7 @@ private:
 @property (weak) IBOutlet NSButton *statisticsButton;
 
 @property (nonatomic, strong) Conference *conference;
+@property (nonatomic) IOPMAssertionID iopmAssertionId;
 
 @end
 
@@ -197,7 +202,7 @@ private:
     _activeStreamObserver = new StreamObserver(self.activeStreamViewer);
     
     [self subscribeForNotificationsAndSelectors:
-     NCLocalSessionStatusUpdateNotification, @selector(onSessionStatusUpdate:),
+     NCRemoteSessionStatusUpdateNotification, @selector(onRemoteSessionStatusUpdate:),
      NCStreamObserverEventNotification, @selector(onStreamEvent:),
      NCStreamRebufferingNotification, @selector(onStreamEvent:),
      nil];
@@ -252,6 +257,7 @@ private:
     [self.localStreamsScrollView addStackView:self.localStreamViewer.stackView
                               withOrientation:NSUserInterfaceLayoutOrientationHorizontal];
     [self startPublishingWithConfiguration:[NCPreferencesController sharedInstance].producerConfigurationCopy];
+    [self stopComputerSleep];
 }
 
 - (IBAction)endConversation:(id)sender
@@ -317,6 +323,8 @@ private:
                                                                isRemote:YES].allKeys firstObject]];
     
     [self addRemoteAudioStreams: audioStreams withUserInfo:userInfo];
+    
+    [self stopComputerSleep];
 }
 
 -(void)startConference:(Conference*)conference
@@ -330,6 +338,12 @@ private:
 {
     _participants = participants;
     _currentConversationStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
+}
+
+-(BOOL)isConversationActive
+{
+    return (self.currentConversationStatus == SessionStatusOnlinePublishing ||
+            self.participants.count > 0);
 }
 
 // NCActiveStreamViewerDelegate
@@ -411,6 +425,23 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 }
 
 // private
+-(void)stopComputerSleep
+{
+    IOPMAssertionID assertionID;
+    CFStringRef activityReason = CFSTR("Video Conference");
+    IOReturn result = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep,
+                                                  kIOPMAssertionLevelOn,
+                                                  activityReason,
+                                                  &assertionID);
+    if (result == kIOReturnSuccess)
+        self.iopmAssertionId = assertionID;
+}
+
+-(void)resumeComputerSleep
+{
+    IOPMAssertionRelease(self.iopmAssertionId);
+}
+
 -(void)startWatchingParticipants:(NSSet*)participants
 {
     // check current statuses of the participants
@@ -617,6 +648,9 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 {
     if (self.participants.count == 0)
     {
+        [self resumeComputerSleep];
+        
+        // this call may delete self...
         if (self.delegate && [self.delegate respondsToSelector:@selector(conversationViewControllerDidEndConversation:)])
             [self.delegate conversationViewControllerDidEndConversation:self];
     }
