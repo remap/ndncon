@@ -120,6 +120,8 @@
 		AFD9791519BE546E0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD9791319BE546E0061AA24 /* InfoPlist.strings */; };
 		AFD9791719BE546E0061AA24 /* NdnConTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD9791619BE546E0061AA24 /* NdnConTests.m */; };
 		AFD9792319BE5C6E0061AA24 /* ndncon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = AFD9792219BE5C6E0061AA24 /* ndncon.iconset */; };
+		AFFA06981A0AE49700000516 /* libcrypto.1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06971A0AE49700000516 /* libcrypto.1.0.0.dylib */; };
+		AFFA06991A0AE4A200000516 /* libcrypto.1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06971A0AE49700000516 /* libcrypto.1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AFFED07919D62B92000974FF /* NCActiveStreamViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = AFFED07819D62B92000974FF /* NCActiveStreamViewer.m */; };
 		AFFED07B19D62BA2000974FF /* NCActiveStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFFED07A19D62BA2000974FF /* NCActiveStreamView.xib */; };
 /* End PBXBuildFile section */
@@ -142,6 +144,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				AF744C8E19E71C1F00E92680 /* Sparkle.framework in CopyFiles */,
+				AFFA06991A0AE4A200000516 /* libcrypto.1.0.0.dylib in CopyFiles */,
 				AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */,
 				AF744CE119EDF9E100E92680 /* libndn-cpp.0.dylib in CopyFiles */,
 				AF179D3319FB28600067F5FA /* libchrono-chat2013.0.dylib in CopyFiles */,
@@ -339,6 +342,7 @@
 		AFD9791619BE546E0061AA24 /* NdnConTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NdnConTests.m; path = "ndncon-tests/NdnConTests.m"; sourceTree = "<group>"; };
 		AFD9792219BE5C6E0061AA24 /* ndncon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = ndncon.iconset; sourceTree = "<group>"; };
 		AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.2.xcdatamodel"; sourceTree = "<group>"; };
+		AFFA06971A0AE49700000516 /* libcrypto.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.0.0.dylib; path = ../../../../../opt/local/lib/libcrypto.1.0.0.dylib; sourceTree = "<group>"; };
 		AFFED07719D62B92000974FF /* NCActiveStreamViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCActiveStreamViewer.h; path = ndncon/NCActiveStreamViewer.h; sourceTree = SOURCE_ROOT; };
 		AFFED07819D62B92000974FF /* NCActiveStreamViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCActiveStreamViewer.m; path = ndncon/NCActiveStreamViewer.m; sourceTree = SOURCE_ROOT; };
 		AFFED07A19D62BA2000974FF /* NCActiveStreamView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCActiveStreamView.xib; path = ndncon/NCActiveStreamView.xib; sourceTree = SOURCE_ROOT; };
@@ -351,6 +355,7 @@
 			files = (
 				AF179D3219FB28520067F5FA /* libchrono-chat2013.0.dylib in Frameworks */,
 				AF3EEA4819F889E000039A56 /* libconference-discovery.0.dylib in Frameworks */,
+				AFFA06981A0AE49700000516 /* libcrypto.1.0.0.dylib in Frameworks */,
 				AF744CE019EDF9CE00E92680 /* libndn-cpp.0.dylib in Frameworks */,
 				AF744C7119E5DAA300E92680 /* CoreFoundation.framework in Frameworks */,
 				AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */,
@@ -733,6 +738,7 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AFFA06971A0AE49700000516 /* libcrypto.1.0.0.dylib */,
 				AF179D3119FB28520067F5FA /* libchrono-chat2013.0.dylib */,
 				AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */,
 				AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */,
@@ -957,7 +963,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# change rpath for NDN-RTC library\ninstall_name_tool -id @rpath/libndnrtc.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change rpath for chrono-chat library\ninstall_name_tool -id @rpath/libchrono-chat2013.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib\n# change rpath for conference-discovery library\ninstall_name_tool -id @rpath/libconference-discovery.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libconference-discovery.0.dylib\n# change rpath for ndn-cpp library\ninstall_name_tool -id @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndn-cpp.0.dylib\n# change ndn-cpp dependency path in NDN-RTC library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change ndn-cpp dependency path in chorno-chat library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib\n# change ndn-cpp dependency for conference-discovery library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib  $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libconference-discovery.0.dylib";
+			shellScript = "# change rpath for NDN-RTC library\ninstall_name_tool -id @rpath/libndnrtc.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change rpath for chrono-chat library\ninstall_name_tool -id @rpath/libchrono-chat2013.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib\n# change rpath for conference-discovery library\ninstall_name_tool -id @rpath/libconference-discovery.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libconference-discovery.0.dylib\n# change rpath for ndn-cpp library\ninstall_name_tool -id @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndn-cpp.0.dylib\ninstall_name_tool -id @rpath/libcrypto.1.0.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libcrypto.1.0.0.dylib\n# change ndn-cpp dependency path in NDN-RTC library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change ndn-cpp dependency path in chorno-chat library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib\n# change ndn-cpp dependency for conference-discovery library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib  $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libconference-discovery.0.dylib\n# change libcrypto dependency for ndn-cpp library\ninstall_name_tool -change /opt/local/lib/libcrypto.1.0.0.dylib @rpath/libcrypto.1.0.0.dylib  $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndn-cpp.0.dylib\n# change libcrypto dependency for NDN-RTC library\ninstall_name_tool -change /opt/local/lib/libcrypto.1.0.0.dylib @rpath/libcrypto.1.0.0.dylib  $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib";
 		};
 /* End PBXShellScriptBuildPhase section */
 
