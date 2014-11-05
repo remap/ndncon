@@ -10,6 +10,7 @@
 #import "NCPreferencesController.h"
 #import "NCErrorController.h"
 #import "NSString+NCAdditions.h"
+#import "NSObject+NCAdditions.h"
 
 //******************************************************************************
 @interface NCFaceSingleton()
@@ -27,7 +28,9 @@
 
 +(NCFaceSingleton *)sharedInstance
 {
-    return (NCFaceSingleton*)[super sharedInstance];
+    NCFaceSingleton *singleton = (NCFaceSingleton*)[super sharedInstance];
+    
+    return singleton;
 }
 
 +(PTNSingleton *)createInstance
@@ -35,9 +38,9 @@
     return [[NCFaceSingleton alloc] init];
 }
 
+static dispatch_once_t token;
 +(dispatch_once_t *)token
 {
-    static dispatch_once_t token;
     return &token;
 }
 
@@ -89,14 +92,39 @@
     });
 }
 
+-(BOOL)isValid
+{
+    return _face && _keychain;
+}
+
+-(void)markInvalid
+{
+    [self stopProcessingEvents];
+    [self performSynchronizedWithFaceBlocking:^{
+        delete _face;
+        _face = NULL;
+        delete _keychain;
+        _keychain = NULL;
+    }];
+}
+
+-(void)reset
+{   
+    [self initFace];
+    _isRunningFace = YES;
+    [self runFace];
+}
+
 -(void)performSynchronizedWithFace:(NCFaceSynchronizedBlock)block
 {
-    dispatch_async(_faceQueue, block);
+    if (self.isValid)
+        dispatch_async(_faceQueue, block);
 }
 
 -(void)performSynchronizedWithFaceBlocking:(NCFaceSynchronizedBlock)block
 {
-    dispatch_sync(_faceQueue, block);
+    if (self.isValid)
+        dispatch_sync(_faceQueue, block);
 }
 
 -(ndn::Face *)getFace

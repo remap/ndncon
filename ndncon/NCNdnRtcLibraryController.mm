@@ -11,6 +11,7 @@
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"
 #import "NSString+NCAdditions.h"
+#import "NCFaceSingleton.h"
 
 #include <ndnrtc/ndnrtc-library.h>
 #include <ndnrtc/error-codes.h>
@@ -72,6 +73,8 @@ public:
             {
                 if ([NCNdnRtcLibraryController sharedInstance].sessionPrefix)
                     [[NCNdnRtcLibraryController sharedInstance] stopSession];
+                
+                [[NCFaceSingleton sharedInstance] markInvalid];
             }
                 break;
             default:

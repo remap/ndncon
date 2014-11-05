@@ -352,7 +352,12 @@ private:
     else
     {
         if (!self.initialized)
+        {
+            if (![NCFaceSingleton sharedInstance].isValid)
+                [[NCFaceSingleton sharedInstance] reset];
+            
             [self initChatRooms];
+        }
     }
 }
 

@@ -369,7 +369,13 @@ private:
     else
     {
         if (!self.initialized)
+        {
+            if (![NCFaceSingleton sharedInstance].isValid)
+                [[NCFaceSingleton sharedInstance] reset];
+            
             [self initConferenceDiscovery];
+        }
+        
         if (self.initialized)
             [self publishConferences];
     }
