@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF11BAFA19D4E37E0011270F /* OpenGL.framework */; };
-		AF179D3019FB21170067F5FA /* libconference-discovery.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		AF179D3219FB28520067F5FA /* libchrono-chat2013.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF179D3119FB28520067F5FA /* libchrono-chat2013.0.dylib */; };
-		AF179D3319FB28600067F5FA /* libchrono-chat2013.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF179D3119FB28520067F5FA /* libchrono-chat2013.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
 		AF3D2CFA19F708AA00A0D274 /* NSView+NCDragAndDropAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */; };
 		AF3D2CFD19F70C9E00A0D274 /* NCDropScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */; };
@@ -19,7 +16,6 @@
 		AF3EEA3C19F83BA900039A56 /* NCFaceSingleton.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA3B19F83BA900039A56 /* NCFaceSingleton.mm */; };
 		AF3EEA4019F8610E00039A56 /* Conference.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA3F19F8610E00039A56 /* Conference.m */; };
 		AF3EEA4519F8671600039A56 /* NCConferenceListViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA4419F8671600039A56 /* NCConferenceListViewController.mm */; };
-		AF3EEA4819F889E000039A56 /* libconference-discovery.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */; };
 		AF5D34A419DA1AF400227E75 /* NCGlView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A319DA1AF400227E75 /* NCGlView.m */; };
 		AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
 		AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AA19DA52E400227E75 /* NCClickableView.m */; };
@@ -63,8 +59,6 @@
 		AF744CCB19ED99C100E92680 /* NCDiscoveryParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */; };
 		AF744CCC19ED99C100E92680 /* NCDiscoveryParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */; };
 		AF744CCF19EDD6B600E92680 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD978FE19BE546D0061AA24 /* MainMenu.xib */; };
-		AF744CE019EDF9CE00E92680 /* libndn-cpp.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */; };
-		AF744CE119EDF9E100E92680 /* libndn-cpp.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF8A136C19BF8B6100010B20 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
 		AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */; };
 		AF8A138F19BFB7C500010B20 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A138919BFB7C500010B20 /* MASPreferencesWindowController.m */; };
@@ -81,6 +75,16 @@
 		AFA8521719C8B2FF0015A883 /* NCEmbeddedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521619C8B2FF0015A883 /* NCEmbeddedScrollView.m */; };
 		AFA8521A19C8F1E40015A883 /* NCAudioThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */; };
 		AFA8521D19C8F3220015A883 /* NCAudioThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */; };
+		AFADDE181A0C09A100238A18 /* libboost_regex-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C81A0C08BC00000516 /* libboost_regex-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFADDE191A0C09A300238A18 /* libcrypto.1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C61A0C08AA00000516 /* libcrypto.1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFADDE1A1A0C09A600238A18 /* libz.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C41A0C088A00000516 /* libz.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFADDE1B1A0C09AD00238A18 /* libsqlite3.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C21A0C088300000516 /* libsqlite3.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFADDE1D1A0C0AFE00238A18 /* libicuuc.51.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFADDE1C1A0C0AFE00238A18 /* libicuuc.51.dylib */; };
+		AFADDE1F1A0C0B2100238A18 /* libicui18n.51.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFADDE1E1A0C0B2100238A18 /* libicui18n.51.dylib */; };
+		AFADDE211A0C0B2C00238A18 /* libicudata.51.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFADDE201A0C0B2C00238A18 /* libicudata.51.dylib */; };
+		AFADDE221A0C0B3A00238A18 /* libicudata.51.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFADDE201A0C0B2C00238A18 /* libicudata.51.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFADDE231A0C0B3C00238A18 /* libicui18n.51.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFADDE1E1A0C0B2100238A18 /* libicui18n.51.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFADDE241A0C0B3E00238A18 /* libicuuc.51.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFADDE1C1A0C0AFE00238A18 /* libicuuc.51.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AFAFD1B219F98F6F00213EEE /* NCConferenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFAFD1B019F98F6F00213EEE /* NCConferenceViewController.m */; };
 		AFAFD1B319F98F6F00213EEE /* NCConferenceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFAFD1B119F98F6F00213EEE /* NCConferenceView.xib */; };
 		AFB35BF819C9FB4E00D8A2BC /* NCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BF719C9FB4E00D8A2BC /* NCMainViewController.m */; };
@@ -120,8 +124,16 @@
 		AFD9791519BE546E0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD9791319BE546E0061AA24 /* InfoPlist.strings */; };
 		AFD9791719BE546E0061AA24 /* NdnConTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD9791619BE546E0061AA24 /* NdnConTests.m */; };
 		AFD9792319BE5C6E0061AA24 /* ndncon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = AFD9792219BE5C6E0061AA24 /* ndncon.iconset */; };
-		AFFA06981A0AE49700000516 /* libcrypto.1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06971A0AE49700000516 /* libcrypto.1.0.0.dylib */; };
-		AFFA06991A0AE4A200000516 /* libcrypto.1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06971A0AE49700000516 /* libcrypto.1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFFA06AF1A0C035900000516 /* libchrono-chat2013.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */; };
+		AFFA06B01A0C035900000516 /* libconference-discovery.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06AE1A0C035900000516 /* libconference-discovery.0.dylib */; };
+		AFFA06B21A0C038200000516 /* libndn-cpp.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */; };
+		AFFA06B31A0C039A00000516 /* libconference-discovery.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06AE1A0C035900000516 /* libconference-discovery.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFFA06B41A0C039D00000516 /* libchrono-chat2013.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFFA06B51A0C039F00000516 /* libndn-cpp.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFFA06C31A0C088300000516 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06C21A0C088300000516 /* libsqlite3.0.dylib */; };
+		AFFA06C51A0C088A00000516 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06C41A0C088A00000516 /* libz.1.dylib */; };
+		AFFA06C71A0C08AA00000516 /* libcrypto.1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06C61A0C08AA00000516 /* libcrypto.1.0.0.dylib */; };
+		AFFA06C91A0C08BC00000516 /* libboost_regex-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06C81A0C08BC00000516 /* libboost_regex-mt.dylib */; };
 		AFFED07919D62B92000974FF /* NCActiveStreamViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = AFFED07819D62B92000974FF /* NCActiveStreamViewer.m */; };
 		AFFED07B19D62BA2000974FF /* NCActiveStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFFED07A19D62BA2000974FF /* NCActiveStreamView.xib */; };
 /* End PBXBuildFile section */
@@ -144,11 +156,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				AF744C8E19E71C1F00E92680 /* Sparkle.framework in CopyFiles */,
-				AFFA06991A0AE4A200000516 /* libcrypto.1.0.0.dylib in CopyFiles */,
+				AFADDE241A0C0B3E00238A18 /* libicuuc.51.dylib in CopyFiles */,
+				AFADDE231A0C0B3C00238A18 /* libicui18n.51.dylib in CopyFiles */,
+				AFADDE221A0C0B3A00238A18 /* libicudata.51.dylib in CopyFiles */,
+				AFFA06B41A0C039D00000516 /* libchrono-chat2013.0.dylib in CopyFiles */,
+				AFFA06B51A0C039F00000516 /* libndn-cpp.0.dylib in CopyFiles */,
 				AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */,
-				AF744CE119EDF9E100E92680 /* libndn-cpp.0.dylib in CopyFiles */,
-				AF179D3319FB28600067F5FA /* libchrono-chat2013.0.dylib in CopyFiles */,
-				AF179D3019FB21170067F5FA /* libconference-discovery.0.dylib in CopyFiles */,
+				AFADDE181A0C09A100238A18 /* libboost_regex-mt.dylib in CopyFiles */,
+				AFADDE1A1A0C09A600238A18 /* libz.1.dylib in CopyFiles */,
+				AFADDE191A0C09A300238A18 /* libcrypto.1.0.0.dylib in CopyFiles */,
+				AFADDE1B1A0C09AD00238A18 /* libsqlite3.0.dylib in CopyFiles */,
+				AFFA06B31A0C039A00000516 /* libconference-discovery.0.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,7 +174,6 @@
 
 /* Begin PBXFileReference section */
 		AF11BAFA19D4E37E0011270F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		AF179D3119FB28520067F5FA /* libchrono-chat2013.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libchrono-chat2013.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libchrono-chat2013.0.dylib"; sourceTree = "<group>"; };
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
 		AF3D2CF819F708AA00A0D274 /* NSView+NCDragAndDropAbility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+NCDragAndDropAbility.h"; path = "ndncon/NSView+NCDragAndDropAbility.h"; sourceTree = SOURCE_ROOT; };
 		AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+NCDragAndDropAbility.m"; path = "ndncon/NSView+NCDragAndDropAbility.m"; sourceTree = SOURCE_ROOT; };
@@ -173,7 +190,6 @@
 		AF3EEA3F19F8610E00039A56 /* Conference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Conference.m; path = ndncon/Conference.m; sourceTree = SOURCE_ROOT; };
 		AF3EEA4319F8671600039A56 /* NCConferenceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConferenceListViewController.h; path = ndncon/NCConferenceListViewController.h; sourceTree = SOURCE_ROOT; };
 		AF3EEA4419F8671600039A56 /* NCConferenceListViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCConferenceListViewController.mm; path = ndncon/NCConferenceListViewController.mm; sourceTree = SOURCE_ROOT; };
-		AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libconference-discovery.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libconference-discovery.0.dylib"; sourceTree = "<group>"; };
 		AF5D34A219DA1AF400227E75 /* NCGlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGlView.h; path = ndncon/NCGlView.h; sourceTree = SOURCE_ROOT; };
 		AF5D34A319DA1AF400227E75 /* NCGlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGlView.m; path = ndncon/NCGlView.m; sourceTree = SOURCE_ROOT; };
 		AF5D34A519DA29C800227E75 /* NCBlockDrawableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCBlockDrawableView.h; path = ndncon/NCBlockDrawableView.h; sourceTree = SOURCE_ROOT; };
@@ -244,7 +260,6 @@
 		AF744CC819ED99C100E92680 /* NCDiscoveryParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCDiscoveryParametersViewController.h; path = ndncon/NCDiscoveryParametersViewController.h; sourceTree = SOURCE_ROOT; };
 		AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCDiscoveryParametersViewController.m; path = ndncon/NCDiscoveryParametersViewController.m; sourceTree = SOURCE_ROOT; };
 		AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCDiscoveryParametersView.xib; path = ndncon/NCDiscoveryParametersView.xib; sourceTree = SOURCE_ROOT; };
-		AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libndn-cpp.0.dylib"; path = "../ndnrtc-thirdparty/ndn-cpp/build/lib/libndn-cpp.0.dylib"; sourceTree = "<group>"; };
 		AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
@@ -274,6 +289,9 @@
 		AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCAudioThreadView.xib; path = ndncon/NCAudioThreadView.xib; sourceTree = SOURCE_ROOT; };
 		AFA8521B19C8F3220015A883 /* NCAudioThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCAudioThreadViewController.h; path = ndncon/NCAudioThreadViewController.h; sourceTree = SOURCE_ROOT; };
 		AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCAudioThreadViewController.m; path = ndncon/NCAudioThreadViewController.m; sourceTree = SOURCE_ROOT; };
+		AFADDE1C1A0C0AFE00238A18 /* libicuuc.51.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicuuc.51.dylib; path = ../../../../../opt/local/lib/libicuuc.51.dylib; sourceTree = "<group>"; };
+		AFADDE1E1A0C0B2100238A18 /* libicui18n.51.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicui18n.51.dylib; path = ../../../../../opt/local/lib/libicui18n.51.dylib; sourceTree = "<group>"; };
+		AFADDE201A0C0B2C00238A18 /* libicudata.51.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicudata.51.dylib; path = ../../../../../opt/local/lib/libicudata.51.dylib; sourceTree = "<group>"; };
 		AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.0.xcdatamodel"; sourceTree = "<group>"; };
 		AFAFD1AF19F98F6F00213EEE /* NCConferenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConferenceViewController.h; path = ndncon/NCConferenceViewController.h; sourceTree = SOURCE_ROOT; };
 		AFAFD1B019F98F6F00213EEE /* NCConferenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCConferenceViewController.m; path = ndncon/NCConferenceViewController.m; sourceTree = SOURCE_ROOT; };
@@ -342,7 +360,13 @@
 		AFD9791619BE546E0061AA24 /* NdnConTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NdnConTests.m; path = "ndncon-tests/NdnConTests.m"; sourceTree = "<group>"; };
 		AFD9792219BE5C6E0061AA24 /* ndncon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = ndncon.iconset; sourceTree = "<group>"; };
 		AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.2.xcdatamodel"; sourceTree = "<group>"; };
-		AFFA06971A0AE49700000516 /* libcrypto.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.0.0.dylib; path = ../../../../../opt/local/lib/libcrypto.1.0.0.dylib; sourceTree = "<group>"; };
+		AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libchrono-chat2013.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libchrono-chat2013.0.dylib"; sourceTree = "<group>"; };
+		AFFA06AE1A0C035900000516 /* libconference-discovery.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libconference-discovery.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libconference-discovery.0.dylib"; sourceTree = "<group>"; };
+		AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libndn-cpp.0.dylib"; path = "../ndnrtc-thirdparty/ndn-cpp/build/lib/libndn-cpp.0.dylib"; sourceTree = "<group>"; };
+		AFFA06C21A0C088300000516 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		AFFA06C41A0C088A00000516 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = usr/lib/libz.1.dylib; sourceTree = SDKROOT; };
+		AFFA06C61A0C08AA00000516 /* libcrypto.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.0.0.dylib; path = ../../../../../opt/local/lib/libcrypto.1.0.0.dylib; sourceTree = "<group>"; };
+		AFFA06C81A0C08BC00000516 /* libboost_regex-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_regex-mt.dylib"; path = "../../../../../opt/local/lib/libboost_regex-mt.dylib"; sourceTree = "<group>"; };
 		AFFED07719D62B92000974FF /* NCActiveStreamViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCActiveStreamViewer.h; path = ndncon/NCActiveStreamViewer.h; sourceTree = SOURCE_ROOT; };
 		AFFED07819D62B92000974FF /* NCActiveStreamViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCActiveStreamViewer.m; path = ndncon/NCActiveStreamViewer.m; sourceTree = SOURCE_ROOT; };
 		AFFED07A19D62BA2000974FF /* NCActiveStreamView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCActiveStreamView.xib; path = ndncon/NCActiveStreamView.xib; sourceTree = SOURCE_ROOT; };
@@ -353,10 +377,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF179D3219FB28520067F5FA /* libchrono-chat2013.0.dylib in Frameworks */,
-				AF3EEA4819F889E000039A56 /* libconference-discovery.0.dylib in Frameworks */,
-				AFFA06981A0AE49700000516 /* libcrypto.1.0.0.dylib in Frameworks */,
-				AF744CE019EDF9CE00E92680 /* libndn-cpp.0.dylib in Frameworks */,
+				AFADDE1D1A0C0AFE00238A18 /* libicuuc.51.dylib in Frameworks */,
+				AFADDE211A0C0B2C00238A18 /* libicudata.51.dylib in Frameworks */,
+				AFFA06C91A0C08BC00000516 /* libboost_regex-mt.dylib in Frameworks */,
+				AFFA06C71A0C08AA00000516 /* libcrypto.1.0.0.dylib in Frameworks */,
+				AFADDE1F1A0C0B2100238A18 /* libicui18n.51.dylib in Frameworks */,
+				AFFA06C51A0C088A00000516 /* libz.1.dylib in Frameworks */,
+				AFFA06C31A0C088300000516 /* libsqlite3.0.dylib in Frameworks */,
+				AFFA06B21A0C038200000516 /* libndn-cpp.0.dylib in Frameworks */,
+				AFFA06AF1A0C035900000516 /* libchrono-chat2013.0.dylib in Frameworks */,
+				AFFA06B01A0C035900000516 /* libconference-discovery.0.dylib in Frameworks */,
 				AF744C7119E5DAA300E92680 /* CoreFoundation.framework in Frameworks */,
 				AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */,
 				AFA8520A19C779180015A883 /* ApplicationServices.framework in Frameworks */,
@@ -738,10 +768,16 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AFFA06971A0AE49700000516 /* libcrypto.1.0.0.dylib */,
-				AF179D3119FB28520067F5FA /* libchrono-chat2013.0.dylib */,
-				AF3EEA4719F889E000039A56 /* libconference-discovery.0.dylib */,
-				AF744CDF19EDF9CE00E92680 /* libndn-cpp.0.dylib */,
+				AFADDE201A0C0B2C00238A18 /* libicudata.51.dylib */,
+				AFADDE1E1A0C0B2100238A18 /* libicui18n.51.dylib */,
+				AFADDE1C1A0C0AFE00238A18 /* libicuuc.51.dylib */,
+				AFFA06C81A0C08BC00000516 /* libboost_regex-mt.dylib */,
+				AFFA06C61A0C08AA00000516 /* libcrypto.1.0.0.dylib */,
+				AFFA06C41A0C088A00000516 /* libz.1.dylib */,
+				AFFA06C21A0C088300000516 /* libsqlite3.0.dylib */,
+				AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */,
+				AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */,
+				AFFA06AE1A0C035900000516 /* libconference-discovery.0.dylib */,
 				AF744C8C19E71BEE00E92680 /* Sparkle.framework */,
 				AF11BAFA19D4E37E0011270F /* OpenGL.framework */,
 				AFA8520919C779180015A883 /* ApplicationServices.framework */,
@@ -963,7 +999,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# change rpath for NDN-RTC library\ninstall_name_tool -id @rpath/libndnrtc.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change rpath for chrono-chat library\ninstall_name_tool -id @rpath/libchrono-chat2013.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib\n# change rpath for conference-discovery library\ninstall_name_tool -id @rpath/libconference-discovery.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libconference-discovery.0.dylib\n# change rpath for ndn-cpp library\ninstall_name_tool -id @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndn-cpp.0.dylib\ninstall_name_tool -id @rpath/libcrypto.1.0.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libcrypto.1.0.0.dylib\n# change ndn-cpp dependency path in NDN-RTC library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib\n# change ndn-cpp dependency path in chorno-chat library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libchrono-chat2013.0.dylib\n# change ndn-cpp dependency for conference-discovery library\ninstall_name_tool -change $NDNCPP_LIB_PATH/libndn-cpp.0.dylib @rpath/libndn-cpp.0.dylib  $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libconference-discovery.0.dylib\n# change libcrypto dependency for ndn-cpp library\ninstall_name_tool -change /opt/local/lib/libcrypto.1.0.0.dylib @rpath/libcrypto.1.0.0.dylib  $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndn-cpp.0.dylib\n# change libcrypto dependency for NDN-RTC library\ninstall_name_tool -change /opt/local/lib/libcrypto.1.0.0.dylib @rpath/libcrypto.1.0.0.dylib  $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/libndnrtc.0.dylib";
+			shellScript = "all_libs=$(ls $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/lib*.dylib)\n# changing library location to rpath\nfor f in $all_libs; do\n    fname=$(basename $f);\n    install_name_tool -id @rpath/$fname $f;\ndone\n\nfunction replaceLibsWithPath()\n{\n    local path=$1\n    local lib=$2\n    \n    pat=\"$path/([A-z0-9.-]+\\.dylib)\";\n    while [[ \"$(otool -L $lib)\" =~ $pat ]]; do\n    libname=${BASH_REMATCH[1]}\n    install_name_tool -change $path/$libname @rpath/$libname $lib\n    done\n}\n\n# replacing all dependencies which have $NDNCPP_LIB_PATH or /opt/local/lib in their path to @rpath\nfor f in $all_libs; do\n    fname=$(basename $f);\n    replaceLibsWithPath $NDNCPP_LIB_PATH \"$f\"\n    replaceLibsWithPath \"/opt/local/lib\" \"$f\"\ndone\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
