@@ -99,13 +99,15 @@ static dispatch_once_t token;
 
 -(void)markInvalid
 {
-    [self stopProcessingEvents];
-    [self performSynchronizedWithFaceBlocking:^{
-        delete _face;
-        _face = NULL;
-        delete _keychain;
-        _keychain = NULL;
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self stopProcessingEvents];
+        [self performSynchronizedWithFaceBlocking:^{
+            delete _face;
+            _face = NULL;
+            delete _keychain;
+            _keychain = NULL;
+        }];
+    });
 }
 
 -(void)reset
