@@ -183,60 +183,65 @@ private:
 {
     NSString *chatRoomId = [NCChatLibraryController
                             privateChatRoomIdWithUser:userPrefix];
-#ifdef CHATS_ENABLED
-    std::string broadcastPrefix([[NCPreferencesController sharedInstance].chatBroadcastPrefix
-                                 cStringUsingEncoding:NSASCIIStringEncoding]);
-    ndn::Name broadcastPrefixName(broadcastPrefix);
-    const std::string screenName([[NCPreferencesController sharedInstance].userName
-                                  cStringUsingEncoding:NSASCIIStringEncoding]);
-    const std::string chatRoom([chatRoomId
-                                cStringUsingEncoding:NSASCIIStringEncoding]);
-    std::string chatPrefix([[NCChatLibraryController chatsAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
-                           cStringUsingEncoding:NSASCIIStringEncoding]);
-    ndn::Name chatPrefixName(chatPrefix);
     
-    if (_chatIdToObserver.find(chatRoom) != _chatIdToObserver.end())
-        return chatRoomId;
-    else
+    if ([NCFaceSingleton sharedInstance].isValid)
     {
-        ndn::ptr_lib::shared_ptr<ChatObserver> observer(new NCChatObserver(chatRoomId));
-        __block boost::shared_ptr<Chat> chat(new Chat(broadcastPrefixName, screenName, chatRoom,
-                                                      chatPrefixName, observer.get(),
-                                                      *[[NCFaceSingleton sharedInstance] getFace],
-                                                      *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                                      [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
-        __block BOOL success = YES;
+#ifdef CHATS_ENABLED
+        std::string broadcastPrefix([[NCPreferencesController sharedInstance].chatBroadcastPrefix
+                                     cStringUsingEncoding:NSASCIIStringEncoding]);
+        ndn::Name broadcastPrefixName(broadcastPrefix);
+        const std::string screenName([[NCPreferencesController sharedInstance].userName
+                                      cStringUsingEncoding:NSASCIIStringEncoding]);
+        const std::string chatRoom([chatRoomId
+                                    cStringUsingEncoding:NSASCIIStringEncoding]);
+        std::string chatPrefix([[NCChatLibraryController chatsAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
+                                cStringUsingEncoding:NSASCIIStringEncoding]);
+        ndn::Name chatPrefixName(chatPrefix);
         
-        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-            try {
-                chat->start();
-            } catch (std::exception &exception) {
-                chat.reset();
-                success = NO;
-                NSLog(@"Exception while starting chat: %@", [NSString ncStringFromCString:exception.what()]);
-            }
-        }];
-        
-        if (success)
-        {
-            boost::dynamic_pointer_cast<NCChatObserver>(observer)->setChat(chat);
-            
-            NSLog(@"joined chatroom %@ (%@-%@)", chatRoomId,
-                  [[NCNdnRtcLibraryController sharedInstance] sessionPrefix], userPrefix);
-            
-            _chatIdToObserver[chatRoom] = boost::dynamic_pointer_cast<NCChatObserver>(observer);
-            
-            if (![ChatRoom chatRoomWithId:chatRoomId fromContext:self.context])
-            {
-                ChatRoom *newChatRoom = [ChatRoom newChatRoomWithId:chatRoomId inContext:self.context];
-                newChatRoom.created = [NSDate date];
-                [self.context save:nil];
-            }
-        } // if success
+        if (_chatIdToObserver.find(chatRoom) != _chatIdToObserver.end())
+            return chatRoomId;
         else
-            self.initialized = NO;
-    }
+        {
+            ndn::ptr_lib::shared_ptr<ChatObserver> observer(new NCChatObserver(chatRoomId));
+            __block boost::shared_ptr<Chat> chat(new Chat(broadcastPrefixName, screenName, chatRoom,
+                                                          chatPrefixName, observer.get(),
+                                                          *[[NCFaceSingleton sharedInstance] getFace],
+                                                          *[[NCFaceSingleton sharedInstance] getKeyChain],
+                                                          [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
+            __block BOOL success = YES;
+            
+            [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+                try {
+                    chat->start();
+                } catch (std::exception &exception) {
+                    chat.reset();
+                    success = NO;
+                    NSLog(@"Exception while starting chat: %@", [NSString ncStringFromCString:exception.what()]);
+                    [[NCFaceSingleton sharedInstance] markInvalid];
+                }
+            }];
+            
+            if (success)
+            {
+                boost::dynamic_pointer_cast<NCChatObserver>(observer)->setChat(chat);
+                
+                NSLog(@"joined chatroom %@ (%@-%@)", chatRoomId,
+                      [[NCNdnRtcLibraryController sharedInstance] sessionPrefix], userPrefix);
+                
+                _chatIdToObserver[chatRoom] = boost::dynamic_pointer_cast<NCChatObserver>(observer);
+                
+                if (![ChatRoom chatRoomWithId:chatRoomId fromContext:self.context])
+                {
+                    ChatRoom *newChatRoom = [ChatRoom newChatRoomWithId:chatRoomId inContext:self.context];
+                    newChatRoom.created = [NSDate date];
+                    [self.context save:nil];
+                }
+            } // if success
+            else
+                self.initialized = NO;
+        }
 #endif
+    }        
     return chatRoomId;
 }
 
@@ -264,6 +269,7 @@ private:
         }
         catch (std::exception &exception) {
             NSLog(@"Exception while sending message to chat: %@", [NSString ncStringFromCString:exception.what()]);
+            [[NCFaceSingleton sharedInstance] markInvalid];
         }
     }];
 }
@@ -348,6 +354,7 @@ private:
     {
         [self leaveAllChatRooms];
         self.initialized = NO;
+        [[NCFaceSingleton sharedInstance] markInvalid];
     }
     else
         if (oldStatus == SessionStatusOffline)

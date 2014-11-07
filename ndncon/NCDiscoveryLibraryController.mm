@@ -363,10 +363,12 @@ private:
             } catch (std::exception &exception) {
                 NSLog(@"Exception while shutting down conference discovery: %@",
                       [NSString ncStringFromCString:exception.what()]);
+                [[NCFaceSingleton sharedInstance] markInvalid];
             }
         }];
         _conferenceBroadcasterObserver.reset();
         self.discoveredConferences = [NSArray array];
+        [[NCFaceSingleton sharedInstance] markInvalid];
     }
     else
         if (oldStatus == SessionStatusOffline)
@@ -404,8 +406,7 @@ private:
             NSLog(@"published conference %@", conference.name);
         } catch (std::exception &exception) {
             NSLog(@"Exception while publishing conference: %@", [NSString ncStringFromCString:exception.what()]);
-//            [[NCErrorController sharedInstance]
-//             postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
+            [[NCFaceSingleton sharedInstance] markInvalid];
         }
     }];
     
@@ -437,8 +438,7 @@ private:
             discoverer.reset();
             NSLog(@"Exception while initializing conference discovery: %@",
                   [NSString ncStringFromCString:exception.what()]);
-//            [[NCErrorController sharedInstance]
-//             postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
+            [[NCFaceSingleton sharedInstance] markInvalid];
         }
     }];
     
