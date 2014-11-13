@@ -11,7 +11,7 @@
     <entity name="ChatRoom" representedClassName="ChatRoom" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="roomId" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
-        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChatMessage" inverseName="chatRoom" inverseEntity="ChatMessage" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ChatMessage" inverseName="chatRoom" inverseEntity="ChatMessage" syncable="YES"/>
     </entity>
     <entity name="Conference" representedClassName="Conference" syncable="YES">
         <attribute name="conferenceDescription" optional="YES" attributeType="String" syncable="YES"/>

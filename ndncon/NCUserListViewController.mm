@@ -466,11 +466,18 @@ private:
     std::string sessionPrefix = lib->setRemoteSessionObserver(username, prefix, generalParams, observer);
     observer->sessionPrefix_ = sessionPrefix;
     
-    dispatch_sync(_observerQueue, ^{
-        _sessionObservers.push_back(observer);
-    });
-    
-    NSLog(@"started observer for %@:%@", aPrefix, aUserName);
+    if (sessionPrefix == "")
+    {
+        delete observer;
+    }
+    else
+    {
+        dispatch_sync(_observerQueue, ^{
+            _sessionObservers.push_back(observer);
+        });
+        
+        NSLog(@"started observer for %@:%@", aPrefix, aUserName);
+    }
 }
 
 -(void)stopObserver:(RemoteSessionObserver*)observer

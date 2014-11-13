@@ -77,8 +77,6 @@
 		AFA8521D19C8F3220015A883 /* NCAudioThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */; };
 		AFADDE181A0C09A100238A18 /* libboost_regex-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C81A0C08BC00000516 /* libboost_regex-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AFADDE191A0C09A300238A18 /* libcrypto.1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C61A0C08AA00000516 /* libcrypto.1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		AFADDE1A1A0C09A600238A18 /* libz.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C41A0C088A00000516 /* libz.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		AFADDE1B1A0C09AD00238A18 /* libsqlite3.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C21A0C088300000516 /* libsqlite3.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AFADDE1D1A0C0AFE00238A18 /* libicuuc.51.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFADDE1C1A0C0AFE00238A18 /* libicuuc.51.dylib */; };
 		AFADDE1F1A0C0B2100238A18 /* libicui18n.51.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFADDE1E1A0C0B2100238A18 /* libicui18n.51.dylib */; };
 		AFADDE211A0C0B2C00238A18 /* libicudata.51.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFADDE201A0C0B2C00238A18 /* libicudata.51.dylib */; };
@@ -163,9 +161,7 @@
 				AFFA06B51A0C039F00000516 /* libndn-cpp.0.dylib in CopyFiles */,
 				AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */,
 				AFADDE181A0C09A100238A18 /* libboost_regex-mt.dylib in CopyFiles */,
-				AFADDE1A1A0C09A600238A18 /* libz.1.dylib in CopyFiles */,
 				AFADDE191A0C09A300238A18 /* libcrypto.1.0.0.dylib in CopyFiles */,
-				AFADDE1B1A0C09AD00238A18 /* libsqlite3.0.dylib in CopyFiles */,
 				AFFA06B31A0C039A00000516 /* libconference-discovery.0.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,6 +271,7 @@
 		AF8A14CD19BFD6C100010B20 /* PTNStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNStorage.m; sourceTree = "<group>"; };
 		AF8A14CF19BFD70B00010B20 /* NCPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCPreferencesController.h; path = ndncon/NCPreferencesController.h; sourceTree = SOURCE_ROOT; };
 		AF8A14D019BFD70B00010B20 /* NCPreferencesController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCPreferencesController.mm; path = ndncon/NCPreferencesController.mm; sourceTree = SOURCE_ROOT; };
+		AF8C4FC21A1445E700BAC0EA /* NdnCon v0.3.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.3.xcdatamodel"; sourceTree = "<group>"; };
 		AFA8520719C778E50015A883 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		AFA8520919C779180015A883 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		AFA8520C19C7AA250015A883 /* NSDictionary+NCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+NCAdditions.h"; path = "ndncon/NSDictionary+NCAdditions.h"; sourceTree = SOURCE_ROOT; };
@@ -1366,12 +1363,13 @@
 			isa = XCVersionGroup;
 			children = (
 				AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */,
+				AF8C4FC21A1445E700BAC0EA /* NdnCon v0.3.3.xcdatamodel */,
 				AF3EEA3D19F8605000039A56 /* NdnCon v0.3.1.xcdatamodel */,
 				AFAFD1AD19F98F1200213EEE /* NdnCon v0.3.0.xcdatamodel */,
 				AF744CBC19ECAD6C00E92680 /* NdnCon v0.2.0.xcdatamodel */,
 				AFD9790219BE546D0061AA24 /* NdnCon.xcdatamodel */,
 			);
-			currentVersion = AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */;
+			currentVersion = AF8C4FC21A1445E700BAC0EA /* NdnCon v0.3.3.xcdatamodel */;
 			path = NdnCon.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
