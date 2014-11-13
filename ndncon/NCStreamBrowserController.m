@@ -44,9 +44,8 @@ NSString* const kPreviewControllerKey = @"previewController";
                   [streamPrefix getNdnRtcUserName],
                   [configuration valueForKey:kNameKey]];
     
-    [self.userPreviewControllers setObject:@{kUserNameKey:kLocalUserName,
-                                             kPreviewControllerKey:streamPreviewController}
-                                    forKey:streamPrefix];
+    self.userPreviewControllers[streamPrefix] = @{kUserNameKey:kLocalUserName,
+                                                  kPreviewControllerKey:streamPreviewController};
     return streamPreviewController;
 }
 
@@ -85,9 +84,9 @@ NSString* const kPreviewControllerKey = @"previewController";
         
         for (NSString *key in self.userPreviewControllers.allKeys)
         {
-            NSDictionary *info = [self.userPreviewControllers objectForKey:key];
+            NSDictionary *info = self.userPreviewControllers[key];
             
-            if ([info objectForKey:kPreviewControllerKey] == vc.contentViewController)
+            if (info[kPreviewControllerKey] == vc.contentViewController)
             {
                 streamPreviewController = [info objectForKey:kPreviewControllerKey];
                 userName =  [info objectForKey:kUserNameKey];
@@ -96,6 +95,7 @@ NSString* const kPreviewControllerKey = @"previewController";
             }
         }
         
+        [self.userPreviewControllers removeObjectForKey:streamPrefix];
         [self.delegate streamBrowserController:self
                                streamWasClosed:streamPreviewController
                                        forUser:userName

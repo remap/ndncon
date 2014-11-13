@@ -99,8 +99,8 @@
     
     {
         NSString *userPrefix = [NSString stringWithFormat:@"%@/%@",
-                                [self.userInfo[kSessionPrefixKey] getNdnRtcHubPrefix],
-                                [self.userInfo[kSessionPrefixKey] getNdnRtcUserName]];
+                                self.userInfo[kHubPrefixKey],
+                                self.userInfo[kSessionUsernameKey]];
         [self joinChatRoomForUserPrefix:userPrefix];
     }
 }
