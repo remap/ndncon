@@ -88,16 +88,16 @@ public:
                                                                                           NCChatMessageUsernameKey: userNameStr,
                                                                                           NCChatMessageBodyKey: message
                                                                                           }];
-
-        ChatMessage *chatMessage = [[NCChatLibraryController sharedInstance] addChatMessageOfType:typeStr
-                                                                                         fromUser:userSessionPrefix
-                                                                                      messageBody:message
-                                                                                 inChatRoomWithId:chatRoomId_];
-        
-        if (chatMessage.user)
-            userInfo[NCChatMessageUserKey] = chatMessage.user;
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            ChatMessage *chatMessage = [[NCChatLibraryController sharedInstance] addChatMessageOfType:typeStr
+                                                                                             fromUser:userSessionPrefix
+                                                                                          messageBody:message
+                                                                                     inChatRoomWithId:chatRoomId_];
+
+            if (chatMessage.user)
+                userInfo[NCChatMessageUserKey] = chatMessage.user;
+            
             [[[NSObject alloc] init]
              notifyNowWithNotificationName:NCChatMessageNotification
              andUserInfo:userInfo];

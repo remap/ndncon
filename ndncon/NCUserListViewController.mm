@@ -372,7 +372,10 @@ private:
     {
         [self.userController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if ([[obj name] isEqualToString:userName] && [[obj prefix] isEqualToString:prefix])
+            {
                 [obj setStatusImage:[[NCNdnRtcLibraryController sharedInstance] imageForSessionStatus:status]];
+                *stop = YES;
+            }
         }];
     }
 }
