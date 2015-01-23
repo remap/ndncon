@@ -29,7 +29,7 @@ typedef ConferenceInfo IDiscoverableEntity;
 typedef ConferenceInfoFactory IDiscoverableEntitySerializer;
 typedef ConferenceDiscovery EntityBroadcaster;
 typedef ConferenceDiscoveryObserver EntityBroadcasterObserver;
-typedef std::map<std::string, ndn::ptr_lib::shared_ptr<ConferenceInfo>> ConferenceMap;
+typedef std::map<std::string, ndn::ptr_lib::shared_ptr<IDiscoverableEntity>> ConferenceMap;
 
 //******************************************************************************
 @interface NSMutableData (NCAdditions)

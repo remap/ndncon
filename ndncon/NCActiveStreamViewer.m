@@ -132,7 +132,8 @@
 {
     NSNumber *oldValue = _currentThreadIdx;
     
-    if (![_currentThreadIdx isEqual:currentThreadIdx])
+    if (currentThreadIdx &&
+        ![_currentThreadIdx isEqual:currentThreadIdx])
     {
         _currentThreadIdx = currentThreadIdx;
         _currentThread = [self.mediaThreads objectAtIndex:_currentThreadIdx.intValue];
@@ -156,7 +157,7 @@
     [self clearStreamEventView];
     self.streamPrefix = nil;
     self.userInfo = nil;
-    self.currentThreadIdx = @(0);
+    self.currentThreadIdx = nil;
     self.renderer = nil;
 }
 
