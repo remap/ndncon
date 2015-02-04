@@ -1124,7 +1124,7 @@
 			buildConfigurationList = AFDD0E211A7318380076A301 /* Build configuration list for PBXNativeTarget "NdnCon-Release" */;
 			buildPhases = (
 				AFDD0DA11A7318380076A301 /* CopyFiles */,
-				AFDD0DAC1A7318380076A301 /* ShellScript */,
+				AFDD0DAC1A7318380076A301 /* Run Script */,
 				AFDD0DAD1A7318380076A301 /* Sources */,
 				AFDD0DF01A7318380076A301 /* Frameworks */,
 				AFDD0E031A7318380076A301 /* Resources */,
@@ -1269,18 +1269,19 @@
 			shellPath = /bin/sh;
 			shellScript = "all_libs=$(ls $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/lib*.dylib)\n# changing library location to rpath\nfor f in $all_libs; do\n    fname=$(basename $f);\n    install_name_tool -id @rpath/$fname $f;\ndone\n\nfunction replaceLibsWithPath()\n{\n    local path=$1\n    local lib=$2\n    \n    pat=\"$path/([A-z0-9.-]+\\.dylib)\";\n    while [[ \"$(otool -L $lib)\" =~ $pat ]]; do\n    libname=${BASH_REMATCH[1]}\n    install_name_tool -change $path/$libname @rpath/$libname $lib\n    done\n}\n\n# replacing all dependencies which have $NDNCPP_LIB_PATH or /opt/local/lib in their path to @rpath\nfor f in $all_libs; do\n    fname=$(basename $f);\n    replaceLibsWithPath $NDNCPP_LIB_PATH \"$f\"\n    replaceLibsWithPath \"/opt/local/lib\" \"$f\"\ndone\n";
 		};
-		AFDD0DAC1A7318380076A301 /* ShellScript */ = {
+		AFDD0DAC1A7318380076A301 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "all_libs=$(ls $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/lib*.dylib)\n# changing library location to rpath\nfor f in $all_libs; do\n    fname=$(basename $f);\n    install_name_tool -id @rpath/$fname $f;\ndone\n\nfunction replaceLibsWithPath()\n{\n    local path=$1\n    local lib=$2\n    \n    pat=\"$path/([A-z0-9.-]+\\.dylib)\";\n    while [[ \"$(otool -L $lib)\" =~ $pat ]]; do\n    libname=${BASH_REMATCH[1]}\n    install_name_tool -change $path/$libname @rpath/$libname $lib\n    done\n}\n\n# replacing all dependencies which have $NDNCPP_LIB_PATH or /opt/local/lib in their path to @rpath\nfor f in $all_libs; do\n    fname=$(basename $f);\n    replaceLibsWithPath $NDNCPP_LIB_PATH \"$f\"\n    replaceLibsWithPath \"/opt/local/lib\" \"$f\"\ndone\n";
+			shellScript = "libsPath=$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH\nappLocation=\"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\"\necho \"app location \"$appLocation\n\nif [ -L \"$appLocation\" ]\nthen\necho \"app location is a symlink. resolving...\"\n    appLocation=$(readlink \"$appLocation\")\n    libsPath=\"${appLocation%/$FULL_PRODUCT_NAME}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\n\necho \"libs path is \"$libsPath\nall_libs=$(ls \"${libsPath}\"/lib*.dylib)\necho $all_libs\n\n# changing library location to rpath\nfor f in $all_libs; do\n    chmod 755 $f\n    fname=$(basename $f);\n    install_name_tool -id @rpath/$fname $f;\ndone\n\nfunction replaceLibsWithPath()\n{\n    local path=$1\n    local lib=$2\n    \n    pat=\"$path/([A-z0-9.-]+\\.dylib)\";\n    while [[ \"$(otool -L $lib)\" =~ $pat ]]; do\n    libname=${BASH_REMATCH[1]}\n    install_name_tool -change $path/$libname @rpath/$libname $lib\n    done\n}\n\n# replacing all dependencies which have $NDNCPP_LIB_PATH or /opt/local/lib in their path to @rpath\nfor f in $all_libs; do\n    fname=$(basename $f);\n    replaceLibsWithPath $NDNCPP_LIB_PATH \"$f\"\n    replaceLibsWithPath \"/opt/local/lib\" \"$f\"\ndone\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1517,6 +1518,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				NDNRTC_INCLUDE_PATH = "";
 				NDNRTC_LIB_PATH = "";
@@ -1552,6 +1554,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				NDNRTC_INCLUDE_PATH = "";
 				NDNRTC_LIB_PATH = "";
@@ -1783,6 +1786,15 @@
 			buildConfigurations = (
 				AFD9791E19BE546E0061AA24 /* Debug */,
 				AFD9791F19BE546E0061AA24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFDD0E211A7318380076A301 /* Build configuration list for PBXNativeTarget "NdnCon-Release" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFDD0E221A7318380076A301 /* Debug */,
+				AFDD0E231A7318380076A301 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
