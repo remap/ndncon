@@ -1,40 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0510"
+   LastUpgradeVersion = "0610"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
-      buildImplicitDependencies = "NO">
-      <PostActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "echo &quot;asdfasdf&quot; &gt; 2.log&#10;#app=&quot;${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}&quot;&#10;#echo $app &gt; 2.log">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-                     BuildableName = "NdnCon-Debug.app"
-                     BlueprintName = "NdnCon"
-                     ReferencedContainer = "container:NdnCon.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-      </PostActions>
+      buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
-            buildForArchiving = "NO"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-               BuildableName = "NdnCon-Debug.app"
-               BlueprintName = "NdnCon"
+               BlueprintIdentifier = "AFDD0DA01A7318380076A301"
+               BuildableName = "NdnCon.app"
+               BlueprintName = "NdnCon-Release"
                ReferencedContainer = "container:NdnCon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,23 +28,13 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AFD9790919BE546E0061AA24"
-               BuildableName = "NdnConTests.xctest"
-               BlueprintName = "NdnConTests"
-               ReferencedContainer = "container:NdnCon.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-            BuildableName = "NdnCon-Debug.app"
-            BlueprintName = "NdnCon"
+            BlueprintIdentifier = "AFDD0DA01A7318380076A301"
+            BuildableName = "NdnCon.app"
+            BlueprintName = "NdnCon-Release"
             ReferencedContainer = "container:NdnCon.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -79,19 +51,12 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-            BuildableName = "NdnCon-Debug.app"
-            BlueprintName = "NdnCon"
+            BlueprintIdentifier = "AFDD0DA01A7318380076A301"
+            BuildableName = "NdnCon.app"
+            BlueprintName = "NdnCon-Release"
             ReferencedContainer = "container:NdnCon.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "MallocStackLoggingNoCompact"
-            value = "1"
-            isEnabled = "NO">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -99,14 +64,14 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-            BuildableName = "NdnCon-Debug.app"
-            BlueprintName = "NdnCon"
+            BlueprintIdentifier = "AFDD0DA01A7318380076A301"
+            BuildableName = "NdnCon.app"
+            BlueprintName = "NdnCon-Release"
             ReferencedContainer = "container:NdnCon.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -117,7 +82,7 @@
    <ArchiveAction
       buildConfiguration = "Release"
       customArchiveName = "NdnCon"
-      revealArchiveInOrganizer = "YES">
+      revealArchiveInOrganizer = "NO">
       <PostActions>
          <ExecutionAction
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
@@ -127,9 +92,9 @@
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-                     BuildableName = "NdnCon-Debug.app"
-                     BlueprintName = "NdnCon"
+                     BlueprintIdentifier = "AFDD0DA01A7318380076A301"
+                     BuildableName = "NdnCon.app"
+                     BlueprintName = "NdnCon-Release"
                      ReferencedContainer = "container:NdnCon.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>

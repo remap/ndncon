@@ -113,6 +113,18 @@ using namespace ndnrtc::new_api;
     if ([self valueForKey:kEncodingWidthKey])
         params.coderParams_.encodeWidth_ = [[self valueForKey:kEncodingWidthKey] intValue];
     
+    if ([self valueForKey:kDeltaAverageSegNumKey])
+        params.deltaAvgSegNum_ = [[self valueForKey:kDeltaAverageSegNumKey] floatValue];
+    
+    if ([self valueForKey:kDeltaAverageParSegNumKey])
+        params.deltaAvgParitySegNum_ = [[self valueForKey:kDeltaAverageParSegNumKey] floatValue];
+    
+    if ([self valueForKey:kKeyAverageSegNumKey])
+        params.keyAvgSegNum_ = [[self valueForKey:kKeyAverageSegNumKey] floatValue];
+    
+    if ([self valueForKey:kKeyAverageParSegNumKey])
+        params.keyAvgParitySegNum_ = [[self valueForKey:kKeyAverageParSegNumKey] floatValue];
+    
     return params;
 }
 
@@ -190,7 +202,11 @@ using namespace ndnrtc::new_api;
              kBitrateKey: @(params.coderParams_.startBitrate_),
              kMaxBitrateKey: @(params.coderParams_.maxBitrate_),
              kEncodingWidthKey: @(params.coderParams_.encodeWidth_),
-             kEncodingHeightKey: @(params.coderParams_.encodeHeight_)
+             kEncodingHeightKey: @(params.coderParams_.encodeHeight_),
+             kDeltaAverageSegNumKey: @(params.deltaAvgSegNum_),
+             kDeltaAverageParSegNumKey: @(params.deltaAvgParitySegNum_),
+             kKeyAverageSegNumKey : @(params.keyAvgSegNum_),
+             kKeyAverageParSegNumKey: @(params.keyAvgParitySegNum_)
              };
 }
 
