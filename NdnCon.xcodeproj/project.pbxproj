@@ -16,6 +16,12 @@
 		AF3EEA3C19F83BA900039A56 /* NCFaceSingleton.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA3B19F83BA900039A56 /* NCFaceSingleton.mm */; };
 		AF3EEA4019F8610E00039A56 /* Conference.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA3F19F8610E00039A56 /* Conference.m */; };
 		AF3EEA4519F8671600039A56 /* NCConferenceListViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA4419F8671600039A56 /* NCConferenceListViewController.mm */; };
+		AF58C01A1A81701D00181DBF /* libboost_chrono-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF58C0171A81701D00181DBF /* libboost_chrono-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AF58C01B1A81701D00181DBF /* libboost_system-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF58C0181A81701D00181DBF /* libboost_system-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AF58C01C1A81701D00181DBF /* libboost_timer-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF58C0191A81701D00181DBF /* libboost_timer-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AF58C0201A81702700181DBF /* libboost_chrono-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF58C01D1A81702700181DBF /* libboost_chrono-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AF58C0211A81702700181DBF /* libboost_system-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF58C01E1A81702700181DBF /* libboost_system-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AF58C0221A81702700181DBF /* libboost_timer-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF58C01F1A81702700181DBF /* libboost_timer-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF5D34A419DA1AF400227E75 /* NCGlView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A319DA1AF400227E75 /* NCGlView.m */; };
 		AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
 		AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AA19DA52E400227E75 /* NCClickableView.m */; };
@@ -122,6 +128,130 @@
 		AFD9791519BE546E0061AA24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD9791319BE546E0061AA24 /* InfoPlist.strings */; };
 		AFD9791719BE546E0061AA24 /* NdnConTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD9791619BE546E0061AA24 /* NdnConTests.m */; };
 		AFD9792319BE5C6E0061AA24 /* ndncon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = AFD9792219BE5C6E0061AA24 /* ndncon.iconset */; };
+		AFDD0DA21A7318380076A301 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF744C8C19E71BEE00E92680 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AFDD0DA31A7318380076A301 /* libicuuc.51.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFADDE1C1A0C0AFE00238A18 /* libicuuc.51.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFDD0DA41A7318380076A301 /* libicui18n.51.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFADDE1E1A0C0B2100238A18 /* libicui18n.51.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFDD0DA51A7318380076A301 /* libicudata.51.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFADDE201A0C0B2C00238A18 /* libicudata.51.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFDD0DA61A7318380076A301 /* libchrono-chat2013.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFDD0DA71A7318380076A301 /* libndn-cpp.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFDD0DA91A7318380076A301 /* libboost_regex-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C81A0C08BC00000516 /* libboost_regex-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFDD0DAA1A7318380076A301 /* libcrypto.1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06C61A0C08AA00000516 /* libcrypto.1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFDD0DAB1A7318380076A301 /* libconference-discovery.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06AE1A0C035900000516 /* libconference-discovery.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AFDD0DAE1A7318380076A301 /* NCDiscoveryParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */; };
+		AFDD0DAF1A7318380076A301 /* NCGeneralParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026AC19C11C8F0087B605 /* NCGeneralParametersViewController.m */; };
+		AFDD0DB01A7318380076A301 /* NCDiscoveryLibraryController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CFF19F8312500A0D274 /* NCDiscoveryLibraryController.mm */; };
+		AFDD0DB11A7318380076A301 /* NCAudioPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C1119CA096C00D8A2BC /* NCAudioPreviewController.m */; };
+		AFDD0DB21A7318380076A301 /* NCUserStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BEF19D29793005B75AB /* NCUserStreamViewController.m */; };
+		AFDD0DB31A7318380076A301 /* NSScrollView+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C0919CA072000D8A2BC /* NSScrollView+NCAdditions.m */; };
+		AFDD0DB41A7318380076A301 /* NCStreamEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026CF19C36FA00087B605 /* NCStreamEditorViewController.m */; };
+		AFDD0DB51A7318380076A301 /* NSArray+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521019C7AB0C0015A883 /* NSArray+NCAdditions.m */; };
+		AFDD0DB61A7318380076A301 /* NCAudioThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521C19C8F3220015A883 /* NCAudioThreadViewController.m */; };
+		AFDD0DB71A7318380076A301 /* NCUserStreamsController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C1B19CA1CA400D8A2BC /* NCUserStreamsController.m */; };
+		AFDD0DB81A7318380076A301 /* NCAdvancedPreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF8A13A019BFB8E700010B20 /* NCAdvancedPreferencesViewController.mm */; };
+		AFDD0DB91A7318380076A301 /* NCUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BE119D25E82005B75AB /* NCUserViewController.m */; };
+		AFDD0DBA1A7318380076A301 /* ChatRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC619ED8EE100E92680 /* ChatRoom.m */; };
+		AFDD0DBB1A7318380076A301 /* AVCaptureDeviceFormat+NdnConAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026E219C3B6820087B605 /* AVCaptureDeviceFormat+NdnConAdditions.m */; };
+		AFDD0DBC1A7318380076A301 /* NCStatisticsWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF744C8819E625B300E92680 /* NCStatisticsWindowController.mm */; };
+		AFDD0DBD1A7318380076A301 /* NCEditorEntryView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026CC19C2B3940087B605 /* NCEditorEntryView.m */; };
+		AFDD0DBE1A7318380076A301 /* NSDate+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD17DF119F03EDA00C8DD6E /* NSDate+NCAdditions.m */; };
+		AFDD0DBF1A7318380076A301 /* NCVideoThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026E619C3CCBA0087B605 /* NCVideoThreadViewController.m */; };
+		AFDD0DC01A7318380076A301 /* NCStackEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026B519C250560087B605 /* NCStackEditorViewController.m */; };
+		AFDD0DC11A7318380076A301 /* NCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BF719C9FB4E00D8A2BC /* NCMainViewController.m */; };
+		AFDD0DC21A7318380076A301 /* NCChatLibraryController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF744CBA19EC996A00E92680 /* NCChatLibraryController.mm */; };
+		AFDD0DC31A7318380076A301 /* NCChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC019ECB0FC00E92680 /* NCChatViewController.m */; };
+		AFDD0DC41A7318380076A301 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A138919BFB7C500010B20 /* MASPreferencesWindowController.m */; };
+		AFDD0DC51A7318380076A301 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978FC19BE546D0061AA24 /* AppDelegate.mm */; };
+		AFDD0DC61A7318380076A301 /* NdnCon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AFD9790119BE546D0061AA24 /* NdnCon.xcdatamodeld */; };
+		AFDD0DC71A7318380076A301 /* NCThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026E919C3CCF30087B605 /* NCThreadViewController.m */; };
+		AFDD0DC81A7318380076A301 /* NSDictionary+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8520D19C7AA250015A883 /* NSDictionary+NCAdditions.m */; };
+		AFDD0DC91A7318380076A301 /* NCGlView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A319DA1AF400227E75 /* NCGlView.m */; };
+		AFDD0DCA1A7318380076A301 /* NCActiveStreamViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = AFFED07819D62B92000974FF /* NCActiveStreamViewer.m */; };
+		AFDD0DCB1A7318380076A301 /* NCAudioStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026D519C392E80087B605 /* NCAudioStreamViewController.m */; };
+		AFDD0DCC1A7318380076A301 /* NCConversationViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BFE19C9FDFE00D8A2BC /* NCConversationViewController.mm */; };
+		AFDD0DCD1A7318380076A301 /* Conference.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA3F19F8610E00039A56 /* Conference.m */; };
+		AFDD0DCE1A7318380076A301 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
+		AFDD0DCF1A7318380076A301 /* NSView+NCDragAndDropAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */; };
+		AFDD0DD01A7318380076A301 /* NCVideoPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C1419CA099800D8A2BC /* NCVideoPreviewController.m */; };
+		AFDD0DD11A7318380076A301 /* PTNSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34B719DE22EF00227E75 /* PTNSingleton.m */; };
+		AFDD0DD21A7318380076A301 /* NCCameraCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB8DE9419CD049B008F691B /* NCCameraCapturer.mm */; };
+		AFDD0DD31A7318380076A301 /* NCVideoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026C719C279A80087B605 /* NCVideoStreamViewController.m */; };
+		AFDD0DD41A7318380076A301 /* NCGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A139619BFB89B00010B20 /* NCGeneralPreferencesViewController.m */; };
+		AFDD0DD51A7318380076A301 /* NCDropScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */; };
+		AFDD0DD61A7318380076A301 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFD978F519BE546D0061AA24 /* main.mm */; };
+		AFDD0DD71A7318380076A301 /* NCStackEditorEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026BC19C252B50087B605 /* NCStackEditorEntryViewController.m */; };
+		AFDD0DD81A7318380076A301 /* NCErrorController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34B319DE227D00227E75 /* NCErrorController.m */; };
+		AFDD0DD91A7318380076A301 /* NCNdnRtcLibraryController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C2619CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm */; };
+		AFDD0DDA1A7318380076A301 /* PTNStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8A14CD19BFD6C100010B20 /* PTNStorage.m */; };
+		AFDD0DDB1A7318380076A301 /* NCEmbeddedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521619C8B2FF0015A883 /* NCEmbeddedScrollView.m */; };
+		AFDD0DDC1A7318380076A301 /* NCStreamViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744C6F19E4899D00E92680 /* NCStreamViewerController.m */; };
+		AFDD0DDD1A7318380076A301 /* NCClickableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AA19DA52E400227E75 /* NCClickableView.m */; };
+		AFDD0DDE1A7318380076A301 /* NSObject+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA8521319C8A6060015A883 /* NSObject+NCAdditions.m */; };
+		AFDD0DDF1A7318380076A301 /* NSDictionary+NCNdnRtcAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BF219D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm */; };
+		AFDD0DE01A7318380076A301 /* NSString+NCAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AD19DB7B4700227E75 /* NSString+NCAdditions.mm */; };
+		AFDD0DE11A7318380076A301 /* NCConversationInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BDD19D22C01005B75AB /* NCConversationInfoView.m */; };
+		AFDD0DE21A7318380076A301 /* NCStreamPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C0C19CA095100D8A2BC /* NCStreamPreviewController.m */; };
+		AFDD0DE31A7318380076A301 /* NCProducerParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026C119C259AE0087B605 /* NCProducerParametersViewController.m */; };
+		AFDD0DE41A7318380076A301 /* NCUserListViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB35BFA19C9FB6F00D8A2BC /* NCUserListViewController.mm */; };
+		AFDD0DE51A7318380076A301 /* NCFaceSingleton.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA3B19F83BA900039A56 /* NCFaceSingleton.mm */; };
+		AFDD0DE61A7318380076A301 /* NCVideoStreamRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3E074419D4A86300028E26 /* NCVideoStreamRenderer.mm */; };
+		AFDD0DE71A7318380076A301 /* NCStreamBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C0419CA010700D8A2BC /* NCStreamBrowserController.m */; };
+		AFDD0DE81A7318380076A301 /* NSTimer+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744C8419E61F2900E92680 /* NSTimer+NCAdditions.m */; };
+		AFDD0DE91A7318380076A301 /* NCConferenceListViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA4419F8671600039A56 /* NCConferenceListViewController.mm */; };
+		AFDD0DEA1A7318380076A301 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BD519D20489005B75AB /* User.m */; };
+		AFDD0DEB1A7318380076A301 /* NCPreferencesController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF8A14D019BFD70B00010B20 /* NCPreferencesController.mm */; };
+		AFDD0DEC1A7318380076A301 /* ChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC319ED8EE100E92680 /* ChatMessage.m */; };
+		AFDD0DED1A7318380076A301 /* NCConferenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFAFD1B019F98F6F00213EEE /* NCConferenceViewController.m */; };
+		AFDD0DEE1A7318380076A301 /* NCStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026D219C391B60087B605 /* NCStreamViewController.m */; };
+		AFDD0DEF1A7318380076A301 /* NCCustomTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BD219D16E2E005B75AB /* NCCustomTextField.m */; };
+		AFDD0DF11A7318380076A301 /* libicuuc.51.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFADDE1C1A0C0AFE00238A18 /* libicuuc.51.dylib */; };
+		AFDD0DF21A7318380076A301 /* libicudata.51.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFADDE201A0C0B2C00238A18 /* libicudata.51.dylib */; };
+		AFDD0DF31A7318380076A301 /* libboost_regex-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06C81A0C08BC00000516 /* libboost_regex-mt.dylib */; };
+		AFDD0DF41A7318380076A301 /* libcrypto.1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06C61A0C08AA00000516 /* libcrypto.1.0.0.dylib */; };
+		AFDD0DF51A7318380076A301 /* libicui18n.51.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFADDE1E1A0C0B2100238A18 /* libicui18n.51.dylib */; };
+		AFDD0DF61A7318380076A301 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06C41A0C088A00000516 /* libz.1.dylib */; };
+		AFDD0DF71A7318380076A301 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06C21A0C088300000516 /* libsqlite3.0.dylib */; };
+		AFDD0DF81A7318380076A301 /* libndn-cpp.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */; };
+		AFDD0DF91A7318380076A301 /* libchrono-chat2013.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */; };
+		AFDD0DFA1A7318380076A301 /* libconference-discovery.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06AE1A0C035900000516 /* libconference-discovery.0.dylib */; };
+		AFDD0DFB1A7318380076A301 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7026DD19C3B56A0087B605 /* CoreFoundation.framework */; };
+		AFDD0DFC1A7318380076A301 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF11BAFA19D4E37E0011270F /* OpenGL.framework */; };
+		AFDD0DFD1A7318380076A301 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFA8520919C779180015A883 /* ApplicationServices.framework */; };
+		AFDD0DFE1A7318380076A301 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7026DB19C3B55C0087B605 /* CoreMedia.framework */; };
+		AFDD0DFF1A7318380076A301 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7026D919C3B5530087B605 /* AVFoundation.framework */; };
+		AFDD0E001A7318380076A301 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
+		AFDD0E011A7318380076A301 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
+		AFDD0E021A7318380076A301 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744C8C19E71BEE00E92680 /* Sparkle.framework */; };
+		AFDD0E041A7318380076A301 /* NCDiscoveryParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */; };
+		AFDD0E051A7318380076A301 /* NCUserVideoStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC99BE819D26510005B75AB /* NCUserVideoStreamView.xib */; };
+		AFDD0E061A7318380076A301 /* NCProducerParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026C219C259AE0087B605 /* NCProducerParametersView.xib */; };
+		AFDD0E071A7318380076A301 /* NCGeneralParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026A719C11C550087B605 /* NCGeneralParametersView.xib */; };
+		AFDD0E081A7318380076A301 /* ndncon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = AFD9792219BE5C6E0061AA24 /* ndncon.iconset */; };
+		AFDD0E091A7318380076A301 /* NCConferenceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFAFD1B119F98F6F00213EEE /* NCConferenceView.xib */; };
+		AFDD0E0A1A7318380076A301 /* NCStatisticsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744C8919E625B300E92680 /* NCStatisticsWindow.xib */; };
+		AFDD0E0B1A7318380076A301 /* NCAudioThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFA8521919C8F1E40015A883 /* NCAudioThreadView.xib */; };
+		AFDD0E0C1A7318380076A301 /* NCUserVideoThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC99BE919D26510005B75AB /* NCUserVideoThreadView.xib */; };
+		AFDD0E0D1A7318380076A301 /* NCConversationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFB35C0019C9FE0F00D8A2BC /* NCConversationView.xib */; };
+		AFDD0E0E1A7318380076A301 /* NCAudioStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026D619C392E80087B605 /* NCAudioStreamView.xib */; };
+		AFDD0E0F1A7318380076A301 /* NCVideoStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026C819C279A80087B605 /* NCVideoStreamView.xib */; };
+		AFDD0E101A7318380076A301 /* NCUserView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC99BE319D25E94005B75AB /* NCUserView.xib */; };
+		AFDD0E111A7318380076A301 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */; };
+		AFDD0E121A7318380076A301 /* NCStackEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026B619C250560087B605 /* NCStackEditorView.xib */; };
+		AFDD0E131A7318380076A301 /* NCChatView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744CBD19ECB0E400E92680 /* NCChatView.xib */; };
+		AFDD0E141A7318380076A301 /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
+		AFDD0E151A7318380076A301 /* NCGeneralPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A139319BFB85B00010B20 /* NCGeneralPreferencesView.xib */; };
+		AFDD0E161A7318380076A301 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F219BE546D0061AA24 /* InfoPlist.strings */; };
+		AFDD0E171A7318380076A301 /* NCActiveStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFFED07A19D62BA2000974FF /* NCActiveStreamView.xib */; };
+		AFDD0E181A7318380076A301 /* NCUserAudioThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC99BE719D26510005B75AB /* NCUserAudioThreadView.xib */; };
+		AFDD0E191A7318380076A301 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFD9790419BE546D0061AA24 /* Images.xcassets */; };
+		AFDD0E1A1A7318380076A301 /* NCUserAudioStreamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC99BE619D26510005B75AB /* NCUserAudioStreamView.xib */; };
+		AFDD0E1B1A7318380076A301 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AFD978F819BE546D0061AA24 /* Credits.rtf */; };
+		AFDD0E1C1A7318380076A301 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = AF744C8F19E71DDC00E92680 /* dsa_pub.pem */; };
+		AFDD0E1D1A7318380076A301 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD978FE19BE546D0061AA24 /* MainMenu.xib */; };
+		AFDD0E1E1A7318380076A301 /* NCVideoThreadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026EB19C3CD560087B605 /* NCVideoThreadView.xib */; };
+		AFDD0E1F1A7318380076A301 /* NCStackEditorEntryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026B919C251490087B605 /* NCStackEditorEntryView.xib */; };
+		AFDD0E201A7318380076A301 /* NCAdvancedPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A13A119BFB8E700010B20 /* NCAdvancedPreferencesView.xib */; };
+		AFDD0E281A7318B50076A301 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDD0E271A7318B50076A301 /* libndnrtc.0.dylib */; };
+		AFDD0E2A1A7318CD0076A301 /* libndnrtc.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFDD0E271A7318B50076A301 /* libndnrtc.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AFFA06AF1A0C035900000516 /* libchrono-chat2013.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */; };
 		AFFA06B01A0C035900000516 /* libconference-discovery.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06AE1A0C035900000516 /* libconference-discovery.0.dylib */; };
 		AFFA06B21A0C038200000516 /* libndn-cpp.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */; };
@@ -154,6 +284,9 @@
 			dstSubfolderSpec = 10;
 			files = (
 				AF744C8E19E71C1F00E92680 /* Sparkle.framework in CopyFiles */,
+				AF58C01A1A81701D00181DBF /* libboost_chrono-mt.dylib in CopyFiles */,
+				AF58C01B1A81701D00181DBF /* libboost_system-mt.dylib in CopyFiles */,
+				AF58C01C1A81701D00181DBF /* libboost_timer-mt.dylib in CopyFiles */,
 				AFADDE241A0C0B3E00238A18 /* libicuuc.51.dylib in CopyFiles */,
 				AFADDE231A0C0B3C00238A18 /* libicui18n.51.dylib in CopyFiles */,
 				AFADDE221A0C0B3A00238A18 /* libicudata.51.dylib in CopyFiles */,
@@ -163,6 +296,28 @@
 				AFADDE181A0C09A100238A18 /* libboost_regex-mt.dylib in CopyFiles */,
 				AFADDE191A0C09A300238A18 /* libcrypto.1.0.0.dylib in CopyFiles */,
 				AFFA06B31A0C039A00000516 /* libconference-discovery.0.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFDD0DA11A7318380076A301 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AFDD0DA21A7318380076A301 /* Sparkle.framework in CopyFiles */,
+				AF58C0201A81702700181DBF /* libboost_chrono-mt.dylib in CopyFiles */,
+				AF58C0211A81702700181DBF /* libboost_system-mt.dylib in CopyFiles */,
+				AF58C0221A81702700181DBF /* libboost_timer-mt.dylib in CopyFiles */,
+				AFDD0DA31A7318380076A301 /* libicuuc.51.dylib in CopyFiles */,
+				AFDD0DA41A7318380076A301 /* libicui18n.51.dylib in CopyFiles */,
+				AFDD0DA51A7318380076A301 /* libicudata.51.dylib in CopyFiles */,
+				AFDD0DA61A7318380076A301 /* libchrono-chat2013.0.dylib in CopyFiles */,
+				AFDD0DA71A7318380076A301 /* libndn-cpp.0.dylib in CopyFiles */,
+				AFDD0E2A1A7318CD0076A301 /* libndnrtc.0.dylib in CopyFiles */,
+				AFDD0DA91A7318380076A301 /* libboost_regex-mt.dylib in CopyFiles */,
+				AFDD0DAA1A7318380076A301 /* libcrypto.1.0.0.dylib in CopyFiles */,
+				AFDD0DAB1A7318380076A301 /* libconference-discovery.0.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,6 +341,12 @@
 		AF3EEA3F19F8610E00039A56 /* Conference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Conference.m; path = ndncon/Conference.m; sourceTree = SOURCE_ROOT; };
 		AF3EEA4319F8671600039A56 /* NCConferenceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCConferenceListViewController.h; path = ndncon/NCConferenceListViewController.h; sourceTree = SOURCE_ROOT; };
 		AF3EEA4419F8671600039A56 /* NCConferenceListViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCConferenceListViewController.mm; path = ndncon/NCConferenceListViewController.mm; sourceTree = SOURCE_ROOT; };
+		AF58C0171A81701D00181DBF /* libboost_chrono-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_chrono-mt.dylib"; path = "/opt/local/lib/libboost_chrono-mt.dylib"; sourceTree = "<absolute>"; };
+		AF58C0181A81701D00181DBF /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "/opt/local/lib/libboost_system-mt.dylib"; sourceTree = "<absolute>"; };
+		AF58C0191A81701D00181DBF /* libboost_timer-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_timer-mt.dylib"; path = "/opt/local/lib/libboost_timer-mt.dylib"; sourceTree = "<absolute>"; };
+		AF58C01D1A81702700181DBF /* libboost_chrono-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_chrono-mt.dylib"; path = "/opt/local/lib/libboost_chrono-mt.dylib"; sourceTree = "<absolute>"; };
+		AF58C01E1A81702700181DBF /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "/opt/local/lib/libboost_system-mt.dylib"; sourceTree = "<absolute>"; };
+		AF58C01F1A81702700181DBF /* libboost_timer-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_timer-mt.dylib"; path = "/opt/local/lib/libboost_timer-mt.dylib"; sourceTree = "<absolute>"; };
 		AF5D34A219DA1AF400227E75 /* NCGlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGlView.h; path = ndncon/NCGlView.h; sourceTree = SOURCE_ROOT; };
 		AF5D34A319DA1AF400227E75 /* NCGlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGlView.m; path = ndncon/NCGlView.m; sourceTree = SOURCE_ROOT; };
 		AF5D34A519DA29C800227E75 /* NCBlockDrawableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCBlockDrawableView.h; path = ndncon/NCBlockDrawableView.h; sourceTree = SOURCE_ROOT; };
@@ -335,7 +496,7 @@
 		AFC99BF219D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSDictionary+NCNdnRtcAdditions.mm"; path = "ndncon/NSDictionary+NCNdnRtcAdditions.mm"; sourceTree = SOURCE_ROOT; };
 		AFD17DF019F03EDA00C8DD6E /* NSDate+NCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+NCAdditions.h"; sourceTree = "<group>"; };
 		AFD17DF119F03EDA00C8DD6E /* NSDate+NCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NCAdditions.m"; sourceTree = "<group>"; };
-		AFD978E619BE546D0061AA24 /* NdnCon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NdnCon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFD978E619BE546D0061AA24 /* NdnCon-Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NdnCon-Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFD978E919BE546D0061AA24 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AFD978EC19BE546D0061AA24 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		AFD978ED19BE546D0061AA24 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -356,6 +517,9 @@
 		AFD9791419BE546E0061AA24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AFD9791619BE546E0061AA24 /* NdnConTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NdnConTests.m; path = "ndncon-tests/NdnConTests.m"; sourceTree = "<group>"; };
 		AFD9792219BE5C6E0061AA24 /* ndncon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = ndncon.iconset; sourceTree = "<group>"; };
+		AFDD0E241A7318380076A301 /* NdnCon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NdnCon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFDD0E251A7318390076A301 /* NdnCon copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "NdnCon copy-Info.plist"; path = "/Users/peetonn/Documents/Work/ndncon/NdnCon copy-Info.plist"; sourceTree = "<absolute>"; };
+		AFDD0E271A7318B50076A301 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/release/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.2.xcdatamodel"; sourceTree = "<group>"; };
 		AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libchrono-chat2013.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libchrono-chat2013.0.dylib"; sourceTree = "<group>"; };
 		AFFA06AE1A0C035900000516 /* libconference-discovery.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libconference-discovery.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libconference-discovery.0.dylib"; sourceTree = "<group>"; };
@@ -401,6 +565,32 @@
 			files = (
 				AFD9790D19BE546E0061AA24 /* Cocoa.framework in Frameworks */,
 				AFD9790C19BE546E0061AA24 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFDD0DF01A7318380076A301 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFDD0DF11A7318380076A301 /* libicuuc.51.dylib in Frameworks */,
+				AFDD0DF21A7318380076A301 /* libicudata.51.dylib in Frameworks */,
+				AFDD0E281A7318B50076A301 /* libndnrtc.0.dylib in Frameworks */,
+				AFDD0DF31A7318380076A301 /* libboost_regex-mt.dylib in Frameworks */,
+				AFDD0DF41A7318380076A301 /* libcrypto.1.0.0.dylib in Frameworks */,
+				AFDD0DF51A7318380076A301 /* libicui18n.51.dylib in Frameworks */,
+				AFDD0DF61A7318380076A301 /* libz.1.dylib in Frameworks */,
+				AFDD0DF71A7318380076A301 /* libsqlite3.0.dylib in Frameworks */,
+				AFDD0DF81A7318380076A301 /* libndn-cpp.0.dylib in Frameworks */,
+				AFDD0DF91A7318380076A301 /* libchrono-chat2013.0.dylib in Frameworks */,
+				AFDD0DFA1A7318380076A301 /* libconference-discovery.0.dylib in Frameworks */,
+				AFDD0DFB1A7318380076A301 /* CoreFoundation.framework in Frameworks */,
+				AFDD0DFC1A7318380076A301 /* OpenGL.framework in Frameworks */,
+				AFDD0DFD1A7318380076A301 /* ApplicationServices.framework in Frameworks */,
+				AFDD0DFE1A7318380076A301 /* CoreMedia.framework in Frameworks */,
+				AFDD0DFF1A7318380076A301 /* AVFoundation.framework in Frameworks */,
+				AFDD0E001A7318380076A301 /* libndnrtc.0.dylib in Frameworks */,
+				AFDD0E011A7318380076A301 /* Cocoa.framework in Frameworks */,
+				AFDD0E021A7318380076A301 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -750,14 +940,16 @@
 				AFD9791019BE546E0061AA24 /* NdnConTests */,
 				AFD978E819BE546D0061AA24 /* Frameworks */,
 				AFD978E719BE546D0061AA24 /* Products */,
+				AFDD0E251A7318390076A301 /* NdnCon copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
 		AFD978E719BE546D0061AA24 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AFD978E619BE546D0061AA24 /* NdnCon.app */,
+				AFD978E619BE546D0061AA24 /* NdnCon-Debug.app */,
 				AFD9790A19BE546E0061AA24 /* NdnConTests.xctest */,
+				AFDD0E241A7318380076A301 /* NdnCon.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -765,6 +957,12 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF58C01D1A81702700181DBF /* libboost_chrono-mt.dylib */,
+				AF58C01E1A81702700181DBF /* libboost_system-mt.dylib */,
+				AF58C01F1A81702700181DBF /* libboost_timer-mt.dylib */,
+				AF58C0171A81701D00181DBF /* libboost_chrono-mt.dylib */,
+				AF58C0181A81701D00181DBF /* libboost_system-mt.dylib */,
+				AF58C0191A81701D00181DBF /* libboost_timer-mt.dylib */,
 				AFADDE201A0C0B2C00238A18 /* libicudata.51.dylib */,
 				AFADDE1E1A0C0B2100238A18 /* libicui18n.51.dylib */,
 				AFADDE1C1A0C0AFE00238A18 /* libicuuc.51.dylib */,
@@ -775,6 +973,7 @@
 				AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */,
 				AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */,
 				AFFA06AE1A0C035900000516 /* libconference-discovery.0.dylib */,
+				AFDD0E291A7318BA0076A301 /* NDN-RTC release */,
 				AF744C8C19E71BEE00E92680 /* Sparkle.framework */,
 				AF11BAFA19D4E37E0011270F /* OpenGL.framework */,
 				AFA8520919C779180015A883 /* ApplicationServices.framework */,
@@ -783,7 +982,7 @@
 				AF7026DD19C3B56A0087B605 /* CoreFoundation.framework */,
 				AF7026DB19C3B55C0087B605 /* CoreMedia.framework */,
 				AF7026D919C3B5530087B605 /* AVFoundation.framework */,
-				AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */,
+				AFDD0E261A73188C0076A301 /* NDN-RTC debug */,
 				AFD978E919BE546D0061AA24 /* Cocoa.framework */,
 				AFD9790B19BE546E0061AA24 /* XCTest.framework */,
 				AFD978EB19BE546D0061AA24 /* Other Frameworks */,
@@ -854,6 +1053,22 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		AFDD0E261A73188C0076A301 /* NDN-RTC debug */ = {
+			isa = PBXGroup;
+			children = (
+				AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */,
+			);
+			name = "NDN-RTC debug";
+			sourceTree = "<group>";
+		};
+		AFDD0E291A7318BA0076A301 /* NDN-RTC release */ = {
+			isa = PBXGroup;
+			children = (
+				AFDD0E271A7318B50076A301 /* libndnrtc.0.dylib */,
+			);
+			name = "NDN-RTC release";
+			sourceTree = "<group>";
+		};
 		AFFED07619D62B6D000974FF /* Active stream viewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -883,7 +1098,7 @@
 			);
 			name = NdnCon;
 			productName = NdnCon;
-			productReference = AFD978E619BE546D0061AA24 /* NdnCon.app */;
+			productReference = AFD978E619BE546D0061AA24 /* NdnCon-Debug.app */;
 			productType = "com.apple.product-type.application";
 		};
 		AFD9790919BE546E0061AA24 /* NdnConTests */ = {
@@ -903,6 +1118,25 @@
 			productName = NdnConTests;
 			productReference = AFD9790A19BE546E0061AA24 /* NdnConTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		AFDD0DA01A7318380076A301 /* NdnCon-Release */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFDD0E211A7318380076A301 /* Build configuration list for PBXNativeTarget "NdnCon-Release" */;
+			buildPhases = (
+				AFDD0DA11A7318380076A301 /* CopyFiles */,
+				AFDD0DAC1A7318380076A301 /* ShellScript */,
+				AFDD0DAD1A7318380076A301 /* Sources */,
+				AFDD0DF01A7318380076A301 /* Frameworks */,
+				AFDD0E031A7318380076A301 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "NdnCon-Release";
+			productName = NdnCon;
+			productReference = AFDD0E241A7318380076A301 /* NdnCon.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -933,6 +1167,7 @@
 			targets = (
 				AFD978E519BE546D0061AA24 /* NdnCon */,
 				AFD9790919BE546E0061AA24 /* NdnConTests */,
+				AFDD0DA01A7318380076A301 /* NdnCon-Release */,
 			);
 		};
 /* End PBXProject section */
@@ -982,10 +1217,59 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AFDD0E031A7318380076A301 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFDD0E041A7318380076A301 /* NCDiscoveryParametersView.xib in Resources */,
+				AFDD0E051A7318380076A301 /* NCUserVideoStreamView.xib in Resources */,
+				AFDD0E061A7318380076A301 /* NCProducerParametersView.xib in Resources */,
+				AFDD0E071A7318380076A301 /* NCGeneralParametersView.xib in Resources */,
+				AFDD0E081A7318380076A301 /* ndncon.iconset in Resources */,
+				AFDD0E091A7318380076A301 /* NCConferenceView.xib in Resources */,
+				AFDD0E0A1A7318380076A301 /* NCStatisticsWindow.xib in Resources */,
+				AFDD0E0B1A7318380076A301 /* NCAudioThreadView.xib in Resources */,
+				AFDD0E0C1A7318380076A301 /* NCUserVideoThreadView.xib in Resources */,
+				AFDD0E0D1A7318380076A301 /* NCConversationView.xib in Resources */,
+				AFDD0E0E1A7318380076A301 /* NCAudioStreamView.xib in Resources */,
+				AFDD0E0F1A7318380076A301 /* NCVideoStreamView.xib in Resources */,
+				AFDD0E101A7318380076A301 /* NCUserView.xib in Resources */,
+				AFDD0E111A7318380076A301 /* MASPreferencesWindow.xib in Resources */,
+				AFDD0E121A7318380076A301 /* NCStackEditorView.xib in Resources */,
+				AFDD0E131A7318380076A301 /* NCChatView.xib in Resources */,
+				AFDD0E141A7318380076A301 /* settings.plist in Resources */,
+				AFDD0E151A7318380076A301 /* NCGeneralPreferencesView.xib in Resources */,
+				AFDD0E161A7318380076A301 /* InfoPlist.strings in Resources */,
+				AFDD0E171A7318380076A301 /* NCActiveStreamView.xib in Resources */,
+				AFDD0E181A7318380076A301 /* NCUserAudioThreadView.xib in Resources */,
+				AFDD0E191A7318380076A301 /* Images.xcassets in Resources */,
+				AFDD0E1A1A7318380076A301 /* NCUserAudioStreamView.xib in Resources */,
+				AFDD0E1B1A7318380076A301 /* Credits.rtf in Resources */,
+				AFDD0E1C1A7318380076A301 /* dsa_pub.pem in Resources */,
+				AFDD0E1D1A7318380076A301 /* MainMenu.xib in Resources */,
+				AFDD0E1E1A7318380076A301 /* NCVideoThreadView.xib in Resources */,
+				AFDD0E1F1A7318380076A301 /* NCStackEditorEntryView.xib in Resources */,
+				AFDD0E201A7318380076A301 /* NCAdvancedPreferencesView.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		AFC99BFA19D38234005B75AB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "all_libs=$(ls $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/lib*.dylib)\n# changing library location to rpath\nfor f in $all_libs; do\n    fname=$(basename $f);\n    install_name_tool -id @rpath/$fname $f;\ndone\n\nfunction replaceLibsWithPath()\n{\n    local path=$1\n    local lib=$2\n    \n    pat=\"$path/([A-z0-9.-]+\\.dylib)\";\n    while [[ \"$(otool -L $lib)\" =~ $pat ]]; do\n    libname=${BASH_REMATCH[1]}\n    install_name_tool -change $path/$libname @rpath/$libname $lib\n    done\n}\n\n# replacing all dependencies which have $NDNCPP_LIB_PATH or /opt/local/lib in their path to @rpath\nfor f in $all_libs; do\n    fname=$(basename $f);\n    replaceLibsWithPath $NDNCPP_LIB_PATH \"$f\"\n    replaceLibsWithPath \"/opt/local/lib\" \"$f\"\ndone\n";
+		};
+		AFDD0DAC1A7318380076A301 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1079,6 +1363,79 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFD9791719BE546E0061AA24 /* NdnConTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFDD0DAD1A7318380076A301 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFDD0DAE1A7318380076A301 /* NCDiscoveryParametersViewController.m in Sources */,
+				AFDD0DAF1A7318380076A301 /* NCGeneralParametersViewController.m in Sources */,
+				AFDD0DB01A7318380076A301 /* NCDiscoveryLibraryController.mm in Sources */,
+				AFDD0DB11A7318380076A301 /* NCAudioPreviewController.m in Sources */,
+				AFDD0DB21A7318380076A301 /* NCUserStreamViewController.m in Sources */,
+				AFDD0DB31A7318380076A301 /* NSScrollView+NCAdditions.m in Sources */,
+				AFDD0DB41A7318380076A301 /* NCStreamEditorViewController.m in Sources */,
+				AFDD0DB51A7318380076A301 /* NSArray+NCAdditions.m in Sources */,
+				AFDD0DB61A7318380076A301 /* NCAudioThreadViewController.m in Sources */,
+				AFDD0DB71A7318380076A301 /* NCUserStreamsController.m in Sources */,
+				AFDD0DB81A7318380076A301 /* NCAdvancedPreferencesViewController.mm in Sources */,
+				AFDD0DB91A7318380076A301 /* NCUserViewController.m in Sources */,
+				AFDD0DBA1A7318380076A301 /* ChatRoom.m in Sources */,
+				AFDD0DBB1A7318380076A301 /* AVCaptureDeviceFormat+NdnConAdditions.m in Sources */,
+				AFDD0DBC1A7318380076A301 /* NCStatisticsWindowController.mm in Sources */,
+				AFDD0DBD1A7318380076A301 /* NCEditorEntryView.m in Sources */,
+				AFDD0DBE1A7318380076A301 /* NSDate+NCAdditions.m in Sources */,
+				AFDD0DBF1A7318380076A301 /* NCVideoThreadViewController.m in Sources */,
+				AFDD0DC01A7318380076A301 /* NCStackEditorViewController.m in Sources */,
+				AFDD0DC11A7318380076A301 /* NCMainViewController.m in Sources */,
+				AFDD0DC21A7318380076A301 /* NCChatLibraryController.mm in Sources */,
+				AFDD0DC31A7318380076A301 /* NCChatViewController.m in Sources */,
+				AFDD0DC41A7318380076A301 /* MASPreferencesWindowController.m in Sources */,
+				AFDD0DC51A7318380076A301 /* AppDelegate.mm in Sources */,
+				AFDD0DC61A7318380076A301 /* NdnCon.xcdatamodeld in Sources */,
+				AFDD0DC71A7318380076A301 /* NCThreadViewController.m in Sources */,
+				AFDD0DC81A7318380076A301 /* NSDictionary+NCAdditions.m in Sources */,
+				AFDD0DC91A7318380076A301 /* NCGlView.m in Sources */,
+				AFDD0DCA1A7318380076A301 /* NCActiveStreamViewer.m in Sources */,
+				AFDD0DCB1A7318380076A301 /* NCAudioStreamViewController.m in Sources */,
+				AFDD0DCC1A7318380076A301 /* NCConversationViewController.mm in Sources */,
+				AFDD0DCD1A7318380076A301 /* Conference.m in Sources */,
+				AFDD0DCE1A7318380076A301 /* NCBlockDrawableView.m in Sources */,
+				AFDD0DCF1A7318380076A301 /* NSView+NCDragAndDropAbility.m in Sources */,
+				AFDD0DD01A7318380076A301 /* NCVideoPreviewController.m in Sources */,
+				AFDD0DD11A7318380076A301 /* PTNSingleton.m in Sources */,
+				AFDD0DD21A7318380076A301 /* NCCameraCapturer.mm in Sources */,
+				AFDD0DD31A7318380076A301 /* NCVideoStreamViewController.m in Sources */,
+				AFDD0DD41A7318380076A301 /* NCGeneralPreferencesViewController.m in Sources */,
+				AFDD0DD51A7318380076A301 /* NCDropScrollView.m in Sources */,
+				AFDD0DD61A7318380076A301 /* main.mm in Sources */,
+				AFDD0DD71A7318380076A301 /* NCStackEditorEntryViewController.m in Sources */,
+				AFDD0DD81A7318380076A301 /* NCErrorController.m in Sources */,
+				AFDD0DD91A7318380076A301 /* NCNdnRtcLibraryController.mm in Sources */,
+				AFDD0DDA1A7318380076A301 /* PTNStorage.m in Sources */,
+				AFDD0DDB1A7318380076A301 /* NCEmbeddedScrollView.m in Sources */,
+				AFDD0DDC1A7318380076A301 /* NCStreamViewerController.m in Sources */,
+				AFDD0DDD1A7318380076A301 /* NCClickableView.m in Sources */,
+				AFDD0DDE1A7318380076A301 /* NSObject+NCAdditions.m in Sources */,
+				AFDD0DDF1A7318380076A301 /* NSDictionary+NCNdnRtcAdditions.mm in Sources */,
+				AFDD0DE01A7318380076A301 /* NSString+NCAdditions.mm in Sources */,
+				AFDD0DE11A7318380076A301 /* NCConversationInfoView.m in Sources */,
+				AFDD0DE21A7318380076A301 /* NCStreamPreviewController.m in Sources */,
+				AFDD0DE31A7318380076A301 /* NCProducerParametersViewController.m in Sources */,
+				AFDD0DE41A7318380076A301 /* NCUserListViewController.mm in Sources */,
+				AFDD0DE51A7318380076A301 /* NCFaceSingleton.mm in Sources */,
+				AFDD0DE61A7318380076A301 /* NCVideoStreamRenderer.mm in Sources */,
+				AFDD0DE71A7318380076A301 /* NCStreamBrowserController.m in Sources */,
+				AFDD0DE81A7318380076A301 /* NSTimer+NCAdditions.m in Sources */,
+				AFDD0DE91A7318380076A301 /* NCConferenceListViewController.mm in Sources */,
+				AFDD0DEA1A7318380076A301 /* User.m in Sources */,
+				AFDD0DEB1A7318380076A301 /* NCPreferencesController.mm in Sources */,
+				AFDD0DEC1A7318380076A301 /* ChatMessage.m in Sources */,
+				AFDD0DED1A7318380076A301 /* NCConferenceViewController.m in Sources */,
+				AFDD0DEE1A7318380076A301 /* NCStreamViewController.m in Sources */,
+				AFDD0DEF1A7318380076A301 /* NCCustomTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1323,6 +1680,80 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		AFDD0E221A7318380076A301 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BOOST_INCLUDE_PATH = /opt/local/include;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/thirdparty/sparkle",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(NDNRTC_INCLUDE_PATH)",
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(NDNCHAT_INCLUDE_PATH)",
+					"$(NDNCPP_INCLUDE_PATH)",
+					"$(BOOST_INCLUDE_PATH)",
+				);
+				INFOPLIST_FILE = "NdnCon copy-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH,
+					"$(inherited)",
+					"$(NDNCPP_LIB_PATH)",
+					"$(NDNCHAT_LIB_PATH)",
+					/opt/local/lib,
+				);
+				PRODUCT_NAME = NdnCon;
+				RELEASES_FOLDER = "/Users/peetonn/ndncon-releases";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		AFDD0E231A7318380076A301 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BOOST_INCLUDE_PATH = /opt/local/include;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/thirdparty/sparkle",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(NDNRTC_INCLUDE_PATH)",
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(NDNCHAT_INCLUDE_PATH)",
+					"$(NDNCPP_INCLUDE_PATH)",
+					"$(BOOST_INCLUDE_PATH)",
+				);
+				INFOPLIST_FILE = "NdnCon copy-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH,
+					"$(inherited)",
+					"$(NDNCPP_LIB_PATH)",
+					"$(NDNCHAT_LIB_PATH)",
+					/opt/local/lib,
+				);
+				PRODUCT_NAME = NdnCon;
+				RELEASES_FOLDER = "/Users/peetonn/ndncon-releases";
+				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};

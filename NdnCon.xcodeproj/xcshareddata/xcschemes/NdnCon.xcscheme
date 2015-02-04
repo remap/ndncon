@@ -15,7 +15,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-                     BuildableName = "NdnCon.app"
+                     BuildableName = "NdnCon-Debug.app"
                      BlueprintName = "NdnCon"
                      ReferencedContainer = "container:NdnCon.xcodeproj">
                   </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-               BuildableName = "NdnCon.app"
+               BuildableName = "NdnCon-Debug.app"
                BlueprintName = "NdnCon"
                ReferencedContainer = "container:NdnCon.xcodeproj">
             </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-            BuildableName = "NdnCon.app"
+            BuildableName = "NdnCon-Debug.app"
             BlueprintName = "NdnCon"
             ReferencedContainer = "container:NdnCon.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-            BuildableName = "NdnCon.app"
+            BuildableName = "NdnCon-Debug.app"
             BlueprintName = "NdnCon"
             ReferencedContainer = "container:NdnCon.xcodeproj">
          </BuildableReference>
@@ -105,7 +105,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-            BuildableName = "NdnCon.app"
+            BuildableName = "NdnCon-Debug.app"
             BlueprintName = "NdnCon"
             ReferencedContainer = "container:NdnCon.xcodeproj">
          </BuildableReference>
@@ -127,7 +127,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-                     BuildableName = "NdnCon.app"
+                     BuildableName = "NdnCon-Debug.app"
                      BlueprintName = "NdnCon"
                      ReferencedContainer = "container:NdnCon.xcodeproj">
                   </BuildableReference>
