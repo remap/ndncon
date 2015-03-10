@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF11BAFA19D4E37E0011270F /* OpenGL.framework */; };
+		AF2BE5361AAF9B20006A1AA7 /* libboost_thread-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */; };
+		AF2BE5371AAF9B28006A1AA7 /* libboost_thread-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AF2BE5381AAF9B7C006A1AA7 /* libboost_thread-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */; };
+		AF2BE5391AAF9B89006A1AA7 /* libboost_thread-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF3C6FA219BE98B200FAE40B /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3C6FA119BE98B200FAE40B /* settings.plist */; };
 		AF3D2CFA19F708AA00A0D274 /* NSView+NCDragAndDropAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */; };
 		AF3D2CFD19F70C9E00A0D274 /* NCDropScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CFC19F70C9E00A0D274 /* NCDropScrollView.m */; };
@@ -295,6 +299,7 @@
 				AFC99BF919D36D01005B75AB /* libndnrtc.0.dylib in CopyFiles */,
 				AFADDE181A0C09A100238A18 /* libboost_regex-mt.dylib in CopyFiles */,
 				AFADDE191A0C09A300238A18 /* libcrypto.1.0.0.dylib in CopyFiles */,
+				AF2BE5391AAF9B89006A1AA7 /* libboost_thread-mt.dylib in CopyFiles */,
 				AFFA06B31A0C039A00000516 /* libconference-discovery.0.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,6 +322,7 @@
 				AFDD0E2A1A7318CD0076A301 /* libndnrtc.0.dylib in CopyFiles */,
 				AFDD0DA91A7318380076A301 /* libboost_regex-mt.dylib in CopyFiles */,
 				AFDD0DAA1A7318380076A301 /* libcrypto.1.0.0.dylib in CopyFiles */,
+				AF2BE5371AAF9B28006A1AA7 /* libboost_thread-mt.dylib in CopyFiles */,
 				AFDD0DAB1A7318380076A301 /* libconference-discovery.0.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,6 +331,7 @@
 
 /* Begin PBXFileReference section */
 		AF11BAFA19D4E37E0011270F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_thread-mt.dylib"; path = "../../../../../opt/local/lib/libboost_thread-mt.dylib"; sourceTree = "<group>"; };
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
 		AF3D2CF819F708AA00A0D274 /* NSView+NCDragAndDropAbility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+NCDragAndDropAbility.h"; path = "ndncon/NSView+NCDragAndDropAbility.h"; sourceTree = SOURCE_ROOT; };
 		AF3D2CF919F708AA00A0D274 /* NSView+NCDragAndDropAbility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+NCDragAndDropAbility.m"; path = "ndncon/NSView+NCDragAndDropAbility.m"; sourceTree = SOURCE_ROOT; };
@@ -540,6 +547,7 @@
 			files = (
 				AFADDE1D1A0C0AFE00238A18 /* libicuuc.51.dylib in Frameworks */,
 				AFADDE211A0C0B2C00238A18 /* libicudata.51.dylib in Frameworks */,
+				AF2BE5381AAF9B7C006A1AA7 /* libboost_thread-mt.dylib in Frameworks */,
 				AFFA06C91A0C08BC00000516 /* libboost_regex-mt.dylib in Frameworks */,
 				AFFA06C71A0C08AA00000516 /* libcrypto.1.0.0.dylib in Frameworks */,
 				AFADDE1F1A0C0B2100238A18 /* libicui18n.51.dylib in Frameworks */,
@@ -574,6 +582,7 @@
 			files = (
 				AFDD0DF11A7318380076A301 /* libicuuc.51.dylib in Frameworks */,
 				AFDD0DF21A7318380076A301 /* libicudata.51.dylib in Frameworks */,
+				AF2BE5361AAF9B20006A1AA7 /* libboost_thread-mt.dylib in Frameworks */,
 				AFDD0E281A7318B50076A301 /* libndnrtc.0.dylib in Frameworks */,
 				AFDD0DF31A7318380076A301 /* libboost_regex-mt.dylib in Frameworks */,
 				AFDD0DF41A7318380076A301 /* libcrypto.1.0.0.dylib in Frameworks */,
@@ -957,6 +966,7 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */,
 				AF58C01D1A81702700181DBF /* libboost_chrono-mt.dylib */,
 				AF58C01E1A81702700181DBF /* libboost_system-mt.dylib */,
 				AF58C01F1A81702700181DBF /* libboost_timer-mt.dylib */,

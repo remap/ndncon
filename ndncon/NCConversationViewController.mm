@@ -94,14 +94,14 @@ public:
         static std::string statusToImageName[] = {
             [ConsumerStatusStopped] =     "status_stopped",
             [ConsumerStatusNoData] =     "status_nodata",
-            [ConsumerStatusChasing] =      "status_chasing",
+            [ConsumerStatusAdjusting] =      "status_chasing",
             [ConsumerStatusBuffering] =   "status_buffering",
             [ConsumerStatusFetching] =     "status_fetching",
         };
         static std::string statusToString[] = {
             [ConsumerStatusStopped] =     "stopped",
             [ConsumerStatusNoData] =     "no data",
-            [ConsumerStatusChasing] =      "chasing",
+            [ConsumerStatusAdjusting] =      "adjusting",
             [ConsumerStatusBuffering] =   "buffering",
             [ConsumerStatusFetching] =     "fetching",
         };

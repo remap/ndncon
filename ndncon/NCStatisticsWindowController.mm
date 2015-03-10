@@ -182,7 +182,7 @@ using namespace ndnrtc::new_api::statistics;
         std::string threadName = libHandle->getStreamThread(streamPrefix);
         self.activeThread = [NSString ncStringFromCString:threadName.c_str()];
         
-        self.nBytesPerSec = stat[Indicator::InBitrateKbps]*8/1000;//(stat.pipelinerStat_.nBytesPerSec_*8/1000);
+        self.nBytesPerSec = stat[Indicator::InBitrateKbps];
         self.interestFrequency = stat[Indicator::InterestRate];
         self.segmentsFrequency = stat[Indicator::InRateSegments];
         self.rttEstimation = stat[Indicator::RttEstimation];
