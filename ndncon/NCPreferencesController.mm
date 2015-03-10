@@ -15,6 +15,8 @@
 #import "NCPreferencesController.h"
 
 NSString* const kFirstLaunchKey = @"First launch";
+NSString* const kLastLaunchedVersionKey = @"Last launched version";
+NSString* const kVersionUpdatesKey = @"Version updates";
 NSString* const kGeneralSectionKey = @"General";
 NSString* const kLogLevelKey = @"Log level";
 NSString* const kLogLevelAll = @"all";
@@ -393,6 +395,39 @@ using namespace ndnrtc::new_api;
              kAudioStreamsKey: self.audioStreams,
              kVideoStreamsKey: self.videoStreams
              };
+}
+
+-(void)checkVersionParameters
+{
+    NSString *currentVersion = self.versionString;
+    NSString *lastVersion = [self getStringWithName:kLastLaunchedVersionKey];
+    
+    if (![currentVersion isEqualTo:lastVersion])
+    {
+        NSLog(@"New app version launched (previous was %@)" ,lastVersion);
+        
+        NSDictionary *versionUpdates = [[self.defaults valueForKey:kVersionUpdatesKey] valueForKey:currentVersion];;
+        
+        if (versionUpdates)
+        {
+            NSArray *updatePaths = [versionUpdates allKeys];
+            
+            for (NSString *updatePath in updatePaths)
+            {
+                id currentValue = [self getParamWithPath:updatePath];
+                id updateValue = [versionUpdates valueForKey:updatePath];
+                
+                if (![currentValue isEqualTo:updateValue])
+                {
+                    NSLog(@"Updating '%@' for value '%@'", updatePath, updateValue);
+                    [self saveParam:updateValue
+                         forKeyPath:updatePath];
+                }
+            }
+        }
+    }
+    
+    [self saveParam:currentVersion atPathByComponents:kLastLaunchedVersionKey];
 }
 
 -(void)getNdnRtcGeneralParameters:(void *)generalParameters

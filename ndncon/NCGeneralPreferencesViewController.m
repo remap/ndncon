@@ -111,6 +111,7 @@
     [[NCPreferencesController sharedInstance]
      addObserver: self
      forKeyPaths:
+     NSStringFromSelector(@selector(logLevel)),
      NSStringFromSelector(@selector(userName)),
      NSStringFromSelector(@selector(prefix)),
      NSStringFromSelector(@selector(daemonHost)),
@@ -123,6 +124,7 @@
     [[NCPreferencesController sharedInstance]
      removeObserver: self
      forKeyPaths:
+     NSStringFromSelector(@selector(logLevel)),
      NSStringFromSelector(@selector(userName)),
      NSStringFromSelector(@selector(prefix)),
      NSStringFromSelector(@selector(daemonHost)),
