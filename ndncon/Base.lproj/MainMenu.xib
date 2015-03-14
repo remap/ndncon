@@ -807,7 +807,7 @@ CA
                     <constraint firstItem="NFf-Xz-R6T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="qr4-RU-2VJ"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="85" y="120"/>
+            <point key="canvasLocation" x="-135" y="130"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="AR2-Ub-wxp"/>
         <arrayController mode="entity" entityName="User" automaticallyPreparesContent="YES" id="H1Y-px-pwf">

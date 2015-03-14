@@ -61,6 +61,9 @@ NSString* const kChatBroadcastPrefixKey = @"Chat broadcast prefix";
 NSString* const kConferenceSectionKey = @"Conference";
 NSString* const kConferenceBroadcastPrefixKey = @"Conference broadcast prefix";
 
+NSString* const kReportingAskedKey = @"Reporting was asked";
+NSString* const kReportingAllowedKey = @"Reporting is allowed";
+
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
                                   kLogLevelDebug: @(ndnlog::NdnLoggerDetailLevelDebug),
                                   kLogLevelDefault: @(ndnlog::NdnLoggerDetailLevelDefault),
@@ -389,6 +392,28 @@ using namespace ndnrtc::new_api;
      kConferenceSectionKey, kConferenceBroadcastPrefixKey];
 }
 
+-(BOOL)isReportingAsked
+{
+    return [self getBoolWithName:kReportingAskedKey];
+}
+
+-(void)setIsReportingAsked:(BOOL)isReportingAsked
+{
+    [self saveBool:isReportingAsked forKey:kReportingAskedKey];
+}
+
+-(BOOL)isReportingAllowed
+{
+    return [self getBoolWithName:kReportingAllowedKey];
+}
+
+-(void)setIsReportingAllowed:(BOOL)isReportingAllowed
+{
+    [self saveBool:isReportingAllowed forKey:kReportingAllowedKey];
+}
+
+#pragma mark methods
+
 -(NSDictionary *)producerConfigurationCopy
 {
     return @{
@@ -434,6 +459,8 @@ using namespace ndnrtc::new_api;
 {
     GeneralParams* params = (GeneralParams*)generalParameters;
     
+    params->logFile_ = "ndnrtc.log";
+    params->logPath_ = std::string([[[NSBundle mainBundle] bundlePath] cStringUsingEncoding:NSUTF8StringEncoding]);
     params->loggingLevel_ = (ndnlog::NdnLoggerDetailLevel)self.logLevel.intValue;
     params->useTlv_ = self.tlvEnabled.boolValue;
     params->useRtx_ = self.rtxEnabled.boolValue;

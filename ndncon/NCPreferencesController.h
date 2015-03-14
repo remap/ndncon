@@ -72,7 +72,11 @@ extern NSString* const kNdnPortKey;
 @property (nonatomic) NSString *chatBroadcastPrefix;
 @property (nonatomic) NSString *conferenceBroadcastPrefix;
 
+@property (nonatomic) BOOL isReportingAsked;
+@property (nonatomic) BOOL isReportingAllowed;
+
 -(NSDictionary*)producerConfigurationCopy;
+-(void)checkVersionParameters;
 
 // NdnRtc library-specific
 -(void)getNdnRtcGeneralParameters:(void*)generalParameters;
