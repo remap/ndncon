@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
+#import <HockeySDK/HockeySDK.h>
 #import "AppDelegate.h"
 
 #import "NCNdnRtcLibraryController.h"
@@ -35,7 +36,15 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"f04e450096a94f9989a875d20d4b8662"];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [BITHockeyManager sharedHockeyManager].crashManager.askUserDetails = NO;
+    [BITHockeyManager sharedHockeyManager].feedbackManager.requireUserName = BITFeedbackUserDataElementOptional;
+    [BITHockeyManager sharedHockeyManager].feedbackManager.requireUserEmail = BITFeedbackUserDataElementOptional;
+    
     [[NCPreferencesController sharedInstance] updateDefaults];
+    [[NCPreferencesController sharedInstance] checkVersionParameters];
+    
     [self.window setTitle:[NSString stringWithFormat:@"%@ v%@",
                            [NCPreferencesController sharedInstance].appName,
                            [NCPreferencesController sharedInstance].versionString]];
@@ -267,6 +276,11 @@
     remapUser2.name = @"remap2";
     remapUser2.prefix = @"/ndn/edu/ucla/remap";
 }
+
+- (IBAction)sendFeedback:(id)sender {
+    [[BITHockeyManager sharedHockeyManager].feedbackManager showFeedbackWindow];
+}
+
 
 @end
 

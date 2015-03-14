@@ -15,6 +15,8 @@
 #import "NCPreferencesController.h"
 
 NSString* const kFirstLaunchKey = @"First launch";
+NSString* const kLastLaunchedVersionKey = @"Last launched version";
+NSString* const kVersionUpdatesKey = @"Version updates";
 NSString* const kGeneralSectionKey = @"General";
 NSString* const kLogLevelKey = @"Log level";
 NSString* const kLogLevelAll = @"all";
@@ -58,6 +60,9 @@ NSString* const kChatBroadcastPrefixKey = @"Chat broadcast prefix";
 
 NSString* const kConferenceSectionKey = @"Conference";
 NSString* const kConferenceBroadcastPrefixKey = @"Conference broadcast prefix";
+
+NSString* const kReportingAskedKey = @"Reporting was asked";
+NSString* const kReportingAllowedKey = @"Reporting is allowed";
 
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
                                   kLogLevelDebug: @(ndnlog::NdnLoggerDetailLevelDebug),
@@ -387,6 +392,28 @@ using namespace ndnrtc::new_api;
      kConferenceSectionKey, kConferenceBroadcastPrefixKey];
 }
 
+-(BOOL)isReportingAsked
+{
+    return [self getBoolWithName:kReportingAskedKey];
+}
+
+-(void)setIsReportingAsked:(BOOL)isReportingAsked
+{
+    [self saveBool:isReportingAsked forKey:kReportingAskedKey];
+}
+
+-(BOOL)isReportingAllowed
+{
+    return [self getBoolWithName:kReportingAllowedKey];
+}
+
+-(void)setIsReportingAllowed:(BOOL)isReportingAllowed
+{
+    [self saveBool:isReportingAllowed forKey:kReportingAllowedKey];
+}
+
+#pragma mark methods
+
 -(NSDictionary *)producerConfigurationCopy
 {
     return @{
@@ -395,10 +422,45 @@ using namespace ndnrtc::new_api;
              };
 }
 
+-(void)checkVersionParameters
+{
+    NSString *currentVersion = self.versionString;
+    NSString *lastVersion = [self getStringWithName:kLastLaunchedVersionKey];
+    
+    if (![currentVersion isEqualTo:lastVersion])
+    {
+        NSLog(@"New app version launched (previous was %@)" ,lastVersion);
+        
+        NSDictionary *versionUpdates = [[self.defaults valueForKey:kVersionUpdatesKey] valueForKey:currentVersion];;
+        
+        if (versionUpdates)
+        {
+            NSArray *updatePaths = [versionUpdates allKeys];
+            
+            for (NSString *updatePath in updatePaths)
+            {
+                id currentValue = [self getParamWithPath:updatePath];
+                id updateValue = [versionUpdates valueForKey:updatePath];
+                
+                if (![currentValue isEqualTo:updateValue])
+                {
+                    NSLog(@"Updating '%@' for value '%@'", updatePath, updateValue);
+                    [self saveParam:updateValue
+                         forKeyPath:updatePath];
+                }
+            }
+        }
+    }
+    
+    [self saveParam:currentVersion atPathByComponents:kLastLaunchedVersionKey];
+}
+
 -(void)getNdnRtcGeneralParameters:(void *)generalParameters
 {
     GeneralParams* params = (GeneralParams*)generalParameters;
     
+    params->logFile_ = "ndnrtc.log";
+    params->logPath_ = std::string([[[NSBundle mainBundle] bundlePath] cStringUsingEncoding:NSUTF8StringEncoding]);
     params->loggingLevel_ = (ndnlog::NdnLoggerDetailLevel)self.logLevel.intValue;
     params->useTlv_ = self.tlvEnabled.boolValue;
     params->useRtx_ = self.rtxEnabled.boolValue;

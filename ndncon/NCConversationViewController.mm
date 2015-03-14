@@ -35,6 +35,7 @@
 #import "NCDropScrollview.h"
 #import "User.h"
 #import "NSTimer+NCAdditions.h"
+#import "NCReporter.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -94,14 +95,14 @@ public:
         static std::string statusToImageName[] = {
             [ConsumerStatusStopped] =     "status_stopped",
             [ConsumerStatusNoData] =     "status_nodata",
-            [ConsumerStatusChasing] =      "status_chasing",
+            [ConsumerStatusAdjusting] =      "status_chasing",
             [ConsumerStatusBuffering] =   "status_buffering",
             [ConsumerStatusFetching] =     "status_fetching",
         };
         static std::string statusToString[] = {
             [ConsumerStatusStopped] =     "stopped",
             [ConsumerStatusNoData] =     "no data",
-            [ConsumerStatusChasing] =      "chasing",
+            [ConsumerStatusAdjusting] =      "adjusting",
             [ConsumerStatusBuffering] =   "buffering",
             [ConsumerStatusFetching] =     "fetching",
         };
@@ -588,6 +589,11 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
          containsObject:[participantInfo valueForKeyPath:kSessionPrefixKey]])
     {
         self.participants = [self.participants arrayByRemovingObject:participantInfo];
+        
+        if ([participantInfo[kSessionPrefixKey] isEqualTo:[NCNdnRtcLibraryController sharedInstance].sessionPrefix])
+        {
+            [self.localStreamsScrollView setDocumentView:self.startPublishingView];            
+        }
     }
 }
 
@@ -648,6 +654,7 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 {
     if (self.participants.count == 0)
     {
+        [[NCReporter sharedInstance] submit];
         [self resumeComputerSleep];
         
         // this call may delete self...
@@ -930,7 +937,10 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 -(void)removeRemoteStreamWithPrefix:(NSString*)streamPrefix
 {
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    lib->removeRemoteStream([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    ndnrtc::new_api::statistics::StatisticsStorage stat = lib->getRemoteStreamStatistics([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    std::string logFile = lib->removeRemoteStream([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+    
+    [[NCReporter sharedInstance] addStatReport:[NSString stringWithCString:logFile.c_str() encoding:NSUTF8StringEncoding]];
     
     [self removeStreamFromConversation:streamPrefix isRemote:YES];
     if ([self.activeStreamViewer.streamPrefix isEqualToString:streamPrefix])

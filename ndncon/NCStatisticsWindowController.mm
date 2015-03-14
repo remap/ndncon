@@ -16,9 +16,10 @@
 #import "NSTimer+NCAdditions.h"
 
 #define INTEREST_AVERAGE_SIZE_BYTES 150
-#define STAT_UPDATE_RATE 20 // per second
+#define STAT_UPDATE_RATE 10 // per second
 
 using namespace ndnrtc;
+using namespace ndnrtc::new_api::statistics;
 
 //******************************************************************************
 @interface NCStatisticsStreamEntryValueTransformer : NSValueTransformer
@@ -54,6 +55,11 @@ using namespace ndnrtc;
 //PipelinerStatistics
 @property (nonatomic) double avgSegNum, avgSegNumKey, avgSegNumParity, avgSegNumParityKey, rtxFreq;
 @property (nonatomic) unsigned int nRtx, nRebuffer, nRequested, nRequestedKey, nInterestSent;
+@property (nonatomic) unsigned int dw;
+@property (nonatomic) int w;
+@property (nonatomic) double RTTprime;
+
+@property (nonatomic) double fetchEfficiency, playbackEfficiency;
 
 @end
 
@@ -166,60 +172,67 @@ using namespace ndnrtc;
     if (aStreamPrefix)
     {
         NdnRtcLibrary *libHandle = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-        ReceiverChannelPerformance stat;
         
         [self.streamPrefixLock lock];
         std::string streamPrefix([aStreamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
         [self.streamPrefixLock unlock];
         
-        libHandle->getRemoteStreamStatistics(streamPrefix, stat);
+        StatisticsStorage stat = libHandle->getRemoteStreamStatistics(streamPrefix);
         
         std::string threadName = libHandle->getStreamThread(streamPrefix);
         self.activeThread = [NSString ncStringFromCString:threadName.c_str()];
         
-        self.nBytesPerSec = (stat.nBytesPerSec_*8/1000);
-        self.interestFrequency = stat.interestFrequency_;
-        self.segmentsFrequency = stat.segmentsFrequency_;
-        self.rttEstimation = stat.rttEstimation_;
-        self.jitterEstimationMs = stat.jitterEstimationMs_;
-        self.jitterPlayableMs = stat.jitterPlayableMs_;
-        self.jitterTargetMs = stat.jitterTargetMs_;
-        self.actualProducerRate = stat.actualProducerRate_;
-        self.nDataReceived = stat.nDataReceived_;
-        self.nTimeouts = stat.nTimeouts_;
+        self.nBytesPerSec = stat[Indicator::InBitrateKbps];
+        self.interestFrequency = stat[Indicator::InterestRate];
+        self.segmentsFrequency = stat[Indicator::InRateSegments];
+        self.rttEstimation = stat[Indicator::RttEstimation];
+        self.jitterEstimationMs = stat[Indicator::BufferEstimatedSize];
+        self.jitterPlayableMs = stat[Indicator::BufferPlayableSize];
+        self.jitterTargetMs = stat[Indicator::BufferTargetSize];
+        self.actualProducerRate = stat[Indicator::CurrentProducerFramerate];
+        self.nDataReceived = stat[Indicator::SegmentsReceivedNum];
+        self.nTimeouts = stat[Indicator::TimeoutsNum];
         
-        self.nPlayed = stat.playoutStat_.nPlayed_;
-        self.nPlayedKey = stat.playoutStat_.nPlayedKey_;
-        self.nSkippedNoKey = stat.playoutStat_.nSkippedNoKey_;
-        self.nSkippedInvalidGop = stat.playoutStat_.nSkippedInvalidGop_;
-        self.nSkippedIncompleteKey = stat.playoutStat_.nSkippedIncompleteKey_;
-        self.nSkippedIncomplete = stat.playoutStat_.nSkippedIncomplete_;
-        self.latency = stat.playoutStat_.latency_;
+        self.nPlayed = stat[Indicator::PlayedNum];
+        self.nPlayedKey = stat[Indicator::PlayedKeyNum];
+        self.nSkippedNoKey = stat[Indicator::SkippedNoKeyNum];
+        self.nSkippedInvalidGop = stat[Indicator::SkippedBadGopNum];
+        self.nSkippedIncompleteKey = stat[Indicator::SkippedIncompleteKeyNum];
+        self.nSkippedIncomplete = stat[Indicator::SkippedIncompleteNum];
+        self.latency = stat[Indicator::LatencyEstimated];
         
-        self.nAcquired = stat.bufferStat_.nAcquired_;
-        self.nAcquiredKey = stat.bufferStat_.nAcquiredKey_;
-        self.nDropped = stat.bufferStat_.nDropped_;
-        self.nDroppedKey = stat.bufferStat_.nDroppedKey_;
-        self.nAssembled  = stat.bufferStat_.nAssembled_;
-        self.nAssembledKey = stat.bufferStat_.nAssembledKey_;
-        self.nRescued = stat.bufferStat_.nRescued_;
-        self.nRescuedKey = stat.bufferStat_.nRescuedKey_;
-        self.nRecovered = stat.bufferStat_.nRecovered_;
-        self.nRecoveredKey = stat.bufferStat_.nRecoveredKey_;
-        self.nIncomplete = stat.bufferStat_.nIncomplete_;
-        self.nIncompleteKey = stat.bufferStat_.nIncompleteKey_;
+        self.nAcquired = stat[Indicator::AcquiredNum];
+        self.nAcquiredKey = stat[Indicator::AcquiredKeyNum];
+        self.nDropped = stat[Indicator::DroppedNum];
+        self.nDroppedKey = stat[Indicator::DroppedKeyNum];
+        self.nAssembled  = stat[Indicator::AssembledNum];
+        self.nAssembledKey = stat[Indicator::AssembledKeyNum];
+        self.nRescued = stat[Indicator::RescuedNum];
+        self.nRescuedKey = stat[Indicator::RescuedKeyNum];
+        self.nRecovered = stat[Indicator::RecoveredNum];
+        self.nRecoveredKey = stat[Indicator::RecoveredKeyNum];
+        self.nIncomplete = stat[Indicator::IncompleteNum];
+        self.nIncompleteKey = stat[Indicator::IncompleteKeyNum];
         
-        self.avgSegNum = stat.pipelinerStat_.avgSegNum_;
-        self.avgSegNumKey = stat.pipelinerStat_.avgSegNumKey_;
-        self.avgSegNumParity = stat.pipelinerStat_.avgSegNumParity_;
-        self.avgSegNumParityKey = stat.pipelinerStat_.avgSegNumParityKey_;
-        self.rtxFreq = stat.pipelinerStat_.rtxFreq_;
-        self.nRtx = stat.pipelinerStat_.nRtx_;
-        self.nRebuffer = stat.pipelinerStat_.nRebuffer_;
-        self.nRequested = stat.pipelinerStat_.nRequested_;
-        self.nRequestedKey = stat.pipelinerStat_.nRequestedKey_;
+        self.avgSegNum = stat[Indicator::SegmentsDeltaAvgNum];
+        self.avgSegNumKey = stat[Indicator::SegmentsKeyAvgNum];
+        self.avgSegNumParity = stat[Indicator::SegmentsDeltaParityAvgNum];
+        self.avgSegNumParityKey = stat[Indicator::SegmentsKeyParityAvgNum];
+        self.rtxFreq = stat[Indicator::RtxFrequency];
+        self.nRtx = stat[Indicator::RtxNum];
+        self.nRebuffer = stat[Indicator::RebufferingsNum];
+        self.nRequested = stat[Indicator::RequestedNum];
+        self.nRequestedKey = stat[Indicator::RequestedKeyNum];
         
-        self.outRateEstimationLabel.stringValue = [[NSNumber numberWithDouble:(INTEREST_AVERAGE_SIZE_BYTES*stat.interestFrequency_*8/1000.)] stringValue];
+        self.w = stat[Indicator::W];
+        self.dw = stat[Indicator::DW];
+        self.RTTprime = stat[Indicator::RttPrime];
+        
+        self.fetchEfficiency = round((double)(self.nPlayed)/(double)(self.nRequested)*10000)/100;
+        double allSkipped = self.nSkippedIncomplete+self.nSkippedInvalidGop+self.nSkippedNoKey;
+        self.playbackEfficiency = round(allSkipped/(double)self.nPlayed*10000)/100;
+        
+        self.outRateEstimationLabel.stringValue = [[NSNumber numberWithDouble:(INTEREST_AVERAGE_SIZE_BYTES*stat[Indicator::InterestRate]*8/1000.)] stringValue];
     }
 }
 

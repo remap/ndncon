@@ -18,6 +18,7 @@
     ndn::Face* _face;
     ndn::KeyChain* _keychain;
     dispatch_queue_t _faceQueue;
+    dispatch_source_t _faceTimer;
     BOOL _isRunningFace;
 }
 
@@ -58,8 +59,7 @@ static dispatch_once_t token;
         if (![self initFace])
             return nil;
         
-        _isRunningFace = YES;
-        [self runFace];
+        _isRunningFace = NO;
     }
     
     return self;
@@ -75,21 +75,20 @@ static dispatch_once_t token;
 #pragma mark - public
 -(void)startProcessingEvents
 {
-    dispatch_sync(_faceQueue, ^{
-        if (!_isRunningFace)
-        {
-            _isRunningFace = YES;
-            [self runFace];
-        }
-    });
+    if (!_isRunningFace)
+    {
+        _isRunningFace = YES;
+        [self setupFaceTimer];
+    }
 }
 
 -(void)stopProcessingEvents
 {
-    dispatch_sync(_faceQueue, ^{
-        if (_isRunningFace)
-            _isRunningFace = NO;
-    });
+    if (_isRunningFace)
+    {
+        _isRunningFace = NO;
+        [self cancelFaceTimer];
+    }
 }
 
 -(BOOL)isValid
@@ -167,22 +166,38 @@ static dispatch_once_t token;
     return YES;
 }
 
--(void)runFace
+-(void)setupFaceTimer
 {
-    NCFaceSingleton* strongSelf = self;
-    dispatch_async(_faceQueue, ^{
-        try {
-            strongSelf->_face->processEvents();
-            usleep(10000);
-        } catch (std::exception& exception) {
-            NSLog(@"got exception from ndn-cpp face: %s", exception.what());
-        }
+    _faceTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER,
+                                        0, 0, _faceQueue);
+    if (_faceTimer)
+    {
+        NCFaceSingleton* strongSelf = self;
         
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_source_set_timer(_faceTimer, dispatch_walltime(NULL, 0), 10*NSEC_PER_MSEC, 0);
+        dispatch_source_set_event_handler(_faceTimer, ^{
             if (strongSelf->_isRunningFace)
                 [strongSelf runFace];
         });
-    });
+        dispatch_resume(_faceTimer);
+    }
+    else
+        [[NCErrorController sharedInstance] postErrorWithMessage:@"Can't start face processing"];
+}
+
+-(void)cancelFaceTimer
+{
+    dispatch_source_cancel(_faceTimer);
+    _faceTimer = nil;
+}
+
+-(void)runFace
+{
+    try {
+        _face->processEvents();
+    } catch (std::exception& exception) {
+        NSLog(@"got exception from ndn-cpp face: %s", exception.what());
+    }
 }
 
 @end

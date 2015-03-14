@@ -2,8 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Version updates</key>
+	<dict>
+		<key>0.4.1</key>
+		<dict>
+			<key>Producer.Audio.Segment size</key>
+			<integer>1000</integer>
+			<key>Consumer.Buffer size</key>
+			<integer>200</integer>
+		</dict>
+	</dict>
 	<key>First launch</key>
 	<true/>
+	<key>Last launched version</key>
+	<string></string>
 	<key>Chat</key>
 	<dict>
 		<key>Chat broadcast prefix</key>
@@ -53,16 +65,16 @@
 		<key>Jitter size</key>
 		<integer>300</integer>
 		<key>Buffer size</key>
-		<integer>150</integer>
+		<integer>200</integer>
 		<key>Slot size</key>
-		<integer>16000</integer>
+		<real>16000</real>
 	</dict>
 	<key>Producer</key>
 	<dict>
 		<key>Audio</key>
 		<dict>
 			<key>Segment size</key>
-			<integer>500</integer>
+			<integer>1000</integer>
 			<key>Freshness period</key>
 			<string>1000</string>
 		</dict>
