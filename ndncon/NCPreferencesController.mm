@@ -452,7 +452,7 @@ using namespace ndnrtc::new_api;
         }
     }
     
-    [self saveParam:currentVersion atPathByComponents:kLastLaunchedVersionKey];
+    [self saveParam:currentVersion atPathByComponents:kLastLaunchedVersionKey, nil];
 }
 
 -(void)getNdnRtcGeneralParameters:(void *)generalParameters
