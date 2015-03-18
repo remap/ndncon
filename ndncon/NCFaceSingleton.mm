@@ -187,7 +187,6 @@ static dispatch_once_t token;
 
 -(void)cancelFaceTimer
 {
-    dispatch_source_cancel(_faceTimer);
     _faceTimer = nil;
 }
 
