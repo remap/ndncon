@@ -31,6 +31,7 @@
 		AF42589C1AB3B8BE004C726B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF42589B1AB3B8BE004C726B /* CFNetwork.framework */; };
 		AF42589D1AB3B8C8004C726B /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF4258991AB3B8B8004C726B /* CoreServices.framework */; };
 		AF42589E1AB3B8CE004C726B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF42589B1AB3B8BE004C726B /* CFNetwork.framework */; };
+		AF42589F1AB3D0F0004C726B /* NCReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = AF4258921AB38278004C726B /* NCReporter.m */; };
 		AF58C01A1A81701D00181DBF /* libboost_chrono-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF58C0171A81701D00181DBF /* libboost_chrono-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF58C01B1A81701D00181DBF /* libboost_system-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF58C0181A81701D00181DBF /* libboost_system-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF58C01C1A81701D00181DBF /* libboost_timer-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF58C0191A81701D00181DBF /* libboost_timer-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -1479,6 +1480,7 @@
 				AFDD0DBE1A7318380076A301 /* NSDate+NCAdditions.m in Sources */,
 				AFDD0DBF1A7318380076A301 /* NCVideoThreadViewController.m in Sources */,
 				AFDD0DC01A7318380076A301 /* NCStackEditorViewController.m in Sources */,
+				AF42589F1AB3D0F0004C726B /* NCReporter.m in Sources */,
 				AFDD0DC11A7318380076A301 /* NCMainViewController.m in Sources */,
 				AFDD0DC21A7318380076A301 /* NCChatLibraryController.mm in Sources */,
 				AFDD0DC31A7318380076A301 /* NCChatViewController.m in Sources */,
