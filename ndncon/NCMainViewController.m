@@ -25,6 +25,9 @@
 #define STATUS_POPUP_PASSIVE_IDX 1
 #define STATUS_POPUP_ONLINE_IDX 2
 
+#define PUBLISH_CUSTOM_AUDIO_ONLY_IDX 1
+#define PUBLISH_CUSTOM_VIDEO_ONLY_IDX 2
+
 @interface NCMainViewController ()
 
 @property (nonatomic, strong) NSDictionary *conversationConfiguration;
@@ -43,6 +46,59 @@
 @end
 
 @implementation NCMainViewController
+
+- (IBAction)changeStatus:(id)sender
+{
+    if ([self.statusPopUpButton.itemArray indexOfObject:self.statusPopUpButton.selectedItem] == STATUS_POPUP_OFFLINE_IDX &&
+        [NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
+    {
+        if (self.conversationViewController.participants.count > 0)
+            [self.conversationViewController endConversation:self];
+        
+        [[NCNdnRtcLibraryController sharedInstance] stopSession];
+    }
+    
+    if ([self.statusPopUpButton.itemArray indexOfObject:self.statusPopUpButton.selectedItem] == STATUS_POPUP_PASSIVE_IDX &&
+        [NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOnlineNotPublishing)
+    {
+        if ([NCNdnRtcLibraryController sharedInstance].sessionStatus == SessionStatusOffline)
+            [[NCNdnRtcLibraryController sharedInstance] startSession];
+        else
+        {
+            [self.conversationViewController endConversation:self];
+        }
+    }
+}
+
+- (IBAction)startPublishing:(id)sender
+{
+    [self startConverstaionIfNotStarted];
+    [self.conversationViewController startPublishingWithConfiguration:self.conversationConfiguration];
+    [self loadCurrentView:self.conversationViewController.view];
+}
+
+- (IBAction)startPublishingCustom:(id)sender
+{
+    if (!self.conversationViewController)
+    {
+        
+        if ([[sender itemArray] indexOfObject:[sender selectedItem]] == PUBLISH_CUSTOM_AUDIO_ONLY_IDX)
+        {
+            self.conversationConfiguration = @{kAudioStreamsKey:[NCPreferencesController sharedInstance].audioStreams};
+        }
+        
+        if ([[sender itemArray] indexOfObject:[sender selectedItem]] == PUBLISH_CUSTOM_VIDEO_ONLY_IDX)
+        {
+            self.conversationConfiguration = @{kVideoStreamsKey:[NCPreferencesController sharedInstance].videoStreams};
+        }
+        
+        self.conversationViewController = [[NCConversationViewController alloc] init];
+        self.conversationViewController.delegate = self;
+        
+        [self.conversationViewController startPublishingWithConfiguration:self.conversationConfiguration];
+        [self loadCurrentView:self.conversationViewController.view];
+    }
+}
 
 -(id)init
 {
@@ -94,40 +150,6 @@
     self.view.layer.borderWidth = 1.f;
     self.conversationInfoView.status = [NCMainViewController fromSessionSatus:[NCNdnRtcLibraryController sharedInstance].sessionStatus];
     [self.conversationInfoView registerForDraggedTypes: @[NSStringPboardType]];
-}
-
-- (IBAction)changeStatus:(id)sender
-{
-    if ([self.statusPopUpButton.itemArray indexOfObject:self.statusPopUpButton.selectedItem] == STATUS_POPUP_OFFLINE_IDX &&
-        [NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
-    {
-        if (self.conversationViewController.participants.count > 0)
-            [self.conversationViewController endConversation:self];
-        
-        [[NCNdnRtcLibraryController sharedInstance] stopSession];
-    }
-    
-    if ([self.statusPopUpButton.itemArray indexOfObject:self.statusPopUpButton.selectedItem] == STATUS_POPUP_PASSIVE_IDX &&
-        [NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOnlineNotPublishing)
-    {
-        if ([NCNdnRtcLibraryController sharedInstance].sessionStatus == SessionStatusOffline)
-            [[NCNdnRtcLibraryController sharedInstance] startSession];
-        else
-        {
-            [self.conversationViewController endConversation:self];
-        }
-    }
-}
-
-- (IBAction)startPublishing:(id)sender
-{
-    [self startConverstaionIfNotStarted];
-    [self.conversationViewController startPublishingWithConfiguration:self.conversationConfiguration];
-    [self loadCurrentView:self.conversationViewController.view];
-}
-
-- (IBAction)startPublishingCustom:(id)sender {
-    NSLog(@"customize...");
 }
 
 #pragma mark - NCConferenceListViewControllerDelegate

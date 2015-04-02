@@ -40,6 +40,9 @@
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
 
+#define PUBLISH_CUSTOM_AUDIO_ONLY_IDX 1
+#define PUBLISH_CUSTOM_VIDEO_ONLY_IDX 2
+
 NSString* const kCameraCapturerKey = @"cameraCapturer";
 NSString* const kRendererKey = @"videoRenderer";
 NSString* const kNCLocalStreamsDictionaryKey = @"localStreamsDictionary";
@@ -178,6 +181,66 @@ private:
 
 @implementation NCConversationViewController
 
+- (IBAction)startPublishing:(id)sender
+{
+    [self.localStreamsScrollView addStackView:self.localStreamViewer.stackView
+                              withOrientation:NSUserInterfaceLayoutOrientationHorizontal];
+    [self startPublishingWithConfiguration:[NCPreferencesController sharedInstance].producerConfigurationCopy];
+    [self stopComputerSleep];
+}
+
+- (IBAction)startPublishingCustom:(id)sender
+{    
+    [self.localStreamsScrollView addStackView:self.localStreamViewer.stackView
+                              withOrientation:NSUserInterfaceLayoutOrientationHorizontal];
+    
+    if ([[sender itemArray] indexOfObject:[sender selectedItem]] == PUBLISH_CUSTOM_AUDIO_ONLY_IDX)
+    {
+        [self startPublishingWithConfiguration: @{kAudioStreamsKey:[NCPreferencesController sharedInstance].audioStreams}];
+    }
+    
+    if ([[sender itemArray] indexOfObject:[sender selectedItem]] == PUBLISH_CUSTOM_VIDEO_ONLY_IDX)
+    {
+        [self startPublishingWithConfiguration: @{kVideoStreamsKey:[NCPreferencesController sharedInstance].videoStreams}];
+    }
+    
+    [self stopComputerSleep];
+}
+
+- (IBAction)endConversation:(id)sender
+{
+    [self.remoteStreamViewer closeAllStreams];
+    [self.localStreamViewer closeAllStreams];
+    
+    self.participants = @[];
+    
+    [self stopWatchingParticipants];
+    self.conference = nil;
+    
+    if (self.statisticsController)
+    {
+        [self.statisticsController stopStatUpdate];
+        self.statisticsController = nil;
+    }
+    
+    [self checkConversationDidEnd];
+}
+
+- (IBAction)showStatistics:(id)sender
+{
+    if ([self.statisticsController.window isVisible])
+        [self.statisticsController close];
+    else
+    {
+        if (!self.statisticsController)
+        {
+            self.statisticsController = [[NCStatisticsWindowController alloc] init];
+            self.statisticsController.delegate = self;
+        }
+        [self.statisticsController showWindow:nil];
+    }
+}
+
 -(id)init
 {
     self = [self initWithNibName:@"NCConversationView" bundle:nil];
@@ -251,48 +314,6 @@ private:
     
     self.localStreamViewer.backgroundColor = self.localStreamsScrollView.backgroundColor;
     self.remoteStreamViewer.backgroundColor = self.remoteStreamsScrollView.backgroundColor;
-}
-
-- (IBAction)startPublishing:(id)sender
-{
-    [self.localStreamsScrollView addStackView:self.localStreamViewer.stackView
-                              withOrientation:NSUserInterfaceLayoutOrientationHorizontal];
-    [self startPublishingWithConfiguration:[NCPreferencesController sharedInstance].producerConfigurationCopy];
-    [self stopComputerSleep];
-}
-
-- (IBAction)endConversation:(id)sender
-{
-    [self.remoteStreamViewer closeAllStreams];
-    [self.localStreamViewer closeAllStreams];    
-    
-    self.participants = @[];
-    
-    [self stopWatchingParticipants];
-    self.conference = nil;
-    
-    if (self.statisticsController)
-    {
-        [self.statisticsController stopStatUpdate];
-        self.statisticsController = nil;
-    }
-    
-    [self checkConversationDidEnd];
-}
-
-- (IBAction)showStatistics:(id)sender
-{
-    if ([self.statisticsController.window isVisible])
-        [self.statisticsController close];
-    else
-    {
-        if (!self.statisticsController)
-        {
-            self.statisticsController = [[NCStatisticsWindowController alloc] init];
-            self.statisticsController.delegate = self;
-        }
-        [self.statisticsController showWindow:nil];
-    }
 }
 
 -(void)startPublishingWithConfiguration:(NSDictionary *)streamsConfiguration

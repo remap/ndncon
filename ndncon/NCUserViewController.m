@@ -17,6 +17,9 @@
 #import "NCChatLibraryController.h"
 #import "NSString+NCAdditions.h"
 
+#define PUBLISH_CUSTOM_AUDIO_ONLY_IDX 1
+#define PUBLISH_CUSTOM_VIDEO_ONLY_IDX 2
+
 @interface NCUserViewController ()
 
 @property (weak) IBOutlet NSScrollView *scrollView;
@@ -49,8 +52,8 @@
     self.isChatVisible = !self.isChatVisible;
 }
 
-- (IBAction)fetchAudioOnly:(id)sender {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(userViewController:fetchStreamsWithCustomInfo:)])
+- (IBAction)fetchCustom:(id)sender {
+    if ([[sender itemArray] indexOfObject:[sender selectedItem]] == PUBLISH_CUSTOM_AUDIO_ONLY_IDX)
     {
         NSMutableDictionary *customUserInfo = [NSMutableDictionary dictionaryWithDictionary:self.userInfo];
         customUserInfo[kSessionInfoKey] = [NCSessionInfoContainer audioOnlyContainerWithSessionInfo:[self.userInfo[kSessionInfoKey] sessionInfo]];
@@ -58,6 +61,16 @@
         [self.delegate userViewController:self
                fetchStreamsWithCustomInfo:customUserInfo];
     }
+    
+    if ([[sender itemArray] indexOfObject:[sender selectedItem]] == PUBLISH_CUSTOM_VIDEO_ONLY_IDX)
+    {
+        NSMutableDictionary *customUserInfo = [NSMutableDictionary dictionaryWithDictionary:self.userInfo];
+        customUserInfo[kSessionInfoKey] = [NCSessionInfoContainer videoOnlyContainerWithSessionInfo:[self.userInfo[kSessionInfoKey] sessionInfo]];
+        
+        [self.delegate userViewController:self
+               fetchStreamsWithCustomInfo:customUserInfo];
+    }
+    
 }
 
 -(id)init
