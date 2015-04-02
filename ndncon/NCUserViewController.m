@@ -104,6 +104,7 @@
     [self.streamEditorController awakeFromNib];
 
     [self updateUiForUserInfo:self.userInfo];
+    [self presentView:self.scrollView];
     
     if (self.userInfo && !self.chatViewController.chatRoomId)
     {
@@ -157,14 +158,14 @@
     
     self.statusImage = [[NCNdnRtcLibraryController sharedInstance]
                         imageForSessionStatus:status];
-    self.isChatVisible = YES;
+    self.isChatVisible = NO;
     self.chatViewController.isActive = (status != SessionStatusOffline);
     self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@:", userInfo[kSessionUsernameKey]];
 }
 
 -(void)joinChatRoomForUserPrefix:(NSString*)userPrefix
 {
-    self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser:userPrefix];
+//    self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser:userPrefix];
 }
 
 -(void)setIsChatVisible:(BOOL)isChatVisible

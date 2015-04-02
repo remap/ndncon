@@ -293,13 +293,13 @@ private:
 
 -(void)initChatRooms
 {
-    NSLog(@"intializing chatrooms...");
-    
-    self.initialized = YES;
-    [[User allUsersFromContext:self.context]
-     enumerateObjectsUsingBlock:^(User* user, NSUInteger idx, BOOL *stop) {
-        [self startChatWithUser:user.userPrefix];
-    }];
+//    NSLog(@"intializing chatrooms...");
+//    
+//    self.initialized = YES;
+//    [[User allUsersFromContext:self.context]
+//     enumerateObjectsUsingBlock:^(User* user, NSUInteger idx, BOOL *stop) {
+//        [self startChatWithUser:user.userPrefix];
+//    }];
 }
 
 -(void)leaveAllChatRooms
