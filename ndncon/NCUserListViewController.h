@@ -19,6 +19,8 @@ extern NSString* const kHubPrefixKey;
 @interface NCSessionInfoContainer : NSObject
 
 +(NCSessionInfoContainer*)containerWithSessionInfo:(void*)sessionInfo;
++(NCSessionInfoContainer*)audioOnlyContainerWithSessionInfo:(void*)sessionInfo;
++(NCSessionInfoContainer*)videoOnlyContainerWithSessionInfo:(void*)sessionInfo;
 
 -(id)initWithSessionInfo:(void*)sessionInfo;
 -(void*)sessionInfo;

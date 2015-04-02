@@ -299,6 +299,12 @@
     [self startFetchingFromUser:userVc.userInfo];
 }
 
+-(void)userViewController:(NCUserViewController *)userVc
+fetchStreamsWithCustomInfo:(NSDictionary *)customUSerInfo
+{
+    [self startFetchingFromUser:customUSerInfo];
+}
+
 -(void)onAppWillTerminate:(NSNotification*)notification
 {
     if (self.conversationViewController.participants.count > 0)
@@ -472,7 +478,7 @@
 -(id)transformedValue:(id)value
 {
     if (!value || ![value isKindOfClass:[NSArray class]] || [value count] == 0)
-        return @"no one";
+        return @"no one, click to start publishing";
     
     __block NSString *outputString = @"";
     NSArray *participants = [value valueForKeyPath:kSessionUsernameKey];

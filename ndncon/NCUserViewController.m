@@ -22,6 +22,7 @@
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (nonatomic) NCStreamViewerController *streamEditorController;
 @property (weak) IBOutlet NSButton *fetchAllButton;
+@property (weak) IBOutlet NSButton *fetchAudioOnlyButton;
 @property (nonatomic) BOOL isChatVisible;
 
 @property (weak) IBOutlet NSButton *chatButton;
@@ -30,6 +31,34 @@
 @end
 
 @implementation NCUserViewController
+
+- (IBAction)fetchAll:(id)sender
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(userViewControllerFetchStreamsClicked:)])
+        [self.delegate userViewControllerFetchStreamsClicked:self];
+}
+
+- (IBAction)showChat:(id)sender {
+    self.publishingInfoButton.state = !self.chatButton.state;
+    self.isChatVisible = !self.isChatVisible;
+}
+
+- (IBAction)showPublishingInfo:(id)sender
+{
+    self.chatButton.state = !self.publishingInfoButton.state;
+    self.isChatVisible = !self.isChatVisible;
+}
+
+- (IBAction)fetchAudioOnly:(id)sender {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(userViewController:fetchStreamsWithCustomInfo:)])
+    {
+        NSMutableDictionary *customUserInfo = [NSMutableDictionary dictionaryWithDictionary:self.userInfo];
+        customUserInfo[kSessionInfoKey] = [NCSessionInfoContainer audioOnlyContainerWithSessionInfo:[self.userInfo[kSessionInfoKey] sessionInfo]];
+        
+        [self.delegate userViewController:self
+               fetchStreamsWithCustomInfo:customUserInfo];
+    }
+}
 
 -(id)init
 {
@@ -61,11 +90,7 @@
                   withOrientation:NSUserInterfaceLayoutOrientationVertical];
     [self.streamEditorController awakeFromNib];
 
-    NCSessionStatus status = [[self.userInfo valueForKey:kSessionStatusKey] integerValue];
-    [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
-    self.isChatVisible = YES;
-    self.chatViewController.isActive = (status != SessionStatusOffline);
-    self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@:", self.userInfo[kSessionUsernameKey]];
+    [self updateUiForUserInfo:self.userInfo];
     
     if (self.userInfo && !self.chatViewController.chatRoomId)
     {
@@ -86,15 +111,8 @@
     _userInfo = userInfo;
     self.streamEditorController.userName = [userInfo valueForKey:kSessionUsernameKey];
     self.streamEditorController.userPrefix = [userInfo valueForKey:kHubPrefixKey];
+    [self updateUiForUserInfo:userInfo];
     
-    NCSessionStatus status = [[_userInfo valueForKey:kSessionStatusKey] integerValue];
-    
-    self.statusImage = [[NCNdnRtcLibraryController sharedInstance]
-                        imageForSessionStatus:status];
-    [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
-    self.chatViewController.isActive = (status != SessionStatusOffline);
-    self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@", self.userInfo[kSessionUsernameKey]];
-
     if (!self.chatViewController.chatRoomId)
     
     {
@@ -115,24 +133,22 @@
     }
 }
 
-- (IBAction)fetchAll:(id)sender
-{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(userViewControllerFetchStreamsClicked:)])
-        [self.delegate userViewControllerFetchStreamsClicked:self];
-}
-
-- (IBAction)showChat:(id)sender {
-    self.publishingInfoButton.state = !self.chatButton.state;
-    self.isChatVisible = !self.isChatVisible;
-}
-
-- (IBAction)showPublishingInfo:(id)sender
-{
-    self.chatButton.state = !self.publishingInfoButton.state;
-    self.isChatVisible = !self.isChatVisible;
-}
-
 // private
+-(void)updateUiForUserInfo:(NSDictionary*)userInfo
+{
+    NCSessionStatus status = [[userInfo valueForKey:kSessionStatusKey] integerValue];
+    [self.fetchAllButton setEnabled:(status == SessionStatusOnlinePublishing)];
+    
+    NCSessionInfoContainer *sessionInfo = [userInfo valueForKey:kSessionInfoKey];
+    [self.fetchAudioOnlyButton setEnabled:(status == SessionStatusOnlinePublishing) && sessionInfo.audioStreamsConfigurations.count > 0];
+    
+    self.statusImage = [[NCNdnRtcLibraryController sharedInstance]
+                        imageForSessionStatus:status];
+    self.isChatVisible = YES;
+    self.chatViewController.isActive = (status != SessionStatusOffline);
+    self.chatViewController.chatInfoTextField.stringValue = [NSString stringWithFormat:@"Chat with %@:", userInfo[kSessionUsernameKey]];
+}
+
 -(void)joinChatRoomForUserPrefix:(NSString*)userPrefix
 {
     self.chatViewController.chatRoomId = [[NCChatLibraryController sharedInstance] startChatWithUser:userPrefix];

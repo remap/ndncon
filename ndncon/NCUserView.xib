@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCUserViewController">
             <connections>
                 <outlet property="chatButton" destination="W2n-GX-nT5" id="vZp-kg-W7B"/>
                 <outlet property="fetchAllButton" destination="ITG-mn-B5f" id="xFe-gQ-uCh"/>
+                <outlet property="fetchAudioOnlyButton" destination="hMG-F2-Kdr" id="fxF-we-jpu"/>
                 <outlet property="publishingInfoButton" destination="1Yb-gL-tJM" id="9zh-AV-rJe"/>
                 <outlet property="scrollView" destination="F0O-SU-HHs" id="YY5-Oq-ice"/>
                 <outlet property="view" destination="c22-O7-iKe" id="1ei-Ep-oJw"/>
@@ -119,10 +120,13 @@
                 </button>
                 <button verticalHuggingPriority="748" translatesAutoresizingMaskIntoConstraints="NO" id="hMG-F2-Kdr">
                     <rect key="frame" x="449" y="385" width="146" height="32"/>
-                    <buttonCell key="cell" type="push" title="Fetch selected" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b0m-DJ-udi">
+                    <buttonCell key="cell" type="push" title="Fetch audio only" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b0m-DJ-udi">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="fetchAudioOnly:" target="-2" id="9Yt-jq-xdh"/>
+                    </connections>
                 </button>
             </subviews>
             <constraints>
