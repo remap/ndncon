@@ -31,5 +31,7 @@
 
 @optional
 -(void)userViewControllerFetchStreamsClicked:(NCUserViewController*)userVc;
+-(void)userViewController:(NCUserViewController *)userVc
+fetchStreamsWithCustomInfo:(NSDictionary *)customUSerInfo;
 
 @end

@@ -91,11 +91,11 @@ CVReturn displayCallback(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow,
 
 -(void)dealloc
 {
+    [self releaseDisplayLink];
     self.renderingView = nil;
     [self.openGlView removeFromSuperview];
     delete _renderer;
     self.openGlView = nil;
-    [self releaseDisplayLink];
 }
 
 -(void *)ndnRtcRenderer
@@ -191,6 +191,7 @@ CVReturn displayCallback(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow,
         _displayLink = NULL;
     }
 }
+
 
 - (void)releaseDisplayLink
 {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCUserViewController">
@@ -88,8 +88,8 @@
                     </connections>
                 </imageView>
                 <button verticalHuggingPriority="747" translatesAutoresizingMaskIntoConstraints="NO" id="ITG-mn-B5f">
-                    <rect key="frame" x="449" y="410" width="146" height="35"/>
-                    <buttonCell key="cell" type="push" title="Fetch all streams" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="OC4-ej-gKZ">
+                    <rect key="frame" x="433" y="417" width="120" height="25"/>
+                    <buttonCell key="cell" type="roundTextured" title="Fetch all streams" bezelStyle="texturedRounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="OC4-ej-gKZ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -97,8 +97,8 @@
                         <action selector="fetchAll:" target="-2" id="Z14-m8-sAQ"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W2n-GX-nT5">
-                    <rect key="frame" x="66" y="357" width="70" height="32"/>
+                <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W2n-GX-nT5">
+                    <rect key="frame" x="66" y="359" width="70" height="32"/>
                     <buttonCell key="cell" type="push" title="Chat" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SDz-8v-bxc">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -107,8 +107,8 @@
                         <action selector="showChat:" target="-2" id="NhK-S0-Bm1"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1Yb-gL-tJM">
-                    <rect key="frame" x="136" y="357" width="131" height="32"/>
+                <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1Yb-gL-tJM">
+                    <rect key="frame" x="136" y="359" width="131" height="32"/>
                     <buttonCell key="cell" type="push" title="Publishing info" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BSN-Gs-GP7">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -117,30 +117,43 @@
                         <action selector="showPublishingInfo:" target="-2" id="ccx-uK-EBA"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="748" translatesAutoresizingMaskIntoConstraints="NO" id="hMG-F2-Kdr">
-                    <rect key="frame" x="449" y="385" width="146" height="32"/>
-                    <buttonCell key="cell" type="push" title="Fetch selected" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b0m-DJ-udi">
+                <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="HnD-wV-D0s">
+                    <rect key="frame" x="555" y="417" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="fXd-6a-LNq"/>
+                    </constraints>
+                    <popUpButtonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="A40-59-cBu">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" title="OtherViews" id="3Fk-G1-twl">
+                            <items>
+                                <menuItem state="on" hidden="YES" id="736-3L-X3R"/>
+                                <menuItem title="audio only" id="pTx-lA-NyB" userLabel="audio only"/>
+                                <menuItem title="video only" id="Hsl-1v-Spo" userLabel="video only"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="fetchCustom:" target="-2" id="06J-sE-Anq"/>
+                    </connections>
+                </popUpButton>
             </subviews>
             <constraints>
+                <constraint firstItem="HnD-wV-D0s" firstAttribute="height" secondItem="ITG-mn-B5f" secondAttribute="height" id="0zF-uE-kgG"/>
                 <constraint firstItem="1Yb-gL-tJM" firstAttribute="leading" secondItem="W2n-GX-nT5" secondAttribute="trailing" constant="12" id="1nu-gr-3BK"/>
                 <constraint firstItem="1Yb-gL-tJM" firstAttribute="baseline" secondItem="W2n-GX-nT5" secondAttribute="baseline" id="4is-wP-OCa"/>
                 <constraint firstItem="0ez-JX-NLm" firstAttribute="top" secondItem="Oxz-IJ-0rl" secondAttribute="bottom" constant="4" id="AvP-qq-aQG"/>
                 <constraint firstItem="Oxz-IJ-0rl" firstAttribute="leading" secondItem="0ez-JX-NLm" secondAttribute="leading" id="C3V-Wd-9Jj"/>
-                <constraint firstItem="hMG-F2-Kdr" firstAttribute="top" secondItem="ITG-mn-B5f" secondAttribute="bottom" constant="4" id="CTW-50-4BN"/>
-                <constraint firstAttribute="trailing" secondItem="ITG-mn-B5f" secondAttribute="trailing" constant="11" id="OSB-0Y-Ieb"/>
+                <constraint firstAttribute="trailing" secondItem="HnD-wV-D0s" secondAttribute="trailing" constant="20" id="CuZ-3l-gIg"/>
                 <constraint firstItem="Oxz-IJ-0rl" firstAttribute="baseline" secondItem="ITG-mn-B5f" secondAttribute="baseline" id="P7J-wo-YlZ"/>
                 <constraint firstItem="Tdx-Yt-s2m" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="QAc-S2-TEQ"/>
-                <constraint firstItem="hMG-F2-Kdr" firstAttribute="leading" secondItem="ITG-mn-B5f" secondAttribute="leading" id="RCp-mf-GxL"/>
                 <constraint firstItem="W2n-GX-nT5" firstAttribute="top" secondItem="0ez-JX-NLm" secondAttribute="bottom" constant="17" id="VaL-Az-pIx"/>
                 <constraint firstItem="Oxz-IJ-0rl" firstAttribute="leading" secondItem="Tdx-Yt-s2m" secondAttribute="trailing" constant="4" id="WvH-JX-wkN"/>
                 <constraint firstItem="W2n-GX-nT5" firstAttribute="leading" secondItem="Oxz-IJ-0rl" secondAttribute="leading" id="ZjY-9R-mC6"/>
                 <constraint firstItem="ITG-mn-B5f" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="16" id="buB-kO-OkI"/>
-                <constraint firstItem="hMG-F2-Kdr" firstAttribute="width" secondItem="ITG-mn-B5f" secondAttribute="width" id="h5f-Zw-G7M"/>
                 <constraint firstItem="Oxz-IJ-0rl" firstAttribute="top" secondItem="Tdx-Yt-s2m" secondAttribute="top" id="mom-X7-TuB"/>
+                <constraint firstItem="HnD-wV-D0s" firstAttribute="centerY" secondItem="ITG-mn-B5f" secondAttribute="centerY" id="qW9-EZ-ygZ"/>
+                <constraint firstItem="HnD-wV-D0s" firstAttribute="leading" secondItem="ITG-mn-B5f" secondAttribute="trailing" constant="2" id="rmb-CM-igw"/>
                 <constraint firstItem="Tdx-Yt-s2m" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="tQg-wj-wjh"/>
             </constraints>
             <point key="canvasLocation" x="317" y="243.5"/>

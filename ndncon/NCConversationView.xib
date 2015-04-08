@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCConversationViewController">
@@ -124,9 +124,9 @@
         <customView horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="rhs-Lr-yBq">
             <rect key="frame" x="0.0" y="0.0" width="182" height="119"/>
             <subviews>
-                <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gBa-GO-xzj">
-                    <rect key="frame" x="21" y="42" width="140" height="32"/>
-                    <buttonCell key="cell" type="push" title="Start publishing" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BhB-pr-SHm">
+                <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="gBa-GO-xzj">
+                    <rect key="frame" x="61" y="46.5" width="60" height="25"/>
+                    <buttonCell key="cell" type="roundTextured" title="Publish" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BhB-pr-SHm">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -134,12 +134,35 @@
                         <action selector="startPublishing:" target="-2" id="CEA-TW-Tjo"/>
                     </connections>
                 </button>
+                <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="iJX-kW-nI0">
+                    <rect key="frame" x="123" y="46.5" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="uNP-Yr-Da6"/>
+                    </constraints>
+                    <popUpButtonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="53U-dN-Axo">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" title="OtherViews" id="Jke-7B-Ybj">
+                            <items>
+                                <menuItem state="on" hidden="YES" id="0vs-ze-YkL"/>
+                                <menuItem title="audio only" id="rFE-Zk-m5o" userLabel="audio only"/>
+                                <menuItem title="video only" id="EdL-wK-pnR" userLabel="video only"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="startPublishingCustom:" target="-2" id="bqj-92-Cjc"/>
+                    </connections>
+                </popUpButton>
             </subviews>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="gBa-GO-xzj" secondAttribute="centerX" id="4t0-T9-uVx"/>
+                <constraint firstAttribute="centerX" secondItem="gBa-GO-xzj" secondAttribute="centerX" id="EpG-FG-y8O"/>
                 <constraint firstAttribute="height" constant="119" id="OIg-q1-SbS"/>
                 <constraint firstAttribute="width" constant="182" id="VDc-kW-6mi"/>
-                <constraint firstAttribute="centerY" secondItem="gBa-GO-xzj" secondAttribute="centerY" id="zmK-SD-JLY"/>
+                <constraint firstAttribute="centerY" secondItem="gBa-GO-xzj" secondAttribute="centerY" id="WZ4-Si-DA8"/>
+                <constraint firstItem="iJX-kW-nI0" firstAttribute="height" secondItem="gBa-GO-xzj" secondAttribute="height" id="Zst-WX-PKE"/>
+                <constraint firstItem="iJX-kW-nI0" firstAttribute="centerY" secondItem="gBa-GO-xzj" secondAttribute="centerY" id="bnA-YU-a8n"/>
+                <constraint firstItem="iJX-kW-nI0" firstAttribute="leading" secondItem="gBa-GO-xzj" secondAttribute="trailing" constant="2" id="q97-Md-TIs"/>
             </constraints>
             <point key="canvasLocation" x="177" y="-219"/>
         </customView>

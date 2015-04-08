@@ -61,6 +61,28 @@ using namespace ndnrtc::new_api;
     return container;
 }
 
++(NCSessionInfoContainer*)audioOnlyContainerWithSessionInfo:(void *)sessionInfo
+{
+    SessionInfo *audioOnly = new SessionInfo(*((SessionInfo*)sessionInfo));
+    audioOnly->videoStreams_.clear();
+    
+    NCSessionInfoContainer *container = [[NCSessionInfoContainer alloc] initWithSessionInfo:audioOnly];
+    delete audioOnly;
+    
+    return container;
+}
+
++(NCSessionInfoContainer*)videoOnlyContainerWithSessionInfo:(void *)sessionInfo
+{
+    SessionInfo *videoOnly = new SessionInfo(*((SessionInfo*)sessionInfo));
+    videoOnly->audioStreams_.clear();
+    
+    NCSessionInfoContainer *container = [[NCSessionInfoContainer alloc] initWithSessionInfo:videoOnly];
+    delete videoOnly;
+    
+    return container;
+}
+
 -(void*)sessionInfo
 {
     return _sessionInfo;

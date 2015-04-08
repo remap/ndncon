@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -692,13 +692,14 @@ CA
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="19" id="BOR-PJ-yag"/>
                                                         </constraints>
-                                                        <popUpButtonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="4I3-sM-a8x" id="GBR-xv-noY">
+                                                        <popUpButtonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="xaN-Sz-hCC" id="GBR-xv-noY">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="menu"/>
                                                             <menu key="menu" title="OtherViews" id="Pn4-fl-kYF">
                                                                 <items>
                                                                     <menuItem state="on" hidden="YES" id="HFE-mt-D1d"/>
-                                                                    <menuItem title="Configure publishing..." id="4I3-sM-a8x"/>
+                                                                    <menuItem title="audio only" id="4I3-sM-a8x" userLabel="audio only"/>
+                                                                    <menuItem title="video only" id="xaN-Sz-hCC" userLabel="video only"/>
                                                                 </items>
                                                             </menu>
                                                         </popUpButtonCell>
