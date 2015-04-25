@@ -11,6 +11,7 @@
 
 extern NSString* const NCConferenceDiscoveredNotification;
 extern NSString* const NCConferenceWithdrawedNotification;
+extern NSString* const NCConferenceUpdatedNotificaiton;
 
 //******************************************************************************
 @interface NCDiscoveryLibraryController : PTNSingleton

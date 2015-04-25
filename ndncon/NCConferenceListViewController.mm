@@ -198,6 +198,7 @@ NSString* const kNoConferences = @"no conferences";
         [self subscribeForNotificationsAndSelectors:
          NCConferenceWithdrawedNotification, @selector(onConferenceWithdrawed:),
          NCConferenceDiscoveredNotification, @selector(onConferenceDiscovered:),
+         NCConferenceUpdatedNotificaiton, @selector(onConferenceUpdated:),
          nil];
     }
     
@@ -348,6 +349,12 @@ NSString* const kNoConferences = @"no conferences";
 -(void)onConferenceDiscovered:(NSNotification*)notification
 {
     NSLog(@"New conference: %@", notification.userInfo);
+    [self reloadData];
+}
+
+-(void)onConferenceUpdated:(NSNotification*)notification
+{
+    NSLog(@"Conference updated: %@", notification.userInfo);
     [self reloadData];
 }
 

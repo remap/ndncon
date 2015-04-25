@@ -36,6 +36,10 @@
 @property (weak) IBOutlet NSButton *cancelButton;
 @property (weak) IBOutlet NSButton *joinButton;
 
+@property (weak) IBOutlet NSView *requestView;
+@property (weak) IBOutlet NSButtonCell *sendRequestButton;
+@property (weak) IBOutlet NSTextFieldCell *requestStatusText;
+
 @property (nonatomic, readonly) NSManagedObjectContext *context;
 
 @end
@@ -87,6 +91,19 @@
         self.duration = [NCConferenceViewController stringRepresentationForConferenceDuration:conference.duration];
         self.timeInfoLabel.stringValue = [NSString stringWithFormat:@"%@:%@ %@ (%@)",
                                           self.startHour, self.startMinute, self.amPm, self.duration];
+        
+        if ([conference hasParticipant:[NCPreferencesController sharedInstance].userName
+                            withPrefix:[NCPreferencesController sharedInstance].prefix])
+        {
+            [self.joinButton setHidden:NO];
+            [self.requestView setHidden:YES];
+        }
+        else
+        {
+            [self.joinButton setHidden:YES];
+            [self.requestView setHidden:NO];
+        }
+        
         [self.participantsTableView reloadData];
     }
 }
@@ -131,8 +148,8 @@
 -(void)setCanJoin:(BOOL)canJoin
 {
     _canJoin = canJoin;
-    
-    [self.joinButton setHidden:!canJoin];
+//    [self.joinButton setHidden:!canJoin];
+//    [self.requestView setHidden:canJoin];
     [self.cancelButton setHidden:(!self.isOwner || !_canJoin)];
 }
 
@@ -167,6 +184,10 @@
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceViewControllerDidJoinConference:)])
         [self.delegate conferenceViewControllerDidJoinConference:self];
+}
+
+- (IBAction)sendJoinRequest:(id)sender {
+    
 }
 
 - (IBAction)deleteSelectedEntry:(id)sender

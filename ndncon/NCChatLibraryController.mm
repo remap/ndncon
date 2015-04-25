@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
-#include <ndn-conference-discovery/chrono-chat.h>
-#include <ndn-conference-discovery/external-observer.h>
+#include <ndn-entity-discovery/chrono-chat.h>
+#include <ndn-entity-discovery/external-observer.h>
 
 #import "NCChatLibraryController.h"
 #import "NSString+NCAdditions.h"
