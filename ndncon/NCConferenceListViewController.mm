@@ -407,7 +407,7 @@ NSString* const kNoConferences = @"no conferences";
 -(void)prepareContents
 {
     NSArray *myConferences = [Conference allConferencesFromContext:self.context];
-    NSArray *remoteConferences = [[NCDiscoveryLibraryController sharedInstance] discoveredConferences];
+    NSArray *remoteConferences = [[NCConferenceDiscoveryController sharedInstance] discoveredConferences];
     NSMutableArray *allConferences = [myConferences mutableCopy];
     
     [allConferences addObjectsFromArray:remoteConferences];

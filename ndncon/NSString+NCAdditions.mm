@@ -62,6 +62,11 @@ NSString* const kNCNdnRtcUserUrlFormat = @"nrtc:%@:%@";
     return [NSString ncStringFromCString:NameComponents::NameComponentApp.c_str()];
 }
 
++(NSString *)ndnRtcSessionInfoComponent
+{
+    return [NSString ncStringFromCString:NameComponents::NameComponentSession.c_str()];
+}
+
 -(NSString*)getNdnRtcHubPrefix
 {
     NSUInteger idx = NSNotFound;
@@ -158,6 +163,11 @@ NSString* const kNCNdnRtcUserUrlFormat = @"nrtc:%@:%@";
     }
     
     return nil;
+}
+
+-(NSString *)stringByAppendingNdnComponent:(NSString *)ndnComponent
+{
+    return [self stringByAppendingFormat:@"/%@", ndnComponent];
 }
 
 #pragma mark - private

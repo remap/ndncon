@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
+#import <HockeySDK/HockeySDK.h>
+
 #import "NCMainViewController.h"
 #import "NCPreferencesController.h"
 #import "NSObject+NCAdditions.h"
@@ -177,7 +179,7 @@
 
     self.conferenceViewController.isOwner = ![conference isRemote];
     self.conferenceViewController.canJoin = [conference isActive];
-    self.conferenceViewController.isEditable = NO;
+//    self.conferenceViewController.isEditable = NO;
     self.conferenceViewController.conference = conference;
     [self.userListViewController clearSelection];
 }
@@ -228,6 +230,8 @@
 #pragma mark - NCConversationViewControllerDelegate
 -(void)viewWasClicked:(NCClickableView *)view
 {
+    //[[BITHockeyManager sharedHockeyManager].crashManager generateTestCrash];
+    
     if (self.conversationInfoView == view)
     {
         if (self.conversationViewController.currentConversationStatus == SessionStatusOffline ||
@@ -372,7 +376,7 @@ fetchStreamsWithCustomInfo:(NSDictionary *)customUSerInfo
 
 -(void)withdrawConference:(Conference*)conference
 {
-    [[NCDiscoveryLibraryController sharedInstance] withdrawConference:conference];
+    [[NCConferenceDiscoveryController sharedInstance] withdrawConference:conference];
     [self.context deleteObject:conference];
     [self.context save:NULL];
     [self.conferenceListViewController reloadData];

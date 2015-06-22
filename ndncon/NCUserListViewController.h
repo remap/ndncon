@@ -9,26 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "NCNdnRtcLibraryController.h"
 #import "NCChatViewController.h"
+#import "NCSessionInfoContainer.h"
 
 extern NSString* const kSessionInfoKey;
 extern NSString* const kHubPrefixKey;
 
 @class User;
-
-//******************************************************************************
-@interface NCSessionInfoContainer : NSObject
-
-+(NCSessionInfoContainer*)containerWithSessionInfo:(void*)sessionInfo;
-+(NCSessionInfoContainer*)audioOnlyContainerWithSessionInfo:(void*)sessionInfo;
-+(NCSessionInfoContainer*)videoOnlyContainerWithSessionInfo:(void*)sessionInfo;
-
--(id)initWithSessionInfo:(void*)sessionInfo;
--(void*)sessionInfo;
-
--(NSArray*)audioStreamsConfigurations;
--(NSArray*)videoStreamsConfigurations;
-
-@end
 
 //******************************************************************************
 @protocol NCUserListViewControllerDelegate;

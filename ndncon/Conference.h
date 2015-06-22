@@ -36,6 +36,7 @@ extern NSString* const kConferenceOrganizerPrefixKey;
 
 -(BOOL)isRemote;
 -(BOOL)isActive;
+-(BOOL)hasParticipant:(NSString*)username withPrefix:(NSString*)prefix;
 
 @end
 
@@ -49,8 +50,6 @@ extern NSString* const kConferenceOrganizerPrefixKey;
 @property (nonatomic, retain) NSSet *participants;
 @property (nonatomic, retain) ChatRoom *chatRoom;
 @property (nonatomic, retain) User *organizer;
-
--(BOOL)hasParticipant:(NSString*)username withPrefix:(NSString*)prefix;
 
 @end
 

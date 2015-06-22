@@ -60,7 +60,8 @@
     
     [[NCNdnRtcLibraryController sharedInstance] startSession];
     [NCChatLibraryController sharedInstance];
-    [NCDiscoveryLibraryController sharedInstance];
+    [NCConferenceDiscoveryController sharedInstance];
+    [NCUserDiscoveryController sharedInstance];
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ucla.edu.NdnCon" in the user's Application Support directory.

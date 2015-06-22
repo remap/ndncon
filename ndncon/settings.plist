@@ -16,6 +16,8 @@
 	<true/>
 	<key>Last launched version</key>
 	<string></string>
+	<key>User discovery prefix</key>
+	<string>/ndn/broadcast/ndnrtc/users</string>
 	<key>Chat</key>
 	<dict>
 		<key>Chat broadcast prefix</key>

@@ -12,7 +12,7 @@
 
 NSString* const kNCReportTimestampKey = @"time";
 NSString* const kNCReportDataKey = @"report";
-NSString* const kNCReportsServer = @"";
+NSString* const kNCReportsServer = @"131.179.141.51";
 NSString* const kNCReportsFolder = @"NdnCon-Reports";
 
 @interface NCReporter ()
@@ -52,8 +52,8 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
         _reports = [[NSMutableArray alloc] init];
         _postponedReports = [[NSMutableArray alloc] init];
         _ftpServer = [FMServer serverWithDestination:kNCReportsServer
-                                            username:@""
-                                            password:@""];
+                                            username:@"ndnconftp"
+                                            password:@"ndncon2015"];
         _ftpManager = [[FTPManager alloc] init];
         _ftpManager.delegate = self;
     }
@@ -138,16 +138,20 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
                                                                                  [NCPreferencesController sharedInstance].userName,
                                                                                  (long)[NSDate date].timeIntervalSince1970]];
         
-        [self.ftpManager createNewFolder:uploadFolder
-                                atServer:self.ftpServer];
-        self.ftpServer.destination = [kNCReportsServer stringByAppendingPathComponent: uploadFolder];
+        BOOL res = [self.ftpManager createNewFolder:uploadFolder
+                                           atServer:self.ftpServer];
         
-        for (NSDictionary *report in reports)
+        if (res)
         {
-            NSURL *reportURL = [NSURL URLWithString:report[kNCReportDataKey]];
+            self.ftpServer.destination = [kNCReportsServer stringByAppendingPathComponent: uploadFolder];
             
-            if ([self.ftpManager uploadFile:reportURL toServer:self.ftpServer])
-                NSLog(@"start uploading %@...", reportURL);
+            for (NSDictionary *report in reports)
+            {
+                NSURL *reportURL = [NSURL URLWithString:report[kNCReportDataKey]];
+                
+                if ([self.ftpManager uploadFile:reportURL toServer:self.ftpServer])
+                    NSLog(@"start uploading %@...", reportURL);
+            }
         }
     }
 }

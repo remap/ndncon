@@ -13,6 +13,8 @@
 		AF241DA21AEB23B7000CA14A /* libentity-discovery.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF241DA01AEB23B7000CA14A /* libentity-discovery.0.dylib */; };
 		AF241DA31AEB23C1000CA14A /* libentity-discovery.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF241DA01AEB23B7000CA14A /* libentity-discovery.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF241DA41AEB23CE000CA14A /* libentity-discovery.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF241DA01AEB23B7000CA14A /* libentity-discovery.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AF241DA71AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */; };
+		AF241DA81AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */; };
 		AF2BE5361AAF9B20006A1AA7 /* libboost_thread-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */; };
 		AF2BE5371AAF9B28006A1AA7 /* libboost_thread-mt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF2BE5381AAF9B7C006A1AA7 /* libboost_thread-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */; };
@@ -237,7 +239,6 @@
 		AFDD0DFD1A7318380076A301 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFA8520919C779180015A883 /* ApplicationServices.framework */; };
 		AFDD0DFE1A7318380076A301 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7026DB19C3B55C0087B605 /* CoreMedia.framework */; };
 		AFDD0DFF1A7318380076A301 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7026D919C3B5530087B605 /* AVFoundation.framework */; };
-		AFDD0E001A7318380076A301 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8A136B19BF8B6100010B20 /* libndnrtc.0.dylib */; };
 		AFDD0E011A7318380076A301 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD978E919BE546D0061AA24 /* Cocoa.framework */; };
 		AFDD0E021A7318380076A301 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF744C8C19E71BEE00E92680 /* Sparkle.framework */; };
 		AFDD0E041A7318380076A301 /* NCDiscoveryParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */; };
@@ -270,6 +271,12 @@
 		AFDD0E1F1A7318380076A301 /* NCStackEditorEntryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF7026B919C251490087B605 /* NCStackEditorEntryView.xib */; };
 		AFDD0E201A7318380076A301 /* NCAdvancedPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A13A119BFB8E700010B20 /* NCAdvancedPreferencesView.xib */; };
 		AFDD0E281A7318B50076A301 /* libndnrtc.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDD0E271A7318B50076A301 /* libndnrtc.0.dylib */; };
+		AFF63AAC1AEF14B50066BAEB /* NCRosterWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFF63AAB1AEF14B50066BAEB /* NCRosterWindowController.m */; };
+		AFF63AAD1AEF14B50066BAEB /* NCRosterWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFF63AAB1AEF14B50066BAEB /* NCRosterWindowController.m */; };
+		AFF63AB11AEF14F30066BAEB /* NSListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFF63AB01AEF14F30066BAEB /* NSListViewController.m */; };
+		AFF63AB21AEF14F30066BAEB /* NSListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFF63AB01AEF14F30066BAEB /* NSListViewController.m */; };
+		AFF63AB41AEF15160066BAEB /* NSRosterWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFF63AB31AEF15160066BAEB /* NSRosterWindow.xib */; };
+		AFF63AB51AEF15160066BAEB /* NSRosterWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFF63AB31AEF15160066BAEB /* NSRosterWindow.xib */; };
 		AFFA06AF1A0C035900000516 /* libchrono-chat2013.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */; };
 		AFFA06B21A0C038200000516 /* libndn-cpp.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */; };
 		AFFA06B41A0C039D00000516 /* libchrono-chat2013.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -347,6 +354,8 @@
 		AF0DFA221AD5BC4C000CA9DF /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AF11BAFA19D4E37E0011270F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		AF241DA01AEB23B7000CA14A /* libentity-discovery.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libentity-discovery.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libentity-discovery.0.dylib"; sourceTree = "<group>"; };
+		AF241DA51AEB2C5B000CA14A /* NCSessionInfoContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCSessionInfoContainer.h; path = ndncon/NCSessionInfoContainer.h; sourceTree = SOURCE_ROOT; };
+		AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCSessionInfoContainer.mm; path = ndncon/NCSessionInfoContainer.mm; sourceTree = SOURCE_ROOT; };
 		AF2BE5351AAF9B20006A1AA7 /* libboost_thread-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_thread-mt.dylib"; path = "../../../../../opt/local/lib/libboost_thread-mt.dylib"; sourceTree = "<group>"; };
 		AF2BE53C1AAFB14C006A1AA7 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "thirdparty/HockeySDK-Mac/HockeySDK.framework"; sourceTree = "<group>"; };
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
@@ -551,6 +560,11 @@
 		AFDD0E251A7318390076A301 /* NdnCon copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "NdnCon copy-Info.plist"; path = "/Users/peetonn/Documents/Work/ndncon/NdnCon copy-Info.plist"; sourceTree = "<absolute>"; };
 		AFDD0E271A7318B50076A301 /* libndnrtc.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.0.dylib; path = ../ndnrtc/cpp/release/bin/lib/libndnrtc.0.dylib; sourceTree = "<group>"; };
 		AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.2.xcdatamodel"; sourceTree = "<group>"; };
+		AFF63AAA1AEF14B50066BAEB /* NCRosterWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCRosterWindowController.h; path = ndncon/NCRosterWindowController.h; sourceTree = SOURCE_ROOT; };
+		AFF63AAB1AEF14B50066BAEB /* NCRosterWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCRosterWindowController.m; path = ndncon/NCRosterWindowController.m; sourceTree = SOURCE_ROOT; };
+		AFF63AAF1AEF14F30066BAEB /* NSListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSListViewController.h; path = ndncon/NSListViewController.h; sourceTree = SOURCE_ROOT; };
+		AFF63AB01AEF14F30066BAEB /* NSListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSListViewController.m; path = ndncon/NSListViewController.m; sourceTree = SOURCE_ROOT; };
+		AFF63AB31AEF15160066BAEB /* NSRosterWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NSRosterWindow.xib; path = ndncon/NSRosterWindow.xib; sourceTree = SOURCE_ROOT; };
 		AFFA06AD1A0C035900000516 /* libchrono-chat2013.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libchrono-chat2013.0.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libchrono-chat2013.0.dylib"; sourceTree = "<group>"; };
 		AFFA06B11A0C038200000516 /* libndn-cpp.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libndn-cpp.0.dylib"; path = "../ndnrtc-thirdparty/ndn-cpp/build/lib/libndn-cpp.0.dylib"; sourceTree = "<group>"; };
 		AFFA06C21A0C088300000516 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
@@ -624,7 +638,6 @@
 				AF739C191AE8794000E945D7 /* libicudata.54.dylib in Frameworks */,
 				AFDD0DFE1A7318380076A301 /* CoreMedia.framework in Frameworks */,
 				AFDD0DFF1A7318380076A301 /* AVFoundation.framework in Frameworks */,
-				AFDD0E001A7318380076A301 /* libndnrtc.0.dylib in Frameworks */,
 				AFDD0E011A7318380076A301 /* Cocoa.framework in Frameworks */,
 				AFDD0E021A7318380076A301 /* Sparkle.framework in Frameworks */,
 				AF2BE53E1AAFB14C006A1AA7 /* HockeySDK.framework in Frameworks */,
@@ -852,6 +865,7 @@
 		AF8A139219BFB81E00010B20 /* Main window */ = {
 			isa = PBXGroup;
 			children = (
+				AFF63AA91AEF147B0066BAEB /* Roster */,
 				AFAFD1AE19F98F5E00213EEE /* Conference view */,
 				AFC99BDF19D25E6A005B75AB /* User view */,
 				AFB35BFC19C9FDE600D8A2BC /* Conversation view */,
@@ -893,6 +907,8 @@
 				AF3EEA3B19F83BA900039A56 /* NCFaceSingleton.mm */,
 				AF4258911AB38278004C726B /* NCReporter.h */,
 				AF4258921AB38278004C726B /* NCReporter.m */,
+				AF241DA51AEB2C5B000CA14A /* NCSessionInfoContainer.h */,
+				AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -1131,6 +1147,26 @@
 			name = "NDN-RTC release";
 			sourceTree = "<group>";
 		};
+		AFF63AA91AEF147B0066BAEB /* Roster */ = {
+			isa = PBXGroup;
+			children = (
+				AFF63AAE1AEF14B90066BAEB /* List view */,
+				AFF63AAA1AEF14B50066BAEB /* NCRosterWindowController.h */,
+				AFF63AAB1AEF14B50066BAEB /* NCRosterWindowController.m */,
+				AFF63AB31AEF15160066BAEB /* NSRosterWindow.xib */,
+			);
+			name = Roster;
+			sourceTree = "<group>";
+		};
+		AFF63AAE1AEF14B90066BAEB /* List view */ = {
+			isa = PBXGroup;
+			children = (
+				AFF63AAF1AEF14F30066BAEB /* NSListViewController.h */,
+				AFF63AB01AEF14F30066BAEB /* NSListViewController.m */,
+			);
+			name = "List view";
+			sourceTree = "<group>";
+		};
 		AFFED07619D62B6D000974FF /* Active stream viewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1270,6 +1306,7 @@
 				AF7026EC19C3CD560087B605 /* NCVideoThreadView.xib in Resources */,
 				AF7026BA19C251490087B605 /* NCStackEditorEntryView.xib in Resources */,
 				AF8A13A319BFB8E700010B20 /* NCAdvancedPreferencesView.xib in Resources */,
+				AFF63AB41AEF15160066BAEB /* NSRosterWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1314,6 +1351,7 @@
 				AFDD0E1E1A7318380076A301 /* NCVideoThreadView.xib in Resources */,
 				AFDD0E1F1A7318380076A301 /* NCStackEditorEntryView.xib in Resources */,
 				AFDD0E201A7318380076A301 /* NCAdvancedPreferencesView.xib in Resources */,
+				AFF63AB51AEF15160066BAEB /* NSRosterWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1381,6 +1419,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF744CCB19ED99C100E92680 /* NCDiscoveryParametersViewController.m in Sources */,
+				AFF63AB11AEF14F30066BAEB /* NSListViewController.m in Sources */,
 				AF7026AD19C11C8F0087B605 /* NCGeneralParametersViewController.m in Sources */,
 				AF3D2D0019F8312500A0D274 /* NCDiscoveryLibraryController.mm in Sources */,
 				AFB35C1219CA096C00D8A2BC /* NCAudioPreviewController.m in Sources */,
@@ -1413,6 +1452,7 @@
 				AFB35BFF19C9FDFE00D8A2BC /* NCConversationViewController.mm in Sources */,
 				AF3EEA4019F8610E00039A56 /* Conference.m in Sources */,
 				AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */,
+				AF241DA71AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */,
 				AF3D2CFA19F708AA00A0D274 /* NSView+NCDragAndDropAbility.m in Sources */,
 				AFB35C1519CA099800D8A2BC /* NCVideoPreviewController.m in Sources */,
 				AF4258931AB38278004C726B /* NCReporter.m in Sources */,
@@ -1440,6 +1480,7 @@
 				AF3EEA3C19F83BA900039A56 /* NCFaceSingleton.mm in Sources */,
 				AF3E074519D4A86300028E26 /* NCVideoStreamRenderer.mm in Sources */,
 				AFB35C0619CA010700D8A2BC /* NCStreamBrowserController.m in Sources */,
+				AFF63AAC1AEF14B50066BAEB /* NCRosterWindowController.m in Sources */,
 				AF744C8519E61F2900E92680 /* NSTimer+NCAdditions.m in Sources */,
 				AF3EEA4519F8671600039A56 /* NCConferenceListViewController.mm in Sources */,
 				AFC99BD619D20489005B75AB /* User.m in Sources */,
@@ -1464,6 +1505,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFDD0DAE1A7318380076A301 /* NCDiscoveryParametersViewController.m in Sources */,
+				AFF63AB21AEF14F30066BAEB /* NSListViewController.m in Sources */,
 				AFDD0DAF1A7318380076A301 /* NCGeneralParametersViewController.m in Sources */,
 				AFDD0DB01A7318380076A301 /* NCDiscoveryLibraryController.mm in Sources */,
 				AFDD0DB11A7318380076A301 /* NCAudioPreviewController.m in Sources */,
@@ -1496,6 +1538,7 @@
 				AFDD0DCB1A7318380076A301 /* NCAudioStreamViewController.m in Sources */,
 				AFDD0DCC1A7318380076A301 /* NCConversationViewController.mm in Sources */,
 				AFDD0DCD1A7318380076A301 /* Conference.m in Sources */,
+				AF241DA81AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */,
 				AFDD0DCE1A7318380076A301 /* NCBlockDrawableView.m in Sources */,
 				AFDD0DCF1A7318380076A301 /* NSView+NCDragAndDropAbility.m in Sources */,
 				AFDD0DD01A7318380076A301 /* NCVideoPreviewController.m in Sources */,
@@ -1523,6 +1566,7 @@
 				AFDD0DE51A7318380076A301 /* NCFaceSingleton.mm in Sources */,
 				AFDD0DE61A7318380076A301 /* NCVideoStreamRenderer.mm in Sources */,
 				AFDD0DE71A7318380076A301 /* NCStreamBrowserController.m in Sources */,
+				AFF63AAD1AEF14B50066BAEB /* NCRosterWindowController.m in Sources */,
 				AFDD0DE81A7318380076A301 /* NSTimer+NCAdditions.m in Sources */,
 				AFDD0DE91A7318380076A301 /* NCConferenceListViewController.mm in Sources */,
 				AFDD0DEA1A7318380076A301 /* User.m in Sources */,
@@ -1665,6 +1709,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/thirdparty/sparkle",
+					"$(PROJECT_DIR)/thirdparty/HockeySDK-Mac",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NdnCon/NdnCon-Prefix.pch";

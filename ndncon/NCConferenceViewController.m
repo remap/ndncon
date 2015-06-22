@@ -157,7 +157,7 @@
 {
     self.isEditable = !self.isEditable;
     [self.context save:NULL];
-    [[NCDiscoveryLibraryController sharedInstance]
+    [[NCConferenceDiscoveryController sharedInstance]
      announceConference:self.conference];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(conferenceViewControllerDidPublishConference:)])

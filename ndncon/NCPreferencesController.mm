@@ -61,6 +61,8 @@ NSString* const kChatBroadcastPrefixKey = @"Chat broadcast prefix";
 NSString* const kConferenceSectionKey = @"Conference";
 NSString* const kConferenceBroadcastPrefixKey = @"Conference broadcast prefix";
 
+NSString* const kUserDiscoveryPrefix = @"User discovery prefix";
+
 NSString* const kReportingAskedKey = @"Reporting was asked";
 NSString* const kReportingAllowedKey = @"Reporting is allowed";
 
@@ -389,7 +391,17 @@ using namespace ndnrtc::new_api;
 -(void)setConferenceBroadcastPrefix:(NSString *)conferenceBroadcastPrefix
 {
     [self saveParam:conferenceBroadcastPrefix atPathByComponents:
-     kConferenceSectionKey, kConferenceBroadcastPrefixKey];
+     kConferenceSectionKey, kConferenceBroadcastPrefixKey, nil];
+}
+
+-(NSString *)userBroadcastPrefix
+{
+    return [self getParamAtPathByComponents:kUserDiscoveryPrefix, nil];
+}
+
+-(void)setUserBroadcastPrefix:(NSString *)userBroadcastPrefix
+{
+    [self saveParam:userBroadcastPrefix atPathByComponents:kUserDiscoveryPrefix, nil];
 }
 
 -(BOOL)isReportingAsked
