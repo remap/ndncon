@@ -9,6 +9,7 @@
 #import "NCReporter.h"
 #import "NCPreferencesController.h"
 #import "FTPManager.h"
+#import "NSTimer+NCAdditions.h"
 
 NSString* const kNCReportTimestampKey = @"time";
 NSString* const kNCReportDataKey = @"report";
@@ -21,6 +22,7 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
 @property (nonatomic) NSMutableArray *postponedReports;
 @property (nonatomic) FMServer *ftpServer;
 @property (nonatomic) FTPManager *ftpManager;
+@property (nonatomic) NSTimer *timer;
 
 @end
 
@@ -121,6 +123,7 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
 
 -(void)submitReports:(NSArray*)reports
 {
+#if 0
     NSMutableString *summary = [NSMutableString stringWithString:@""];
     
     for (NSDictionary *report in reports) {
@@ -137,8 +140,14 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
         NSString *uploadFolder = [kNCReportsFolder stringByAppendingPathComponent: [NSString stringWithFormat:@"%@-%ld",
                                                                                  [NCPreferencesController sharedInstance].userName,
                                                                                  (long)[NSDate date].timeIntervalSince1970]];
+        BOOL res = NO;
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:3.0
+                                                     repeats:NO
+                                                   fireBlock:^(NSTimer *timer) {
+                                                       NSLog(@"here's your timer");
+        }];
         
-        BOOL res = [self.ftpManager createNewFolder:uploadFolder
+        res = [self.ftpManager createNewFolder:uploadFolder
                                            atServer:self.ftpServer];
         
         if (res)
@@ -154,6 +163,7 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
             }
         }
     }
+#endif
 }
 
 @end
