@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
+#include <ndn-cpp/security/key-chain.hpp>
+
 #import "NCFaceSingleton.h"
 #import "NCPreferencesController.h"
 #import "NCErrorController.h"

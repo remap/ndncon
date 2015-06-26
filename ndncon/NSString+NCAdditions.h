@@ -14,9 +14,11 @@ extern NSString* const kNCNdnRtcUserUrlFormat;
 
 +(NSString*)ncStringFromCString:(const char*)cString;
 +(NSString*)keyPathByComponents:(NSString*)comp1, ...;
+
 +(NSString *)userSessionPrefixForUser:(NSString *)username
                         withHubPrefix:(NSString *)hubPrefix;
 +(NSString*)ndnRtcAppNameComponent;
++(NSString*)ndnRtcSessionInfoComponent;
 
 -(NSString*)getNdnRtcHubPrefix;
 -(NSString*)getNdnRtcUserName;
@@ -31,5 +33,7 @@ extern NSString* const kNCNdnRtcUserUrlFormat;
 // returns a username if the receiver is a NRTC URL string
 // @see kNCNdnRtcUserUrlFormat
 -(NSString*)userNameFromNrtcUrlString;
+
+-(NSString*)stringByAppendingNdnComponent:(NSString*)ndnComponent;
 
 @end

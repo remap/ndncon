@@ -71,6 +71,7 @@ extern NSString* const kNdnPortKey;
 
 @property (nonatomic) NSString *chatBroadcastPrefix;
 @property (nonatomic) NSString *conferenceBroadcastPrefix;
+@property (nonatomic) NSString *userBroadcastPrefix;
 
 @property (nonatomic) BOOL isReportingAsked;
 @property (nonatomic) BOOL isReportingAllowed;

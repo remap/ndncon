@@ -12,6 +12,7 @@
 #import "NCErrorController.h"
 #import "NSString+NCAdditions.h"
 #import "NCFaceSingleton.h"
+#import "NCDiscoveryLibraryController.h"
 
 #include <ndnrtc/ndnrtc-library.h>
 #include <ndnrtc/error-codes.h>
@@ -129,6 +130,12 @@ public:
                         kSessionErrorMessageKey: [NSString stringWithCString:errorMessage encoding:NSASCIIStringEncoding]}];
             
         });
+    }
+    
+    void
+    onSessionInfoUpdate(const new_api::SessionInfo& sessionInfo)
+    {
+        [[NCUserDiscoveryController sharedInstance] announceInfo:[NCSessionInfoContainer containerWithSessionInfo:(new_api::SessionInfo*)&sessionInfo]];
     }
 };
 

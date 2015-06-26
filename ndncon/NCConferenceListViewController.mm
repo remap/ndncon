@@ -198,6 +198,7 @@ NSString* const kNoConferences = @"no conferences";
         [self subscribeForNotificationsAndSelectors:
          NCConferenceWithdrawedNotification, @selector(onConferenceWithdrawed:),
          NCConferenceDiscoveredNotification, @selector(onConferenceDiscovered:),
+         NCConferenceUpdatedNotificaiton, @selector(onConferenceUpdated:),
          nil];
     }
     
@@ -351,6 +352,12 @@ NSString* const kNoConferences = @"no conferences";
     [self reloadData];
 }
 
+-(void)onConferenceUpdated:(NSNotification*)notification
+{
+    NSLog(@"Conference updated: %@", notification.userInfo);
+    [self reloadData];
+}
+
 -(void)onConferenceWithdrawed:(NSNotification*)notification
 {
     NSLog(@"Conference gone: %@", notification.userInfo);
@@ -400,7 +407,7 @@ NSString* const kNoConferences = @"no conferences";
 -(void)prepareContents
 {
     NSArray *myConferences = [Conference allConferencesFromContext:self.context];
-    NSArray *remoteConferences = [[NCDiscoveryLibraryController sharedInstance] discoveredConferences];
+    NSArray *remoteConferences = [[NCConferenceDiscoveryController sharedInstance] discoveredConferences];
     NSMutableArray *allConferences = [myConferences mutableCopy];
     
     [allConferences addObjectsFromArray:remoteConferences];

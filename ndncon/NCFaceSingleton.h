@@ -7,7 +7,7 @@
 //
 
 #import "PTNSingleton.h"
-#include <ndn-conference-discovery/chrono-chat.h>
+#include <ndn-cpp/face.hpp>
 
 typedef void(^NCFaceSynchronizedBlock)();
 

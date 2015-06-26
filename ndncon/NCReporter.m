@@ -9,10 +9,11 @@
 #import "NCReporter.h"
 #import "NCPreferencesController.h"
 #import "FTPManager.h"
+#import "NSTimer+NCAdditions.h"
 
 NSString* const kNCReportTimestampKey = @"time";
 NSString* const kNCReportDataKey = @"report";
-NSString* const kNCReportsServer = @"";
+NSString* const kNCReportsServer = @"131.179.141.51";
 NSString* const kNCReportsFolder = @"NdnCon-Reports";
 
 @interface NCReporter ()
@@ -21,6 +22,7 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
 @property (nonatomic) NSMutableArray *postponedReports;
 @property (nonatomic) FMServer *ftpServer;
 @property (nonatomic) FTPManager *ftpManager;
+@property (nonatomic) NSTimer *timer;
 
 @end
 
@@ -52,8 +54,8 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
         _reports = [[NSMutableArray alloc] init];
         _postponedReports = [[NSMutableArray alloc] init];
         _ftpServer = [FMServer serverWithDestination:kNCReportsServer
-                                            username:@""
-                                            password:@""];
+                                            username:@"ndnconftp"
+                                            password:@"ndncon2015"];
         _ftpManager = [[FTPManager alloc] init];
         _ftpManager.delegate = self;
     }
@@ -121,6 +123,7 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
 
 -(void)submitReports:(NSArray*)reports
 {
+#if 0
     NSMutableString *summary = [NSMutableString stringWithString:@""];
     
     for (NSDictionary *report in reports) {
@@ -137,19 +140,30 @@ NSString* const kNCReportsFolder = @"NdnCon-Reports";
         NSString *uploadFolder = [kNCReportsFolder stringByAppendingPathComponent: [NSString stringWithFormat:@"%@-%ld",
                                                                                  [NCPreferencesController sharedInstance].userName,
                                                                                  (long)[NSDate date].timeIntervalSince1970]];
+        BOOL res = NO;
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:3.0
+                                                     repeats:NO
+                                                   fireBlock:^(NSTimer *timer) {
+                                                       NSLog(@"here's your timer");
+        }];
         
-        [self.ftpManager createNewFolder:uploadFolder
-                                atServer:self.ftpServer];
-        self.ftpServer.destination = [kNCReportsServer stringByAppendingPathComponent: uploadFolder];
+        res = [self.ftpManager createNewFolder:uploadFolder
+                                           atServer:self.ftpServer];
         
-        for (NSDictionary *report in reports)
+        if (res)
         {
-            NSURL *reportURL = [NSURL URLWithString:report[kNCReportDataKey]];
+            self.ftpServer.destination = [kNCReportsServer stringByAppendingPathComponent: uploadFolder];
             
-            if ([self.ftpManager uploadFile:reportURL toServer:self.ftpServer])
-                NSLog(@"start uploading %@...", reportURL);
+            for (NSDictionary *report in reports)
+            {
+                NSURL *reportURL = [NSURL URLWithString:report[kNCReportDataKey]];
+                
+                if ([self.ftpManager uploadFile:reportURL toServer:self.ftpServer])
+                    NSLog(@"start uploading %@...", reportURL);
+            }
         }
     }
+#endif
 }
 
 @end
