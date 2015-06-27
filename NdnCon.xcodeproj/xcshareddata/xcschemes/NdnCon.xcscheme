@@ -15,7 +15,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-                     BuildableName = "NdnCon-Debug.app"
+                     BuildableName = "NdnCon.app"
                      BlueprintName = "NdnCon"
                      ReferencedContainer = "container:NdnCon.xcodeproj">
                   </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-               BuildableName = "NdnCon-Debug.app"
+               BuildableName = "NdnCon.app"
                BlueprintName = "NdnCon"
                ReferencedContainer = "container:NdnCon.xcodeproj">
             </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-            BuildableName = "NdnCon-Debug.app"
+            BuildableName = "NdnCon.app"
             BlueprintName = "NdnCon"
             ReferencedContainer = "container:NdnCon.xcodeproj">
          </BuildableReference>
@@ -76,11 +76,12 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-            BuildableName = "NdnCon-Debug.app"
+            BuildableName = "NdnCon.app"
             BlueprintName = "NdnCon"
             ReferencedContainer = "container:NdnCon.xcodeproj">
          </BuildableReference>
@@ -101,11 +102,12 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-            BuildableName = "NdnCon-Debug.app"
+            BuildableName = "NdnCon.app"
             BlueprintName = "NdnCon"
             ReferencedContainer = "container:NdnCon.xcodeproj">
          </BuildableReference>
@@ -128,7 +130,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "AFD978E519BE546D0061AA24"
-                     BuildableName = "NdnCon-Debug.app"
+                     BuildableName = "NdnCon.app"
                      BlueprintName = "NdnCon"
                      ReferencedContainer = "container:NdnCon.xcodeproj">
                   </BuildableReference>
