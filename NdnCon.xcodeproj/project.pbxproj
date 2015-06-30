@@ -1484,6 +1484,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BOOST_INCLUDE_PATH = "";
+				BOOST_LIB_PATH = "";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1534,6 +1536,10 @@
 					/opt/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				NDNCHAT_INCLUDE_PATH = "";
+				NDNCHAT_LIB_PATH = "";
+				NDNCPP_INCLUDE_PATH = "";
+				NDNCPP_LIB_PATH = "";
 				NDNRTC_INCLUDE_PATH = "";
 				NDNRTC_LIB_PATH = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1545,6 +1551,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BOOST_INCLUDE_PATH = "";
+				BOOST_LIB_PATH = "";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1590,6 +1598,10 @@
 					/opt/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				NDNCHAT_INCLUDE_PATH = "";
+				NDNCHAT_LIB_PATH = "";
+				NDNCPP_INCLUDE_PATH = "";
+				NDNCPP_LIB_PATH = "";
 				NDNRTC_INCLUDE_PATH = "";
 				NDNRTC_LIB_PATH = "";
 				SDKROOT = macosx;
