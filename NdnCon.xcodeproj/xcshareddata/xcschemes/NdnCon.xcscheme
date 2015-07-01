@@ -92,6 +92,11 @@
             value = "1"
             isEnabled = "NO">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "DYLD_LIBRARY_PATH"
+            value = "$BOOST_LIB_PATH:$NDNCPP_LIB_PATH:$NDNCHAT_LIB_PATH:$NDNRTC_LIB_PATH"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
