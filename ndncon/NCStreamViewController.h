@@ -14,11 +14,6 @@
 #import "NCStackEditorViewController.h"
 #import "NCStackEditorEntryViewController.h"
 
-extern NSString* const kNameKey;
-extern NSString* const kSynchornizedToKey;
-extern NSString* const kInputDeviceKey;
-extern NSString* const kThreadsArrayKey;
-
 @protocol NCStreamViewControllerDelegate;
 
 /**
@@ -37,7 +32,7 @@ extern NSString* const kThreadsArrayKey;
 @property (nonatomic) NSString *synchronizedStreamName;
 
 @property (nonatomic) NSString *streamName;
-@property (assign) AVCaptureDevice *selectedDevice;
+@property (nonatomic, assign) id selectedDevice;
 @property (assign) AVCaptureDeviceFormat *deviceFormat;
 @property (nonatomic, strong) AVCaptureSession *session;
 

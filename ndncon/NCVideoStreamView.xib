@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCVideoStreamViewController">
             <connections>
+                <outlet property="configurationsPopup" destination="MTn-tw-oMt" id="Knz-tT-EyL"/>
                 <outlet property="previewArea" destination="mBn-c2-ImN" id="swM-F7-fDQ"/>
                 <outlet property="scrollView" destination="eHU-OK-ALh" id="me8-LU-sBK"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -16,7 +18,7 @@
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hz6-mo-xeY">
             <rect key="frame" x="0.0" y="0.0" width="590" height="334"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ag6-Gk-76S">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ag6-Gk-76S">
                     <rect key="frame" x="-2" y="287" width="83" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Stream prefix: " id="VWO-wj-oFf">
                         <font key="font" metaFont="smallSystem"/>
@@ -37,24 +39,23 @@
                     <constraints>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="aCP-ac-5cd"/>
                     </constraints>
-                    <popUpButtonCell key="cell" type="roundRect" bezelStyle="roundedRect" imagePosition="left" alignment="left" lineBreakMode="truncatingTail" borderStyle="border" inset="2" id="qTG-EU-3en">
+                    <popUpButtonCell key="cell" type="roundRect" title="devices" bezelStyle="roundedRect" imagePosition="left" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" selectedItem="93d-lX-8m9" id="qTG-EU-3en">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                         <menu key="menu" title="OtherViews" id="6uH-32-xh4">
                             <items>
-                                <menuItem title="Item 1" id="93d-lX-8m9"/>
-                                <menuItem title="Item 2" id="3W1-2g-chf"/>
-                                <menuItem title="Item 3" id="CdW-NB-yL2"/>
+                                <menuItem title="devices" state="on" id="93d-lX-8m9"/>
                             </items>
                         </menu>
                     </popUpButtonCell>
                     <connections>
-                        <binding destination="-2" name="selectedObject" keyPath="selectedDevice" previousBinding="dpj-l8-44f" id="mz4-4P-tJP"/>
-                        <binding destination="-2" name="content" keyPath="self.preferences.videoDevices" id="Dva-Nw-DkD"/>
-                        <binding destination="-2" name="contentValues" keyPath="self.preferences.videoDevices.localizedName" previousBinding="Dva-Nw-DkD" id="dpj-l8-44f"/>
+                        <binding destination="-2" name="content" keyPath="captureDevices" id="145-dF-0IN"/>
+                        <binding destination="-2" name="contentObjects" keyPath="captureDevices.device" previousBinding="145-dF-0IN" id="KAA-ns-qXE"/>
+                        <binding destination="-2" name="contentValues" keyPath="captureDevices.name" previousBinding="KAA-ns-qXE" id="7dI-cD-8PT"/>
+                        <binding destination="-2" name="selectedObject" keyPath="selectedDevice" previousBinding="7dI-cD-8PT" id="lCc-6T-6MN"/>
                     </connections>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xrz-Co-jfz">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xrz-Co-jfz">
                     <rect key="frame" x="-2" y="242" width="81" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Configuration:" id="CWG-5C-Wc7">
                         <font key="font" metaFont="smallSystem"/>
@@ -64,7 +65,7 @@
                 </textField>
                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MTn-tw-oMt">
                     <rect key="frame" x="169" y="239" width="250" height="19"/>
-                    <popUpButtonCell key="cell" type="roundRect" title="Item 1" bezelStyle="roundedRect" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="IMB-X0-boj" id="oS2-FR-uQA">
+                    <popUpButtonCell key="cell" type="roundRect" title="Item 1" bezelStyle="roundedRect" alignment="left" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="IMB-X0-boj" id="oS2-FR-uQA">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                         <menu key="menu" title="OtherViews" id="kXr-YA-Qcb">
@@ -76,9 +77,17 @@
                         </menu>
                     </popUpButtonCell>
                     <connections>
-                        <binding destination="-2" name="selectedObject" keyPath="deviceFormat" previousBinding="4Zj-Rh-1zB" id="2e4-4T-52Q"/>
-                        <binding destination="-2" name="content" keyPath="selectedDevice.formats" id="XRX-1h-Wfe"/>
-                        <binding destination="-2" name="contentValues" keyPath="selectedDevice.formats.localizedName" previousBinding="XRX-1h-Wfe" id="4Zj-Rh-1zB"/>
+                        <binding destination="-2" name="selectedObject" keyPath="deviceFormat" previousBinding="bXj-Yo-AiH" id="c73-hM-Opf"/>
+                        <binding destination="-2" name="content" keyPath="selectedDevice.formats" id="UkX-W5-rEL">
+                            <dictionary key="options">
+                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="contentValues" keyPath="selectedDevice.formats.localizedName" previousBinding="UkX-W5-rEL" id="bXj-Yo-AiH">
+                            <dictionary key="options">
+                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </popUpButton>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="mBn-c2-ImN">
@@ -88,7 +97,7 @@
                         <constraint firstAttribute="height" constant="92" id="sal-ML-Rkt"/>
                     </constraints>
                 </customView>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5yx-sZ-rQq">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5yx-sZ-rQq">
                     <rect key="frame" x="-2" y="220" width="94" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Synchronized to:" id="lTJ-9Q-19I">
                         <font key="font" metaFont="smallSystem"/>
@@ -159,7 +168,7 @@
                         <binding destination="-2" name="value" keyPath="self.streamName" id="srT-1y-bMI"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="812-hO-CB3">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="812-hO-CB3">
                     <rect key="frame" x="-2" y="197" width="150" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Data freshness period (ms):" id="oZ8-pN-rm0">
                         <font key="font" metaFont="smallSystem"/>
@@ -215,7 +224,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EVo-XN-1Tz">
+                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EVo-XN-1Tz">
                     <rect key="frame" x="521" y="172" width="69" height="19"/>
                     <buttonCell key="cell" type="roundRect" title="Add thread" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PhQ-3L-xy2">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -239,7 +248,7 @@
                         <binding destination="-2" name="value" keyPath="self.configuration.Segment size" id="Cu8-lV-mjM"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZgR-Xt-nqS">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZgR-Xt-nqS">
                     <rect key="frame" x="234" y="197" width="117" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Segment size (bytes):" id="J0f-K9-itL">
                         <font key="font" metaFont="smallSystem"/>
