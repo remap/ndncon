@@ -54,7 +54,7 @@ static dispatch_once_t token;
     
     if (self)
     {
-        _faceQueue = dispatch_queue_create("ndncon.queue", DISPATCH_QUEUE_SERIAL);
+        _faceQueue = dispatch_queue_create("ndncon.faceQueue", DISPATCH_QUEUE_SERIAL);
         _face = NULL;
         _keychain = NULL;
         

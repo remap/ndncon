@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "NCClickableView.h"
-#import "NSView+NCDragAndDropAbility.h"
+#import "NSView+NCAdditions.h"
 
 typedef enum : NSUInteger {
     NCConversationInfoStatusOffline,

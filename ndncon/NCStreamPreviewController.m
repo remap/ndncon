@@ -7,6 +7,7 @@
 //
 
 #import "NCStreamPreviewController.h"
+#import "NSObject+NCAdditions.h"
 
 @interface NCStreamPreviewController ()
 

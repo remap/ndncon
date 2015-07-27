@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 REMAP. All rights reserved.
 //
 
-#import "NSView+NCDragAndDropAbility.h"
+#import "NSView+NCAdditions.h"
 #import "NSString+NCAdditions.h"
 
+//******************************************************************************
 @implementation NSView (NCDragAndDropAbility)
 
 @dynamic delegate;
@@ -53,6 +54,24 @@
     }];
     
     return validUrls;
+}
+
+@end
+
+//******************************************************************************
+@implementation NCTrackableView
+
+-(void)dealloc
+{
+    self.updateTrackingAreasBlock = nil;
+}
+
+-(void)updateTrackingAreas
+{
+    [super updateTrackingAreas];
+    
+    if (self.updateTrackingAreasBlock)
+        self.updateTrackingAreasBlock(self);
 }
 
 @end

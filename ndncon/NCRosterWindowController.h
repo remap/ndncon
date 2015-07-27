@@ -8,9 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import "NCPreferencesController.h"
+#import "NCRosterUserCell.h"
 
 @interface NCRosterWindowController : NSWindowController
-<NSTableViewDataSource, NSTableViewDelegate>
+<NSOutlineViewDelegate, NSOutlineViewDataSource,
+NCRosterUserCellDelegate, NCRosterStreamCellDelegate>
 
 @property (nonatomic, readonly) NCPreferencesController *preferences;
 

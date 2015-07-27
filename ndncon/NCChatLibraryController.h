@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "PTNSingleton.h"
+#import "NCDiscoveryLibraryController.h"
 
 extern NSString* const NCChatMessageNotification;
 extern NSString* const NCChatMessageTypeKey;
@@ -22,6 +23,7 @@ extern NSString* const NCChatMessageUserKey;
 +(NCChatLibraryController*)sharedInstance;
 +(NSString*)privateChatRoomIdWithUser:(NSString*)userPrefix;
 
+-(void)joinChatroom:(NCChatRoom*)chatroom;
 -(NSString*)startChatWithUser:(NSString*)userPrefix;
 -(void)sendMessage:(NSString*)message toChat:(NSString*)chatId;
 -(void)leaveChat:(NSString*)chatId;

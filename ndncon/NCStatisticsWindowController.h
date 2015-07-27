@@ -10,11 +10,14 @@
 
 @protocol NCStatisticsWindowControllerDelegate;
 
-@interface NCStatisticsWindowController : NSWindowController
-<NSWindowDelegate>
+@interface NCStatisticsWindowController : NSViewController
 
 @property (nonatomic) id<NCStatisticsWindowControllerDelegate> delegate;
+@property (nonatomic) NSString *selectedStream;
 
+-(void)startStatUpdateForStream:(NSString*)streamName
+                           user:(NSString*)username
+                     withPrefix:(NSString*)hubPrefix;
 -(void)stopStatUpdate;
 
 @end

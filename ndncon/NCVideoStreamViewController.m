@@ -24,6 +24,7 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
 @property (weak) IBOutlet NSView *previewArea;
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
+@property (nonatomic, readonly) NSArray *captureDevices;
 
 @end
 
@@ -52,28 +53,34 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
     [super awakeFromNib];
     
     {// setting device
-        NSUInteger deviceIdx = [[self.configuration objectForKey:kInputDeviceKey] intValue];
+        NSInteger deviceIdx = [[self.configuration objectForKey:kInputDeviceKey] intValue];
         
-        if (deviceIdx < self.preferences.videoDevices.count)
+        if (deviceIdx < 0)
         {
-            AVCaptureDevice *device = [self.preferences.videoDevices objectAtIndex:deviceIdx];
-            
-            if (device)
-                [self setSelectedDevice:device];
+            NSScreen *mainScreen = [NSScreen mainScreen];
+            [self setSelectedDevice:mainScreen];
         }
+        else
+            if (deviceIdx < self.preferences.videoDevices.count)
+            {
+                AVCaptureDevice *device = [self.preferences.videoDevices objectAtIndex:deviceIdx];
+                
+                if (device)
+                    [self setSelectedDevice:device];
+            }
     }
     
     {// setting device configuration
-        if (self.selectedDevice)
+        if (self.selectedDevice && [self.selectedDevice isKindOfClass:[AVCaptureDevice class]])
         {
             NSInteger configurationIdx = [[self.configuration objectForKey:kDeviceConfigurationKey] intValue];
             
             if (configurationIdx < 0)
-                configurationIdx = self.selectedDevice.formats.count-1;
+                configurationIdx = ((AVCaptureDevice*)self.selectedDevice).formats.count-1;
             
-            if (configurationIdx < self.selectedDevice.formats.count)
+            if (configurationIdx < ((AVCaptureDevice*)self.selectedDevice).formats.count)
             {
-                AVCaptureDeviceFormat *format = [self.selectedDevice.formats objectAtIndex:configurationIdx];
+                AVCaptureDeviceFormat *format = [((AVCaptureDevice*)self.selectedDevice).formats objectAtIndex:configurationIdx];
                 
                 if (format)
                     [self setDeviceFormat:format];
@@ -137,31 +144,97 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
              };
 }
 
--(void)setSelectedDevice:(AVCaptureDevice *)selectedDevice
++(NSDictionary *)defaultScreenConfguration
+{
+    return @{
+             kNameKey:@"desktop",
+             kSegmentSizeKey: @(1000),
+             kFreshnessPeriodKey: @(1000),
+             kInputDeviceKey:@(-1),  // any first device in the list
+             kDeviceConfigurationKey:@(-1), // index -1 means last element in array
+             kSynchornizedToKey:@(-1),  // index -1 means no synchornization
+             kThreadsArrayKey:@[
+                     @{
+                         kNameKey:@"low",
+                         kFrameRateKey:@(30),
+                         kGopKey:@(30),
+                         kBitrateKey:@(500),
+                         kMaxBitrateKey:@(0),
+                         kEncodingWidthKey:@(800),
+                         kEncodingHeightKey:@(500)
+                         },
+                     @{
+                         kNameKey:@"mid",
+                         kFrameRateKey:@(30),
+                         kGopKey:@(30),
+                         kBitrateKey:@(700),
+                         kMaxBitrateKey:@(0),
+                         kEncodingWidthKey:@(1024),
+                         kEncodingHeightKey:@(640)
+                         },
+                     @{
+                         kNameKey:@"hi",
+                         kFrameRateKey:@(30),
+                         kGopKey:@(30),
+                         kBitrateKey:@(1100),
+                         kMaxBitrateKey:@(0),
+                         kEncodingWidthKey:@(1280),
+                         kEncodingHeightKey:@(800)
+                         },
+                     ]
+             };
+}
+
+-(NSArray *)captureDevices
+{
+    NSMutableArray *devices = [NSMutableArray array];
+    [self.preferences.activeDisplays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [devices addObject:@{@"device":obj, @"name":[NSString stringWithFormat:@"Screen %lu", idx]}];
+    }];
+    [self.preferences.videoDevices enumerateObjectsUsingBlock:^(AVCaptureDevice *device, NSUInteger idx, BOOL *stop) {
+        [devices addObject:@{@"device":device, @"name":device.localizedName}];
+    }];
+
+    return [NSArray arrayWithArray:devices];
+}
+
+-(void)setSelectedDevice:(id)selectedDevice
 {
     [super setSelectedDevice:selectedDevice];
     
-    NSInteger deviceIdx = ([self.preferences.videoDevices containsObject:selectedDevice])?[self.preferences.videoDevices indexOfObject:selectedDevice]:-1;
-    
-    if (deviceIdx < 0)
+    if ([selectedDevice isKindOfClass:[NSScreen class]])
     {
-        NSLog(@"video device was not found. falling back to deafult");
-        deviceIdx = 0;
+        NSScreen *screen = selectedDevice;
+        NSInteger deviceIdx = [screen.deviceDescription[@"NSScreenNumber"] intValue];
+        
+        // screens are negative in stream configurations
+        deviceIdx = -deviceIdx;
+        [self.configuration setValue:@(deviceIdx) forKey:kInputDeviceKey];
     }
-    
-    [self.configuration setValue:@(deviceIdx) forKeyPath:kInputDeviceKey];
+    else
+    {
+        NSInteger deviceIdx = ([self.preferences.videoDevices containsObject:selectedDevice])?[self.preferences.videoDevices indexOfObject:selectedDevice]:-1;
+        
+        if (deviceIdx < 0)
+        {
+            NSLog(@"video device was not found. falling back to deafult");
+            deviceIdx = 0;
+        }
+        
+        [self.configuration setValue:@(deviceIdx) forKeyPath:kInputDeviceKey];
+    }
 }
 
 -(void)setDeviceFormat:(AVCaptureDeviceFormat *)deviceFormat
 {
     [super setDeviceFormat:deviceFormat];
     
-    NSInteger configurationIdx = ([self.selectedDevice.formats containsObject:deviceFormat])?[self.selectedDevice.formats indexOfObject:deviceFormat]:-1;
+    NSInteger configurationIdx = ([((AVCaptureDevice*)self.selectedDevice).formats containsObject:deviceFormat])?[((AVCaptureDevice*)self.selectedDevice).formats indexOfObject:deviceFormat]:-1;
     
     if (configurationIdx < 0)
     {
         NSLog(@"video device format was not found. falling back to deafult");
-        configurationIdx = self.selectedDevice.formats.count-1;
+        configurationIdx = ((AVCaptureDevice*)self.selectedDevice).formats.count-1;
     }
     
     [self.configuration setValue:@(configurationIdx) forKeyPath:kDeviceConfigurationKey];

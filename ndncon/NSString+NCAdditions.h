@@ -15,12 +15,26 @@ extern NSString* const kNCNdnRtcUserUrlFormat;
 +(NSString*)ncStringFromCString:(const char*)cString;
 +(NSString*)keyPathByComponents:(NSString*)comp1, ...;
 
-+(NSString *)userSessionPrefixForUser:(NSString *)username
++(NSString*)userSessionPrefixForUser:(NSString *)username
                         withHubPrefix:(NSString *)hubPrefix;
++(NSString*)streamPrefixForStream:(NSString*)streamName
+                             user:(NSString*)username
+                       withPrefix:(NSString*)prefix;
++(NSString*)threadPrefixForThread:(NSString*)threadName
+                           stream:(NSString*)streamName
+                             user:(NSString*)username
+                       withPrefix:(NSString*)prefix;
++(NSString*)chatroomPrefixForChat:(NSString*)chatroomName
+                             user:(NSString*)username
+                       withPrefix:(NSString*)hubPrefix;
+
 +(NSString*)ndnRtcAppNameComponent;
 +(NSString*)ndnRtcSessionInfoComponent;
 
++(NSString*)userIdWithName:(NSString*)username andPrefix:(NSString*)prefix;
+
 -(NSString*)getNdnRtcHubPrefix;
+-(NSString*)getNdnRtcSessionPrefix;
 -(NSString*)getNdnRtcUserName;
 -(NSString*)getNdnRtcStreamName;
 -(NSString*)getNdnRtcThreadName;

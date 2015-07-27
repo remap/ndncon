@@ -23,6 +23,7 @@
 #import "NCStreamBrowserController.h"
 
 NSString* const kSessionInfoKey = @"sessionInfo";
+NSString* const kUserInfoKey = @"sessionInfo";
 NSString* const kHubPrefixKey = @"hubPrefix";
 
 using namespace ndnrtc;
@@ -335,30 +336,30 @@ private:
 
 -(void)checkAndUpdateSessionObservers
 {
-    [self stopOldObservers];
-    
-    if ([NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
-    {
-        BOOL updated = NO;
-        
-        for (id obj in self.userController.arrangedObjects)
-        {
-            NSString *userName = [obj name];
-            NSString *prefix = [obj prefix];
-            
-            if (userName && prefix &&
-                ![userName isEqualToString:@"username"])
-                if (![self hasObserverForUser:userName andPrefix:prefix])
-                {
-                    updated = YES;
-                    [self startObserverForUser:userName andPrefix:prefix];
-                }
-        }
-        
-        if (updated)
-            if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
-                [self.delegate userListViewControllerUserListUpdated:self];
-    }
+//    [self stopOldObservers];
+//    
+//    if ([NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
+//    {
+//        BOOL updated = NO;
+//        
+//        for (id obj in self.userController.arrangedObjects)
+//        {
+//            NSString *userName = [obj name];
+//            NSString *prefix = [obj prefix];
+//            
+//            if (userName && prefix &&
+//                ![userName isEqualToString:@"username"])
+//                if (![self hasObserverForUser:userName andPrefix:prefix])
+//                {
+//                    updated = YES;
+//                    [self startObserverForUser:userName andPrefix:prefix];
+//                }
+//        }
+//        
+//        if (updated)
+//            if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
+//                [self.delegate userListViewControllerUserListUpdated:self];
+//    }
 }
 
 -(void)stopOldObservers
@@ -385,6 +386,7 @@ private:
 
 -(void)startObserverForUser:(NSString*)aUserName andPrefix:(NSString*)aPrefix
 {
+    /*
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     std::string username = [aUserName cStringUsingEncoding:NSASCIIStringEncoding];
     std::string prefix = [aPrefix cStringUsingEncoding:NSASCIIStringEncoding];
@@ -408,10 +410,12 @@ private:
         
         NSLog(@"started observer for %@:%@", aPrefix, aUserName);
     }
+    */
 }
 
 -(void)stopObserver:(RemoteSessionObserver*)observer
 {
+    /*
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->removeRemoteSessionObserver(observer->sessionPrefix_);
     
@@ -427,6 +431,7 @@ private:
     
     NSLog(@"stopped observer for %s:%s", observer->prefix_.c_str(), observer->username_.c_str());
     delete observer;
+    */
 }
 
 -(BOOL)hasObserverForUser:(NSString*)aUserName andPrefix:(NSString*)aPrefix

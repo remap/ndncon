@@ -7,31 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
+#import "NCBaseCapturer.h"
 
-@protocol NCCameraCapturerDelegate;
+@interface NCCameraCapturer : NCBaseCapturer
 
-@interface NCCameraCapturer : NSObject
-<AVCaptureVideoDataOutputSampleBufferDelegate>
-
-@property (nonatomic) id<NCCameraCapturerDelegate> delegate;
-@property (nonatomic, readonly) AVCaptureSession *session;
-
--(id)initWithDevice:(AVCaptureDevice*)device
+-(instancetype)initWithDevice:(AVCaptureDevice*)device
           andFormat:(AVCaptureDeviceFormat*)format;
-
--(void)startCapturing;
--(void)stopCapturing;
-
--(void)setNdnRtcExternalCapturer:(void*)externalCapturer;
-
-
-@end
-
-@protocol NCCameraCapturerDelegate <NSObject>
-
-@required
-//-(void)cameraCapturer:(NCCameraCapturer*)capturer didDeliveredArgbFrameData:(NSData*)frameData;
--(void)cameraCapturer:(NCCameraCapturer*)capturer didObtainedError:(NSError*)error;
 
 @end

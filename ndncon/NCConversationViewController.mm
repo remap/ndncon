@@ -54,109 +54,94 @@ NSString* const kStreamObserverEventTypeKey = @"eventType";
 NSString* const kStreamObserverEventDataKey = @"eventData";
 
 //******************************************************************************
-class StreamObserver : public IConsumerObserver
-{
-public:
-    StreamObserver(NCActiveStreamViewer* viewer):
-    viewer_(viewer){}
-    
-    ~StreamObserver()
-    {
-        viewer_ = NULL;
-        unregisterObserver();
-    }
-    
-    void
-    setStreamPrefix(NSString* streamPrefix)
-    {
-        streamPrefix_ = std::string([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
-    }
-    
-    int
-    registerObserver()
-    {
-        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-        return lib->setStreamObserver(streamPrefix_, this);
-    }
-    
-    NSString*
-    getStreamPrefix()
-    {
-        return [NSString ncStringFromCString:streamPrefix_.c_str()];
-    }
-    
-    void
-    unregisterObserver()
-    {
-        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-        lib->removeStreamObserver(streamPrefix_);
-    }
-    
-    void
-    onStatusChanged(ConsumerStatus newStatus)
-    {
-        static std::string statusToImageName[] = {
-            [ConsumerStatusStopped] =     "status_stopped",
-            [ConsumerStatusNoData] =     "status_nodata",
-            [ConsumerStatusAdjusting] =      "status_chasing",
-            [ConsumerStatusBuffering] =   "status_buffering",
-            [ConsumerStatusFetching] =     "status_fetching",
-        };
-        static std::string statusToString[] = {
-            [ConsumerStatusStopped] =     "stopped",
-            [ConsumerStatusNoData] =     "no data",
-            [ConsumerStatusAdjusting] =      "adjusting",
-            [ConsumerStatusBuffering] =   "buffering",
-            [ConsumerStatusFetching] =     "fetching",
-        };
-        
-        lastStatus_ = newStatus;
-        
-        viewer_.statusLabel.stringValue = [NSString ncStringFromCString:statusToString[newStatus].c_str()];
-        
-        NSString *imageName = [NSString ncStringFromCString:statusToImageName[newStatus].c_str()];
-        NSImage *image = [NSImage imageNamed: imageName];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (viewer_)
-                [viewer_.statusImageView setImage: image];
-        });
-    }
-    
-    void
-    onRebufferingOccurred()
-    {
-        [[[NSObject alloc] init] notifyNowWithNotificationName:NCStreamRebufferingNotification
-                                                   andUserInfo:nil];
-    }
-    
-    void
-    onPlaybackEventOccurred(PlaybackEvent event, unsigned int frameSeqNo)
-    {
-        [[[NSObject alloc] init] notifyNowWithNotificationName:NCStreamObserverEventNotification
-                                                   andUserInfo:@{
-                                                                 kStreamObserverEventTypeKey:@(event),
-                                                                 kStreamObserverEventDataKey:@(frameSeqNo)
-                                                                 }];
-    }
-    
-    void
-    onThreadSwitched(const std::string& threadName)
-    {
-        NSLog(@"active thread is %s for %s", threadName.c_str(),
-              streamPrefix_.c_str());
-    }
-    
-private:
-    ConsumerStatus lastStatus_;
-    std::string streamPrefix_;
-    __weak NCActiveStreamViewer* viewer_;
-};
+//class StreamObserver : public IConsumerObserver
+//{
+//public:
+//    StreamObserver(NCActiveStreamViewer* viewer):
+//    viewer_(viewer){}
+//    
+//    ~StreamObserver()
+//    {
+//        viewer_ = NULL;
+//        unregisterObserver();
+//    }
+//    
+//    void
+//    setStreamPrefix(NSString* streamPrefix)
+//    {
+//        streamPrefix_ = std::string([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+//    }
+//    
+//    int
+//    registerObserver()
+//    {
+//        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+//        return lib->setStreamObserver(streamPrefix_, this);
+//    }
+//    
+//    NSString*
+//    getStreamPrefix()
+//    {
+//        return [NSString ncStringFromCString:streamPrefix_.c_str()];
+//    }
+//    
+//    void
+//    unregisterObserver()
+//    {
+//        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+//        lib->removeStreamObserver(streamPrefix_);
+//    }
+//    
+//    void
+//    onStatusChanged(ConsumerStatus newStatus)
+//    {
+//        static std::string statusToString[] = {
+//            [ConsumerStatusStopped] =     "stopped",
+//            [ConsumerStatusNoData] =     "data expected",
+//            [ConsumerStatusAdjusting] =      "adjusting",
+//            [ConsumerStatusBuffering] =   "buffering",
+//            [ConsumerStatusFetching] =     "fetching",
+//        };
+//        
+//        lastStatus_ = newStatus;
+//        
+//        viewer_.consumerStatusLabel.stringValue = [NSString ncStringFromCString:statusToString[newStatus].c_str()];
+//    }
+//    
+//    void
+//    onRebufferingOccurred()
+//    {
+//        [[[NSObject alloc] init] notifyNowWithNotificationName:NCStreamRebufferingNotification
+//                                                   andUserInfo:nil];
+//    }
+//    
+//    void
+//    onPlaybackEventOccurred(PlaybackEvent event, unsigned int frameSeqNo)
+//    {
+//        [[[NSObject alloc] init] notifyNowWithNotificationName:NCStreamObserverEventNotification
+//                                                   andUserInfo:@{
+//                                                                 kStreamObserverEventTypeKey:@(event),
+//                                                                 kStreamObserverEventDataKey:@(frameSeqNo)
+//                                                                 }];
+//    }
+//    
+//    void
+//    onThreadSwitched(const std::string& threadName)
+//    {
+//        NSLog(@"active thread is %s for %s", threadName.c_str(),
+//              streamPrefix_.c_str());
+//    }
+//    
+//private:
+//    ConsumerStatus lastStatus_;
+//    std::string streamPrefix_;
+//    __weak NCActiveStreamViewer* viewer_;
+//};
 
 //******************************************************************************
 @interface NCConversationViewController ()
 {
-    StreamObserver *_activeStreamObserver;
+//    StreamObserver *_activeStreamObserver;
 }
 
 @property (nonatomic) NSMutableDictionary *localStreams;
@@ -228,17 +213,17 @@ private:
 
 - (IBAction)showStatistics:(id)sender
 {
-    if ([self.statisticsController.window isVisible])
-        [self.statisticsController close];
-    else
-    {
-        if (!self.statisticsController)
-        {
-            self.statisticsController = [[NCStatisticsWindowController alloc] init];
-            self.statisticsController.delegate = self;
-        }
-        [self.statisticsController showWindow:nil];
-    }
+//    if ([self.statisticsController.window isVisible])
+//        [self.statisticsController close];
+//    else
+//    {
+//        if (!self.statisticsController)
+//        {
+//            self.statisticsController = [[NCStatisticsWindowController alloc] init];
+//            self.statisticsController.delegate = self;
+//        }
+//        [self.statisticsController showWindow:nil];
+//    }
 }
 
 -(id)init
@@ -263,7 +248,7 @@ private:
     self.remoteStreamViewer.delegate = self;
     
     self.activeStreamViewer = [[NCActiveStreamViewer alloc] init];
-    _activeStreamObserver = new StreamObserver(self.activeStreamViewer);
+//    _activeStreamObserver = new StreamObserver(self.activeStreamViewer);
     
     [self subscribeForNotificationsAndSelectors:
      NCRemoteSessionStatusUpdateNotification, @selector(onRemoteSessionStatusUpdate:),
@@ -274,8 +259,8 @@ private:
 
 -(void)dealloc
 {
-    _activeStreamObserver->unregisterObserver();
-    delete _activeStreamObserver;
+//    _activeStreamObserver->unregisterObserver();
+//    delete _activeStreamObserver;
     
     [self unsubscribeFromNotifications];
     
@@ -372,9 +357,9 @@ private:
 -(void)activeStreamViewer:(NCActiveStreamViewer *)activeStreamViewer
 didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 {
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    lib->switchThread([activeStreamViewer.streamPrefix cStringUsingEncoding:NSASCIIStringEncoding],
-                      [[threadConfiguration valueForKey:kNameKey] cStringUsingEncoding:NSASCIIStringEncoding]);
+//    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+//    lib->switchThread([activeStreamViewer.streamPrefix cStringUsingEncoding:NSASCIIStringEncoding],
+//                      [[threadConfiguration valueForKey:kNameKey] cStringUsingEncoding:NSASCIIStringEncoding]);
 }
 
 // NCStackEditorEntryDelegate
@@ -424,7 +409,7 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
     {
         NSString *streamPrefix = [streamPreviewController.userData valueForKey:kStreamPrefixKey];
         
-        if (streamPrefix != self.activeStreamViewer.streamPrefix)
+//        if (streamPrefix != self.activeStreamViewer.streamPrefix)
         {
             NCVideoStreamRenderer *renderer = self.activeStreamViewer.renderer;
             NCStreamPreviewController *lastSelectedPreview = self.currentlySelectedPreview;
@@ -536,37 +521,37 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
     [self.remoteStreamViewer removeEntryHighlight];
     [self.remoteStreamViewer highlightEntryWithcontroller:previewController];
     
-    if (previewController && [previewController isKindOfClass:[NCVideoPreviewController class]])
-    {
-        [self.activeStreamViewer clearStreamEventView];
-        // set active stream viewer parameters
-        self.activeStreamViewer.streamPrefix = streamPrefix;
-        self.activeStreamViewer.userInfo = participantInfo;
-
-        // set active stream viewer observer
-        if (![_activeStreamObserver->getStreamPrefix() isEqualToString:@""])
-            _activeStreamObserver->unregisterObserver();
-        
-        _activeStreamObserver->setStreamPrefix(streamPrefix);
-        _activeStreamObserver->registerObserver();
-        
-        // set current thread
-        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-        std::string activeThreadName = lib->getStreamThread(std::string([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]));
-        
-        if (activeThreadName != "")
-            self.activeStreamViewer.currentThreadIdx = @([[self.activeStreamViewer.mediaThreads valueForKeyPath:kNameKey]
-             indexOfObject:[NSString ncStringFromCString:activeThreadName.c_str()]]);
-
-        self.currentlySelectedPreview.isSelected = NO;
-        self.currentlySelectedPreview = previewController;
-        self.currentlySelectedPreview.isSelected = YES;
-        
-        NCVideoStreamRenderer *renderer = [[(NCVideoPreviewController*)previewController userData] valueForKey:kRendererKey];
-        [previewController setPreviewForVideoRenderer:nil];
-        
-        self.activeStreamViewer.renderer = renderer;
-    }
+//    if (previewController && [previewController isKindOfClass:[NCVideoPreviewController class]])
+//    {
+//        [self.activeStreamViewer clearStreamEventView];
+//        // set active stream viewer parameters
+//        self.activeStreamViewer.streamPrefix = streamPrefix;
+//        self.activeStreamViewer.userInfo = participantInfo;
+//
+//        // set active stream viewer observer
+//        if (![_activeStreamObserver->getStreamPrefix() isEqualToString:@""])
+//            _activeStreamObserver->unregisterObserver();
+//        
+//        _activeStreamObserver->setStreamPrefix(streamPrefix);
+//        _activeStreamObserver->registerObserver();
+//        
+//        // set current thread
+//        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+//        std::string activeThreadName = lib->getStreamThread(std::string([streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]));
+//        
+//        if (activeThreadName != "")
+//            self.activeStreamViewer.currentThreadIdx = @([[self.activeStreamViewer.mediaThreads valueForKeyPath:kNameKey]
+//             indexOfObject:[NSString ncStringFromCString:activeThreadName.c_str()]]);
+//
+//        self.currentlySelectedPreview.isSelected = NO;
+//        self.currentlySelectedPreview = previewController;
+//        self.currentlySelectedPreview.isSelected = YES;
+//        
+//        NCVideoStreamRenderer *renderer = [[(NCVideoPreviewController*)previewController userData] valueForKey:kRendererKey];
+//        [previewController setPreviewForVideoRenderer:nil];
+//        
+//        self.activeStreamViewer.renderer = renderer;
+//    }
 }
 
 -(void)onSessionStatusUpdate:(NSNotification*)notification
@@ -860,7 +845,7 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
                                                 initWithDevice: device
                                                 andFormat:format];
             [cameraCapturer setNdnRtcExternalCapturer:externalCapturer];
-            [videoPreviewVc setPreviewForCameraCapturer:cameraCapturer];
+            [videoPreviewVc setPreviewForCapturer:cameraCapturer];
             [cameraCapturer startCapturing];
             
             videoPreviewVc.userData = @{
@@ -896,63 +881,63 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 -(void)addRemoteAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
                                  andUserInfo:(NSDictionary*)userInfo
 {
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    std::string sessionPrefix([[userInfo valueForKeyPath:kSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
-    std::string streamPrefix = lib->addRemoteStream(sessionPrefix,
-                                                    [streamConfiguration asAudioStreamParams],
-                                                    [self generalParams],
-                                                    [self consumerParams],
-                                                    NULL);
-    if (streamPrefix != "")
-    {
-        NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
-        NCAudioPreviewController *audioPreviewVc = (NCAudioPreviewController*)[self.remoteStreamViewer addStreamWithConfiguration:streamConfiguration
-                                                                                                            andStreamPreviewClass:[NCAudioPreviewController class]
-                                                                                                                  forStreamPrefix:streamPrefixStr];
-        audioPreviewVc.userData = @{
-                                    kStreamPrefixKey:streamPrefixStr
-                                    };
-        [self addStreamToConversation:streamPrefixStr
-                             userDict:userInfo
-                             isRemote:YES
-                             userInfo:audioPreviewVc];
-    }
-    else
-        [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't add audio stream"];
+//    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+//    std::string sessionPrefix([[userInfo valueForKeyPath:kSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
+//    std::string streamPrefix = lib->addRemoteStream(sessionPrefix,
+//                                                    [streamConfiguration asAudioStreamParams],
+//                                                    [self generalParams],
+//                                                    [self consumerParams],
+//                                                    NULL);
+//    if (streamPrefix != "")
+//    {
+//        NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
+//        NCAudioPreviewController *audioPreviewVc = (NCAudioPreviewController*)[self.remoteStreamViewer addStreamWithConfiguration:streamConfiguration
+//                                                                                                            andStreamPreviewClass:[NCAudioPreviewController class]
+//                                                                                                                  forStreamPrefix:streamPrefixStr];
+//        audioPreviewVc.userData = @{
+//                                    kStreamPrefixKey:streamPrefixStr
+//                                    };
+//        [self addStreamToConversation:streamPrefixStr
+//                             userDict:userInfo
+//                             isRemote:YES
+//                             userInfo:audioPreviewVc];
+//    }
+//    else
+//        [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't add audio stream"];
 }
 
 -(void)addRemoteVideoStreamWithConfiguration:(NSDictionary*)streamConfiguration
                                  andUserInfo:(NSDictionary*)userInfo
 {
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
-    std::string sessionPrefix([[userInfo valueForKeyPath:kSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
-    NCVideoStreamRenderer *renderer = [[NCVideoStreamRenderer alloc] init];
-    
-    std::string streamPrefix = lib->addRemoteStream(sessionPrefix,
-                                                    [streamConfiguration asVideoStreamParams],
-                                                    [self generalParams],
-                                                    [self consumerParams],
-                                                    (IExternalRenderer*)renderer.ndnRtcRenderer);
-    
-    if (streamPrefix != "")
-    {
-        NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
-        NCVideoPreviewController *videoPreviewVc = (NCVideoPreviewController*)[self.remoteStreamViewer addStreamWithConfiguration:streamConfiguration
-                                                                                                            andStreamPreviewClass:[NCVideoPreviewController class]
-                                                                                                                  forStreamPrefix:streamPrefixStr];
-        videoPreviewVc.delegate = self;
-        [videoPreviewVc setPreviewForVideoRenderer:renderer];
-        videoPreviewVc.userData = @{
-                                    kRendererKey: renderer,
-                                    kStreamPrefixKey:streamPrefixStr
-                                    };
-        [self addStreamToConversation:streamPrefixStr
-                             userDict:userInfo
-                             isRemote:YES
-                             userInfo:videoPreviewVc];
-    }
-    else
-        [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't add video stream"];
+//    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+//    std::string sessionPrefix([[userInfo valueForKeyPath:kSessionPrefixKey] cStringUsingEncoding:NSASCIIStringEncoding]);
+//    NCVideoStreamRenderer *renderer = [[NCVideoStreamRenderer alloc] init];
+//    
+//    std::string streamPrefix = lib->addRemoteStream(sessionPrefix,
+//                                                    [streamConfiguration asVideoStreamParams],
+//                                                    [self generalParams],
+//                                                    [self consumerParams],
+//                                                    (IExternalRenderer*)renderer.ndnRtcRenderer);
+//    
+//    if (streamPrefix != "")
+//    {
+//        NSString *streamPrefixStr = [NSString stringWithCString:streamPrefix.c_str() encoding:NSASCIIStringEncoding];
+//        NCVideoPreviewController *videoPreviewVc = (NCVideoPreviewController*)[self.remoteStreamViewer addStreamWithConfiguration:streamConfiguration
+//                                                                                                            andStreamPreviewClass:[NCVideoPreviewController class]
+//                                                                                                                  forStreamPrefix:streamPrefixStr];
+//        videoPreviewVc.delegate = self;
+//        [videoPreviewVc setPreviewForVideoRenderer:renderer];
+//        videoPreviewVc.userData = @{
+//                                    kRendererKey: renderer,
+//                                    kStreamPrefixKey:streamPrefixStr
+//                                    };
+//        [self addStreamToConversation:streamPrefixStr
+//                             userDict:userInfo
+//                             isRemote:YES
+//                             userInfo:videoPreviewVc];
+//    }
+//    else
+//        [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't add video stream"];
 }
 
 -(void)removeRemoteStreamWithPrefix:(NSString*)streamPrefix
@@ -964,14 +949,14 @@ didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
     [[NCReporter sharedInstance] addStatReport:[NSString stringWithCString:logFile.c_str() encoding:NSUTF8StringEncoding]];
     
     [self removeStreamFromConversation:streamPrefix isRemote:YES];
-    if ([self.activeStreamViewer.streamPrefix isEqualToString:streamPrefix])
-    {
-        // clear stream viewer
-        [self.activeStreamViewer clear];
-        self.currentlySelectedPreview = nil;
-        
-        // select any other video stream if exists
-    }
+//    if ([self.activeStreamViewer.streamPrefix isEqualToString:streamPrefix])
+//    {
+//        // clear stream viewer
+//        [self.activeStreamViewer clear];
+//        self.currentlySelectedPreview = nil;
+//        
+//        // select any other video stream if exists
+//    }
 }
 
 @end

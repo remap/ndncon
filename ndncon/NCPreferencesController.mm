@@ -57,6 +57,7 @@ NSString* const kVideoStreamsKey = @"Video streams";
 
 NSString* const kChatSectionKey = @"Chat";
 NSString* const kChatBroadcastPrefixKey = @"Chat broadcast prefix";
+NSString* const kChatroomBroadcastPrefixKey = @"Chatroom broadcast prefix";
 
 NSString* const kConferenceSectionKey = @"Conference";
 NSString* const kConferenceBroadcastPrefixKey = @"Conference broadcast prefix";
@@ -65,6 +66,18 @@ NSString* const kUserDiscoveryPrefix = @"User discovery prefix";
 
 NSString* const kReportingAskedKey = @"Reporting was asked";
 NSString* const kReportingAllowedKey = @"Reporting is allowed";
+
+NSString* const kUserFetchOptionsArrayKey = @"User fetch options";
+
+NSString* const kUserFetchOptionFetchAudioKey = @"userFetchAudio";
+NSString* const kUserFetchOptionFetchVideoKey = @"userFetchVideo";
+NSString* const kUserFetchOptionDefaultAudioThreadsKey = @"userDefaultAudioThread";
+NSString* const kUserFetchOptionDefaultVideoThreadsKey = @"userDefaultVideoThread";
+
+NSDictionary* const DefaultUserFetchOptions = @{
+                                                kUserFetchOptionFetchAudioKey:@YES,
+                                                kUserFetchOptionFetchVideoKey:@YES
+                                                };
 
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
                                   kLogLevelDebug: @(ndnlog::NdnLoggerDetailLevelDebug),
@@ -105,9 +118,16 @@ using namespace ndnrtc::new_api;
                                                                        usingBlock:^(NSNotification *note) {
                                                                            [weakSelf refreshDevices];
                                                                        }];
-        self.observers = [[NSArray alloc] initWithObjects: deviceWasConnectedObserver, deviceWasDisconnectedObserver, nil];
+        id screenParametersChangedObserver = [notificationCenter addObserverForName:NSApplicationDidChangeScreenParametersNotification
+                                                                     object:nil
+                                                                      queue:[NSOperationQueue mainQueue]
+                                                                 usingBlock:^(NSNotification *note) {
+                                                                     [weakSelf refreshActiveDisplays];
+                                                                 }];
+        self.observers = [[NSArray alloc] initWithObjects: deviceWasConnectedObserver, deviceWasDisconnectedObserver, screenParametersChangedObserver, nil];
         
         [self refreshDevices];
+        [self refreshActiveDisplays];
     }
     
     return self;
@@ -125,8 +145,13 @@ using namespace ndnrtc::new_api;
 
 - (void)refreshDevices
 {
-        [self setVideoDevices:[[AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] arrayByAddingObjectsFromArray:[AVCaptureDevice devicesWithMediaType:AVMediaTypeMuxed]]];
-        [self setAudioDevices:[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio]];
+    [self setVideoDevices:[[AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] arrayByAddingObjectsFromArray:[AVCaptureDevice devicesWithMediaType:AVMediaTypeMuxed]]];
+    [self setAudioDevices:[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio]];
+}
+
+-(void)refreshActiveDisplays
+{
+    self.activeDisplays = [NSScreen screens];
 }
 
 +(NCPreferencesController*)sharedInstance
@@ -380,7 +405,17 @@ using namespace ndnrtc::new_api;
 -(void)setChatBroadcastPrefix:(NSString *)chatBroadcastPrefix
 {
     [self saveParam:chatBroadcastPrefix atPathByComponents:
-     kChatSectionKey, kChatBroadcastPrefixKey];
+     kChatSectionKey, kChatBroadcastPrefixKey, nil];
+}
+
+-(NSString *)chatroomBroadcastPrefix
+{
+    return [self getParamAtPathByComponents:kChatSectionKey,kChatroomBroadcastPrefixKey, nil];
+}
+
+-(void)setChatroomBroadcastPrefix:(NSString *)chatroomBroadcastPrefix
+{
+    [self saveParam:chatroomBroadcastPrefix atPathByComponents:kChatSectionKey, kChatroomBroadcastPrefixKey, nil];
 }
 
 -(NSString *)conferenceBroadcastPrefix
@@ -538,6 +573,65 @@ using namespace ndnrtc::new_api;
     va_end(args);
     
     [self saveParam:param forKeyPath:fullPath];
+}
+
+-(void)setFetchOptions:(NSDictionary *)options forUser:(NSString *)username withPrefix:(NSString *)prefix
+{
+    NSMutableDictionary *userFetchOptions = nil;
+    
+    if (![self getParamWithName:kUserFetchOptionsArrayKey])
+        userFetchOptions = [NSMutableDictionary dictionary];
+    else
+        userFetchOptions = [NSMutableDictionary dictionaryWithDictionary:[self getParamWithName:kUserFetchOptionsArrayKey]];
+
+    NSString *userKey = [NSString stringWithFormat:@"%@:%@", username, prefix];
+    
+    userFetchOptions[userKey] = options;
+    [self saveParam:userFetchOptions forKey:kUserFetchOptionsArrayKey];
+}
+
+-(void)addFetchOptions:(NSDictionary *)options forUser:(NSString *)username withPrefix:(NSString *)prefix
+{
+    NSMutableDictionary *userFetchOptions = nil;
+    
+    if (![self getParamWithName:kUserFetchOptionsArrayKey])
+        userFetchOptions = [NSMutableDictionary dictionary];
+    else
+        userFetchOptions = [NSMutableDictionary dictionaryWithDictionary:[self getParamWithName:kUserFetchOptionsArrayKey]];
+    
+    NSString *userKey = [NSString stringWithFormat:@"%@:%@", username, prefix];
+    
+    if (userFetchOptions[userKey])
+    {
+        NSMutableDictionary *userOptions = [NSMutableDictionary dictionaryWithDictionary:userFetchOptions[userKey]];
+        
+        for (id key in options.keyEnumerator)
+        {
+            userOptions[key] = options[key];
+        }
+        
+        userFetchOptions[userKey] = userOptions;
+    }
+    else
+        userFetchOptions[userKey] = options;
+    
+    [self saveParam:userFetchOptions forKey:kUserFetchOptionsArrayKey];
+}
+
+-(NSDictionary *)getFetchOptionsForUser:(NSString *)username withPrefix:(NSString *)prefix
+{
+    NSMutableDictionary *userFetchOptions = [self getParamWithName:kUserFetchOptionsArrayKey];
+    NSString *userKey = [NSString stringWithFormat:@"%@:%@", username, prefix];
+    
+    if (!userFetchOptions)
+    {
+        userFetchOptions = [NSMutableDictionary dictionaryWithObject:DefaultUserFetchOptions forKey:userKey];
+        [self saveParam:userFetchOptions forKey:kUserFetchOptionsArrayKey];
+        
+        return DefaultUserFetchOptions;
+    }
+    
+    return userFetchOptions[userKey];
 }
 
 @end

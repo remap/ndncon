@@ -10,8 +10,6 @@
 
 @interface NCStackEditorViewController ()
 
-@property (nonatomic, strong) NSMutableArray *entryControllers;
-
 @end
 
 @implementation NCStackEditorViewController

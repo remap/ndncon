@@ -27,6 +27,7 @@
 @protocol NCStreamPreviewControllerDelegate <NSObject>
 
 @optional
+-(void)streamPreviewControllerWasClosed:(NCStreamPreviewController*)streamPreviewController;
 -(void)streamPreviewControllerWasSelected:(NCStreamPreviewController*)streamPreviewController;
 
 @end

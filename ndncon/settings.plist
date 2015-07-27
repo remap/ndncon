@@ -22,6 +22,8 @@
 	<dict>
 		<key>Chat broadcast prefix</key>
 		<string>/ndn/broadcast/chrono-chat0.3</string>
+		<key>Chatroom broadcast prefix</key>
+		<string>/ndn/broadcast/ndnrtc-chatrooms</string>
 	</dict>
 	<key>Conference</key>
 	<dict>
@@ -63,7 +65,7 @@
 	<key>Consumer</key>
 	<dict>
 		<key>Interest lifetime</key>
-		<integer>2000</integer>
+		<real>2000</real>
 		<key>Jitter size</key>
 		<integer>300</integer>
 		<key>Buffer size</key>

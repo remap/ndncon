@@ -9,6 +9,7 @@
 #import "NCStreamViewerController.h"
 #import "NCUserStreamViewController.h"
 #import "NSArray+NCAdditions.h"
+#import "NSDictionary+NCAdditions.h"
 
 @interface NCStreamViewerController ()
 

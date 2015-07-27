@@ -36,6 +36,10 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+#ifdef DEBUG
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
+#endif
+    
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"f04e450096a94f9989a875d20d4b8662"];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [BITHockeyManager sharedHockeyManager].crashManager.askUserDetails = NO;
@@ -60,8 +64,9 @@
     
     [[NCNdnRtcLibraryController sharedInstance] startSession];
     [NCChatLibraryController sharedInstance];
-    [NCConferenceDiscoveryController sharedInstance];
+//    [NCConferenceDiscoveryController sharedInstance];
     [NCUserDiscoveryController sharedInstance];
+    [NCChatroomDiscoveryController sharedInstance];
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ucla.edu.NdnCon" in the user's Application Support directory.

@@ -1,67 +1,39 @@
 //
-//  NCCameraCapturer.m
+//  NCBaseCapturer.m
 //  NdnCon
 //
-//  Created by Peter Gusev on 9/19/14.
-//  Copyright (c) 2014 REMAP. All rights reserved.
+//  Created by Peter Gusev on 7/26/15.
+//  Copyright (c) 2015 REMAP. All rights reserved.
 //
 
-#import "NCCameraCapturer.h"
+#import "NCBaseCapturer.h"
 #include <ndnrtc/interfaces.h>
 
 using namespace ndnrtc;
 
-@interface NCCameraCapturer ()
+//******************************************************************************
+@interface NCBaseCapturer()
 {
     IExternalCapturer *_externalCapturer;
 }
 
-@property (nonatomic) NSArray *sessionObservers;
 @property (nonatomic) AVCaptureSession *session;
-@property (nonatomic) AVCaptureDevice *device;
-@property (nonatomic) AVCaptureDeviceFormat *deviceFormat;
-@property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
+@property (nonatomic) NSArray *sessionObservers;
 @property (nonatomic) AVCaptureVideoDataOutput *videoOutput;
 
 @end
 
-@implementation NCCameraCapturer
+@implementation NCBaseCapturer : NSObject
 
--(id)initWithDevice:(AVCaptureDevice*)device andFormat:(AVCaptureDeviceFormat*)format
+-(instancetype)init
 {
     self = [super init];
     
     if (self)
     {
         _externalCapturer = NULL;
-        
-        self.device = device;
-        self.deviceFormat = format;
-        
-        NSError *error = nil;
-        
         self.session = [[AVCaptureSession alloc] init];
         self.session.sessionPreset = AVCaptureSessionPresetHigh;
-        
-        AVCaptureDeviceInput *newVideoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:self.device
-                                                                                          error:&error];
-        
-        if (newVideoDeviceInput == nil)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [self presentError:error];
-            });
-            
-            return nil;
-        }
-        else
-        {
-            if (![self.device supportsAVCaptureSessionPreset:[_session sessionPreset]])
-                [[self session] setSessionPreset:AVCaptureSessionPresetHigh];
-            
-            [[self session] addInput:newVideoDeviceInput];
-            self.videoDeviceInput = newVideoDeviceInput;
-        }
         
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         id runtimeErrorObserver = [notificationCenter addObserverForName:AVCaptureSessionRuntimeErrorNotification
@@ -84,16 +56,21 @@ using namespace ndnrtc;
                                                                 }];
         self.sessionObservers = [[NSArray alloc] initWithObjects:runtimeErrorObserver, didStartRunningObserver, didStopRunningObserver, nil];
         
-        self.videoOutput = [[AVCaptureVideoDataOutput alloc] init];
-        dispatch_queue_t queue = dispatch_queue_create("capture_queue", NULL);
-        [self.videoOutput setSampleBufferDelegate:self queue:queue];
-        self.videoOutput.videoSettings = [NSDictionary dictionaryWithObject:
-                                          [NSNumber numberWithInt:kCVPixelFormatType_32BGRA]
-                                                                     forKey:(id)kCVPixelBufferPixelFormatTypeKey];
-        [self.session addOutput:self.videoOutput];
+        [self initVideoOutput];
     }
     
     return self;
+}
+
+-(void)initVideoOutput
+{
+    self.videoOutput = [[AVCaptureVideoDataOutput alloc] init];
+    dispatch_queue_t queue = dispatch_queue_create("capture_queue", NULL);
+    [self.videoOutput setSampleBufferDelegate:self queue:queue];
+    self.videoOutput.videoSettings = [NSDictionary dictionaryWithObject:
+                                      [NSNumber numberWithInt:kCVPixelFormatType_32BGRA]
+                                                                 forKey:(id)kCVPixelBufferPixelFormatTypeKey];
+    [self.session addOutput:self.videoOutput];
 }
 
 -(void)dealloc
@@ -106,29 +83,13 @@ using namespace ndnrtc;
     
     self.sessionObservers = nil;
     self.session = nil;
-    self.device = nil;
-    self.deviceFormat = nil;
-    self.videoDeviceInput = nil;
     self.videoOutput = nil;
 }
 
+#pragma mark - public
 -(void)startCapturing
 {
     [self.session startRunning];
-    
-    NSError *error = nil;
-    
-    if ([self.device lockForConfiguration:&error])
-    {
-        [self.device setActiveFormat:self.deviceFormat];
-        [self.device unlockForConfiguration];
-    }
-    else
-    {
-        [self presentError:error];
-        NSLog(@"couldn't set format for device");
-        return;
-    }
     
     if (_externalCapturer)
         _externalCapturer->capturingStarted();
@@ -147,14 +108,14 @@ using namespace ndnrtc;
     _externalCapturer = (IExternalCapturer*)externalCapturer;
 }
 
-// private
+#pragma mark - private
 -(void)presentError:(NSError*)error
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(cameraCapturer:didObtainedError:)])
-        [self.delegate cameraCapturer: self didObtainedError: error];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(capturer:didObtainedError:)])
+        [self.delegate capturer: self didObtainedError: error];
 }
 
-// AVCaptureVideoDataOutputSampleBufferDelegate
+#pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
   didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection
@@ -189,11 +150,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         
         if (_externalCapturer)
             _externalCapturer->incomingArgbFrame(frameWidth, frameHeight,
-                                                 (unsigned char*)frameData.bytes, frameSize);
+                                                                       (unsigned char*)frameData.bytes, frameSize);
         
         CVPixelBufferUnlockBaseAddress(videoFrame, kFlags);
     }
 }
 
 @end
-

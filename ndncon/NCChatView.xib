@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCChatViewController">
@@ -17,13 +17,13 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
-            <rect key="frame" x="0.0" y="0.0" width="644" height="458"/>
+            <rect key="frame" x="-1" y="0.0" width="336" height="458"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="I1n-G1-gwu">
-                    <rect key="frame" x="0.0" y="418" width="644" height="40"/>
+                    <rect key="frame" x="0.0" y="458" width="336" height="0.0"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hS1-M2-HYJ">
-                            <rect key="frame" x="8" y="15" width="17" height="15"/>
+                            <rect key="frame" x="8" y="-25" width="17" height="15"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="    " id="Z2e-b3-rwu">
                                 <font key="font" size="11" name="Arial-ItalicMT"/>
                                 <color key="textColor" red="0.26504703443877553" green="0.26504703443877553" blue="0.26504703443877553" alpha="1" colorSpace="calibratedRGB"/>
@@ -33,27 +33,28 @@
                     </subviews>
                     <constraints>
                         <constraint firstItem="hS1-M2-HYJ" firstAttribute="top" secondItem="I1n-G1-gwu" secondAttribute="top" constant="10" id="Ak0-kl-Xjg"/>
-                        <constraint firstAttribute="height" constant="40" id="UvA-FW-tCO"/>
+                        <constraint firstAttribute="height" id="UvA-FW-tCO"/>
                         <constraint firstItem="hS1-M2-HYJ" firstAttribute="leading" secondItem="I1n-G1-gwu" secondAttribute="leading" constant="10" id="dDI-EY-dE2"/>
                     </constraints>
                 </customView>
                 <splitView dividerStyle="thin" translatesAutoresizingMaskIntoConstraints="NO" id="boq-8X-g8G">
-                    <rect key="frame" x="0.0" y="0.0" width="644" height="418"/>
+                    <rect key="frame" x="0.0" y="0.0" width="336" height="458"/>
                     <subviews>
                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="57" horizontalPageScroll="10" verticalLineScroll="57" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="0u2-cY-SXu">
-                            <rect key="frame" x="0.0" y="0.0" width="644" height="336.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="336" height="357"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <clipView key="contentView" id="5Ar-nX-PUW">
                                 <rect key="frame" x="1" y="17" width="238" height="117"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="55" rowSizeStyle="automatic" viewBased="YES" id="c1Y-p4-ZCj">
+                                        <rect key="frame" x="0.0" y="0.0" width="642" height="0.0"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <size key="intercellSpacing" width="3" height="2"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                         <tableColumns>
-                                            <tableColumn width="639" minWidth="40" maxWidth="10000" id="jE2-5f-Cuh">
+                                            <tableColumn width="331" minWidth="40" maxWidth="10000" id="jE2-5f-Cuh">
                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                     <font key="font" metaFont="smallSystem"/>
                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -66,8 +67,8 @@
                                                 </textFieldCell>
                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 <prototypeCellViews>
-                                                    <tableCellView identifier="MessageCell" canDrawConcurrently="YES" id="d0E-Oq-rZt" customClass="NCChatMessageCell">
-                                                        <rect key="frame" x="1" y="1" width="639" height="55"/>
+                                                    <tableCellView identifier="MessageCell" canDrawConcurrently="YES" verticalCompressionResistancePriority="250" id="d0E-Oq-rZt" customClass="NCChatMessageCell">
+                                                        <rect key="frame" x="1" y="1" width="331" height="55"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fto-D3-XnM">
@@ -87,7 +88,7 @@
                                                                 </textFieldCell>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cja-tC-5Td">
-                                                                <rect key="frame" x="606" y="35" width="29" height="14"/>
+                                                                <rect key="frame" x="298" y="35" width="29" height="14"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Type" id="wFr-Nb-8Jo">
                                                                     <font key="font" size="11" name="LucidaGrande"/>
                                                                     <color key="textColor" red="0.33434311220000001" green="0.33434311220000001" blue="0.33434311220000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -130,11 +131,11 @@
                             </scroller>
                         </scrollView>
                         <customView id="CrJ-tv-pWy">
-                            <rect key="frame" x="0.0" y="337.5" width="644" height="80.5"/>
+                            <rect key="frame" x="0.0" y="358" width="336" height="100"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <subviews>
-                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="HIN-5u-ht5">
-                                    <rect key="frame" x="10" y="10.5" width="624" height="60"/>
+                                <textField horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="HIN-5u-ht5">
+                                    <rect key="frame" x="10" y="10" width="316" height="80"/>
                                     <textFieldCell key="cell" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="type your message here..." drawsBackground="YES" id="9lr-TN-LDo">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -146,9 +147,9 @@
                                 </textField>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="CqS-eb-Ax3"/>
                                 <constraint firstItem="HIN-5u-ht5" firstAttribute="top" secondItem="CrJ-tv-pWy" secondAttribute="top" constant="10" id="IIT-Eu-xaU"/>
                                 <constraint firstAttribute="bottom" secondItem="HIN-5u-ht5" secondAttribute="bottom" constant="10" id="OL1-Mb-qPX"/>
+                                <constraint firstAttribute="height" constant="100" id="TuV-Fp-bz8"/>
                                 <constraint firstItem="HIN-5u-ht5" firstAttribute="leading" secondItem="CrJ-tv-pWy" secondAttribute="leading" constant="10" id="fxB-MG-FoZ"/>
                                 <constraint firstAttribute="trailing" secondItem="HIN-5u-ht5" secondAttribute="trailing" constant="10" id="xIV-ib-JJj"/>
                             </constraints>
@@ -169,7 +170,7 @@
                 <constraint firstItem="I1n-G1-gwu" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="lkJ-JP-4Mt"/>
                 <constraint firstAttribute="trailing" secondItem="boq-8X-g8G" secondAttribute="trailing" id="whZ-cH-yfh"/>
             </constraints>
-            <point key="canvasLocation" x="487" y="432"/>
+            <point key="canvasLocation" x="641" y="432"/>
         </customView>
         <arrayController mode="entity" entityName="ChatMessage" id="OJm-sS-zkv">
             <connections>

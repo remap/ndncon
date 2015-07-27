@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "NSView+NCDragAndDropAbility.h"
+#import "NSView+NCAdditions.h"
 
 /**
  * This scroll view supports NdnCon drag&drop operations

@@ -13,11 +13,7 @@
 #import "NSDictionary+NCAdditions.h"
 #import "NSObject+NCAdditions.h"
 #import "NSScrollView+NCAdditions.h"
-
-NSString* const kNameKey = @"Name";
-NSString* const kSynchornizedToKey = @"Synchronized to";
-NSString* const kInputDeviceKey = @"Input device";
-NSString* const kThreadsArrayKey = @"Threads";
+#import "NSDictionary+NCAdditions.h"
 
 @interface NCStreamViewController ()
 {
@@ -25,7 +21,8 @@ NSString* const kThreadsArrayKey = @"Threads";
     NCPreferencesController *_preferences;
 }
 
-@property (nonatomic, strong) AVCaptureDeviceInput *deviceInput;
+@property (nonatomic, strong) id deviceInput;
+@property (weak) IBOutlet NSPopUpButton *configurationsPopup;
 
 @end
 
@@ -91,14 +88,11 @@ NSString* const kThreadsArrayKey = @"Threads";
     _streamName = streamName;
 }
 
--(AVCaptureDevice *)selectedDevice
-{
-    return [self.deviceInput device];
-}
-
--(void)setSelectedDevice:(AVCaptureDevice *)selectedDevice
+-(void)setSelectedDevice:(id)selectedDevice
 {
     [self.session beginConfiguration];
+    
+    _selectedDevice = selectedDevice;
     
     if (self.deviceInput)
     {
@@ -108,20 +102,33 @@ NSString* const kThreadsArrayKey = @"Threads";
     
     if (selectedDevice)
     {
-        NSError *error = nil;
-        AVCaptureDeviceInput *newDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:selectedDevice error:&error];
-        
-        if (newDeviceInput == nil)
+        if ([selectedDevice isKindOfClass:[AVCaptureDevice class]])
         {
-            NSLog(@"error while chosing device: %@", error);
+            NSError *error = nil;
+            AVCaptureDeviceInput *newDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:selectedDevice error:&error];
+            
+            if (newDeviceInput == nil)
+            {
+                NSLog(@"error while chosing device: %@", error);
+            }
+            else
+            {
+                if (![selectedDevice supportsAVCaptureSessionPreset:self.session.sessionPreset])
+                    [self.session setSessionPreset:AVCaptureSessionPresetHigh];
+                
+                [self.session addInput:newDeviceInput];
+                self.deviceInput = newDeviceInput;
+            }
+            
+            self.configurationsPopup.enabled = YES;
         }
         else
         {
-            if (![selectedDevice supportsAVCaptureSessionPreset:self.session.sessionPreset])
-                [self.session setSessionPreset:AVCaptureSessionPresetHigh];
-            
-            [self.session addInput:newDeviceInput];
-            self.deviceInput = newDeviceInput;
+            NSScreen *screen = selectedDevice;
+            AVCaptureScreenInput *screenInput = [[AVCaptureScreenInput alloc] initWithDisplayID:[screen.deviceDescription[@"NSScreenNumber"] intValue]];
+            [self.session addInput:screenInput];
+            self.deviceInput = screenInput;
+            self.configurationsPopup.enabled = NO;
         }
     }
     
@@ -130,7 +137,9 @@ NSString* const kThreadsArrayKey = @"Threads";
 
 -(AVCaptureDeviceFormat*)deviceFormat
 {
-    return [self.selectedDevice activeFormat];
+    if ([self.selectedDevice isKindOfClass:[AVCaptureDevice class]])
+        return [self.selectedDevice activeFormat];
+    return nil;
 }
 
 -(void)setDeviceFormat:(AVCaptureDeviceFormat *)deviceFormat

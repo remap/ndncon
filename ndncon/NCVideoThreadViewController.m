@@ -9,16 +9,7 @@
 #import "NCVideoThreadViewController.h"
 #import "NCVideoStreamViewController.h"
 #import "NSObject+NCAdditions.h"
-
-NSString* const kFrameRateKey = @"Frame rate";
-NSString* const kGopKey = @"GOP";
-NSString* const kMaxBitrateKey = @"Max bitrate";
-NSString* const kEncodingWidthKey = @"Encoding width";
-NSString* const kEncodingHeightKey = @"Encoding height";
-NSString* const kDeltaAverageSegNumKey = @"Average seg num delta";
-NSString* const kDeltaAverageParSegNumKey = @"Average segpar num delta";
-NSString* const kKeyAverageSegNumKey = @"Average seg num key";
-NSString* const kKeyAverageParSegNumKey = @"Average segpar num key";
+#import "NSDictionary+NCAdditions.h"
 
 @interface NCVideoThreadViewController ()
 

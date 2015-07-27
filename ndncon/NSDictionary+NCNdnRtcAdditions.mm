@@ -9,6 +9,7 @@
 #include <ndnrtc/params.h>
 
 #import "NSDictionary+NCNdnRtcAdditions.h"
+#import "NSDictionary+NCAdditions.h"
 #import "NCPreferencesController.h"
 #import "NCStreamViewController.h"
 #import "NCVideoThreadViewController.h"

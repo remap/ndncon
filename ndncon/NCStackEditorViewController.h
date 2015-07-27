@@ -16,6 +16,7 @@ typedef BOOL(^NCStackEditorFilterBlock)(NCStackEditorEntryViewController *vc);
 @property (nonatomic, weak) id<NCStackEditorEntryDelegate> delegate;
 @property (nonatomic, readonly) NSStackView *stackView;
 @property (nonatomic) NSColor *backgroundColor;
+@property (nonatomic, strong) NSMutableArray *entryControllers;
 
 -(void)initialize;
 -(NCStackEditorEntryViewController *)addViewControllerEntry:(NSViewController*)viewController;
