@@ -386,6 +386,7 @@ private:
 
 -(void)startObserverForUser:(NSString*)aUserName andPrefix:(NSString*)aPrefix
 {
+    /*
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     std::string username = [aUserName cStringUsingEncoding:NSASCIIStringEncoding];
     std::string prefix = [aPrefix cStringUsingEncoding:NSASCIIStringEncoding];
@@ -409,10 +410,12 @@ private:
         
         NSLog(@"started observer for %@:%@", aPrefix, aUserName);
     }
+    */
 }
 
 -(void)stopObserver:(RemoteSessionObserver*)observer
 {
+    /*
     NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->removeRemoteSessionObserver(observer->sessionPrefix_);
     
@@ -428,6 +431,7 @@ private:
     
     NSLog(@"stopped observer for %s:%s", observer->prefix_.c_str(), observer->username_.c_str());
     delete observer;
+    */
 }
 
 -(BOOL)hasObserverForUser:(NSString*)aUserName andPrefix:(NSString*)aPrefix
