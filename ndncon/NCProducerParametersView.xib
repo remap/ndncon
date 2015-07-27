@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCProducerParametersViewController">
@@ -20,7 +21,7 @@
                     <rect key="frame" x="0.0" y="403" width="600" height="77"/>
                     <subviews>
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UaI-CC-aIs">
-                            <rect key="frame" x="480" y="5" width="116" height="19"/>
+                            <rect key="frame" x="355" y="5" width="115" height="19"/>
                             <buttonCell key="cell" type="roundRect" title="Add video stream" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MAe-fR-PGm">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="cellTitle"/>
@@ -29,7 +30,7 @@
                                 <action selector="addVideoStream:" target="-2" id="Bem-fr-jZW"/>
                             </connections>
                         </button>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="B6t-7H-Ynd">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B6t-7H-Ynd">
                             <rect key="frame" x="18" y="8" width="58" height="17"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Streams:" id="BaI-Ga-vDh">
                                 <font key="font" metaFont="system"/>
@@ -38,7 +39,7 @@
                             </textFieldCell>
                         </textField>
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="odM-m5-bNF">
-                            <rect key="frame" x="359" y="5" width="117" height="19"/>
+                            <rect key="frame" x="235" y="5" width="116" height="19"/>
                             <buttonCell key="cell" type="roundRect" title="Add audio stream" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="54z-9I-Zwp">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="cellTitle"/>
@@ -47,7 +48,7 @@
                                 <action selector="addAudioStream:" target="-2" id="Hhg-3H-Pms"/>
                             </connections>
                         </button>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="hsG-o9-GRj">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hsG-o9-GRj">
                             <rect key="frame" x="18" y="40" width="454" height="17"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="The following configuration will be used whenever you start publishing." id="NZc-Ga-Wu9">
                                 <font key="font" metaFont="system"/>
@@ -55,17 +56,29 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="quy-4D-k9G">
+                            <rect key="frame" x="474" y="5" width="122" height="19"/>
+                            <buttonCell key="cell" type="roundRect" title="Add screen stream" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NqO-V8-yr2">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="titleBar" size="12"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="addScreenStream:" target="-2" id="1MY-ja-F0G"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstItem="hsG-o9-GRj" firstAttribute="top" secondItem="k8w-aD-05r" secondAttribute="top" constant="20" id="0xP-md-GtJ"/>
+                        <constraint firstItem="quy-4D-k9G" firstAttribute="baseline" secondItem="UaI-CC-aIs" secondAttribute="baseline" id="1n2-gC-P9g"/>
                         <constraint firstItem="UaI-CC-aIs" firstAttribute="baseline" secondItem="B6t-7H-Ynd" secondAttribute="baseline" id="6NR-oC-V0N"/>
                         <constraint firstAttribute="width" constant="600" id="CUU-VO-aCm"/>
                         <constraint firstItem="hsG-o9-GRj" firstAttribute="leading" secondItem="k8w-aD-05r" secondAttribute="leading" constant="20" id="DKF-We-Rly"/>
                         <constraint firstItem="B6t-7H-Ynd" firstAttribute="top" secondItem="hsG-o9-GRj" secondAttribute="bottom" constant="15" id="Voq-jA-pah"/>
                         <constraint firstItem="B6t-7H-Ynd" firstAttribute="leading" secondItem="k8w-aD-05r" secondAttribute="leading" constant="20" id="Xvx-Ka-I2J"/>
                         <constraint firstItem="UaI-CC-aIs" firstAttribute="leading" secondItem="odM-m5-bNF" secondAttribute="trailing" constant="4" id="fGi-KB-DMU"/>
+                        <constraint firstAttribute="trailing" secondItem="quy-4D-k9G" secondAttribute="trailing" constant="4" id="xS7-Rp-vAQ"/>
                         <constraint firstAttribute="bottom" secondItem="B6t-7H-Ynd" secondAttribute="bottom" constant="8" id="xfO-qg-Im8"/>
-                        <constraint firstAttribute="trailing" secondItem="UaI-CC-aIs" secondAttribute="trailing" constant="4" id="z3t-v2-HP7"/>
+                        <constraint firstItem="quy-4D-k9G" firstAttribute="leading" secondItem="UaI-CC-aIs" secondAttribute="trailing" constant="4" id="xy5-0z-lgR"/>
                         <constraint firstItem="odM-m5-bNF" firstAttribute="baseline" secondItem="UaI-CC-aIs" secondAttribute="baseline" id="zAh-60-JoT"/>
                     </constraints>
                 </customView>

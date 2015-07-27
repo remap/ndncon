@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NCVideoPreviewController">
+            <connections>
+                <outlet property="progressIndicator" destination="gwd-1w-lfe" id="trS-hq-VBf"/>
+                <outlet property="streamInfoView" destination="Afl-ou-1gx" id="86Q-VJ-Rpg"/>
+                <outlet property="streamNameLabel" destination="amQ-OU-byH" id="9LX-UX-5GA"/>
+                <outlet property="streamPreview" destination="hNJ-te-c5E" id="lMt-RZ-17f"/>
+                <outlet property="view" destination="c22-O7-iKe" id="RWQ-Fp-nAx"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="177" height="100"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="hNJ-te-c5E" userLabel="Stream View" customClass="NCVideoPreviewView">
+                    <rect key="frame" x="0.0" y="0.0" width="177" height="100"/>
+                    <subviews>
+                        <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="gwd-1w-lfe">
+                            <rect key="frame" x="80" y="42" width="16" height="16"/>
+                            <connections>
+                                <binding destination="-2" name="hidden" keyPath="self.streamPreview.isSelected" id="sg9-M5-qPG"/>
+                            </connections>
+                        </progressIndicator>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="centerX" secondItem="gwd-1w-lfe" secondAttribute="centerX" id="J6b-QY-09r"/>
+                        <constraint firstAttribute="centerY" secondItem="gwd-1w-lfe" secondAttribute="centerY" id="Nbu-UT-tsn"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-2" id="fTt-mh-Li2"/>
+                    </connections>
+                </customView>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="Afl-ou-1gx" userLabel="Stream Info View" customClass="NCBlockDrawableView">
+                    <rect key="frame" x="0.0" y="0.0" width="177" height="70"/>
+                    <subviews>
+                        <button translatesAutoresizingMaskIntoConstraints="NO" id="OzW-J3-HO4" customClass="NCToggleButton">
+                            <rect key="frame" x="0.0" y="2" width="22" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="22" id="6L0-Y9-hzx"/>
+                                <constraint firstAttribute="width" constant="22" id="AYU-CR-3Ku"/>
+                            </constraints>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="user_close" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="K78-PM-iSZ">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
+                                    <color key="value" red="1" green="0.020984086786254519" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onClose:" target="-2" id="OCX-PA-rrA"/>
+                            </connections>
+                        </button>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="amQ-OU-byH">
+                            <rect key="frame" x="25" y="5" width="36" height="16"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="ScZ-1F-xu1">
+                                <font key="font" metaFont="cellTitle"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="amQ-OU-byH" firstAttribute="centerY" secondItem="OzW-J3-HO4" secondAttribute="centerY" id="G3T-Yi-e8s"/>
+                        <constraint firstItem="amQ-OU-byH" firstAttribute="leading" secondItem="OzW-J3-HO4" secondAttribute="trailing" constant="5" id="X19-Gk-lTB"/>
+                        <constraint firstAttribute="bottom" secondItem="OzW-J3-HO4" secondAttribute="bottom" constant="2" id="Xtt-Q8-cKY"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="amQ-OU-byH" secondAttribute="trailing" constant="2" id="iFc-Lj-CDp"/>
+                        <constraint firstItem="OzW-J3-HO4" firstAttribute="leading" secondItem="Afl-ou-1gx" secondAttribute="leading" id="zi2-j8-ZFd"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Afl-ou-1gx" secondAttribute="trailing" id="2wb-OK-eJp"/>
+                <constraint firstItem="hNJ-te-c5E" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="35K-qj-73R"/>
+                <constraint firstItem="hNJ-te-c5E" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="Bud-7Q-0Al"/>
+                <constraint firstAttribute="bottom" secondItem="Afl-ou-1gx" secondAttribute="bottom" id="O8s-5C-qUz"/>
+                <constraint firstAttribute="trailing" secondItem="hNJ-te-c5E" secondAttribute="trailing" id="QTP-A0-xWA"/>
+                <constraint firstItem="Afl-ou-1gx" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="QbN-XB-g1j"/>
+                <constraint firstAttribute="bottom" secondItem="hNJ-te-c5E" secondAttribute="bottom" id="SBm-0d-tum"/>
+                <constraint firstItem="Afl-ou-1gx" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="30" id="ZGN-mq-xm1"/>
+            </constraints>
+            <connections>
+                <outlet property="delegate" destination="-2" id="ZSU-LK-75N"/>
+            </connections>
+            <point key="canvasLocation" x="163" y="325"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="iSR-Fa-EsP"/>
+    </objects>
+    <resources>
+        <image name="user_close" width="60" height="60"/>
+    </resources>
+</document>

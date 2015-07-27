@@ -54,4 +54,46 @@
     return [NSArray arrayWithArray:arrayCopy];
 }
 
+// returns stream configuration with given name
+// if self is an array of stream configurations
+-(NSDictionary *)streamWithName:(NSString *)streamName
+{
+    if ([[self valueForKey:kNameKey] indexOfObject:streamName] != NSNotFound)
+    {
+        __block NSDictionary *stream = nil;
+        [self enumerateObjectsUsingBlock:^(NSDictionary *streamConf, NSUInteger idx, BOOL *stop) {
+            if ([streamConf[kNameKey] isEqualToString:streamName])
+            {
+                stream = streamConf;
+                *stop = YES;
+            }
+        }];
+        
+        return stream;
+    }
+
+    return nil;
+}
+
+// returns thread configuration with given name
+// if self is an array of thread configurations
+-(NSDictionary *)threadWithName:(NSString *)threadName
+{
+    if ([[self valueForKey:kNameKey] indexOfObject:threadName] != NSNotFound)
+    {
+        __block NSDictionary *thread = nil;
+        [self enumerateObjectsUsingBlock:^(NSDictionary *threadConf, NSUInteger idx, BOOL *stop) {
+            if ([threadConf[kNameKey] isEqualToString:threadName])
+            {
+                thread = threadConf;
+                *stop = YES;
+            }
+        }];
+        
+        return thread;
+    }
+    
+    return nil;
+}
+
 @end

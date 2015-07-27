@@ -342,36 +342,36 @@ fetchStreamsWithCustomInfo:(NSDictionary *)customUSerInfo
 // private
 -(void)onNewChatMessage:(NSNotification*)notification
 {
-    NSString *chatRoomId = notification.userInfo[NCChatRoomIdKey];
-    User *user = notification.userInfo[NCChatMessageUserKey];
-    
-    if ([chatRoomId isEqualTo:self.userViewController.chatViewController.chatRoomId] &&
-        self.userViewController.view == self.currentView)
-    {
-        [self.userViewController.chatViewController newChatMessage:notification];
-    }
-    else if (user) // for messages from self - user is nil
-    {
-        if ([notification.userInfo[NCChatMessageTypeKey] isEqualTo:kChatMesageTypeText])
-        {
-            NSUserNotification *userNotification = [[NSUserNotification alloc] init];
-            userNotification.title = user.name;
-            userNotification.informativeText = notification.userInfo[NCChatMessageBodyKey];
-            userNotification.soundName = NSUserNotificationDefaultSoundName;
-            userNotification.userInfo = @{kUserNameKey:user.name,
-                                          kHubPrefixKey:user.prefix};
-            
-            [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
-        }
-        
-        ChatRoom *chatRoom = [ChatRoom chatRoomWithId:chatRoomId
-                                          fromContext:self.context];
-        NSArray *unreadMessages = [ChatMessage unreadTextMessagesFromUser:user
-                                                               inChatroom:chatRoom];
-        // update cell and post notification
-        [self.userListViewController updateCellBadgeNumber:unreadMessages.count
-                                           forCellWithUser:user];
-    }
+//    NSString *chatRoomId = notification.userInfo[NCChatRoomIdKey];
+//    User *user = notification.userInfo[NCChatMessageUserKey];
+//    
+//    if ([chatRoomId isEqualTo:self.userViewController.chatViewController.chatRoomId] &&
+//        self.userViewController.view == self.currentView)
+//    {
+//        [self.userViewController.chatViewController newChatMessage:notification];
+//    }
+//    else if (user) // for messages from self - user is nil
+//    {
+//        if ([notification.userInfo[NCChatMessageTypeKey] isEqualTo:kChatMesageTypeText])
+//        {
+//            NSUserNotification *userNotification = [[NSUserNotification alloc] init];
+//            userNotification.title = user.name;
+//            userNotification.informativeText = notification.userInfo[NCChatMessageBodyKey];
+//            userNotification.soundName = NSUserNotificationDefaultSoundName;
+//            userNotification.userInfo = @{kUserNameKey:user.name,
+//                                          kHubPrefixKey:user.prefix};
+//            
+//            [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
+//        }
+//        
+//        ChatRoom *chatRoom = [ChatRoom chatRoomWithId:chatRoomId
+//                                          fromContext:self.context];
+//        NSArray *unreadMessages = [ChatMessage unreadTextMessagesFromUser:user
+//                                                               inChatroom:chatRoom];
+//        // update cell and post notification
+//        [self.userListViewController updateCellBadgeNumber:unreadMessages.count
+//                                           forCellWithUser:user];
+//    }
 }
 
 -(void)withdrawConference:(Conference*)conference

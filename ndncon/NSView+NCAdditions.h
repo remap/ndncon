@@ -40,3 +40,14 @@
   didAcceptDraggedUrls:(NSArray*)nrtcUserUrlArray;
 
 @end
+
+//******************************************************************************
+// Trackable view - allows to specify block which will be called on
+// updateTrackingAreas
+typedef void(^NCUpdateTrackingAreas)(NSView *);
+
+@interface NCTrackableView : NSView
+
+@property (nonatomic, strong) NCUpdateTrackingAreas updateTrackingAreasBlock;
+
+@end

@@ -14,6 +14,9 @@
 #import "NCConversationViewController.h"
 #import "NSString+NCAdditions.h"
 #import "NSTimer+NCAdditions.h"
+#import "NCStreamingController.h"
+#import "NSDictionary+NCAdditions.h"
+#import "NSObject+NCAdditions.h"
 
 #define INTEREST_AVERAGE_SIZE_BYTES 150
 #define STAT_UPDATE_RATE 10 // per second
@@ -29,8 +32,12 @@ using namespace ndnrtc::new_api::statistics;
 //******************************************************************************
 @interface NCStatisticsWindowController ()
 
-@property (nonatomic) NSString *selectedStream;
+@property (nonatomic) NSString *username;
+@property (nonatomic) NSString *hubPrefix;
+
 @property (nonatomic) NSArray *streamsArray;
+@property (nonatomic) NSArray *audioStreamsArray;
+@property (nonatomic) NSString *selectedAudioStream;
 
 @property (nonatomic) NSLock *streamPrefixLock;
 @property (nonatomic) NSString *activeStreamPrefix;
@@ -43,6 +50,15 @@ using namespace ndnrtc::new_api::statistics;
 @property (nonatomic) unsigned int jitterPlayableMs, jitterEstimationMs, jitterTargetMs;
 @property (nonatomic) double actualProducerRate;
 @property (nonatomic) unsigned int nDataReceived, nTimeouts;
+@property (nonatomic, readonly) BOOL isAudioAvailable;
+@property (nonatomic) BOOL isAudioSelected;
+@property (nonatomic) BOOL isShowingStats;
+
+@property (strong) IBOutlet NSView *statsView;
+@property (weak) IBOutlet NSLayoutConstraint *statViewCenteringConstraint;
+
+@property (strong) IBOutlet NSView *chartsView;
+@property (strong) IBOutlet NSLayoutConstraint *chartsViewCenteringConstraint;
 
 //PlayoutStatistics
 @property (nonatomic) unsigned int nPlayed, nPlayedKey, nSkippedNoKey, nSkippedIncomplete, nSkippedInvalidGop, nSkippedIncompleteKey;
@@ -68,82 +84,227 @@ using namespace ndnrtc::new_api::statistics;
 
 -(id)init
 {
-    self = [super initWithWindowNibName:@"NCStatisticsWindow"];
+    self = [super initWithNibName:@"NCStatisticsWindow" bundle:nil];
     
     if (self)
     {
         self.activeStreamPrefix = nil;
         self.streamPrefixLock = [[NSLock alloc] init];
+        self.chartsView.alphaValue = 0;
+        self.statsView.alphaValue = 0;
+        
+        [self subscribeForNotificationsAndSelectors:
+         kNCFetchedStreamsAddedNotification, @selector(onFetchedStreamsChanged:),
+         kNCFetchedStreamsRemovedNotification, @selector(onFetchedStreamsChanged:),
+         nil];
     }
     
     return self;
 }
 
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.view addSubview:self.chartsView];
+    self.chartsViewCenteringConstraint = [NSLayoutConstraint constraintWithItem:self.chartsView
+                                                                      attribute:NSLayoutAttributeCenterX
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.view
+                                                                      attribute:NSLayoutAttributeCenterX
+                                                                     multiplier:1.
+                                                                       constant:NSWidth(self.statsView.frame)/2.];
+    [self.view addConstraint:self.chartsViewCenteringConstraint];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.chartsView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1.
+                                                           constant:-12]];
+    NSView *chartsView = self.chartsView;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(8@999)-[chartsView]-(8@999)-|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(chartsView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(32@999)-[chartsView]-(8@999)-|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(chartsView)]];
+    self.isShowingStats = YES;
+}
+
 -(void)dealloc
 {
+    [self unsubscribeFromNotifications];
+    
     self.streamPrefixLock = nil;
     self.activeStreamPrefix = nil;
 }
 
-- (void)windowDidLoad
-{
-    [super windowDidLoad];
-    
-    if (self.streamsArray.count > 0)
-    {
-        [self setSelectedStream:[self getShortNameForStream:[self.streamsArray firstObject]]];
-    }
-}
-
--(void)windowDidBecomeKey:(NSNotification *)notification
-{
-    [self startStatUpdate:STAT_UPDATE_RATE];
-}
-
--(void)windowWillClose:(NSNotification *)notification
-{
-    if (self.window == notification.object)
-        [self stopStatUpdate];
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(statisticsWindowControllerWindowWillClose:)])
-        [self.delegate statisticsWindowControllerWindowWillClose:self];
-}
-
 -(NSArray*)streamsArray
 {
-    NSArray *participantsArray = [self.delegate statisticsWindowControllerNeedParticipantsArray:self];
-    
-    __block NSMutableArray *streamsArray = [[NSMutableArray alloc] init];
-    
-    [participantsArray enumerateObjectsUsingBlock:^(NSDictionary *participant, NSUInteger idx, BOOL *stop) {
-        NSDictionary *remoteStreams = [participant valueForKey:kNCRemoteStreamsDictionaryKey];
-        
-        [remoteStreams.allKeys enumerateObjectsUsingBlock:^(NSString *stream, NSUInteger idx, BOOL *stop) {
-            [streamsArray addObject:stream];
-        }];
-    }];
-    
-    return streamsArray;
+    return [[NCStreamingController sharedInstance] getCurrentStreamsForUser:self.username
+                                                                 withPrefix:self.hubPrefix];
+}
+
+-(NSArray *)audioStreamsArray
+{
+    return [[NCStreamingController sharedInstance] allFetchedAudioStreamsForUser:self.username
+                                                                      withPrefix:self.hubPrefix];
 }
 
 -(void)setSelectedStream:(NSString *)selectedStream
 {
     _selectedStream = selectedStream;
-    
-    NSString *userName = [[selectedStream componentsSeparatedByString:@":"] firstObject];
-    NSString *streamName = [[selectedStream componentsSeparatedByString:@":"] lastObject];
-    
-    [self.streamsArray enumerateObjectsUsingBlock:^(NSString *streamPrefix, NSUInteger idx, BOOL *stop) {
-        if ([[streamPrefix getNdnRtcUserName] isEqualTo:userName] &&
-            [[streamPrefix getNdnRtcStreamName] isEqualTo:streamName])
-        {
-            *stop = YES;
-            [self switchStatisticsForStream:streamPrefix];
-        }
-    }];
+    if (!self.isAudioSelected)
+        [self switchStatisticsForStream:[NSString streamPrefixForStream:selectedStream
+                                                                   user:self.username
+                                                             withPrefix:self.hubPrefix]];
 }
 
-// private
+-(void)setSelectedAudioStream:(NSString *)selectedAudioStream
+{
+    _selectedAudioStream = selectedAudioStream;
+    if (self.isAudioSelected)
+        [self switchStatisticsForStream:[NSString streamPrefixForStream:selectedAudioStream
+                                                                   user:self.username
+                                                             withPrefix:self.hubPrefix]];
+}
+
+-(void)startStatUpdateForStream:(NSString*)streamName
+                           user:(NSString*)username
+                     withPrefix:(NSString*)hubPrefix
+{
+    [self willChangeValueForKey:@"streamsArray"];
+    [self willChangeValueForKey:@"audioStreamsArray"];
+    [self willChangeValueForKey:@"isAudioAvailable"];
+    self.username = username;
+    self.hubPrefix = hubPrefix;
+    [self didChangeValueForKey:@"isAudioAvailable"];
+    [self didChangeValueForKey:@"audioStreamsArray"];
+    [self didChangeValueForKey:@"streamsArray"];
+    
+    if (self.isAudioSelected)
+    {
+        if (self.audioStreamsArray.count)
+            self.selectedAudioStream = self.audioStreamsArray[0][kNameKey];
+        [self selectAudio:nil];
+    }
+    else
+        self.selectedStream = streamName;
+    
+    [self startStatUpdate:STAT_UPDATE_RATE];
+}
+
+-(void)stopStatUpdate
+{
+    [self.statUpdateTimer invalidate];
+    self.statUpdateTimer = nil;
+}
+
+-(BOOL)isAudioAvailable
+{
+    return [[NCStreamingController sharedInstance] allFetchedAudioStreamsForUser:self.username
+                                                                      withPrefix:self.hubPrefix].count > 0;
+}
+
+-(void)setIsShowingStats:(BOOL)isShowingStats
+{
+    _isShowingStats = isShowingStats;
+    
+    if (isShowingStats)
+    {
+        [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+            [context setDuration:.2];
+            context.allowsImplicitAnimation = YES;
+            self.statsView.alphaValue = 1.;
+            self.chartsView.alphaValue = 0.;
+            self.statViewCenteringConstraint.constant = 0;
+            self.chartsViewCenteringConstraint.constant = NSWidth(self.view.frame);
+            [self.view layoutSubtreeIfNeeded];
+        }
+                            completionHandler:nil];
+    }
+    else
+    {
+        [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+            [context setDuration:.2];
+            context.allowsImplicitAnimation = YES;
+            self.statsView.alphaValue = 0.;
+            self.chartsView.alphaValue = 1.;
+            self.statViewCenteringConstraint.constant = NSWidth(self.view.frame);
+            self.chartsViewCenteringConstraint.constant = 0;
+            [self.view layoutSubtreeIfNeeded];
+        }
+                            completionHandler:nil];
+    }
+}
+
+#pragma mark - actions
+- (IBAction)selectAudio:(id)sender
+{
+    if (self.isAudioSelected)
+    {
+        [self switchStatisticsForStream:[NSString streamPrefixForStream:self.selectedAudioStream
+                                                                   user:self.username
+                                                             withPrefix:self.hubPrefix]];
+    }
+    else
+    {
+        [self switchStatisticsForStream:[NSString streamPrefixForStream:self.selectedStream
+                                                                   user:self.username
+                                                             withPrefix:self.hubPrefix]];
+    }
+}
+
+#pragma mark - notifications
+-(void)onFetchedStreamsChanged:(NSNotification*)notification
+{
+    NCFetchedUser *user = notification.object;
+    
+    if ([user.username isEqualToString:self.username] &&
+        [user.hubPrefix isEqualToString:self.hubPrefix])
+    {
+        if ([notification.name isEqualToString:kNCFetchedStreamsRemovedNotification])
+        {
+            NSArray *removedStreams = notification.userInfo[kNCStreamConfigurationsKey];
+
+            if ([[removedStreams valueForKey:kNameKey] containsObject:self.selectedStream])
+            {
+                if (self.isAudioAvailable)
+                {
+                    self.isAudioSelected = YES;
+                    [self selectAudio:nil];
+                }
+                else
+                    [self stopStatUpdate];
+            }
+            
+            if ([[removedStreams valueForKey:kNameKey] containsObject:self.selectedAudioStream] &&
+                self.isAudioSelected)
+            {
+                self.isAudioSelected = NO;
+                [self selectAudio:nil];
+            }
+            
+            if (self.audioStreamsArray.count == 0)
+            {
+                [self willChangeValueForKey:@"isAudioAvailable"];
+                [self didChangeValueForKey:@"isAudioAvailable"];
+            }
+        }
+        else
+        {
+            [self willChangeValueForKey:@"isAudioAvailable"];
+            [self willChangeValueForKey:@"audioStreamsArray"];
+            [self didChangeValueForKey:@"audioStreamsArray"];
+            [self didChangeValueForKey:@"isAudioAvailable"];
+        }
+    }
+}
+
+#pragma mark - private
 -(void)startStatUpdate:(NSTimeInterval)refreshRate
 {
     __weak NCStatisticsWindowController *weakSelf = self;
@@ -152,12 +313,6 @@ using namespace ndnrtc::new_api::statistics;
                                                          fireBlock:^(NSTimer *timer) {
                                                              [weakSelf queryStatisticsForStream:weakSelf.activeStreamPrefix];
                                                          }];
-}
-
--(void)stopStatUpdate
-{
-    [self.statUpdateTimer invalidate];
-    self.statUpdateTimer = nil;
 }
 
 -(void)switchStatisticsForStream:(NSString*)streamPrefix
@@ -263,15 +418,7 @@ using namespace ndnrtc::new_api::statistics;
     if (!value || ![value isKindOfClass:[NSArray class]])
         return nil;
     
-    __block NSMutableArray *result = [NSMutableArray array];
-    
-    [value enumerateObjectsUsingBlock:^(NSString *streamPrefix, NSUInteger idx, BOOL *stop) {
-        [result addObject:[NSString stringWithFormat:@"%@:%@",
-                          [streamPrefix getNdnRtcUserName],
-                          [streamPrefix getNdnRtcStreamName]]];
-    }];
-    
-    return result;
+    return [value valueForKey:kNameKey];
 }
 
 -(id)transformedValue:(id)value
@@ -282,9 +429,7 @@ using namespace ndnrtc::new_api::statistics;
     if ([value isKindOfClass:[NSArray class]])
         return [self transformedArrayValue:value];
     
-    return [NSString stringWithFormat:@"%@:%@",
-            [value getNdnRtcUserName],
-            [value getNdnRtcStreamName]];
+    return value[kNameKey];
 }
 
 @end

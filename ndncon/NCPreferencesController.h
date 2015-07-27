@@ -27,6 +27,11 @@ extern NSString* const kUserKey;
 extern NSString* const kNdnHostKey;
 extern NSString* const kNdnPortKey;
 
+extern NSString* const kUserFetchOptionFetchAudioKey;
+extern NSString* const kUserFetchOptionFetchVideoKey;
+extern NSString* const kUserFetchOptionDefaultAudioThreadsKey;
+extern NSString* const kUserFetchOptionDefaultVideoThreadsKey;
+
 
 @interface NCPreferencesController : PTNStorage
 
@@ -65,11 +70,13 @@ extern NSString* const kNdnPortKey;
 
 @property (retain) NSArray *videoDevices;
 @property (retain) NSArray *audioDevices;
+@property (retain) NSArray *activeDisplays;
 
 @property (nonatomic) NSArray *audioStreams;
 @property (nonatomic) NSArray *videoStreams;
 
 @property (nonatomic) NSString *chatBroadcastPrefix;
+@property (nonatomic) NSString *chatroomBroadcastPrefix;
 @property (nonatomic) NSString *conferenceBroadcastPrefix;
 @property (nonatomic) NSString *userBroadcastPrefix;
 
@@ -83,5 +90,10 @@ extern NSString* const kNdnPortKey;
 -(void)getNdnRtcGeneralParameters:(void*)generalParameters;
 -(void)getNdnRtcGeneralProducerParameters:(void*)generalProducerParameters;
 -(void)getNdnRtcGeneralConsumerParameters:(void*)generalConsumerParameters;
+
+// user-specific fetch options
+-(void)setFetchOptions:(NSDictionary*)options forUser:(NSString*)username withPrefix:(NSString*)prefix;
+-(void)addFetchOptions:(NSDictionary*)options forUser:(NSString*)username withPrefix:(NSString*)prefix;
+-(NSDictionary*)getFetchOptionsForUser:(NSString*)username withPrefix:(NSString*)prefix;
 
 @end

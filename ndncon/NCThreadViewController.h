@@ -10,8 +10,6 @@
 #import "NCStreamViewController.h"
 #import "NCConfigurationObserver.h"
 
-extern NSString* const kBitrateKey;
-
 @interface NCThreadViewController : NSViewController
 
 @property (nonatomic, weak) id<NCConfigurationObserverDelegate> delegate;

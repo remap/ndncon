@@ -50,11 +50,55 @@ NSString* const kNCNdnRtcUserUrlFormat = @"nrtc:%@:%@";
 +(NSString *)userSessionPrefixForUser:(NSString *)username
                         withHubPrefix:(NSString *)hubPrefix
 {
-    return [self pathWithComponents:
-            @[hubPrefix,
-              [NSString ncStringFromCString:NameComponents::NameComponentApp.c_str()],
-              [NSString ncStringFromCString:NameComponents::NameComponentUser.c_str()],
-              username]];
+    if (username && hubPrefix)
+        return [NSString ncStringFromCString:NameComponents::getUserPrefix(std::string([username cStringUsingEncoding:NSASCIIStringEncoding]), std::string([hubPrefix cStringUsingEncoding:NSASCIIStringEncoding])).c_str()];
+
+    return nil;
+}
+
++(NSString *)streamPrefixForStream:(NSString *)streamName
+                              user:(NSString *)username
+                        withPrefix:(NSString *)prefix
+{
+    if (streamName && username && prefix)
+    {
+        std::string streamPrefix = NameComponents::getStreamPrefix(std::string([streamName cStringUsingEncoding:NSASCIIStringEncoding]),
+                                                                   std::string([username cStringUsingEncoding:NSASCIIStringEncoding]),
+                                                                   std::string([prefix cStringUsingEncoding:NSASCIIStringEncoding]));
+        return [NSString ncStringFromCString:streamPrefix.c_str()];
+    }
+    
+    return nil;
+}
+
++(NSString *)threadPrefixForThread:(NSString *)threadName
+                            stream:(NSString *)streamName
+                              user:(NSString *)username
+                        withPrefix:(NSString *)prefix
+{
+    if (threadName && streamName && username && prefix)
+    {
+        std::string threadPrefix = NameComponents::getThreadPrefix(std::string([threadName cStringUsingEncoding:NSASCIIStringEncoding]),
+                                                                   std::string([streamName cStringUsingEncoding:NSASCIIStringEncoding]),
+                                                                   std::string([username cStringUsingEncoding:NSASCIIStringEncoding]),
+                                                                   std::string([prefix cStringUsingEncoding:NSASCIIStringEncoding]));
+        return [NSString ncStringFromCString:threadPrefix.c_str()];
+    }
+    
+    return nil;
+}
+
++(NSString *)chatroomPrefixForChat:(NSString *)chatroomName
+                              user:(NSString *)username
+                        withPrefix:(NSString *)hubPrefix
+{
+    if (chatroomName && username && hubPrefix)
+    {
+        NSString *userSessionPrefix = [NSString userSessionPrefixForUser:username withHubPrefix:hubPrefix];
+        return [[userSessionPrefix stringByAppendingNdnComponent:@"chat"] stringByAppendingNdnComponent:chatroomName];
+    }
+    
+    return nil;
 }
 
 +(NSString*)ndnRtcAppNameComponent
@@ -65,6 +109,11 @@ NSString* const kNCNdnRtcUserUrlFormat = @"nrtc:%@:%@";
 +(NSString *)ndnRtcSessionInfoComponent
 {
     return [NSString ncStringFromCString:NameComponents::NameComponentSession.c_str()];
+}
+
++(NSString *)userIdWithName:(NSString *)username andPrefix:(NSString *)prefix
+{
+    return [NSString stringWithFormat:@"%@:%@", username, prefix];
 }
 
 -(NSString*)getNdnRtcHubPrefix
@@ -78,6 +127,22 @@ NSString* const kNCNdnRtcUserUrlFormat = @"nrtc:%@:%@";
         return [NSString pathWithComponents:hubPrefix];
     }
 
+    return nil;
+}
+
+-(NSString*)getNdnRtcSessionPrefix
+{
+    NSUInteger idx = NSNotFound;
+    NSUInteger userNameIdx = NSNotFound;
+    
+    if ([self hasNdnRtcNameComponent:NameComponents::NameComponentApp index:idx] &&
+        [self hasNdnRtcNameComponent:NameComponents::NameComponentUser index:userNameIdx])
+    {
+        NSArray *components = [self pathComponents];
+        NSArray *sessionPrefix = [components subarrayWithRange:NSMakeRange(0, userNameIdx)];
+        return [NSString pathWithComponents:sessionPrefix];
+    }
+    
     return nil;
 }
 

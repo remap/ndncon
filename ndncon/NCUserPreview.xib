@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NCUserPreviewController">
+            <connections>
+                <outlet property="captionView" destination="16g-YN-gxO" id="CCG-u0-Zpf"/>
+                <outlet property="usernameLabel" destination="8Va-kp-PzC" id="oZ2-Nj-IUF"/>
+                <outlet property="videoStackView" destination="mfn-lq-z7w" id="RLw-Db-TRd"/>
+                <outlet property="view" destination="c22-O7-iKe" id="p5Z-hT-ag2"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe" customClass="NCTrackableView">
+            <rect key="frame" x="0.0" y="0.0" width="177" height="100"/>
+            <subviews>
+                <stackView orientation="horizontal" alignment="centerY" spacing="0.0" hasEqualSpacing="YES" horizontalHuggingPriority="249" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="mfn-lq-z7w" userLabel="Stream View">
+                    <rect key="frame" x="0.0" y="0.0" width="177" height="100"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="177" id="Xde-0t-ASL"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="ogT-U6-NYH"/>
+                    </constraints>
+                </stackView>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="16g-YN-gxO" userLabel="Caption View" customClass="NCBlockDrawableView">
+                    <rect key="frame" x="0.0" y="70" width="177" height="30"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Va-kp-PzC">
+                            <rect key="frame" x="8" y="6" width="67" height="17"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Username" id="wjv-64-yNd">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <button translatesAutoresizingMaskIntoConstraints="NO" id="oug-DL-lXC" customClass="NCToggleButton">
+                            <rect key="frame" x="102" y="2" width="25" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="25" id="Jth-bg-whC"/>
+                                <constraint firstAttribute="height" constant="25" id="rCu-pT-29b"/>
+                            </constraints>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_audio" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="cpX-EV-Zak">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
+                                    <color key="value" red="0.0" green="0.09351420731" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onAudioSelected:" target="-2" id="bJP-ZF-C17"/>
+                                <binding destination="-2" name="value" keyPath="self.isAudioEnabled" id="VN4-71-cV4"/>
+                            </connections>
+                        </button>
+                        <button springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2zX-Dw-j1J" customClass="NCToggleButton">
+                            <rect key="frame" x="152" y="2" width="25" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="25" id="9Hr-7n-f1i"/>
+                                <constraint firstAttribute="height" constant="25" id="I0u-C2-PUa"/>
+                            </constraints>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="user_close" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="nya-9U-Mgi">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
+                                    <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onClose:" target="-2" id="QUO-lD-uCZ"/>
+                            </connections>
+                        </button>
+                        <button translatesAutoresizingMaskIntoConstraints="NO" id="lvg-3Y-yqT" customClass="NCToggleButton">
+                            <rect key="frame" x="127" y="2" width="25" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="JI9-zy-Eqv"/>
+                                <constraint firstAttribute="width" constant="25" id="kHx-DA-Dwz"/>
+                            </constraints>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_video" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="f3A-Hm-Nfz">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
+                                    <color key="value" red="0.0" green="0.13945808970000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onVideoSelected:" target="-2" id="ESK-55-NNl"/>
+                                <binding destination="-2" name="value" keyPath="self.isVideoEnabled" id="0A0-OE-xTL"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="0B3-jH-Wvr"/>
+                        <constraint firstAttribute="centerY" secondItem="2zX-Dw-j1J" secondAttribute="centerY" id="2XK-IQ-yDG"/>
+                        <constraint firstAttribute="centerY" secondItem="2zX-Dw-j1J" secondAttribute="centerY" id="2dj-zu-h7b"/>
+                        <constraint firstItem="2zX-Dw-j1J" firstAttribute="leading" secondItem="lvg-3Y-yqT" secondAttribute="trailing" id="5t1-lJ-AKm"/>
+                        <constraint firstAttribute="centerY" secondItem="8Va-kp-PzC" secondAttribute="centerY" id="dBW-Vu-OZZ"/>
+                        <constraint firstAttribute="trailing" secondItem="2zX-Dw-j1J" secondAttribute="trailing" id="djN-xe-40y"/>
+                        <constraint firstAttribute="centerY" secondItem="oug-DL-lXC" secondAttribute="centerY" id="eMO-xe-Fxm"/>
+                        <constraint firstAttribute="centerY" secondItem="lvg-3Y-yqT" secondAttribute="centerY" id="lPm-Va-Z3l"/>
+                        <constraint firstItem="lvg-3Y-yqT" firstAttribute="leading" secondItem="oug-DL-lXC" secondAttribute="trailing" id="ug2-eI-o4Z"/>
+                        <constraint firstItem="8Va-kp-PzC" firstAttribute="leading" secondItem="16g-YN-gxO" secondAttribute="leading" constant="10" id="xNf-9W-SQA"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="mfn-lq-z7w" secondAttribute="bottom" id="MdJ-si-4RR"/>
+                <constraint firstItem="mfn-lq-z7w" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="VR4-az-Bik"/>
+                <constraint firstAttribute="trailing" secondItem="mfn-lq-z7w" secondAttribute="trailing" id="VbP-3A-Onm"/>
+                <constraint firstItem="mfn-lq-z7w" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="XOn-E3-j8I"/>
+                <constraint firstItem="16g-YN-gxO" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="ZPG-M7-b6i"/>
+                <constraint firstAttribute="trailing" secondItem="16g-YN-gxO" secondAttribute="trailing" id="pTH-tW-a5c"/>
+                <constraint firstItem="16g-YN-gxO" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="qnT-HR-3Xj"/>
+            </constraints>
+            <point key="canvasLocation" x="-91" y="155"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="A82-ui-Wpd"/>
+    </objects>
+    <resources>
+        <image name="stream_audio" width="60" height="60"/>
+        <image name="stream_video" width="60" height="60"/>
+        <image name="user_close" width="60" height="60"/>
+    </resources>
+</document>

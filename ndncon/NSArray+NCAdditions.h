@@ -21,4 +21,8 @@
 
 -(NSArray *)arrayByRemovingObject:(id)object;
 
+// media streams additions
+-(NSDictionary*)streamWithName:(NSString*)streamName;
+-(NSDictionary*)threadWithName:(NSString*)threadName;
+
 @end

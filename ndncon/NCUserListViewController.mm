@@ -23,6 +23,7 @@
 #import "NCStreamBrowserController.h"
 
 NSString* const kSessionInfoKey = @"sessionInfo";
+NSString* const kUserInfoKey = @"sessionInfo";
 NSString* const kHubPrefixKey = @"hubPrefix";
 
 using namespace ndnrtc;
@@ -335,30 +336,30 @@ private:
 
 -(void)checkAndUpdateSessionObservers
 {
-    [self stopOldObservers];
-    
-    if ([NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
-    {
-        BOOL updated = NO;
-        
-        for (id obj in self.userController.arrangedObjects)
-        {
-            NSString *userName = [obj name];
-            NSString *prefix = [obj prefix];
-            
-            if (userName && prefix &&
-                ![userName isEqualToString:@"username"])
-                if (![self hasObserverForUser:userName andPrefix:prefix])
-                {
-                    updated = YES;
-                    [self startObserverForUser:userName andPrefix:prefix];
-                }
-        }
-        
-        if (updated)
-            if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
-                [self.delegate userListViewControllerUserListUpdated:self];
-    }
+//    [self stopOldObservers];
+//    
+//    if ([NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline)
+//    {
+//        BOOL updated = NO;
+//        
+//        for (id obj in self.userController.arrangedObjects)
+//        {
+//            NSString *userName = [obj name];
+//            NSString *prefix = [obj prefix];
+//            
+//            if (userName && prefix &&
+//                ![userName isEqualToString:@"username"])
+//                if (![self hasObserverForUser:userName andPrefix:prefix])
+//                {
+//                    updated = YES;
+//                    [self startObserverForUser:userName andPrefix:prefix];
+//                }
+//        }
+//        
+//        if (updated)
+//            if (self.delegate && [self.delegate respondsToSelector:@selector(userListViewControllerUserListUpdated:)])
+//                [self.delegate userListViewControllerUserListUpdated:self];
+//    }
 }
 
 -(void)stopOldObservers

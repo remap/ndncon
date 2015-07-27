@@ -74,6 +74,11 @@
     [self.streamEditorController addVideoStream:[NCVideoStreamViewController defaultConfguration]];
 }
 
+- (IBAction)addScreenStream:(id)sender
+{
+    [self.streamEditorController addVideoStream:[NCVideoStreamViewController defaultScreenConfguration]];
+}
+
 @end
 
 @interface NCEditorClipView : NSClipView

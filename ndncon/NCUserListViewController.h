@@ -12,6 +12,7 @@
 #import "NCSessionInfoContainer.h"
 
 extern NSString* const kSessionInfoKey;
+extern NSString* const kUserInfoKey;
 extern NSString* const kHubPrefixKey;
 
 @class User;
