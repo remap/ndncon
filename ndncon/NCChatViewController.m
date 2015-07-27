@@ -16,6 +16,19 @@
 #import "NSDate+NCAdditions.h"
 #import "NCStreamBrowserController.h"
 
+@interface Delme : NSTextView
+
+@end
+
+@implementation Delme
+
+-(void)setFrame:(NSRect)frame
+{
+    [super setFrame:frame];
+}
+
+@end
+
 //******************************************************************************
 typedef enum _NCChatMessageCellType {
     NCChatMessageCellTypeFirst,
@@ -31,7 +44,7 @@ typedef enum _NCChatMessageCellType {
 @property (nonatomic, weak) IBOutlet NSTextField *userNameTextField;
 @property (nonatomic, weak) IBOutlet NSTextField *timestampTextField;
 @property (nonatomic, weak) IBOutlet NSTextField *messageTypeTextField;
-@property (nonatomic, strong) IBOutlet NSTextView *messageTextView;
+@property (nonatomic, strong) IBOutlet Delme *messageTextView;
 
 +(NSDictionary *)textviewAttributes;
 +(NSString*)messageTextContentFromGroup:(NSArray*)msgGroup;
@@ -115,7 +128,7 @@ typedef enum _NCChatMessageCellType {
     if (isActive)
         [self.messageTextField.cell setPlaceholderString:@"type message..."];
     else
-        [self.messageTextField.cell setPlaceholderString:@"chat is unavailable when the user is offline"];
+        [self.messageTextField.cell setPlaceholderString:@"you must join chatroom to send messages"];
 }
 
 -(NSManagedObjectContext *)context
@@ -142,10 +155,7 @@ typedef enum _NCChatMessageCellType {
     
     if ([self.chatRoomId isEqualTo:chatRoomId])
     {
-        if ([notification.userInfo[NCChatMessageTypeKey] isEqualTo:kChatMesageTypeText])
-        {
-            [self reloadData];
-        }
+        [self reloadData];
     }
 }
 
@@ -155,17 +165,13 @@ typedef enum _NCChatMessageCellType {
     return (self.recentMessages)?self.recentMessages.count:0;
 }
 
--(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+-(NSView *)tableView:(NSTableView *)tableView
+  viewForTableColumn:(NSTableColumn *)tableColumn
+                  row:(NSInteger)row
 {
     NSArray *msgGroup = self.recentMessages[row];
     static NSString *cellIdentifier = @"MessageCell";
     NCChatMessageCell *cell = [self.tableView makeViewWithIdentifier:cellIdentifier owner:nil];
-    [cell setWantsLayer:YES];
-
-    if ([[msgGroup firstObject] user] == nil)
-        cell.layer.backgroundColor = [NSColor colorWithWhite:1. alpha:1.].CGColor;
-    else
-        cell.layer.backgroundColor = [NSColor colorWithRed:227./255. green:238./255. blue:249./255. alpha:1.].CGColor;
 
     cell.messageGroup = msgGroup;
     
@@ -177,10 +183,17 @@ typedef enum _NCChatMessageCellType {
     if (row < self.recentMessages.count)
     {
         NSArray *msgGroup = self.recentMessages[row];
-        NSString *content = [NCChatMessageCell messageTextContentFromGroup:msgGroup];
-        NSRect rect  = [NCChatMessageCell calculateTextRectForSize:NSMakeSize([[tableView.tableColumns firstObject] width], 1000.)
-                                                        andContent:content];
-        return rect.size.height+40;
+        ChatMessage *message = [msgGroup firstObject];
+        
+        if ([message.type isEqualToNumber:[ChatMessage typeFromString:kChatMesageTypeText]])
+        {
+            NSString *content = [NCChatMessageCell messageTextContentFromGroup:msgGroup];
+            NSRect rect  = [NCChatMessageCell calculateTextRectForSize:NSMakeSize([[tableView.tableColumns firstObject] width], 1000.)
+                                                            andContent:content];
+            return rect.size.height+40;
+        }
+        else
+            return 25.;
     }
     
     return 55.;
@@ -204,33 +217,41 @@ typedef enum _NCChatMessageCellType {
     NSArray *sortedMessages = [[self.chatRoom.messages sortedArrayUsingDescriptors:@[sortChronologically]] mutableCopy];
     
     NSArray *filteredMessages = [sortedMessages filteredArrayUsingPredicate:
-                                 [NSPredicate predicateWithFormat:@"type == %@",
-                                  [ChatMessage typeFromString:kChatMesageTypeText]]];
+                                 [NSPredicate predicateWithFormat:@"type == %@ || type == %@ || type == %@",
+                                  [ChatMessage typeFromString:kChatMesageTypeText],
+                                  [ChatMessage typeFromString:kChatMesageTypeJoin],
+                                  [ChatMessage typeFromString:kChatMesageTypeLeave]]];
     
     NSTimeInterval msgInterval = 120; // seconds
     __block NSMutableArray *msgGroups = [NSMutableArray array];
     __block NSDate *lastTime = nil;
+    __block NSNumber *lastMessageType = nil;
     __block NSMutableArray *currentGroup = [NSMutableArray array];
     __block User *lastUser = nil;
     
     [filteredMessages enumerateObjectsUsingBlock:^(ChatMessage *message, NSUInteger idx, BOOL *stop) {
-        if (lastUser != message.user) // if got message from another user - close group
+        // if got message from another user - close group or different message type
+        BOOL closeGroup = ![lastMessageType isEqualToNumber: message.type];
+        
+        if (!closeGroup)
+            if ([lastMessageType isEqualToNumber:[ChatMessage typeFromString:kChatMesageTypeText]])
+            {
+                closeGroup = (lastUser != message.user);
+            }
+        
+        if (!closeGroup)
+            if ([message.timestamp timeIntervalSinceDate:lastTime] > msgInterval)
+                closeGroup = YES;
+        
+        if (closeGroup && currentGroup.count)
         {
             [msgGroups addObject:currentGroup];
             currentGroup = [NSMutableArray array];
         }
-        else
-        {
-            // check time - if messages are more than msgInterval apart - close group
-            if ([message.timestamp timeIntervalSinceDate:lastTime] > msgInterval)
-            {
-                [msgGroups addObject:currentGroup];
-                currentGroup = [NSMutableArray array];
-            }
-        }
         
         [currentGroup addObject:message];
         
+        lastMessageType = message.type;
         lastUser = message.user;
         lastTime = message.timestamp;
         
@@ -259,6 +280,8 @@ typedef enum _NCChatMessageCellType {
 //******************************************************************************
 @interface NCChatMessageCell()
 
+@property (nonatomic) BOOL isTypeTextual;
+
 @end
 
 @implementation NCChatMessageCell
@@ -270,13 +293,16 @@ typedef enum _NCChatMessageCellType {
     if (self)
     {
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.messageTextView = [[NSTextView alloc] init];
+        self.messageTextView = [[Delme alloc] init];
+        self.messageTextView.editable = NO;
         self.messageTextView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.messageTextView setBackgroundColor:[NSColor clearColor]];
         [self.messageTextView setVerticallyResizable:YES];
         [self.messageTextView.layoutManager ensureLayoutForTextContainer:self.messageTextView.textContainer];
         [self.messageTextView setCanDrawConcurrently:YES];
         [self.messageTextView setAutomaticLinkDetectionEnabled:YES];
+        [self.messageTextView setContentCompressionResistancePriority:NSLayoutPriorityDefaultLow
+                                                       forOrientation:NSLayoutConstraintOrientationVertical];
     }
     
     return self;
@@ -285,33 +311,7 @@ typedef enum _NCChatMessageCellType {
 -(void)awakeFromNib
 {
     [self setWantsLayer: YES];
-    
-    [self addSubview:self.messageTextView];
-    
-    NSView *textView = self.messageTextView;
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[textView]-10-|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(textView)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[textView]-10-|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(textView)]];
 }
-
-//-(void)drawRect:(NSRect)dirtyRect
-//{
-//    {
-//        [[NSColor redColor] set];
-//        NSBezierPath *path = [NSBezierPath bezierPathWithRect:self.messageTextView.frame];
-//        [path stroke];
-//    }
-//    {
-//        [[NSColor greenColor] set];
-//        NSBezierPath *path = [NSBezierPath bezierPathWithRect:self.frame];
-//        [path stroke];
-//    }
-//}
 
 -(void)setMessage:(ChatMessage *)message
 {
@@ -320,7 +320,7 @@ typedef enum _NCChatMessageCellType {
      [[NSAttributedString alloc] initWithString:((message.body)?message.body:@"")
                                      attributes:[NCChatMessageCell textviewAttributes]]];
     [self.messageTextView checkTextInDocument:nil];
-    self.userNameTextField.stringValue = (message.user)?message.user.name:@"me";
+    self.userNameTextField.stringValue = (!message.user || message.user.isMyself) ? @"me" : message.user.name;
     self.timestampTextField.stringValue = (message.timestamp)?[message.timestamp description]:@"";
     self.messageTypeTextField.stringValue = @"";
 }
@@ -330,12 +330,76 @@ typedef enum _NCChatMessageCellType {
     _messageGroup = messageGroup;
     
     ChatMessage *message = [messageGroup firstObject];
-    [self.messageTextView.textStorage setAttributedString:[[NSAttributedString alloc] initWithString:[NCChatMessageCell messageTextContentFromGroup:messageGroup]
-                                                                                         attributes:[NCChatMessageCell textviewAttributes]]];
-    [self.messageTextView checkTextInDocument:nil];
-    self.userNameTextField.stringValue = (message.user)?message.user.name:@"me";
-    self.timestampTextField.stringValue = [NSString stringWithFormat:@"(%@):", [NCChatMessageCell textRepresentationForDate:message.timestamp]];
-    self.messageTypeTextField.stringValue = @"";
+    
+    if ([message.type isEqualToNumber:[ChatMessage typeFromString:kChatMesageTypeText]])
+    {
+        self.isTypeTextual = YES;
+        
+        if (message.user == nil || [message.user isMyself])
+            self.layer.backgroundColor = [NSColor colorWithWhite:1. alpha:1.].CGColor;
+        else
+            self.layer.backgroundColor = [NSColor colorWithRed:227./255. green:238./255. blue:249./255. alpha:1.].CGColor;
+        
+        [self.messageTextView.textStorage setAttributedString:[[NSAttributedString alloc] initWithString:[NCChatMessageCell messageTextContentFromGroup:messageGroup]
+                                                                                              attributes:[NCChatMessageCell textviewAttributes]]];
+        [self.messageTextView checkTextInDocument:nil];
+        self.userNameTextField.stringValue = (!message.user || message.user.isMyself) ? @"me" : message.user.name;
+        self.timestampTextField.stringValue = [NSString stringWithFormat:@"(%@):", [NCChatMessageCell textRepresentationForDate:message.timestamp]];
+        self.messageTypeTextField.stringValue = @"";
+    }
+    else
+    {
+        self.isTypeTextual = NO;
+        
+        if ([message.type isEqualToNumber:[ChatMessage typeFromString:kChatMesageTypeJoin]])
+            self.layer.backgroundColor = [NSColor colorWithWhite:0.98 alpha:1.].CGColor;
+        else
+            self.layer.backgroundColor = [NSColor colorWithWhite:0.98 alpha:1.].CGColor;
+        
+        __block NSMutableSet *userNames = [NSMutableSet set];
+        [_messageGroup enumerateObjectsUsingBlock:^(ChatMessage *message, NSUInteger idx, BOOL *stop) {
+            NSString *userName = (!message.user || message.user.isMyself) ? @"me" : message.user.name;
+            [userNames addObject:userName];
+        }];
+        
+        self.userNameTextField.stringValue = [[userNames allObjects] componentsJoinedByString:@","];
+        self.timestampTextField.stringValue = [NSString stringWithFormat:@"(%@)", [NCChatMessageCell textRepresentationForDate:message.timestamp]];
+        self.messageTypeTextField.stringValue = [kChatMesageTypeJoin lowercaseString];
+    }
+}
+
+-(void)setIsTypeTextual:(BOOL)isTypeTextual
+{
+    _isTypeTextual = isTypeTextual;
+    
+    if (isTypeTextual)
+    {
+        [self addSubview:self.messageTextView];
+        NSView *textView = self.messageTextView;
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(30)-[textView]-(10@999)-|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(textView)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(10@999)-[textView]-(10@999)-|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(textView)]];
+        
+        [self.userNameTextField setFont:[NSFont boldSystemFontOfSize:13.]];
+        [self.timestampTextField setFont:[NSFont systemFontOfSize:12.]];
+    }
+    else
+    {
+        [self.messageTextView removeFromSuperview];
+        [self.userNameTextField setFont:[NSFont systemFontOfSize:10.]];
+        [self.timestampTextField setFont:[NSFont systemFontOfSize:9.]];
+    }
+}
+
+-(void)setFrame:(NSRect)frame
+{
+    [super setFrame:frame];
+    [self setNeedsLayout:YES];
 }
 
 +(NSDictionary *)textviewAttributes

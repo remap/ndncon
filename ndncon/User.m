@@ -11,6 +11,7 @@
 #import "NCNdnRtcLibraryController.h"
 #import "NCErrorController.h"
 #import "NCChatLibraryController.h"
+#import "NCPreferencesController.h"
 
 //******************************************************************************
 @implementation User
@@ -81,6 +82,12 @@
     }
     
     return user;
+}
+
+-(BOOL)isMyself
+{
+    return [self.name isEqualToString:[NCPreferencesController sharedInstance].userName] &&
+    [self.prefix isEqualToString:[NCPreferencesController sharedInstance].prefix];
 }
 
 -(NSImage *)statusImage

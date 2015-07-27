@@ -95,7 +95,9 @@ public:
                                                                                           messageBody:message
                                                                                      inChatRoomWithId:chatRoomId_];
 
-            if (chatMessage.user)
+            if (chatMessage.user &&
+                ![chatMessage.user.name isEqualToString:[NCPreferencesController sharedInstance].userName] &&
+                ![chatMessage.user.prefix isEqualToString:[NCPreferencesController sharedInstance].prefix])
                 userInfo[NCChatMessageUserKey] = chatMessage.user;
             
             [[[NSObject alloc] init]
@@ -177,6 +179,66 @@ private:
 -(NSManagedObjectContext *)context
 {
     return [(AppDelegate*)[NSApp delegate] managedObjectContext];
+}
+
+-(void)joinChatroom:(NCChatRoom *)chatroom
+{
+    if ([NCFaceSingleton sharedInstance].isValid)
+    {
+        NSString *chatRoomId = chatroom.chatroomName;
+        std::string broadcastPrefix([[NCPreferencesController sharedInstance].chatBroadcastPrefix
+                                     cStringUsingEncoding:NSASCIIStringEncoding]);
+        ndn::Name broadcastPrefixName(broadcastPrefix);
+        const std::string screenName([[NCPreferencesController sharedInstance].userName
+                                      cStringUsingEncoding:NSASCIIStringEncoding]);
+        const std::string chatRoom([chatRoomId
+                                    cStringUsingEncoding:NSASCIIStringEncoding]);
+        std::string chatPrefix([[NCChatLibraryController chatsAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
+                                cStringUsingEncoding:NSASCIIStringEncoding]);
+        ndn::Name chatPrefixName(chatPrefix);
+        
+        if (_chatIdToObserver.find(chatRoom) != _chatIdToObserver.end())
+            return ;
+        else
+        {
+            ndn::ptr_lib::shared_ptr<ChatObserver> observer(new NCChatObserver(chatRoomId));
+            __block boost::shared_ptr<Chat> chat(new Chat(broadcastPrefixName, screenName, chatRoom,
+                                                          chatPrefixName, observer.get(),
+                                                          *[[NCFaceSingleton sharedInstance] getFace],
+                                                          *[[NCFaceSingleton sharedInstance] getKeyChain],
+                                                          [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
+            __block BOOL success = YES;
+            
+            [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+                try {
+                    chat->start();
+                } catch (std::exception &exception) {
+                    chat.reset();
+                    success = NO;
+                    NSLog(@"Exception while starting chat: %@", [NSString ncStringFromCString:exception.what()]);
+                    [[NCFaceSingleton sharedInstance] markInvalid];
+                }
+            }];
+            
+            if (success)
+            {
+                boost::dynamic_pointer_cast<NCChatObserver>(observer)->setChat(chat);
+                
+                NSLog(@"joined chatroom %@", chatRoomId);
+                
+                _chatIdToObserver[chatRoom] = boost::dynamic_pointer_cast<NCChatObserver>(observer);
+                
+                if (![ChatRoom chatRoomWithId:chatRoomId fromContext:self.context])
+                {
+                    ChatRoom *newChatRoom = [ChatRoom newChatRoomWithId:chatRoomId inContext:self.context];
+                    newChatRoom.created = [NSDate date];
+                    [self.context save:nil];
+                }
+            } // if success
+            else
+                self.initialized = NO;
+        }
+    }
 }
 
 -(NSString *)startChatWithUser:(NSString *)userPrefix
@@ -391,6 +453,12 @@ private:
     User *user = [User userByName:[userSessionPrefix getNdnRtcUserName]
                         andPrefix:[userSessionPrefix getNdnRtcHubPrefix]
                       fromContext:self.context];
+    
+    if (!user)
+        user = [User newUserWithName:[userSessionPrefix getNdnRtcUserName]
+                           andPrefix:[userSessionPrefix getNdnRtcHubPrefix]
+                           inContext:self.context];
+    
     ChatMessage *chatMessage = [ChatMessage
                                 newChatMessageFromUser:user
                                 ofType:msgType

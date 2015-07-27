@@ -13,7 +13,7 @@
 #import "NSString+NCAdditions.h"
 #import "User.h"
 #import "AppDelegate.h"
-#import "NSView+NCDragAndDropAbility.h"
+#import "NSView+NCAdditions.h"
 #import "NCDiscoveryLibraryController.h"
 
 //******************************************************************************

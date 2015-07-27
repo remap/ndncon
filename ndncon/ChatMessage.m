@@ -59,7 +59,7 @@ NSString* const kChatMesageTypeText = @"Text";
     if ([typeStr isEqualTo:kChatMesageTypeJoin])
         return @(1);
     
-    if ([typeStr isEqualTo:kChatMesageTypeJoin])
+    if ([typeStr isEqualTo:kChatMesageTypeLeave])
         return @(2);
     
     if ([typeStr isEqualTo:kChatMesageTypeText])

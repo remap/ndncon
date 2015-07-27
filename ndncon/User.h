@@ -41,6 +41,7 @@
 
 @property (nonatomic) NSString* name;
 @property (nonatomic) NSString* prefix;
+@property (nonatomic) BOOL isMyself;
 
 @property (nonatomic) NSImage* statusImage;
 @property (nonatomic, readonly) NSString *userPrefix;
