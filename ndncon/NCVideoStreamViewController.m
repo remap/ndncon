@@ -146,11 +146,13 @@ NSString* const kDeviceConfigurationKey = @"Device configuration";
 
 +(NSDictionary *)defaultScreenConfguration
 {
+    NSScreen *mainDisplay = [NCPreferencesController sharedInstance].activeDisplays[0];
+    
     return @{
              kNameKey:@"desktop",
              kSegmentSizeKey: @(1000),
              kFreshnessPeriodKey: @(1000),
-             kInputDeviceKey:@(-1),  // any first device in the list
+             kInputDeviceKey:@(-[[mainDisplay deviceDescription][@"NSScreenNumber"] intValue]),  // any first device in the list
              kDeviceConfigurationKey:@(-1), // index -1 means last element in array
              kSynchornizedToKey:@(-1),  // index -1 means no synchornization
              kThreadsArrayKey:@[
