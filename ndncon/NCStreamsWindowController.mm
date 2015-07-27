@@ -288,12 +288,16 @@ using namespace ndnrtc::new_api;
     }
     else
     {
-        [self willChangeValueForKey:@"chatrooms"];
-        [[NCChatroomDiscoveryController sharedInstance] withdrawChatroom:self.publishedChatroom];
-        self.publishedChatroom = nil;
-        [self didChangeValueForKey:@"chatrooms"];
-        [self.chatroomPopup selectItemAtIndex:0];
-        [self selectChatroom:self.chatroomPopup];
+        if (self.publishedChatroomName &&
+            ![self.publishedChatroomName isEqualToString:@""])
+        {
+            [self willChangeValueForKey:@"chatrooms"];
+            [[NCChatroomDiscoveryController sharedInstance] withdrawChatroom:self.publishedChatroom];
+            self.publishedChatroom = nil;
+            [self didChangeValueForKey:@"chatrooms"];
+            [self.chatroomPopup selectItemAtIndex:0];
+            [self selectChatroom:self.chatroomPopup];
+        }
     }
 }
 

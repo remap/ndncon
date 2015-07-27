@@ -1233,6 +1233,8 @@ public:
 
 -(void)withdrawChatroom:(NCChatRoom *)chatroom
 {
+    assert(chatroom);
+    
     if (self.isInitialized)
     {
         std::string chatroomName([chatroom.chatroomName cStringUsingEncoding:NSASCIIStringEncoding]);
