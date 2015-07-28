@@ -64,7 +64,6 @@
     
     [[NCNdnRtcLibraryController sharedInstance] startSession];
     [NCChatLibraryController sharedInstance];
-//    [NCConferenceDiscoveryController sharedInstance];
     [NCUserDiscoveryController sharedInstance];
     [NCChatroomDiscoveryController sharedInstance];
 }

@@ -97,7 +97,22 @@ static PTNStorage *sharedStorage = nil;
                                                                     forKey:key];
         if (![_defaultParams objectForKey:key])
             [_defaultParams registerDefaults:paramDictionary];
+        else
+        {
+            id defaultParam = [_defaultParams objectForKey:key];
+            
+            if ([defaultParam isKindOfClass:[NSDictionary class]])
+            {
+                defaultParam = [PTNStorage populateDictionary:defaultParam
+                              withMissingValuesFromDictionary:paramDictionary[key]];
+                
+                [_defaultParams removeObjectForKey:key];
+                [_defaultParams registerDefaults:@{key:defaultParam}];
+            }
+        }
     }
+    
+    [self saveParams];
 }
 -(void)registerDefaultsFromFile:(NSString *)fileName
 {
@@ -229,5 +244,23 @@ static PTNStorage *sharedStorage = nil;
 }
 
 #pragma mark - private methods
++(NSDictionary*)populateDictionary:(NSDictionary*)dictFirst withMissingValuesFromDictionary:(NSDictionary*)dictSecond
+{
+    NSMutableDictionary *mutableFirst = [NSMutableDictionary dictionaryWithDictionary:dictSecond];
+    
+    for (id key in mutableFirst.allKeys)
+    {
+        if (dictFirst[key])
+        {
+            if ([dictFirst[key] isKindOfClass:[NSDictionary class]])
+                mutableFirst[key] = [PTNStorage populateDictionary:dictFirst[key]
+                                   withMissingValuesFromDictionary:mutableFirst[key]];
+            else
+                mutableFirst[key] = dictFirst[key];
+        }
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:mutableFirst];
+}
 
 @end
