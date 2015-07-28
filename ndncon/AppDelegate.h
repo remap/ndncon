@@ -9,7 +9,6 @@
 #import <Cocoa/Cocoa.h>
 #import "MASPreferencesWindowController.h"
 #import "NCPreferencesController.h"
-#import "NCUserListViewController.h"
 
 @interface AppDelegate : NSObject
 <NSApplicationDelegate>
@@ -22,7 +21,6 @@
 
 @property (nonatomic, strong) MASPreferencesWindowController* preferencesWindowController;
 @property (nonatomic, readonly) NCPreferencesController *preferences;
-@property (assign) IBOutlet NCUserListViewController *userListViewController;
 
 - (IBAction)saveAction:(id)sender;
 - (BOOL)commitManagedContext;

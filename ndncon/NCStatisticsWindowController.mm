@@ -11,7 +11,6 @@
 
 #import "NCStatisticsWindowController.h"
 #import "NCNdnRtcLibraryController.h"
-#import "NCConversationViewController.h"
 #import "NSString+NCAdditions.h"
 #import "NSTimer+NCAdditions.h"
 #import "NCStreamingController.h"

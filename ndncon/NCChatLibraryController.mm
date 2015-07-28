@@ -10,6 +10,7 @@
 #include <ndn-entity-discovery/external-observer.h>
 
 #import "NCChatLibraryController.h"
+#import "NCNdnRtcLibraryController.h"
 #import "NSString+NCAdditions.h"
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"

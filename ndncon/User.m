@@ -7,7 +7,6 @@
 //
 
 #import "User.h"
-#import "NCUserListViewController.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NCErrorController.h"
 #import "NCChatLibraryController.h"
@@ -92,10 +91,7 @@
 
 -(NSImage *)statusImage
 {
-    NCSessionStatus status = [NCUserListViewController sessionStatusForUser:self.name
-                                                                 withPrefix:self.prefix];
-    
-    return [[NCNdnRtcLibraryController sharedInstance] imageForSessionStatus:status];
+    return nil;
 }
 
 -(void)setStatusImage:(NSImage *)statusImage

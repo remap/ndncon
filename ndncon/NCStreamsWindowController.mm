@@ -25,7 +25,6 @@
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"
 #import "NCVideoStreamViewController.h"
-#import "NCAudioPreviewController.h"
 #import "NCVideoPreviewController.h"
 #import "NCPreferencesController.h"
 #import "NCCameraCapturer.h"
