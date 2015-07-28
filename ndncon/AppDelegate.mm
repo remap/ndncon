@@ -194,6 +194,8 @@
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     [[NCChatLibraryController sharedInstance] leaveAllChatRooms];
+    [[NCNdnRtcLibraryController sharedInstance] stopSession];
+    [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
     
     if (!_managedObjectContext) {
         return NSTerminateNow;

@@ -10,6 +10,8 @@
 		AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF11BAFA19D4E37E0011270F /* OpenGL.framework */; };
 		AF241DA71AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */; };
 		AF241DA81AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */; };
+		AF2AA3641B670EB50046C5F8 /* libndnrtc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2AA3621B670DD90046C5F8 /* libndnrtc.dylib */; };
+		AF2AA3651B67397F0046C5F8 /* libndnrtc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF91BDE41B44703E00C58E7D /* libndnrtc.dylib */; };
 		AF2BE53D1AAFB14C006A1AA7 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2BE53C1AAFB14C006A1AA7 /* HockeySDK.framework */; };
 		AF2BE53E1AAFB14C006A1AA7 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2BE53C1AAFB14C006A1AA7 /* HockeySDK.framework */; };
 		AF2BE53F1AAFB2A8006A1AA7 /* HockeySDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF2BE53C1AAFB14C006A1AA7 /* HockeySDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -98,12 +100,9 @@
 		AF91BDDF1B44700700C58E7D /* libndn-cpp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF91BDDE1B44700700C58E7D /* libndn-cpp.dylib */; };
 		AF91BDE21B44701800C58E7D /* libchrono-chat2013.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF91BDE01B44701800C58E7D /* libchrono-chat2013.dylib */; };
 		AF91BDE31B44701800C58E7D /* libentity-discovery.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF91BDE11B44701800C58E7D /* libentity-discovery.dylib */; };
-		AF91BDE51B44703E00C58E7D /* libndnrtc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF91BDE41B44703E00C58E7D /* libndnrtc.dylib */; };
 		AF91BDE71B4490A700C58E7D /* libndn-cpp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF91BDDE1B44700700C58E7D /* libndn-cpp.dylib */; };
 		AF91BDE81B4490B700C58E7D /* libchrono-chat2013.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF91BDE01B44701800C58E7D /* libchrono-chat2013.dylib */; };
 		AF91BDE91B4490B700C58E7D /* libentity-discovery.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF91BDE11B44701800C58E7D /* libentity-discovery.dylib */; };
-		AF91BDEA1B4490D200C58E7D /* libndnrtc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF91BDE41B44703E00C58E7D /* libndnrtc.dylib */; };
-		AF91BDEC1B4490EA00C58E7D /* libndnrtc.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF91BDEB1B4490EA00C58E7D /* libndnrtc.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF91BDED1B44910000C58E7D /* libchrono-chat2013.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF91BDE01B44701800C58E7D /* libchrono-chat2013.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF91BDEE1B44910000C58E7D /* libentity-discovery.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF91BDE11B44701800C58E7D /* libentity-discovery.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AF91BDEF1B44910000C58E7D /* libndn-cpp.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF91BDDE1B44700700C58E7D /* libndn-cpp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -258,7 +257,6 @@
 			files = (
 				AFDD0DA21A7318380076A301 /* Sparkle.framework in CopyFiles */,
 				AF2BE53F1AAFB2A8006A1AA7 /* HockeySDK.framework in CopyFiles */,
-				AF91BDEC1B4490EA00C58E7D /* libndnrtc.dylib in CopyFiles */,
 				AF91BDED1B44910000C58E7D /* libchrono-chat2013.dylib in CopyFiles */,
 				AF91BDEE1B44910000C58E7D /* libentity-discovery.dylib in CopyFiles */,
 				AF91BDEF1B44910000C58E7D /* libndn-cpp.dylib in CopyFiles */,
@@ -271,6 +269,7 @@
 		AF11BAFA19D4E37E0011270F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		AF241DA51AEB2C5B000CA14A /* NCSessionInfoContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCSessionInfoContainer.h; path = ndncon/NCSessionInfoContainer.h; sourceTree = SOURCE_ROOT; };
 		AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCSessionInfoContainer.mm; path = ndncon/NCSessionInfoContainer.mm; sourceTree = SOURCE_ROOT; };
+		AF2AA3621B670DD90046C5F8 /* libndnrtc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.dylib; path = ../ndnrtc/cpp/release/bin/lib/libndnrtc.dylib; sourceTree = "<group>"; };
 		AF2BE53C1AAFB14C006A1AA7 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "thirdparty/HockeySDK-Mac/HockeySDK.framework"; sourceTree = "<group>"; };
 		AF3C6FA119BE98B200FAE40B /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = settings.plist; path = ndncon/settings.plist; sourceTree = SOURCE_ROOT; };
 		AF3D2CF819F708AA00A0D274 /* NSView+NCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+NCAdditions.h"; path = "ndncon/NSView+NCAdditions.h"; sourceTree = SOURCE_ROOT; };
@@ -394,7 +393,6 @@
 		AF91BDE01B44701800C58E7D /* libchrono-chat2013.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libchrono-chat2013.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libchrono-chat2013.dylib"; sourceTree = "<group>"; };
 		AF91BDE11B44701800C58E7D /* libentity-discovery.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libentity-discovery.dylib"; path = "../ndnrtc-thirdparty/conference-discovery/build/lib/libentity-discovery.dylib"; sourceTree = "<group>"; };
 		AF91BDE41B44703E00C58E7D /* libndnrtc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.dylib; sourceTree = "<group>"; };
-		AF91BDEB1B4490EA00C58E7D /* libndnrtc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libndnrtc.dylib; path = ../ndnrtc/cpp/debug/bin/lib/libndnrtc.dylib; sourceTree = "<group>"; };
 		AFA8520719C778E50015A883 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		AFA8520919C779180015A883 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		AFA8520C19C7AA250015A883 /* NSDictionary+NCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+NCAdditions.h"; path = "ndncon/NSDictionary+NCAdditions.h"; sourceTree = SOURCE_ROOT; };
@@ -467,7 +465,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF91BDE51B44703E00C58E7D /* libndnrtc.dylib in Frameworks */,
 				AF91BDDF1B44700700C58E7D /* libndn-cpp.dylib in Frameworks */,
 				AF91BDE21B44701800C58E7D /* libchrono-chat2013.dylib in Frameworks */,
 				AF91BDE31B44701800C58E7D /* libentity-discovery.dylib in Frameworks */,
@@ -481,6 +478,7 @@
 				AF7026DA19C3B5530087B605 /* AVFoundation.framework in Frameworks */,
 				AFD978EA19BE546D0061AA24 /* Cocoa.framework in Frameworks */,
 				AF744C8D19E71BEE00E92680 /* Sparkle.framework in Frameworks */,
+				AF2AA3651B67397F0046C5F8 /* libndnrtc.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,7 +494,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF91BDEA1B4490D200C58E7D /* libndnrtc.dylib in Frameworks */,
 				AF91BDE71B4490A700C58E7D /* libndn-cpp.dylib in Frameworks */,
 				AF91BDE81B4490B700C58E7D /* libchrono-chat2013.dylib in Frameworks */,
 				AF91BDE91B4490B700C58E7D /* libentity-discovery.dylib in Frameworks */,
@@ -510,6 +507,7 @@
 				AFDD0E011A7318380076A301 /* Cocoa.framework in Frameworks */,
 				AFDD0E021A7318380076A301 /* Sparkle.framework in Frameworks */,
 				AF2BE53E1AAFB14C006A1AA7 /* HockeySDK.framework in Frameworks */,
+				AF2AA3641B670EB50046C5F8 /* libndnrtc.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,7 +873,6 @@
 			isa = PBXGroup;
 			children = (
 				AF45142D1B6525ED00B0AF02 /* GraphKit.framework */,
-				AF91BDEB1B4490EA00C58E7D /* libndnrtc.dylib */,
 				AF91BDE41B44703E00C58E7D /* libndnrtc.dylib */,
 				AF91BDE01B44701800C58E7D /* libchrono-chat2013.dylib */,
 				AF91BDE11B44701800C58E7D /* libentity-discovery.dylib */,
@@ -972,6 +969,7 @@
 		AFDD0E291A7318BA0076A301 /* NDN-RTC release */ = {
 			isa = PBXGroup;
 			children = (
+				AF2AA3621B670DD90046C5F8 /* libndnrtc.dylib */,
 			);
 			name = "NDN-RTC release";
 			sourceTree = "<group>";
@@ -1227,7 +1225,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"ndncpp path \" $NDNCPP_LIB_PATH\nlibpaths=(\"$NDNRTC_LIB_PATH\" \"$BOOST_LIB_PATH\" \"$NDNCHAT_LIB_PATH\" \"$NDNCPP_LIB_PATH\" \"/opt/local/lib\")\nframeworksDir=$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH\nexecutable=$BUILT_PRODUCTS_DIR/$EXECUTABLE_PATH\n\n#echo \"libpaths $libpaths\"\nbRecursion=0\nlRecursion=0\n\nfunction resolveBoostDependencies()\n{\n    local binfile=$1\n    local prefix=$2\n    local binname=$(basename $binfile)\n    local offset=$(((bRecursion+lRecursion)*20))\n    printf \"%s :\\t%s\\n\" $prefix \"resolving Boost for $(basename $binfile)...\" #>> ~/1.log\n\n    local pattern=\"[[:space:]]libboost_([A-z0-9.-]+\\.dylib)\"\n    while [[ \"$(otool -L ${binfile})\" =~ $pattern ]]; do\n        local libname=\"libboost_${BASH_REMATCH[1]}\"\n        #echo \"found match $libname\"\n        local libpath=\"${BOOST_LIB_PATH}/$libname\"\n        #echo \"cp $libpath $frameworksDir\"\n        ${SRCROOT}/sudocp.sh $libpath $frameworksDir/$libname $(whoami)\n        installLibPath=\"@rpath/$libname\"\n        #echo \"install_name_tool -change $libname $installLibPath $binfile\" #>> ~/1.log\n        if [ \"$libname\" == \"$binname\" ]; then\n            install_name_tool -id \"@rpath/$libname\" $binfile\n            printf \"%s :\\t%s\\n\" $prefix \"fixed id for $libname.\" #>> ~/1.log\n        else\n            install_name_tool -change $libname $installLibPath $binfile\n            printf \"%s :\\t%s\\n\" $prefix \"$libname Boost dependency resolved.\" #>> ~/1.log\n            let bRecursion++\n            resolveBoostDependencies \"$frameworksDir/$libname\" \"$prefix>$libname\"\n            let bRecursion--\n        fi\n    done # while\n    \n    printf \"%s :\\t%s\\n\" $prefix \"$(basename $binfile) resolved.\" #>> ~/1.log\n}\n\nfunction resolveDependencies()\n{\n    local binfile=$1\n    local prefix=$2\n    local binname=$(basename $binfile)\n    local offset=$((lRecursion*20))\n    printf \"%s :\\t%s\\n\" $prefix \"resolving $binname...\" #>> ~/1.log\n    \n    for path in ${libpaths[@]}; do\n        local temp=$path\n        #echo \"check lib path $path\"\n        local pattern=\"$path/([A-z0-9.-]+\\.dylib)\"\n        while [[ \"$(otool -L ${binfile})\" =~ $pattern ]]; do\n            local libname=${BASH_REMATCH[1]}\n            otool -L ${binfile}\n            #echo \"found match $libname\"\n            printf \"%s :\\t%s\\n\" $prefix \"fixing $libname...\" #>> ~/1.log\n            local libpath=\"${path}/$libname\"\n            #echo \"cp $libpath $frameworksDir\"\n            ${SRCROOT}/sudocp.sh $libpath $frameworksDir/$libname $(whoami)\n            local installLibPath=\"@rpath/$libname\"\n            #echo \"install_name_tool -change $libpath $installLibPath $binfile\"\n            if [ \"$libname\" == \"$binname\" ]; then\n                install_name_tool -id \"@rpath/$libname\" $binfile\n                printf \"%s :\\t%s\\n\" $prefix \"fixed id for $libname.\" #>> ~/1.log\n            else\n                install_name_tool -change $libpath $installLibPath $binfile\n                printf \"%s :\\t%s\\n\" $prefix \"$libname dependency resolved.\" #>> ~/1.log\n                let lRecursion++\n                resolveDependencies \"$frameworksDir/$libname\" \"$prefix>$libname\"\n                resolveBoostDependencies \"$frameworksDir/$libname\" \"$prefix>$libname\"\n                let lRecursion--\n            fi\n            path=$temp\n        done # while\n    done # for\n    \n    printf \"%s :\\t%s\\n\" $prefix \"$(basename $binfile) resolved.\" #>> ~/1.log\n} # resolveDependencies\n\n#echo \"\" > ~/1.log\nresolveDependencies $executable $(basename $executable)\nresolveBoostDependencies $executable $(basename $executable)\n";
+			shellScript = "echo \"ndncpp path \" $NDNCPP_LIB_PATH\nlibpaths=(\"$NDNRTC_LIB_PATH\" \"$BOOST_LIB_PATH\" \"$NDNCHAT_LIB_PATH\" \"$NDNCPP_LIB_PATH\" \"/opt/local/lib\")\nframeworksDir=$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH\nexecutable=$BUILT_PRODUCTS_DIR/$EXECUTABLE_PATH\n\n#echo \"libpaths $libpaths\"\nbRecursion=0\nlRecursion=0\n\nfunction resolveBoostDependencies()\n{\n    local binfile=$1\n    local prefix=$2\n    local binname=$(basename $binfile)\n    local offset=$(((bRecursion+lRecursion)*20))\n    printf \"%s :\\t%s\\n\" $prefix \"resolving Boost for $(basename $binfile)...\" #>> ~/1.log\n\n    local pattern=\"[[:space:]]libboost_([A-z0-9.-]+\\.dylib)\"\n    while [[ \"$(otool -L ${binfile})\" =~ $pattern ]]; do\n        local libname=\"libboost_${BASH_REMATCH[1]}\"\n        #echo \"found match $libname\"\n        local libpath=\"${BOOST_LIB_PATH}/$libname\"\n        #echo \"cp $libpath $frameworksDir\"\n        ${SRCROOT}/sudocp.sh $libpath $frameworksDir/$libname $(whoami)\n        installLibPath=\"@rpath/$libname\"\n        #echo \"install_name_tool -change $libname $installLibPath $binfile\" #>> ~/1.log\n        if [ \"$libname\" == \"$binname\" ]; then\n            install_name_tool -id \"@rpath/$libname\" $binfile\n            printf \"%s :\\t%s\\n\" $prefix \"fixed id for $libname.\" #>> ~/1.log\n        else\n            install_name_tool -change $libname $installLibPath $binfile\n            printf \"%s :\\t%s\\n\" $prefix \"$libname Boost dependency resolved.\" #>> ~/1.log\n            let bRecursion++\n            resolveBoostDependencies \"$frameworksDir/$libname\" \"$prefix>$libname\"\n            let bRecursion--\n        fi\n    done # while\n    \n    printf \"%s :\\t%s\\n\" $prefix \"$(basename $binfile) resolved.\" #>> ~/1.log\n}\n\nfunction resolveDependencies()\n{\n    local binfile=$1\n    local prefix=$2\n    local binname=$(basename $binfile)\n    local offset=$((lRecursion*20))\n    printf \"%s :\\t%s\\n\" $prefix \"resolving $binname...\" #>> ~/1.log\n    \n    for path in ${libpaths[@]}; do\n        local temp=$path\n        #echo \"check lib path $path\"\n        local pattern=\"$path/([A-z0-9.-]+\\.dylib)\"\n        while [[ \"$(otool -L ${binfile})\" =~ $pattern ]]; do\n            local libname=${BASH_REMATCH[1]}\n            otool -L ${binfile}\n            #echo \"found match $libname\"\n            printf \"%s :\\t%s\\n\" $prefix \"fixing $libname...\" #>> ~/1.log\n            local libpath=\"${path}/$libname\"\n            #echo \"cp $libpath $frameworksDir\"\n            ${SRCROOT}/sudocp.sh $libpath $frameworksDir/$libname $(whoami)\n            local installLibPath=\"@rpath/$libname\"\n            #echo \"install_name_tool -change $libpath $installLibPath $binfile\"\n            if [ \"$libname\" == \"$binname\" ]; then\n                install_name_tool -id \"@rpath/$libname\" $binfile\n                printf \"%s :\\t%s\\n\" $prefix \"fixed id for $libname.\" #>> ~/1.log\n            else\n                install_name_tool -change $libpath $installLibPath $binfile\n                printf \"%s :\\t%s\\n\" $prefix \"$libname dependency resolved.\" #>> ~/1.log\n                let lRecursion++\n                resolveDependencies \"$frameworksDir/$libname\" \"$prefix>$libname\"\n                resolveBoostDependencies \"$frameworksDir/$libname\" \"$prefix>$libname\"\n                let lRecursion--\n            fi\n            path=$temp\n        done # while\n    done # for\n    \n    printf \"%s :\\t%s\\n\" $prefix \"$(basename $binfile) resolved.\" #>> ~/1.log\n} # resolveDependencies\n\n#echo \"\" > ~/1.log\nresolveDependencies $executable $(basename $executable)\nresolveBoostDependencies $executable $(basename $executable)\necho $executable | pbcopy";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1436,8 +1434,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BOOST_INCLUDE_PATH = "";
-				BOOST_LIB_PATH = "";
+				BOOST_INCLUDE_PATH = "/Users/peetonn/Documents/Work/ndnrtc-thirdparty/boost_1_54_0/build/include";
+				BOOST_LIB_PATH = "/Users/peetonn/Documents/Work/ndnrtc-thirdparty/boost_1_54_0/build/lib";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1461,10 +1459,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

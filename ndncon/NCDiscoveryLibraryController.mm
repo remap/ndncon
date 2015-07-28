@@ -710,6 +710,7 @@ public:
 
 -(void)onLocalSessionOffline
 {
+    NSLog(@"user discovery shutdown");
     self.isInitialized = NO;
     _discovery.reset();
     self.discoveredUsers = [NSArray array];
@@ -1033,6 +1034,7 @@ public:
 
 -(void)onLocalSessionOffline
 {
+    NSLog(@"chatroom discovery shutdown");
     self.isInitialized = NO;
     _discovery.reset();
     self.discoveredChatrooms = [NSArray array];
