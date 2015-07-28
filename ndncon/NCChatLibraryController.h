@@ -24,7 +24,6 @@ extern NSString* const NCChatMessageUserKey;
 +(NSString*)privateChatRoomIdWithUser:(NSString*)userPrefix;
 
 -(void)joinChatroom:(NCChatRoom*)chatroom;
--(NSString*)startChatWithUser:(NSString*)userPrefix;
 -(void)sendMessage:(NSString*)message toChat:(NSString*)chatId;
 -(void)leaveChat:(NSString*)chatId;
 -(void)leaveAllChatRooms;
