@@ -7,11 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Sparkle/Sparkle.h>
+
 #import "MASPreferencesWindowController.h"
 #import "NCPreferencesController.h"
 
 @interface AppDelegate : NSObject
-<NSApplicationDelegate>
+<NSApplicationDelegate, SUUpdaterDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 

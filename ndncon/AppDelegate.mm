@@ -7,6 +7,7 @@
 //
 
 #import <HockeySDK/HockeySDK.h>
+
 #import "AppDelegate.h"
 
 #import "NCNdnRtcLibraryController.h"
@@ -20,6 +21,8 @@
 #import "NCPreferencesController.h"
 
 @interface AppDelegate()
+
+@property (weak) IBOutlet SUUpdater *sparkleUpdater;
 
 @end
 
@@ -41,6 +44,13 @@
     [BITHockeyManager sharedHockeyManager].crashManager.askUserDetails = NO;
     [BITHockeyManager sharedHockeyManager].feedbackManager.requireUserName = BITFeedbackUserDataElementOptional;
     [BITHockeyManager sharedHockeyManager].feedbackManager.requireUserEmail = BITFeedbackUserDataElementOptional;
+    
+    NSNotificationCenter *dnc = [NSNotificationCenter defaultCenter];
+    BITSystemProfile *bsp = [BITSystemProfile sharedSystemProfile];
+    [dnc addObserver:bsp selector:@selector(startUsage) name:NSApplicationDidBecomeActiveNotification object:nil];
+    [dnc addObserver:bsp selector:@selector(stopUsage) name:NSApplicationWillTerminateNotification object:nil];
+    
+    self.sparkleUpdater.sendsSystemProfile = YES;
     
     [[NCPreferencesController sharedInstance] updateDefaults];
     [[NCPreferencesController sharedInstance] checkVersionParameters];
@@ -288,6 +298,10 @@
     [[BITHockeyManager sharedHockeyManager].feedbackManager showFeedbackWindow];
 }
 
+-(NSArray*)feedParametersForUpdater:(SUUpdater *)updater sendingSystemProfile:(BOOL)sendingProfile
+{
+    return [[BITSystemProfile sharedSystemProfile] systemUsageData];
+}
 
 @end
 

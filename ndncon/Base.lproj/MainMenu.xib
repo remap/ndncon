@@ -25,9 +25,14 @@
                 <outlet property="window" destination="8ZU-Se-X7h" id="v8Z-L4-7Hm"/>
             </connections>
         </customObject>
-        <customObject id="dBI-Ba-GfI" customClass="SUUpdater"/>
+        <customObject id="dBI-Ba-GfI" customClass="SUUpdater">
+            <connections>
+                <outlet property="delegate" destination="Voe-Tx-rLC" id="xGh-zi-JHQ"/>
+            </connections>
+        </customObject>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="sparkleUpdater" destination="dBI-Ba-GfI" id="hQx-ci-jUS"/>
                 <outlet property="window" destination="SJT-cQ-m2B" id="hnI-9b-Qzw"/>
             </connections>
         </customObject>
