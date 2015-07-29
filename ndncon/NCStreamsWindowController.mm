@@ -271,6 +271,14 @@ using namespace ndnrtc::new_api;
     self.chatViewController.isActive = (chatroom != nil);
 }
 
+- (IBAction)chatroomNameEntered:(NSTextField*)sender {
+    if (sender.stringValue && ![sender.stringValue isEqualToString:@""])
+    {
+        self.isPublishingChatroom = YES;
+        [self createChatroom:nil];
+    }
+}
+
 - (IBAction)createChatroom:(id)sender
 {
     if (self.isPublishingChatroom)

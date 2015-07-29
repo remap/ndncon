@@ -428,7 +428,7 @@
 		AFC99BF219D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSDictionary+NCNdnRtcAdditions.mm"; path = "ndncon/NSDictionary+NCNdnRtcAdditions.mm"; sourceTree = SOURCE_ROOT; };
 		AFD17DF019F03EDA00C8DD6E /* NSDate+NCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+NCAdditions.h"; sourceTree = "<group>"; };
 		AFD17DF119F03EDA00C8DD6E /* NSDate+NCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NCAdditions.m"; sourceTree = "<group>"; };
-		AFD978E619BE546D0061AA24 /* NdnCon-Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NdnCon-Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFD978E619BE546D0061AA24 /* ndncon-debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ndncon-debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFD978E919BE546D0061AA24 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AFD978EC19BE546D0061AA24 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		AFD978ED19BE546D0061AA24 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -448,7 +448,7 @@
 		AFD9791419BE546E0061AA24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AFD9791619BE546E0061AA24 /* NdnConTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NdnConTests.m; path = "ndncon-tests/NdnConTests.m"; sourceTree = "<group>"; };
 		AFD9792219BE5C6E0061AA24 /* ndncon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = ndncon.iconset; sourceTree = "<group>"; };
-		AFDD0E241A7318380076A301 /* NdnCon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NdnCon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFDD0E241A7318380076A301 /* ndncon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ndncon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFDD0E251A7318390076A301 /* NdnCon copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "NdnCon copy-Info.plist"; path = "/Users/peetonn/Documents/Work/ndncon/NdnCon copy-Info.plist"; sourceTree = "<absolute>"; };
 		AFF30B781A031097008DA5AB /* NdnCon v0.3.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NdnCon v0.3.2.xcdatamodel"; sourceTree = "<group>"; };
 		AFF63AAA1AEF14B50066BAEB /* NCRosterWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCRosterWindowController.h; path = ndncon/NCRosterWindowController.h; sourceTree = SOURCE_ROOT; };
@@ -862,9 +862,9 @@
 		AFD978E719BE546D0061AA24 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AFD978E619BE546D0061AA24 /* NdnCon-Debug.app */,
+				AFD978E619BE546D0061AA24 /* ndncon-debug.app */,
 				AFD9790A19BE546E0061AA24 /* NdnConTests.xctest */,
-				AFDD0E241A7318380076A301 /* NdnCon.app */,
+				AFDD0E241A7318380076A301 /* ndncon.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1025,7 +1025,7 @@
 			);
 			name = NdnCon;
 			productName = NdnCon;
-			productReference = AFD978E619BE546D0061AA24 /* NdnCon-Debug.app */;
+			productReference = AFD978E619BE546D0061AA24 /* ndncon-debug.app */;
 			productType = "com.apple.product-type.application";
 		};
 		AFD9790919BE546E0061AA24 /* NdnConTests */ = {
@@ -1063,7 +1063,7 @@
 			);
 			name = "NdnCon-Release";
 			productName = NdnCon;
-			productReference = AFDD0E241A7318380076A301 /* NdnCon.app */;
+			productReference = AFDD0E241A7318380076A301 /* ndncon.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

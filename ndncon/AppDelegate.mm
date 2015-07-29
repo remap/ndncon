@@ -36,10 +36,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-#ifdef DEBUG
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
-#endif
-    
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"f04e450096a94f9989a875d20d4b8662"];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [BITHockeyManager sharedHockeyManager].crashManager.askUserDetails = NO;
@@ -49,9 +45,13 @@
     [[NCPreferencesController sharedInstance] updateDefaults];
     [[NCPreferencesController sharedInstance] checkVersionParameters];
     
-    [self.window setTitle:[NSString stringWithFormat:@"%@ v%@",
-                           [NCPreferencesController sharedInstance].appName,
-                           [NCPreferencesController sharedInstance].versionString]];
+#ifdef DEBUG
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
+    NSLog(@"%@ v%@ (debug version)", [NCPreferencesController sharedInstance].appName, [NCPreferencesController sharedInstance].versionString);
+#else
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
+    NSLog(@"%@ v%@", [NCPreferencesController sharedInstance].appName, [NCPreferencesController sharedInstance].versionString);
+#endif
     
     if ([NCPreferencesController sharedInstance].isFirstLaunch)
     {
