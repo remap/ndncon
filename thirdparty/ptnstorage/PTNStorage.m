@@ -107,7 +107,7 @@ static PTNStorage *sharedStorage = nil;
                               withMissingValuesFromDictionary:paramDictionary[key]];
                 
                 [_defaultParams removeObjectForKey:key];
-                [_defaultParams registerDefaults:@{key:defaultParam}];
+                [self saveParam:defaultParam forKey:key];
             }
         }
     }

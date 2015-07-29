@@ -33,7 +33,7 @@
 	<key>General</key>
 	<dict>
 		<key>Log level</key>
-		<string>all</string>
+		<string>default</string>
 		<key>Use TLV</key>
 		<true/>
 		<key>Retransmissions enabled</key>
@@ -158,15 +158,15 @@
 						<key>GOP</key>
 						<integer>30</integer>
 						<key>Start bitrate</key>
-						<integer>500</integer>
+						<integer>800</integer>
 						<key>Max bitrate</key>
 						<integer>0</integer>
 						<key>Drop frames</key>
 						<true/>
 						<key>Encoding width</key>
-						<integer>640</integer>
+						<integer>960</integer>
 						<key>Encoding height</key>
-						<integer>480</integer>
+						<integer>540</integer>
 					</dict>
 					<dict>
 						<key>Name</key>
@@ -176,15 +176,15 @@
 						<key>GOP</key>
 						<integer>30</integer>
 						<key>Start bitrate</key>
-						<integer>1000</integer>
+						<integer>1500</integer>
 						<key>Max bitrate</key>
 						<integer>0</integer>
 						<key>Drop frames</key>
 						<true/>
 						<key>Encoding width</key>
-						<integer>640</integer>
+						<integer>1280</integer>
 						<key>Encoding height</key>
-						<integer>480</integer>
+						<integer>720</integer>
 					</dict>
 				</array>
 			</dict>

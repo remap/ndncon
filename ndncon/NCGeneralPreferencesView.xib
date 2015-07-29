@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCGeneralPreferencesViewController">
             <connections>
                 <outlet property="connectionStatusLabel" destination="zot-P1-b62" id="YCP-EP-ybe"/>
-                <outlet property="daemonHostTextField" destination="LfE-W8-X8f" id="9nu-eJ-TaO"/>
-                <outlet property="daemonPortTextField" destination="RJ3-RB-Agd" id="afK-NF-85i"/>
                 <outlet property="daemonStatusLabel" destination="zot-P1-b62" id="d3d-VP-hvW"/>
-                <outlet property="fullPrefixLabel" destination="OQF-nH-L0L" id="LQg-4t-gPO"/>
-                <outlet property="prefixTextField" destination="RmV-eJ-bZU" id="BsS-nD-ZRl"/>
-                <outlet property="usernameTextField" destination="KB2-db-WYC" id="XY6-9l-0G6"/>
                 <outlet property="view" destination="c22-O7-iKe" id="JRb-jb-yoz"/>
             </connections>
         </customObject>
@@ -23,8 +18,8 @@
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
             <rect key="frame" x="0.0" y="0.0" width="480" height="288"/>
             <subviews>
-                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KB2-db-WYC">
-                    <rect key="frame" x="240" y="246" width="196" height="22"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KB2-db-WYC">
+                    <rect key="frame" x="240" y="246" width="179" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="testuser" drawsBackground="YES" id="vuZ-ok-qka">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -34,16 +29,16 @@
                         <binding destination="-2" name="value" keyPath="self.preferences.userName" id="bv0-pb-bgs"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QWv-LH-3Fu">
-                    <rect key="frame" x="65" y="248" width="169" height="17"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QWv-LH-3Fu">
+                    <rect key="frame" x="68" y="248" width="166" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Your NDN-RTC username:" id="Js9-ff-Sak">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RmV-eJ-bZU">
-                    <rect key="frame" x="240" y="209" width="196" height="22"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RmV-eJ-bZU">
+                    <rect key="frame" x="240" y="209" width="179" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="/ndn/edu/ucla/remap" drawsBackground="YES" id="KuA-2w-ydy">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -53,24 +48,24 @@
                         <binding destination="-2" name="value" keyPath="self.preferences.prefix" id="pU7-WV-5kD"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y6K-6g-ewH">
-                    <rect key="frame" x="86" y="211" width="148" height="17"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Y6K-6g-ewH">
+                    <rect key="frame" x="91" y="211" width="143" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="NDN publishing prefix:" id="knE-8M-az1">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XiK-np-SUo">
-                    <rect key="frame" x="53" y="164" width="181" height="17"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XiK-np-SUo">
+                    <rect key="frame" x="59" y="164" width="175" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="NDN-RTC publishing prefix:" id="hcu-FI-hyp">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LfE-W8-X8f">
-                    <rect key="frame" x="240" y="123" width="196" height="22"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LfE-W8-X8f">
+                    <rect key="frame" x="240" y="123" width="179" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="localhost" drawsBackground="YES" id="1ba-gw-byx">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -80,16 +75,16 @@
                         <binding destination="-2" name="value" keyPath="self.preferences.daemonHost" id="EcK-wY-Uxk"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yBA-3U-BHe">
-                    <rect key="frame" x="89" y="125" width="145" height="17"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yBA-3U-BHe">
+                    <rect key="frame" x="90" y="125" width="144" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="NDN daemon address:" id="uHC-A1-St8">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RJ3-RB-Agd">
-                    <rect key="frame" x="240" y="86" width="196" height="22"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RJ3-RB-Agd">
+                    <rect key="frame" x="240" y="86" width="179" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="6363" drawsBackground="YES" id="bEJ-MX-P92">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -103,8 +98,8 @@
                         </binding>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yhZ-Dh-NB6">
-                    <rect key="frame" x="111" y="88" width="123" height="17"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yhZ-Dh-NB6">
+                    <rect key="frame" x="114" y="88" width="120" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="NDN daemon port:" id="uMo-8h-39G">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -119,8 +114,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQF-nH-L0L">
-                    <rect key="frame" x="238" y="160" width="200" height="34"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQF-nH-L0L">
+                    <rect key="frame" x="238" y="160" width="183" height="34"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="/ndn/edu/ucla/remap/ndnrtc/user/testuser" id="94l-hv-7O7">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
@@ -139,8 +134,8 @@
                         </binding>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zot-P1-b62">
-                    <rect key="frame" x="238" y="54" width="200" height="17"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zot-P1-b62">
+                    <rect key="frame" x="238" y="54" width="183" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="disconnected" id="5Bu-Il-3fo">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
