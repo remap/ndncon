@@ -8,7 +8,7 @@
 
 #import "NCStackEditorEntryViewController.h"
 #import "NCEditorEntryView.h"
-#import "NCBlockDrawableView.h"
+#import "NSView+NCAdditions.h"
 
 @interface NCStackEditorEntryViewController ()
 {

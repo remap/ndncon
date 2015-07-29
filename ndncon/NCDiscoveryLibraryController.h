@@ -28,18 +28,6 @@ extern NSString* const kChatroomKey;
 @end
 
 //******************************************************************************
-@interface NCConferenceDiscoveryController : NCEntityDiscoveryController
-
-+(NCConferenceDiscoveryController*)sharedInstance;
-
-@property (nonatomic, readonly) NSArray *discoveredConferences;
-
--(void)announceConference:(Conference*)conference;
--(void)withdrawConference:(Conference*)conference;
-
-@end
-
-//******************************************************************************
 @interface NCActiveUserInfo : NSObject
 
 @property (nonatomic, readonly) NSString *username;

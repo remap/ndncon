@@ -13,6 +13,7 @@
 #include <ndnrtc/simple-log.h>
 
 #import "NCPreferencesController.h"
+#import "NSObject+NCAdditions.h"
 
 NSString* const kFirstLaunchKey = @"First launch";
 NSString* const kLastLaunchedVersionKey = @"Last launched version";
@@ -68,11 +69,16 @@ NSString* const kReportingAskedKey = @"Reporting was asked";
 NSString* const kReportingAllowedKey = @"Reporting is allowed";
 
 NSString* const kUserFetchOptionsArrayKey = @"User fetch options";
+NSString* const kGlobalFetchOptionsArrayKey = @"Global fetch options";
 
 NSString* const kUserFetchOptionFetchAudioKey = @"userFetchAudio";
 NSString* const kUserFetchOptionFetchVideoKey = @"userFetchVideo";
 NSString* const kUserFetchOptionDefaultAudioThreadsKey = @"userDefaultAudioThread";
 NSString* const kUserFetchOptionDefaultVideoThreadsKey = @"userDefaultVideoThread";
+
+NSString* const kNCGlobalFetchingFilterChangedNotification = @"GlobalFetchingFilterChangedNotification";
+NSString* const kGlobalFetchingOptionsKey = @"filter";
+NSString* const kPreviousGlobalFetchingOptionsKey = @"previousFilter";
 
 NSDictionary* const DefaultUserFetchOptions = @{
                                                 kUserFetchOptionFetchAudioKey:@YES,
@@ -573,6 +579,29 @@ using namespace ndnrtc::new_api;
     va_end(args);
     
     [self saveParam:param forKeyPath:fullPath];
+}
+
+-(void)setGlobalFetchOptions:(NSDictionary *)options
+{
+    NSDictionary *previousOptions = [self getGlobalFetchOptions];
+    
+    [self saveParam:options forKey:kGlobalFetchOptionsArrayKey];
+    [self notifyNowWithNotificationName:kNCGlobalFetchingFilterChangedNotification
+                            andUserInfo:@{kGlobalFetchingOptionsKey:options,
+                                          kPreviousGlobalFetchingOptionsKey:previousOptions}];
+}
+
+-(NSDictionary*)getGlobalFetchOptions
+{
+    NSDictionary *globalFetchOptions = [self getParamWithName:kGlobalFetchOptionsArrayKey];
+    
+    if (!globalFetchOptions)
+    {
+        [self saveParam:globalFetchOptions forKey:kGlobalFetchOptionsArrayKey];
+        return DefaultUserFetchOptions;
+    }
+    
+    return globalFetchOptions;
 }
 
 -(void)setFetchOptions:(NSDictionary *)options forUser:(NSString *)username withPrefix:(NSString *)prefix

@@ -23,6 +23,9 @@ NSString* const kDeltaAverageSegNumKey = @"Average seg num delta";
 NSString* const kDeltaAverageParSegNumKey = @"Average segpar num delta";
 NSString* const kKeyAverageSegNumKey = @"Average seg num key";
 NSString* const kKeyAverageParSegNumKey = @"Average segpar num key";
+NSString* const kSessionInfoKey = @"sessionInfo";
+NSString* const kUserInfoKey = @"sessionInfo";
+NSString* const kHubPrefixKey = @"hubPrefix";
 
 @implementation NSDictionary (NCAdditions)
 

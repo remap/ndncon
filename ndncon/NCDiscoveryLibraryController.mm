@@ -9,8 +9,10 @@
 #include <ndn-entity-discovery/entity-discovery.h>
 #include <ndn-entity-discovery/external-observer.h>
 #include <ndnrtc/ndnrtc-library.h>
+#include <ndnrtc/name-components.h>
 
 #import "NSObject+NCAdditions.h"
+#import "NCNdnRtcLibraryController.h"
 #import "NCDiscoveryLibraryController.h"
 #import "NCFaceSingleton.h"
 #import "Conference.h"
@@ -144,8 +146,9 @@ private:
         if (![NCFaceSingleton sharedInstance])
             return nil;
         
-        [self subscribeForNotificationsAndSelectors:NCLocalSessionStatusUpdateNotification,
-         @selector(onLocalSessionStatusChanged:)];
+        [self subscribeForNotificationsAndSelectors:
+         NCLocalSessionStatusUpdateNotification,@selector(onLocalSessionStatusChanged:),
+         nil];
         [[NCFaceSingleton sharedInstance] startProcessingEvents];
         
         _discoveryObserver.reset(new EntityDiscoveryObserver(self));
@@ -355,235 +358,6 @@ public:
 };
 
 //******************************************************************************
-@interface NCConferenceDiscoveryController()
-
-@property (nonatomic) NSArray *discoveredConferences;
-
-@end
-
-
-//******************************************************************************
-@implementation NCConferenceDiscoveryController
-
-+(NCConferenceDiscoveryController*)sharedInstance
-{
-    return (NCConferenceDiscoveryController*)[super sharedInstance];
-}
-
-+(PTNSingleton *)createInstance
-{
-    return [[NCConferenceDiscoveryController alloc] init];
-}
-
-+(dispatch_once_t *)token
-{
-    static dispatch_once_t token;
-    return &token;
-}
-
-#pragma mark - init & dealloc
--(id)init
-{
-    self = [super init];
-    
-    if (self)
-    {
-        _entitySerializer.reset(new ConferenceDescriptionSerializer());
-        self.isInitialized = NO;
-    }
-    
-    return self;
-}
-
-#pragma mark - public
--(NSArray *)discoveredConferences
-{
-    __block NSMutableArray *conferences = [NSMutableArray array];
-
-    if (self.isInitialized)
-    {
-        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-            EntityMap conferenceMap = _discovery->getDiscoveredEntityList();
-            
-            EntityMap::iterator it = conferenceMap.begin();
-            while (it != conferenceMap.end())
-            {
-                boost::shared_ptr<ConferenceDescription> conferenceDescription =
-                boost::dynamic_pointer_cast<ConferenceDescription>(it->second);
-                [conferences addObject:[[NCRemoteConference alloc] initWithDictionary:conferenceDescription->getConferenceDictionary()]];
-                it++;
-            }
-        }];
-    }
-    
-    return [NSArray arrayWithArray:conferences];
-}
-
--(void)announceConference:(Conference*)conference
-{
-    if (self.isInitialized)
-        [self publishConference:conference];
-}
-
--(void)withdrawConference:(Conference*)conference
-{
-    assert(conference);
-    
-    if (self.isInitialized)
-    {
-        std::string conferenceName([conference.name cStringUsingEncoding:NSASCIIStringEncoding]);
-        std::string conferencePrefix([[NCConferenceDiscoveryController
-                                       conferencesAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
-                                      cStringUsingEncoding:NSASCIIStringEncoding]);
-        _discovery->stopPublishingEntity(conferenceName, conferencePrefix);
-        NSLog(@"withdrawn conference %@", conference.name);
-    }
-}
-
-#pragma mark - private
--(void)onLocalSessionOnline
-{
-    if (!self.isInitialized)
-    {
-        if (![NCFaceSingleton sharedInstance].isValid)
-            [[NCFaceSingleton sharedInstance] reset];
-        [self initConferenceDiscovery];
-    }
-    
-    if (self.isInitialized)
-        [self publishConferences];
-}
-
--(void)onLocalSessionOffline
-{
-    [self withdrawConferences];
-    self.isInitialized = NO;
-    _discovery.reset();
-    self.discoveredConferences = [NSArray array];
-}
-
--(void)onAddMessage:(const std::string&)msg withTimestamp:(double)timestamp
-{
-    boost::shared_ptr<ConferenceDescription> description =
-    boost::dynamic_pointer_cast<ConferenceDescription>(_discovery->getEntity(std::string(msg)));
-    
-    NSLog(@"new conference discovered: %@", description->getConference().name);
-    
-    [[[NSObject alloc] init]
-     notifyNowWithNotificationName:NCConferenceDiscoveredNotification
-     andUserInfo:description->getConferenceDictionary()];
-    
-}
-
--(void)onRemoveMessage:(const std::string&)msg withTimestamp:(double)timestamp
-{
-    NSLog(@"conference withdrawn: %@", [NSString ncStringFromCString:msg.c_str()]);
-}
-
--(void)onSetMessage:(const std::string&)msg withTimestamp:(double)timestamp
-{
-    boost::shared_ptr<ConferenceDescription> description =
-    boost::dynamic_pointer_cast<ConferenceDescription>(_discovery->getEntity(std::string(msg)));
-    
-    NSLog(@"conference updated: %@", description->getConference().name);
-    
-    [[[NSObject alloc] init]
-     notifyNowWithNotificationName:NCConferenceUpdatedNotificaiton
-     andUserInfo:description->getConferenceDictionary()];
-}
-
--(void)publishConference:(Conference*)conference
-{
-    assert(conference);
-    
-    std::string conferenceName([conference.name cStringUsingEncoding:NSASCIIStringEncoding]);
-    std::string conferencePrefix([[NCConferenceDiscoveryController
-                                  conferencesAppPrefixWithHubPrefix:[NCPreferencesController sharedInstance].prefix]
-                                  cStringUsingEncoding:NSASCIIStringEncoding]);
-    boost::shared_ptr<EntityInfoBase> conferenceDescription(new ConferenceDescription(conference));
-    
-    [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-        try {
-            _discovery->publishEntity(conferenceName,
-                                      conferencePrefix,
-                                      conferenceDescription);
-            NSLog(@"published conference %@", conference.name);
-        } catch (std::exception &exception) {
-            NSLog(@"Exception while publishing conference: %@", [NSString ncStringFromCString:exception.what()]);
-            [[NCFaceSingleton sharedInstance] markInvalid];
-        }
-    }];
-    
-}
-
--(void)initConferenceDiscovery
-{
-    std::string broadcastPrefix([[NCPreferencesController sharedInstance].conferenceBroadcastPrefix
-                                 cStringUsingEncoding:NSASCIIStringEncoding]);
-    _discovery.reset(new EntityDiscovery(broadcastPrefix,
-                                         _discoveryObserver.get(),
-                                         _entitySerializer,
-                                         *[[NCFaceSingleton sharedInstance] getFace],
-                                         *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                         [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
-    
-    [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-        try {
-            _discovery->start();
-            NSLog(@"initialized conference discovery");
-        }
-        catch (std::exception &exception) {
-            _discovery.reset();
-            NSLog(@"Exception while initializing conference discovery: %@",
-                  [NSString ncStringFromCString:exception.what()]);
-            [[NCFaceSingleton sharedInstance] markInvalid];
-        }
-    }];
-    
-    self.isInitialized = (_discovery.get() != NULL);
-}
-
--(void)publishConferences
-{
-    NSArray *conferences = [Conference allConferencesFromContext:self.context];
-    NSArray *ongoingAndFutureConferences = [conferences filteredArrayUsingPredicate:
-                                            [NSPredicate predicateWithBlock:
-                                             ^BOOL(Conference *conference, NSDictionary *bindings) {
-        NSDate *conferenceEndDate = [conference.startDate dateByAddingTimeInterval:[conference.duration doubleValue]];
-        NSComparisonResult res = [conferenceEndDate compare:[NSDate date]];
-        return (res == NSOrderedSame) || (res == NSOrderedDescending);
-    }]];
-    
-    [ongoingAndFutureConferences enumerateObjectsUsingBlock:^(Conference *conference, NSUInteger idx, BOOL *stop) {
-        [self publishConference:conference];
-    }];
-}
-
--(void)withdrawConferences
-{
-    if (self.isInitialized)
-    {
-        NSLog(@"Withdrawing all published conferences...");
-        
-        EntityMap hostedConferences = _discovery->getHostedEntityList();
-
-        for (EntityMap::iterator it = hostedConferences.begin(); it != hostedConferences.end(); ++it)
-        {
-            Conference *conference = boost::dynamic_pointer_cast<ConferenceDescription>(it->second)->getConference();
-            [self withdrawConference:conference];
-        }
-    }
-}
-
-+(NSString*)conferencesAppPrefixWithHubPrefix:(NSString*)hubPrefix
-{
-    return [NSString stringWithFormat:@"%@/%@/conference",
-            hubPrefix, [NSString ndnRtcAppNameComponent]];;
-}
-
-@end
-
-//******************************************************************************
 class UserInfo : public EntityInfoBase
 {
 public:
@@ -762,7 +536,7 @@ public:
         unsigned int length = 0;
         unsigned char *bytes;
         ndnrtc::NdnRtcLibrary *lib = ((ndnrtc::NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject]);
-
+        
         if (lib)
         {
             lib->serializeSessionInfo(*sessionInfo, length, &bytes);
@@ -914,14 +688,17 @@ public:
 {
     if (self.isInitialized)
     {
-        NSString *userFullName = [NCNdnRtcLibraryController sharedInstance].sessionPrefix;
-        NSString *userInfoPrefix = [userFullName stringByAppendingNdnComponent:[NSString ndnRtcSessionInfoComponent]
-                                    ];
-        std::string entityName([userFullName cStringUsingEncoding:NSASCIIStringEncoding]);
-        std::string entityPrefix([userInfoPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+        EntityMap chatroomsMap = _discovery->getHostedEntityList();
         
-        _discovery->stopPublishingEntity(entityName, entityPrefix);
-        NSLog(@"withdrawn user info %@", userFullName);
+        for (auto user:chatroomsMap)
+        {
+            boost::shared_ptr<UserInfo> userInfo = boost::dynamic_pointer_cast<UserInfo>(user.second);
+            std::string entityName(NameComponents::getUserPrefix(userInfo->getUsername(), userInfo->getPrefix()));
+            std::string entityPrefix([[[NSString ncStringFromCString:entityName.c_str()] stringByAppendingNdnComponent:[NSString ndnRtcSessionInfoComponent]] cStringUsingEncoding:NSASCIIStringEncoding]);
+            
+            _discovery->stopPublishingEntity(entityName, entityPrefix);
+            NSLog(@"withdrawn user %s", userInfo->getUsername().c_str());
+        }
     }
 }
 
@@ -938,6 +715,8 @@ public:
 
 -(void)onLocalSessionOffline
 {
+    NSLog(@"user discovery shutdown");
+    [self withdrawInfo];
     self.isInitialized = NO;
     _discovery.reset();
     self.discoveredUsers = [NSArray array];
@@ -1233,6 +1012,8 @@ public:
 
 -(void)withdrawChatroom:(NCChatRoom *)chatroom
 {
+    assert(chatroom);
+    
     if (self.isInitialized)
     {
         std::string chatroomName([chatroom.chatroomName cStringUsingEncoding:NSASCIIStringEncoding]);
@@ -1244,6 +1025,32 @@ public:
         _discovery->stopPublishingEntity(chatroomName, entityPrefix);
         NSLog(@"withdrawn chatroom info %@", chatroom.chatroomName);
     }
+}
+
+-(void)withdrawAllChatrooms
+{
+    EntityMap chatroomsMap = _discovery->getHostedEntityList();
+    
+    [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+        try {
+            EntityMap chatroomsMap = _discovery->getDiscoveredEntityList();
+            
+            for (auto chatroom:chatroomsMap)
+            {
+                boost::shared_ptr<ChatroomInfo> chatroomInfo = boost::dynamic_pointer_cast<ChatroomInfo>(chatroom.second);
+                NSString *nsEntityPrefix = [NSString chatroomPrefixForChat:[NSString ncStringFromCString:chatroomInfo->getChatroomName().c_str()]
+                                                                      user:[NCPreferencesController sharedInstance].userName
+                                                                withPrefix:[NCPreferencesController sharedInstance].prefix];
+                std::string entityPrefix([nsEntityPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+                _discovery->stopPublishingEntity(chatroomInfo->getChatroomName(), entityPrefix);
+                NSLog(@"withdrawn chatroom %s", chatroomInfo->getChatroomName().c_str());
+            }
+        }
+        catch (std::exception &e)
+        {
+            NSLog(@"excpetion while withdrawing chatroom %s", e.what());
+        }
+    }];
 }
 
 #pragma mark - private
@@ -1259,6 +1066,7 @@ public:
 
 -(void)onLocalSessionOffline
 {
+    NSLog(@"chatroom discovery shutdown");
     self.isInitialized = NO;
     _discovery.reset();
     self.discoveredChatrooms = [NSArray array];

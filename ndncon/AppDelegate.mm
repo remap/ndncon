@@ -7,6 +7,7 @@
 //
 
 #import <HockeySDK/HockeySDK.h>
+
 #import "AppDelegate.h"
 
 #import "NCNdnRtcLibraryController.h"
@@ -20,6 +21,8 @@
 #import "NCPreferencesController.h"
 
 @interface AppDelegate()
+
+@property (weak) IBOutlet SUUpdater *sparkleUpdater;
 
 @end
 
@@ -36,22 +39,29 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-#ifdef DEBUG
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
-#endif
-    
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"f04e450096a94f9989a875d20d4b8662"];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [BITHockeyManager sharedHockeyManager].crashManager.askUserDetails = NO;
     [BITHockeyManager sharedHockeyManager].feedbackManager.requireUserName = BITFeedbackUserDataElementOptional;
     [BITHockeyManager sharedHockeyManager].feedbackManager.requireUserEmail = BITFeedbackUserDataElementOptional;
     
+    NSNotificationCenter *dnc = [NSNotificationCenter defaultCenter];
+    BITSystemProfile *bsp = [BITSystemProfile sharedSystemProfile];
+    [dnc addObserver:bsp selector:@selector(startUsage) name:NSApplicationDidBecomeActiveNotification object:nil];
+    [dnc addObserver:bsp selector:@selector(stopUsage) name:NSApplicationWillTerminateNotification object:nil];
+    
+    self.sparkleUpdater.sendsSystemProfile = YES;
+    
     [[NCPreferencesController sharedInstance] updateDefaults];
     [[NCPreferencesController sharedInstance] checkVersionParameters];
     
-    [self.window setTitle:[NSString stringWithFormat:@"%@ v%@",
-                           [NCPreferencesController sharedInstance].appName,
-                           [NCPreferencesController sharedInstance].versionString]];
+#ifdef DEBUG
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
+    NSLog(@"%@ v%@ (debug version)", [NCPreferencesController sharedInstance].appName, [NCPreferencesController sharedInstance].versionString);
+#else
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
+    NSLog(@"%@ v%@", [NCPreferencesController sharedInstance].appName, [NCPreferencesController sharedInstance].versionString);
+#endif
     
     if ([NCPreferencesController sharedInstance].isFirstLaunch)
     {
@@ -64,7 +74,6 @@
     
     [[NCNdnRtcLibraryController sharedInstance] startSession];
     [NCChatLibraryController sharedInstance];
-//    [NCConferenceDiscoveryController sharedInstance];
     [NCUserDiscoveryController sharedInstance];
     [NCChatroomDiscoveryController sharedInstance];
 }
@@ -195,6 +204,8 @@
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     [[NCChatLibraryController sharedInstance] leaveAllChatRooms];
+    [[NCNdnRtcLibraryController sharedInstance] stopSession];
+    [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
     
     if (!_managedObjectContext) {
         return NSTerminateNow;
@@ -287,6 +298,10 @@
     [[BITHockeyManager sharedHockeyManager].feedbackManager showFeedbackWindow];
 }
 
+-(NSArray*)feedParametersForUpdater:(SUUpdater *)updater sendingSystemProfile:(BOOL)sendingProfile
+{
+    return [[BITSystemProfile sharedSystemProfile] systemUsageData];
+}
 
 @end
 

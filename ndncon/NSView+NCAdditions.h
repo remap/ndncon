@@ -42,11 +42,23 @@
 @end
 
 //******************************************************************************
+// Block drawable view allows you add drawing blocks to a view which will be
+// executed in order in drawRect call
+typedef void(^NCDrawBlock)(NSView *view, NSRect dirtyRect);
+
+@interface NCBlockDrawableView : NSView
+
+-(void)addDrawBlock:(NCDrawBlock)drawBlock;
+-(void)removeDrawBlock:(NCDrawBlock)drawBlock;
+
+@end
+
+//******************************************************************************
 // Trackable view - allows to specify block which will be called on
 // updateTrackingAreas
 typedef void(^NCUpdateTrackingAreas)(NSView *);
 
-@interface NCTrackableView : NSView
+@interface NCTrackableView : NCBlockDrawableView
 
 @property (nonatomic, strong) NCUpdateTrackingAreas updateTrackingAreasBlock;
 

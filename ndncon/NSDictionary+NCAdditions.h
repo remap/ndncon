@@ -22,6 +22,9 @@ extern NSString* const kDeltaAverageSegNumKey;
 extern NSString* const kDeltaAverageParSegNumKey;
 extern NSString* const kKeyAverageSegNumKey;
 extern NSString* const kKeyAverageParSegNumKey;
+extern NSString* const kSessionInfoKey;
+extern NSString* const kUserInfoKey;
+extern NSString* const kHubPrefixKey;
 
 @interface NSDictionary (NCAdditions)
 

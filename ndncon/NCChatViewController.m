@@ -100,22 +100,22 @@ typedef enum _NCChatMessageCellType {
         
         {
             // remove all user notifications from this user
-            NSMutableArray *notificationsForRemoval = [NSMutableArray array];
-            [[NSUserNotificationCenter defaultUserNotificationCenter].deliveredNotifications
-             enumerateObjectsUsingBlock:^(NSUserNotification *notification, NSUInteger idx, BOOL *stop)
-            {
-                 User *user = [User userByName:notification.userInfo[kUserNameKey]
-                                     andPrefix:notification.userInfo[kHubPrefixKey]
-                                   fromContext:self.context];
-
-                 if ([self.chatRoom hasParitcipant:user])
-                     [notificationsForRemoval addObject:notification];
-             }];
-            
-            [notificationsForRemoval enumerateObjectsUsingBlock:
-             ^(id obj, NSUInteger idx, BOOL *stop) {
-                 [[NSUserNotificationCenter defaultUserNotificationCenter] removeDeliveredNotification:obj];
-             }];
+//            NSMutableArray *notificationsForRemoval = [NSMutableArray array];
+//            [[NSUserNotificationCenter defaultUserNotificationCenter].deliveredNotifications
+//             enumerateObjectsUsingBlock:^(NSUserNotification *notification, NSUInteger idx, BOOL *stop)
+//            {
+//                 User *user = [User userByName:notification.userInfo[kUserNameKey]
+//                                     andPrefix:notification.userInfo[kHubPrefixKey]
+//                                   fromContext:self.context];
+//
+//                 if ([self.chatRoom hasParitcipant:user])
+//                     [notificationsForRemoval addObject:notification];
+//             }];
+//            
+//            [notificationsForRemoval enumerateObjectsUsingBlock:
+//             ^(id obj, NSUInteger idx, BOOL *stop) {
+//                 [[NSUserNotificationCenter defaultUserNotificationCenter] removeDeliveredNotification:obj];
+//             }];
         }
     }
 }

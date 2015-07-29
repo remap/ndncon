@@ -8,7 +8,6 @@
 
 #import "NCUserPreviewController.h"
 #import "NSDictionary+NCAdditions.h"
-#import "NCBlockDrawableView.h"
 #import "NSView+NCAdditions.h"
 #import "NSDictionary+NCAdditions.h"
 #import "NSObject+NCAdditions.h"
@@ -96,6 +95,11 @@ NSString* const kNCStreamPreviewControllerKey = @"streamController";
     [self.infoLabel setStringValue:@"no video"];
     [self.infoLabel setBordered:NO];
     [self.infoLabel setBackgroundColor:[NSColor clearColor]];
+    
+    [(NCBlockDrawableView*)self.view addDrawBlock:^(NSView *view, NSRect dirtyRect) {
+        [[NSColor grayColor] setStroke];
+        [NSBezierPath strokeRect:view.bounds];
+    }];
     
     self.captionView.alphaValue = 0.;
     [self.captionView addDrawBlock:^(NSView *view, NSRect dirtyRect) {

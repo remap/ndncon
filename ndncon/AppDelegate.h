@@ -7,12 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Sparkle/Sparkle.h>
+
 #import "MASPreferencesWindowController.h"
 #import "NCPreferencesController.h"
-#import "NCUserListViewController.h"
 
 @interface AppDelegate : NSObject
-<NSApplicationDelegate>
+<NSApplicationDelegate, SUUpdaterDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 
@@ -22,7 +23,6 @@
 
 @property (nonatomic, strong) MASPreferencesWindowController* preferencesWindowController;
 @property (nonatomic, readonly) NCPreferencesController *preferences;
-@property (assign) IBOutlet NCUserListViewController *userListViewController;
 
 - (IBAction)saveAction:(id)sender;
 - (BOOL)commitManagedContext;

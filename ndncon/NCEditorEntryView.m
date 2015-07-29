@@ -7,7 +7,7 @@
 //
 
 #import "NCEditorEntryView.h"
-#import "NCBlockDrawableView.h"
+#import "NSView+NCAdditions.h"
 
 @implementation NCEditorEntryView
 

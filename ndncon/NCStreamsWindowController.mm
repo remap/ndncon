@@ -25,7 +25,6 @@
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"
 #import "NCVideoStreamViewController.h"
-#import "NCAudioPreviewController.h"
 #import "NCVideoPreviewController.h"
 #import "NCPreferencesController.h"
 #import "NCCameraCapturer.h"
@@ -272,6 +271,14 @@ using namespace ndnrtc::new_api;
     self.chatViewController.isActive = (chatroom != nil);
 }
 
+- (IBAction)chatroomNameEntered:(NSTextField*)sender {
+    if (sender.stringValue && ![sender.stringValue isEqualToString:@""])
+    {
+        self.isPublishingChatroom = YES;
+        [self createChatroom:nil];
+    }
+}
+
 - (IBAction)createChatroom:(id)sender
 {
     if (self.isPublishingChatroom)
@@ -288,12 +295,16 @@ using namespace ndnrtc::new_api;
     }
     else
     {
-        [self willChangeValueForKey:@"chatrooms"];
-        [[NCChatroomDiscoveryController sharedInstance] withdrawChatroom:self.publishedChatroom];
-        self.publishedChatroom = nil;
-        [self didChangeValueForKey:@"chatrooms"];
-        [self.chatroomPopup selectItemAtIndex:0];
-        [self selectChatroom:self.chatroomPopup];
+        if (self.publishedChatroomName &&
+            ![self.publishedChatroomName isEqualToString:@""])
+        {
+            [self willChangeValueForKey:@"chatrooms"];
+            [[NCChatroomDiscoveryController sharedInstance] withdrawChatroom:self.publishedChatroom];
+            self.publishedChatroom = nil;
+            [self didChangeValueForKey:@"chatrooms"];
+            [self.chatroomPopup selectItemAtIndex:0];
+            [self selectChatroom:self.chatroomPopup];
+        }
     }
 }
 

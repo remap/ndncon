@@ -13,6 +13,7 @@
 #import "NCStreamViewController.h"
 #import "NCStreamingController.h"
 #import "NCNdnRtcLibraryController.h"
+#import "NSDictionary+NCAdditions.h"
 
 @interface NCRosterWindowController()
 
@@ -24,6 +25,9 @@
 @property (nonatomic) BOOL isVideoPublish;
 @property (nonatomic) BOOL isPublishing;
 @property (nonatomic, readonly) BOOL canPublish;
+
+@property (nonatomic) BOOL isGlobalVideoFetchActive;
+@property (nonatomic) BOOL isGlobalAudioFetchActive;
 
 @end
 
@@ -62,9 +66,12 @@
      nil];
     
     NSDictionary *userPublishOptions = [[NCPreferencesController sharedInstance] getFetchOptionsForUser:@"me" withPrefix:@""];
+    NSDictionary *globalFetchOptions = [[NCPreferencesController sharedInstance] getGlobalFetchOptions];
     
     self.isAudioPublish = [userPublishOptions[kUserFetchOptionFetchAudioKey] boolValue];
     self.isVideoPublish = [userPublishOptions[kUserFetchOptionFetchVideoKey] boolValue];
+    self.isGlobalAudioFetchActive = [globalFetchOptions[kUserFetchOptionFetchAudioKey] boolValue];
+    self.isGlobalVideoFetchActive = [globalFetchOptions[kUserFetchOptionFetchVideoKey] boolValue];
     
     [self.window setAcceptsMouseMovedEvents:YES];
 }
@@ -138,7 +145,8 @@
     }
 }
 
-- (IBAction)onVideoSelected:(id)sender {
+- (IBAction)onVideoSelected:(id)sender
+{
     // save user choice
     [[NCPreferencesController sharedInstance] addFetchOptions:@{kUserFetchOptionFetchVideoKey:@([sender state] == NSOnState)}
                                                       forUser:@"me"
@@ -156,6 +164,22 @@
              [[NCStreamingController sharedInstance] allPublishedVideoStreams]];
         }
     }
+}
+
+- (IBAction)setGlobalVideoFetchingFilter:(id)sender
+{
+    NSMutableDictionary *options = [[[NCPreferencesController sharedInstance] getGlobalFetchOptions] deepMutableCopy];
+    
+    options[kUserFetchOptionFetchVideoKey] = @(self.isGlobalVideoFetchActive);
+    [[NCPreferencesController sharedInstance] setGlobalFetchOptions:options];
+}
+
+- (IBAction)setGlobalAudioFetchingFilter:(id)sender
+{
+    NSMutableDictionary *options = [[[NCPreferencesController sharedInstance] getGlobalFetchOptions] deepMutableCopy];
+    
+    options[kUserFetchOptionFetchAudioKey] = @(self.isGlobalAudioFetchActive);
+    [[NCPreferencesController sharedInstance] setGlobalFetchOptions:options];
 }
 
 #pragma mark - properties

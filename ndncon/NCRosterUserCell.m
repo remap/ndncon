@@ -30,7 +30,8 @@
 {
     [self.prefix.cell setLineBreakMode:NSLineBreakByTruncatingTail];
     [self subscribeForNotificationsAndSelectors:
-        kNCFetchedUserRemovedNotification, @selector(onFetchedUserRemoved:),
+     kNCFetchedUserRemovedNotification, @selector(onFetchedUserRemoved:),
+     kNCGlobalFetchingFilterChangedNotification, @selector(onGlobalFetchingFilterChanged:),
      nil];
 }
 
@@ -143,11 +144,12 @@
     {
         self.isFetching = NO;
         
+        NSDictionary *globalFetchOptions = [[NCPreferencesController sharedInstance] getGlobalFetchOptions];
         NSDictionary *userFetchOptions = [[NCPreferencesController sharedInstance]
                                           getFetchOptionsForUser:self.userInfo.username
                                           withPrefix:self.userInfo.sessionPrefix];
-        self.isAudioSelected = [userFetchOptions[kUserFetchOptionFetchAudioKey] boolValue];
-        self.isVideoSelected = [userFetchOptions[kUserFetchOptionFetchVideoKey] boolValue];
+        self.isAudioSelected = [userFetchOptions[kUserFetchOptionFetchAudioKey] boolValue] && [globalFetchOptions[kUserFetchOptionFetchAudioKey] boolValue];
+        self.isVideoSelected = [userFetchOptions[kUserFetchOptionFetchVideoKey] boolValue] && [globalFetchOptions[kUserFetchOptionFetchVideoKey] boolValue];
     }
 }
 
@@ -159,26 +161,7 @@
                                                       forUser:self.userInfo.username
                                                    withPrefix:self.userInfo.sessionPrefix];
     
-    if (self.isFetching)
-    {
-        if (self.isAudioSelected)
-        {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(rosterUserCell:didSelectToFetchStreams:)])
-            {
-                [self.delegate rosterUserCell:self
-                      didSelectToFetchStreams:[self.userInfo getDefaultFetchAudioThreads]];
-            }
-        }
-        else
-        {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(rosterUserCell:didSelectToStopStreams:)])
-                [self.delegate rosterUserCell:self
-                       didSelectToStopStreams:self.userInfo.sessionInfo.audioStreamsConfigurations];
-            
-            if (!(_isAudioSelected || _isVideoSelected))
-                self.isFetching = NO;
-        }
-    }
+    [self audioFilterChanged];
 }
 
 -(IBAction)onVideoSelected:(id)sender
@@ -187,26 +170,7 @@
     [[NCPreferencesController sharedInstance] addFetchOptions:@{kUserFetchOptionFetchVideoKey:@([sender state] == NSOnState)}
                                                       forUser:self.userInfo.username
                                                    withPrefix:self.userInfo.sessionPrefix];
-    
-    if (self.isFetching)
-    {
-        if (self.isVideoSelected)
-        {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(rosterUserCell:didSelectToFetchStreams:)])
-            {
-                [self.delegate rosterUserCell:self
-                      didSelectToFetchStreams:[self.userInfo getDefaultFetchVideoThreads]];
-            }
-        }
-        else
-        {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(rosterUserCell:didSelectToStopStreams:)])
-                [self.delegate rosterUserCell:self didSelectToStopStreams:self.userInfo.sessionInfo.videoStreamsConfigurations];
-            
-            if (!(_isAudioSelected || _isVideoSelected))
-                self.isFetching = NO;
-        }
-    }
+    [self videoFilterChanged];
 }
 
 -(IBAction)onFetchClicked:(id)sender
@@ -248,6 +212,79 @@
     {
         if (self.isFetching)
             self.isFetching = NO;
+    }
+}
+
+-(void)onGlobalFetchingFilterChanged:(NSNotification*)notification
+{
+    NSDictionary *options = notification.userInfo[kGlobalFetchingOptionsKey];
+    NSDictionary *previousOptions = notification.userInfo[kPreviousGlobalFetchingOptionsKey];
+    
+    [self updateUi];
+    
+    if (self.isFetching)
+    {
+        if ([options[kUserFetchOptionFetchVideoKey] boolValue] != [previousOptions[kUserFetchOptionFetchVideoKey] boolValue])
+        {
+            self.isVideoSelected = [options[kUserFetchOptionFetchVideoKey] boolValue];
+            [self videoFilterChanged];
+        }
+        
+        if ([options[kUserFetchOptionFetchAudioKey] boolValue] != [previousOptions[kUserFetchOptionFetchAudioKey] boolValue])
+        {
+            self.isAudioSelected = [options[kUserFetchOptionFetchAudioKey] boolValue];
+            [self audioFilterChanged];
+        }
+    }
+    else
+        [self updateUi];
+}
+
+#pragma mark - private
+-(void)audioFilterChanged
+{
+    if (self.isFetching)
+    {
+        if (self.isAudioSelected)
+        {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(rosterUserCell:didSelectToFetchStreams:)])
+            {
+                [self.delegate rosterUserCell:self
+                      didSelectToFetchStreams:[self.userInfo getDefaultFetchAudioThreads]];
+            }
+        }
+        else
+        {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(rosterUserCell:didSelectToStopStreams:)])
+                [self.delegate rosterUserCell:self
+                       didSelectToStopStreams:self.userInfo.sessionInfo.audioStreamsConfigurations];
+            
+            if (!(_isAudioSelected || _isVideoSelected))
+                self.isFetching = NO;
+        }
+    }
+}
+
+-(void)videoFilterChanged
+{
+    if (self.isFetching)
+    {
+        if (self.isVideoSelected)
+        {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(rosterUserCell:didSelectToFetchStreams:)])
+            {
+                [self.delegate rosterUserCell:self
+                      didSelectToFetchStreams:[self.userInfo getDefaultFetchVideoThreads]];
+            }
+        }
+        else
+        {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(rosterUserCell:didSelectToStopStreams:)])
+                [self.delegate rosterUserCell:self didSelectToStopStreams:self.userInfo.sessionInfo.videoStreamsConfigurations];
+            
+            if (!(_isAudioSelected || _isVideoSelected))
+                self.isFetching = NO;
+        }
     }
 }
 
@@ -390,7 +427,6 @@
 }
 
 #pragma mark - actions
-
 -(IBAction)onFetchClicked:(id)sender
 {
     NSMutableDictionary *streamToFetch = [@{} mutableCopy];
