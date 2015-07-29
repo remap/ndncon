@@ -36,7 +36,6 @@
 		AF45142B1B64E7D800B0AF02 /* NCBaseCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF45142A1B64E7D800B0AF02 /* NCBaseCapturer.mm */; };
 		AF45142C1B64E7D800B0AF02 /* NCBaseCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF45142A1B64E7D800B0AF02 /* NCBaseCapturer.mm */; };
 		AF5D34A419DA1AF400227E75 /* NCGlView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A319DA1AF400227E75 /* NCGlView.m */; };
-		AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
 		AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AA19DA52E400227E75 /* NCClickableView.m */; };
 		AF5D34AE19DB7B4700227E75 /* NSString+NCAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34AD19DB7B4700227E75 /* NSString+NCAdditions.mm */; };
 		AF5D34B419DE227D00227E75 /* NCErrorController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34B319DE227D00227E75 /* NCErrorController.m */; };
@@ -162,7 +161,6 @@
 		AFDD0DCA1A7318380076A301 /* NCActiveStreamViewer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFFED07819D62B92000974FF /* NCActiveStreamViewer.mm */; };
 		AFDD0DCB1A7318380076A301 /* NCAudioStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7026D519C392E80087B605 /* NCAudioStreamViewController.m */; };
 		AFDD0DCD1A7318380076A301 /* Conference.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3EEA3F19F8610E00039A56 /* Conference.m */; };
-		AFDD0DCE1A7318380076A301 /* NCBlockDrawableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */; };
 		AFDD0DCF1A7318380076A301 /* NSView+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3D2CF919F708AA00A0D274 /* NSView+NCAdditions.m */; };
 		AFDD0DD01A7318380076A301 /* NCVideoPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C1419CA099800D8A2BC /* NCVideoPreviewController.m */; };
 		AFDD0DD11A7318380076A301 /* PTNSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D34B719DE22EF00227E75 /* PTNSingleton.m */; };
@@ -298,8 +296,6 @@
 		AF45142D1B6525ED00B0AF02 /* GraphKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GraphKit.framework; path = ../../../../../System/Library/PrivateFrameworks/GraphKit.framework; sourceTree = "<group>"; };
 		AF5D34A219DA1AF400227E75 /* NCGlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCGlView.h; path = ndncon/NCGlView.h; sourceTree = SOURCE_ROOT; };
 		AF5D34A319DA1AF400227E75 /* NCGlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCGlView.m; path = ndncon/NCGlView.m; sourceTree = SOURCE_ROOT; };
-		AF5D34A519DA29C800227E75 /* NCBlockDrawableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCBlockDrawableView.h; path = ndncon/NCBlockDrawableView.h; sourceTree = SOURCE_ROOT; };
-		AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCBlockDrawableView.m; path = ndncon/NCBlockDrawableView.m; sourceTree = SOURCE_ROOT; };
 		AF5D34A919DA52E400227E75 /* NCClickableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCClickableView.h; path = ndncon/NCClickableView.h; sourceTree = SOURCE_ROOT; };
 		AF5D34AA19DA52E400227E75 /* NCClickableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCClickableView.m; path = ndncon/NCClickableView.m; sourceTree = SOURCE_ROOT; };
 		AF5D34AC19DB7B4700227E75 /* NSString+NCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+NCAdditions.h"; path = "ndncon/NSString+NCAdditions.h"; sourceTree = SOURCE_ROOT; };
@@ -787,8 +783,6 @@
 				AFA8521519C8B2FF0015A883 /* NCEmbeddedScrollView.h */,
 				AFA8521619C8B2FF0015A883 /* NCEmbeddedScrollView.m */,
 				AFA8521819C8B3880015A883 /* NCConfigurationObserver.h */,
-				AF5D34A519DA29C800227E75 /* NCBlockDrawableView.h */,
-				AF5D34A619DA29C800227E75 /* NCBlockDrawableView.m */,
 				AF5D34A919DA52E400227E75 /* NCClickableView.h */,
 				AF5D34AA19DA52E400227E75 /* NCClickableView.m */,
 				AF5D34B219DE227C00227E75 /* NCErrorController.h */,
@@ -1265,7 +1259,6 @@
 				AFFED07919D62B92000974FF /* NCActiveStreamViewer.mm in Sources */,
 				AF7026D719C392E80087B605 /* NCAudioStreamViewController.m in Sources */,
 				AF3EEA4019F8610E00039A56 /* Conference.m in Sources */,
-				AF5D34A719DA29C800227E75 /* NCBlockDrawableView.m in Sources */,
 				AF6D92081B4F267600F8F4E0 /* NCUserPreviewController.m in Sources */,
 				AF241DA71AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */,
 				AF3D2CFA19F708AA00A0D274 /* NSView+NCAdditions.m in Sources */,
@@ -1349,7 +1342,6 @@
 				AFDD0DCD1A7318380076A301 /* Conference.m in Sources */,
 				AF6D92091B4F267600F8F4E0 /* NCUserPreviewController.m in Sources */,
 				AF241DA81AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */,
-				AFDD0DCE1A7318380076A301 /* NCBlockDrawableView.m in Sources */,
 				AF7FAD381B461BB200EC5168 /* NCRosterUserCell.m in Sources */,
 				AFDD0DCF1A7318380076A301 /* NSView+NCAdditions.m in Sources */,
 				AFDD0DD01A7318380076A301 /* NCVideoPreviewController.m in Sources */,
@@ -1448,8 +1440,9 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/thirdparty/sparkle",
@@ -1458,7 +1451,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

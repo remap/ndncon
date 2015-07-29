@@ -9,7 +9,7 @@
 #include <ndnrtc/ndnrtc-library.h>
 #include <ndnrtc/params.h>
 
-#import "NCBlockDrawableView.h"
+#import "NSView+NCAdditions.h"
 #import "NSString+NCAdditions.h"
 #import "NCStreamViewController.h"
 #import "NCVideoThreadViewController.h"

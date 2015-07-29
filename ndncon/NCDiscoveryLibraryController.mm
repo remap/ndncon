@@ -535,7 +535,7 @@ public:
         unsigned int length = 0;
         unsigned char *bytes;
         ndnrtc::NdnRtcLibrary *lib = ((ndnrtc::NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject]);
-
+        
         if (lib)
         {
             lib->serializeSessionInfo(*sessionInfo, length, &bytes);

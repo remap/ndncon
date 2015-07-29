@@ -8,7 +8,6 @@
 
 #import "NCVideoPreviewController.h"
 #import "NSView+NCAdditions.h"
-#import "NCBlockDrawableView.h"
 #import "NSDictionary+NCAdditions.h"
 
 #define PREVIEW_WIDTH 177.7
