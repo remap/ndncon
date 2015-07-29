@@ -32,6 +32,9 @@ extern NSString* const kUserFetchOptionFetchVideoKey;
 extern NSString* const kUserFetchOptionDefaultAudioThreadsKey;
 extern NSString* const kUserFetchOptionDefaultVideoThreadsKey;
 
+extern NSString* const kNCGlobalFetchingFilterChangedNotification;
+extern NSString* const kGlobalFetchingOptionsKey;
+extern NSString* const kPreviousGlobalFetchingOptionsKey;
 
 @interface NCPreferencesController : PTNStorage
 
@@ -92,6 +95,8 @@ extern NSString* const kUserFetchOptionDefaultVideoThreadsKey;
 -(void)getNdnRtcGeneralConsumerParameters:(void*)generalConsumerParameters;
 
 // user-specific fetch options
+-(void)setGlobalFetchOptions:(NSDictionary*)options;
+-(NSDictionary*)getGlobalFetchOptions;
 -(void)setFetchOptions:(NSDictionary*)options forUser:(NSString*)username withPrefix:(NSString*)prefix;
 -(void)addFetchOptions:(NSDictionary*)options forUser:(NSString*)username withPrefix:(NSString*)prefix;
 -(NSDictionary*)getFetchOptionsForUser:(NSString*)username withPrefix:(NSString*)prefix;

@@ -190,5 +190,12 @@
 			</dict>
 		</array>
 	</dict>
+	<key>Global fetch options</key>
+	<dict>
+		<key>userFetchAudio</key>
+		<true/>
+		<key>userFetchVideo</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

@@ -26,7 +26,11 @@
             </connections>
         </customObject>
         <customObject id="dBI-Ba-GfI" customClass="SUUpdater"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate"/>
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
+            <connections>
+                <outlet property="window" destination="SJT-cQ-m2B" id="hnI-9b-Qzw"/>
+            </connections>
+        </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <customObject id="zW4-r6-vjY" customClass="NCRosterWindowController">
             <connections>
@@ -254,7 +258,7 @@ CA
             <rect key="contentRect" x="196" y="240" width="350" height="575"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="350" height="500"/>
-            <value key="maxSize" type="size" width="600" height="800"/>
+            <value key="maxSize" type="size" width="600" height="1000"/>
             <view key="contentView" id="Reg-Bg-aTn">
                 <rect key="frame" x="0.0" y="0.0" width="350" height="575"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -412,21 +416,61 @@ CA
                         </constraints>
                     </customView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zIx-sC-YAp">
-                        <rect key="frame" x="6" y="450" width="338" height="19"/>
+                        <rect key="frame" x="6" y="450" width="95" height="19"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Active users" id="4T3-9v-d4M">
                             <font key="font" metaFont="system" size="16"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button toolTip="Video-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="6Vb-38-b3f" customClass="NCToggleButton">
+                        <rect key="frame" x="310" y="5" width="22" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="Gei-ix-1zh"/>
+                            <constraint firstAttribute="width" constant="22" id="duo-iG-rif"/>
+                        </constraints>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_video" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="P7E-ax-LRr">
+                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
+                                <color key="value" red="0.0" green="0.064394842810000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="setGlobalVideoFetchingFilter:" target="zW4-r6-vjY" id="q9f-XD-pR5"/>
+                            <binding destination="zW4-r6-vjY" name="value" keyPath="self.isGlobalVideoFetchActive" id="FTi-gL-fZr"/>
+                        </connections>
+                    </button>
+                    <button toolTip="Audio-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="jyZ-Jj-6ff" customClass="NCToggleButton">
+                        <rect key="frame" x="284" y="5" width="22" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="VJR-gx-WIu"/>
+                            <constraint firstAttribute="width" constant="22" id="VNh-jd-OJj"/>
+                        </constraints>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_audio" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hPJ-oe-tgL">
+                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
+                                <color key="value" red="0.0" green="0.1165878524" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="setGlobalAudioFetchingFilter:" target="zW4-r6-vjY" id="VQP-mr-mxH"/>
+                            <binding destination="zW4-r6-vjY" name="value" keyPath="self.isGlobalAudioFetchActive" id="4Za-L8-1UM"/>
+                        </connections>
+                    </button>
                     <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="PMo-X4-yCs">
-                        <rect key="frame" x="0.0" y="447" width="350" height="5"/>
+                        <rect key="frame" x="0.0" y="446" width="350" height="5"/>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <font key="titleFont" metaFont="system"/>
                     </box>
                     <scrollView identifier="UserCell" autohidesScrollers="YES" horizontalLineScroll="102" horizontalPageScroll="10" verticalLineScroll="102" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPi-Zz-25f" userLabel="Active Users - Outline View">
-                        <rect key="frame" x="0.0" y="31" width="350" height="418"/>
+                        <rect key="frame" x="0.0" y="31" width="350" height="417"/>
                         <clipView key="contentView" id="kwP-53-keE">
                             <rect key="frame" x="1" y="17" width="238" height="117"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -478,8 +522,8 @@ CA
                                                                 </binding>
                                                             </connections>
                                                         </textField>
-                                                        <button toolTip="Start fetching stream(s)" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G2Z-ig-LIW" customClass="NCToggleButton">
-                                                            <rect key="frame" x="296" y="35" width="30" height="30"/>
+                                                        <button toolTip="Start fetching stream(s)" translatesAutoresizingMaskIntoConstraints="NO" id="G2Z-ig-LIW" customClass="NCToggleButton">
+                                                            <rect key="frame" x="297" y="35" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="xcs-55-K5U"/>
                                                                 <constraint firstAttribute="height" constant="30" id="zCo-sb-j3g"/>
@@ -499,8 +543,8 @@ CA
                                                                 <binding destination="bcn-7M-6iu" name="value" keyPath="isFetching" id="vf2-pJ-bUS"/>
                                                             </connections>
                                                         </button>
-                                                        <button toolTip="Video-only filter" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oUg-RE-hMh" customClass="NCToggleButton">
-                                                            <rect key="frame" x="254" y="35" width="30" height="30"/>
+                                                        <button toolTip="Video-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="oUg-RE-hMh" customClass="NCToggleButton">
+                                                            <rect key="frame" x="255" y="35" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="XpR-UW-pNE"/>
                                                                 <constraint firstAttribute="height" constant="30" id="bON-Iy-vJM"/>
@@ -519,13 +563,13 @@ CA
                                                                 <binding destination="bcn-7M-6iu" name="value" keyPath="isVideoSelected" id="EUa-uQ-V1E"/>
                                                             </connections>
                                                         </button>
-                                                        <button toolTip="Audio-only filter" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b0q-C7-wcl" customClass="NCToggleButton">
-                                                            <rect key="frame" x="220" y="35" width="30" height="30"/>
+                                                        <button toolTip="Audio-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="b0q-C7-wcl" customClass="NCToggleButton">
+                                                            <rect key="frame" x="221" y="35" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="UAJ-wl-ZI5"/>
                                                                 <constraint firstAttribute="height" constant="30" id="VSS-4R-Rhd"/>
                                                             </constraints>
-                                                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_audio" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aP8-WU-ztL">
+                                                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_audio" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aP8-WU-ztL">
                                                                 <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                                                 <font key="font" metaFont="system"/>
                                                             </buttonCell>
@@ -656,7 +700,6 @@ CA
                                                         <constraint firstItem="XC1-HT-C6v" firstAttribute="leading" secondItem="L7h-U2-Rwx" secondAttribute="leading" constant="10" id="kkw-u1-drU"/>
                                                     </constraints>
                                                     <connections>
-                                                        <outlet property="fetchButton" destination="Yac-VI-S1j" id="Ay3-r7-ZJt"/>
                                                         <outlet property="imageView" destination="XC1-HT-C6v" id="RCa-69-sHb"/>
                                                         <outlet property="streamHint" destination="kUQ-Ym-L68" id="lcw-TO-eih"/>
                                                         <outlet property="textField" destination="QTM-xr-UTF" id="kB0-Pu-lR3"/>
@@ -683,35 +726,53 @@ CA
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Bb-xE-Nje">
+                        <rect key="frame" x="164" y="9" width="114" height="14"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="media streams filters" id="j0m-QO-wf7">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="j1t-fK-0dB" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" id="1OY-yS-LZg"/>
                     <constraint firstItem="BdF-lK-Exv" firstAttribute="top" secondItem="Reg-Bg-aTn" secondAttribute="top" id="8Xf-PL-XI6"/>
                     <constraint firstItem="GPi-Zz-25f" firstAttribute="top" secondItem="PMo-X4-yCs" secondAttribute="bottom" id="8eD-EK-Jbb"/>
                     <constraint firstAttribute="trailing" secondItem="GPi-Zz-25f" secondAttribute="trailing" id="Ewa-Tf-ydQ"/>
-                    <constraint firstItem="PMo-X4-yCs" firstAttribute="top" secondItem="zIx-sC-YAp" secondAttribute="bottom" id="KOd-3Q-1Ot"/>
+                    <constraint firstItem="6Vb-38-b3f" firstAttribute="leading" secondItem="jyZ-Jj-6ff" secondAttribute="trailing" constant="4" id="GHH-hR-HNm"/>
+                    <constraint firstItem="PMo-X4-yCs" firstAttribute="top" secondItem="zIx-sC-YAp" secondAttribute="bottom" constant="1" id="KOd-3Q-1Ot"/>
                     <constraint firstAttribute="bottom" secondItem="GPi-Zz-25f" secondAttribute="bottom" constant="31" id="KfX-Ah-efd"/>
                     <constraint firstAttribute="trailing" secondItem="j1t-fK-0dB" secondAttribute="trailing" id="L0e-fM-may"/>
                     <constraint firstItem="PMo-X4-yCs" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" id="Sdm-PA-Sg7"/>
                     <constraint firstItem="zIx-sC-YAp" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" constant="8" id="VJE-eh-alD"/>
+                    <constraint firstItem="jyZ-Jj-6ff" firstAttribute="leading" secondItem="2Bb-xE-Nje" secondAttribute="trailing" constant="8" id="VPH-yp-g3c"/>
                     <constraint firstAttribute="trailing" secondItem="PMo-X4-yCs" secondAttribute="trailing" id="XKW-J4-ve2"/>
-                    <constraint firstAttribute="trailing" secondItem="zIx-sC-YAp" secondAttribute="trailing" constant="8" id="a4E-X2-cTV"/>
+                    <constraint firstItem="jyZ-Jj-6ff" firstAttribute="centerY" secondItem="2Bb-xE-Nje" secondAttribute="centerY" id="XhX-QK-vtF"/>
+                    <constraint firstAttribute="trailing" secondItem="6Vb-38-b3f" secondAttribute="trailing" constant="18" id="dJx-6P-Gpu"/>
                     <constraint firstItem="GPi-Zz-25f" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" id="eVM-Tq-YJY"/>
+                    <constraint firstItem="6Vb-38-b3f" firstAttribute="centerY" secondItem="jyZ-Jj-6ff" secondAttribute="centerY" id="mXS-fL-fb0"/>
                     <constraint firstAttribute="trailing" secondItem="BdF-lK-Exv" secondAttribute="trailing" id="mo7-zo-oid"/>
                     <constraint firstItem="zIx-sC-YAp" firstAttribute="top" secondItem="j1t-fK-0dB" secondAttribute="bottom" constant="5" id="raC-gL-ubc"/>
+                    <constraint firstAttribute="bottom" secondItem="6Vb-38-b3f" secondAttribute="bottom" constant="5" id="vLf-5b-91W"/>
                     <constraint firstItem="j1t-fK-0dB" firstAttribute="top" secondItem="BdF-lK-Exv" secondAttribute="bottom" id="y8L-WT-3ea"/>
                     <constraint firstItem="BdF-lK-Exv" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" id="yrB-Bh-kc7"/>
                 </constraints>
             </view>
             <contentBorderThickness minY="32"/>
             <connections>
-                <binding destination="Voe-Tx-rLC" name="displayPatternTitle1" keyPath="self.preferences.versionString" id="oWq-Zz-Xx1">
+                <binding destination="Voe-Tx-rLC" name="displayPatternTitle2" keyPath="self.preferences.appName" previousBinding="EZi-AC-m3t" id="fo7-sN-KfS">
                     <dictionary key="options">
-                        <string key="NSDisplayPattern">ndncon v%{title1}@</string>
+                        <string key="NSDisplayPattern">%{title2}@ v%{title1}@</string>
+                    </dictionary>
+                </binding>
+                <binding destination="Voe-Tx-rLC" name="displayPatternTitle1" keyPath="self.preferences.versionString" id="EZi-AC-m3t">
+                    <dictionary key="options">
+                        <string key="NSDisplayPattern">%{title2}@ v%{title1}@</string>
                     </dictionary>
                 </binding>
             </connections>
-            <point key="canvasLocation" x="-269" y="152.5"/>
+            <point key="canvasLocation" x="-65" y="178.5"/>
         </window>
         <window title="streams" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="8ZU-Se-X7h">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
@@ -728,7 +789,7 @@ CA
                         <rect key="frame" x="0.0" y="30" width="850" height="700"/>
                         <subviews>
                             <customView horizontalCompressionResistancePriority="250" misplaced="YES" id="fLF-5k-Zph" userLabel="Left view">
-                                <rect key="frame" x="0.0" y="0.0" width="235" height="700"/>
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="700"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <customView horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YrW-zK-Abd">
@@ -781,13 +842,13 @@ CA
                                             </button>
                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hBX-7Y-dvs">
                                                 <rect key="frame" x="20" y="109" width="195" height="22"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="your chatroom name" drawsBackground="YES" id="pfv-nF-JfC">
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="your chatroom name" drawsBackground="YES" id="pfv-nF-JfC">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                                 <connections>
-                                                    <action selector="createChatroom:" target="q0s-gL-KLj" id="ZIk-EJ-dEc"/>
+                                                    <action selector="chatroomNameEntered:" target="q0s-gL-KLj" id="YGP-O1-Upt"/>
                                                     <binding destination="q0s-gL-KLj" name="editable" keyPath="self.isPublishingChatroom" id="k5M-gi-HeP">
                                                         <dictionary key="options">
                                                             <string key="NSValueTransformerName">NSNegateBoolean</string>
@@ -878,7 +939,7 @@ CA
                                 </constraints>
                             </customView>
                             <customView misplaced="YES" id="qlL-OX-5LK" userLabel="Right View">
-                                <rect key="frame" x="236" y="0.0" width="614" height="700"/>
+                                <rect key="frame" x="1" y="0.0" width="849" height="700"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <scrollView misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="dlc-cC-15F" userLabel="Local Streams View">
