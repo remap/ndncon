@@ -146,8 +146,9 @@ private:
         if (![NCFaceSingleton sharedInstance])
             return nil;
         
-        [self subscribeForNotificationsAndSelectors:NCLocalSessionStatusUpdateNotification,
-         @selector(onLocalSessionStatusChanged:)];
+        [self subscribeForNotificationsAndSelectors:
+         NCLocalSessionStatusUpdateNotification,@selector(onLocalSessionStatusChanged:),
+         nil];
         [[NCFaceSingleton sharedInstance] startProcessingEvents];
         
         _discoveryObserver.reset(new EntityDiscoveryObserver(self));
