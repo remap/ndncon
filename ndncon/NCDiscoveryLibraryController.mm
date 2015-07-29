@@ -9,6 +9,7 @@
 #include <ndn-entity-discovery/entity-discovery.h>
 #include <ndn-entity-discovery/external-observer.h>
 #include <ndnrtc/ndnrtc-library.h>
+#include <ndnrtc/name-components.h>
 
 #import "NSObject+NCAdditions.h"
 #import "NCNdnRtcLibraryController.h"
@@ -686,14 +687,17 @@ public:
 {
     if (self.isInitialized)
     {
-        NSString *userFullName = [NCNdnRtcLibraryController sharedInstance].sessionPrefix;
-        NSString *userInfoPrefix = [userFullName stringByAppendingNdnComponent:[NSString ndnRtcSessionInfoComponent]
-                                    ];
-        std::string entityName([userFullName cStringUsingEncoding:NSASCIIStringEncoding]);
-        std::string entityPrefix([userInfoPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+        EntityMap chatroomsMap = _discovery->getHostedEntityList();
         
-        _discovery->stopPublishingEntity(entityName, entityPrefix);
-        NSLog(@"withdrawn user info %@", userFullName);
+        for (auto user:chatroomsMap)
+        {
+            boost::shared_ptr<UserInfo> userInfo = boost::dynamic_pointer_cast<UserInfo>(user.second);
+            std::string entityName(NameComponents::getUserPrefix(userInfo->getUsername(), userInfo->getPrefix()));
+            std::string entityPrefix([[[NSString ncStringFromCString:entityName.c_str()] stringByAppendingNdnComponent:[NSString ndnRtcSessionInfoComponent]] cStringUsingEncoding:NSASCIIStringEncoding]);
+            
+            _discovery->stopPublishingEntity(entityName, entityPrefix);
+            NSLog(@"withdrawn user %s", userInfo->getUsername().c_str());
+        }
     }
 }
 
@@ -711,6 +715,7 @@ public:
 -(void)onLocalSessionOffline
 {
     NSLog(@"user discovery shutdown");
+    [self withdrawInfo];
     self.isInitialized = NO;
     _discovery.reset();
     self.discoveredUsers = [NSArray array];
@@ -1019,6 +1024,32 @@ public:
         _discovery->stopPublishingEntity(chatroomName, entityPrefix);
         NSLog(@"withdrawn chatroom info %@", chatroom.chatroomName);
     }
+}
+
+-(void)withdrawAllChatrooms
+{
+    EntityMap chatroomsMap = _discovery->getHostedEntityList();
+    
+    [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+        try {
+            EntityMap chatroomsMap = _discovery->getDiscoveredEntityList();
+            
+            for (auto chatroom:chatroomsMap)
+            {
+                boost::shared_ptr<ChatroomInfo> chatroomInfo = boost::dynamic_pointer_cast<ChatroomInfo>(chatroom.second);
+                NSString *nsEntityPrefix = [NSString chatroomPrefixForChat:[NSString ncStringFromCString:chatroomInfo->getChatroomName().c_str()]
+                                                                      user:[NCPreferencesController sharedInstance].userName
+                                                                withPrefix:[NCPreferencesController sharedInstance].prefix];
+                std::string entityPrefix([nsEntityPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
+                _discovery->stopPublishingEntity(chatroomInfo->getChatroomName(), entityPrefix);
+                NSLog(@"withdrawn chatroom %s", chatroomInfo->getChatroomName().c_str());
+            }
+        }
+        catch (std::exception &e)
+        {
+            NSLog(@"excpetion while withdrawing chatroom %s", e.what());
+        }
+    }];
 }
 
 #pragma mark - private

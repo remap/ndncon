@@ -330,7 +330,6 @@ private:
     {
         [self leaveAllChatRooms];
         self.initialized = NO;
-        [[NCFaceSingleton sharedInstance] markInvalid];
     }
     else
         if (oldStatus == SessionStatusOffline)
