@@ -38,7 +38,7 @@
                 </textField>
                 <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bTk-8m-Tei">
                     <rect key="frame" x="204" y="241" width="220" height="23"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="no video is being fetched" id="MbM-Og-CcG">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="no video is selected" id="MbM-Og-CcG">
                         <font key="font" metaFont="system" size="19"/>
                         <color key="textColor" red="0.98462364526772339" green="0.95383827041251146" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
