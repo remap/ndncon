@@ -9,6 +9,8 @@
 #import "NCBaseCapturer.h"
 #include <ndnrtc/interfaces.h>
 
+#define USE_YUV
+
 using namespace ndnrtc;
 
 //******************************************************************************
@@ -67,15 +69,22 @@ using namespace ndnrtc;
     self.videoOutput = [[AVCaptureVideoDataOutput alloc] init];
     dispatch_queue_t queue = dispatch_queue_create("capture_queue", NULL);
     [self.videoOutput setSampleBufferDelegate:self queue:queue];
+#ifndef USE_YUV
     self.videoOutput.videoSettings = [NSDictionary dictionaryWithObject:
                                       [NSNumber numberWithInt:kCVPixelFormatType_32BGRA]
                                                                  forKey:(id)kCVPixelBufferPixelFormatTypeKey];
+#else
+    self.videoOutput.videoSettings = [NSDictionary dictionaryWithObject:
+                                      [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8Planar]
+                                                                 forKey:(id)kCVPixelBufferPixelFormatTypeKey];
+#endif
     [self.session addOutput:self.videoOutput];
 }
 
 -(void)dealloc
 {
     [self.session stopRunning];
+    [self stopCapturing];
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     for (id observer in [self sessionObservers])
@@ -132,25 +141,32 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     if (CVPixelBufferLockBaseAddress(videoFrame, kFlags) == kCVReturnSuccess)
     {
-        void *baseAddress = CVPixelBufferGetBaseAddress(videoFrame);
-        size_t bytesPerRow = CVPixelBufferGetBytesPerRow(videoFrame);
         int frameWidth = (int)CVPixelBufferGetWidth(videoFrame);
         int frameHeight = (int)CVPixelBufferGetHeight(videoFrame);
-        int frameSize = (int)(bytesPerRow * frameHeight);
         
-#if 0
-        VideoCaptureCapability tempCaptureCapability;
-        tempCaptureCapability.width = _frameWidth;
-        tempCaptureCapability.height = _frameHeight;
-        tempCaptureCapability.maxFPS = _frameRate;
-        tempCaptureCapability.rawType = kVideoBGRA;
-#endif
+#ifndef USE_YUV
+        void *baseAddress = CVPixelBufferGetBaseAddress(videoFrame);
+        size_t bytesPerRow = CVPixelBufferGetBytesPerRow(videoFrame);
+        int frameSize = (int)(bytesPerRow * frameHeight);
         
         NSData *frameData = [NSData dataWithBytes: baseAddress length: frameSize];
         
         if (_externalCapturer)
             _externalCapturer->incomingArgbFrame(frameWidth, frameHeight,
                                                                        (unsigned char*)frameData.bytes, frameSize);
+#else
+        int strideY = (int)CVPixelBufferGetBytesPerRowOfPlane(videoFrame, 0);
+        unsigned char* yBuffer = (unsigned char*)CVPixelBufferGetBaseAddressOfPlane(videoFrame, 0);
+        int strideU = (int)CVPixelBufferGetBytesPerRowOfPlane(videoFrame, 1);
+        unsigned char* uBuffer = (unsigned char*)CVPixelBufferGetBaseAddressOfPlane(videoFrame, 1);
+        int strideV = (int)CVPixelBufferGetBytesPerRowOfPlane(videoFrame, 2);
+        unsigned char* vBuffer = (unsigned char*)CVPixelBufferGetBaseAddressOfPlane(videoFrame, 2);
+        
+        if (_externalCapturer)
+            _externalCapturer->incomingI420Frame(frameWidth, frameHeight,
+                                                 strideY, strideU, strideV,
+                                                 yBuffer, uBuffer, vBuffer);
+#endif
         
         CVPixelBufferUnlockBaseAddress(videoFrame, kFlags);
     }

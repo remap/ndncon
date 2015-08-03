@@ -289,6 +289,12 @@ NSString* const kNCStreamConfigurationsKey = @"streams";
     }
 }
 
+-(void)stopFetchingAllStreams
+{
+    for (NCFetchedUser *user in self.fetchedUsers)
+        [self stopFetchingStreams:user.fetchedStreams fromUser:user.username withPrefix:user.hubPrefix];
+}
+
 -(NSArray *)getCurrentStreamsForUser:(NSString *)username withPrefix:(NSString *)prefix
 {
     NCFetchedUser *fetchedUser = self.fetchedUsers[[NCFetchedUser userIdForUsername:username andPrefix:prefix]];

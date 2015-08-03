@@ -50,6 +50,8 @@ extern NSString* const kNCStreamConfigurationsKey;
 -(void)stopFetchingStreams:(NSArray*)streamConfigurations
                   fromUser:(NSString*)username
                 withPrefix:(NSString*)prefix;
+-(void)stopFetchingAllStreams;
+
 -(NSArray*)getCurrentStreamsForUser:(NSString*)username
                          withPrefix:(NSString*)prefix;
 

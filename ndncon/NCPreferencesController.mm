@@ -513,7 +513,7 @@ using namespace ndnrtc::new_api;
     GeneralParams* params = (GeneralParams*)generalParameters;
     
     params->logFile_ = "ndnrtc.log";
-    params->logPath_ = std::string([[[NSBundle mainBundle] bundlePath] cStringUsingEncoding:NSUTF8StringEncoding]);
+    params->logPath_ = "/tmp";
     params->loggingLevel_ = (ndnlog::NdnLoggerDetailLevel)self.logLevel.intValue;
     params->useTlv_ = self.tlvEnabled.boolValue;
     params->useRtx_ = self.rtxEnabled.boolValue;

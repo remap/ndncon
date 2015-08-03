@@ -19,6 +19,7 @@
 #import "NCChatLibraryController.h"
 #import "NCDiscoveryLibraryController.h"
 #import "NCPreferencesController.h"
+#import "NCStreamingController.h"
 
 @interface AppDelegate()
 
@@ -203,9 +204,7 @@
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    [[NCChatLibraryController sharedInstance] leaveAllChatRooms];
-    [[NCNdnRtcLibraryController sharedInstance] stopSession];
-    [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
+    [self cleanup];
     
     if (!_managedObjectContext) {
         return NSTerminateNow;
@@ -280,6 +279,15 @@
 }
 
 //******************************************************************************
+-(void)cleanup
+{
+    [[NCStreamingController sharedInstance] stopPublishingStreams:[[NCStreamingController sharedInstance] allPublishedStreams]];
+    [[NCStreamingController sharedInstance] stopFetchingAllStreams];
+    [[NCChatLibraryController sharedInstance] leaveAllChatRooms];
+    [[NCNdnRtcLibraryController sharedInstance] stopSession];
+    [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
+}
+
 -(void)addTestUsers
 {
     NSEntityDescription *userEntity = [[self.managedObjectModel entitiesByName] objectForKey:@"User"];

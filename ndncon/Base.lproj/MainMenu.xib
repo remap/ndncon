@@ -527,8 +527,8 @@ CA
                                                                 </binding>
                                                             </connections>
                                                         </textField>
-                                                        <button toolTip="Start fetching stream(s)" translatesAutoresizingMaskIntoConstraints="NO" id="G2Z-ig-LIW" customClass="NCToggleButton">
-                                                            <rect key="frame" x="297" y="35" width="30" height="30"/>
+                                                        <button toolTip="Start fetching stream(s)" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G2Z-ig-LIW" customClass="NCToggleButton">
+                                                            <rect key="frame" x="296" y="35" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="xcs-55-K5U"/>
                                                                 <constraint firstAttribute="height" constant="30" id="zCo-sb-j3g"/>
@@ -548,8 +548,8 @@ CA
                                                                 <binding destination="bcn-7M-6iu" name="value" keyPath="isFetching" id="vf2-pJ-bUS"/>
                                                             </connections>
                                                         </button>
-                                                        <button toolTip="Video-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="oUg-RE-hMh" customClass="NCToggleButton">
-                                                            <rect key="frame" x="255" y="35" width="30" height="30"/>
+                                                        <button toolTip="Video-only filter" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oUg-RE-hMh" customClass="NCToggleButton">
+                                                            <rect key="frame" x="254" y="35" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="XpR-UW-pNE"/>
                                                                 <constraint firstAttribute="height" constant="30" id="bON-Iy-vJM"/>
@@ -568,8 +568,8 @@ CA
                                                                 <binding destination="bcn-7M-6iu" name="value" keyPath="isVideoSelected" id="EUa-uQ-V1E"/>
                                                             </connections>
                                                         </button>
-                                                        <button toolTip="Audio-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="b0q-C7-wcl" customClass="NCToggleButton">
-                                                            <rect key="frame" x="221" y="35" width="30" height="30"/>
+                                                        <button toolTip="Audio-only filter" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b0q-C7-wcl" customClass="NCToggleButton">
+                                                            <rect key="frame" x="220" y="35" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="UAJ-wl-ZI5"/>
                                                                 <constraint firstAttribute="height" constant="30" id="VSS-4R-Rhd"/>
@@ -790,15 +790,15 @@ CA
                 <rect key="frame" x="0.0" y="0.0" width="850" height="730"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <splitView misplaced="YES" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1mm-MG-7gE">
-                        <rect key="frame" x="0.0" y="30" width="850" height="700"/>
+                    <splitView dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1mm-MG-7gE">
+                        <rect key="frame" x="0.0" y="0.0" width="850" height="730"/>
                         <subviews>
-                            <customView horizontalCompressionResistancePriority="250" misplaced="YES" id="fLF-5k-Zph" userLabel="Left view">
-                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="700"/>
+                            <customView horizontalCompressionResistancePriority="250" id="fLF-5k-Zph" userLabel="Left view">
+                                <rect key="frame" x="0.0" y="0.0" width="235" height="730"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <customView horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YrW-zK-Abd">
-                                        <rect key="frame" x="0.0" y="520" width="235" height="180"/>
+                                    <customView horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YrW-zK-Abd">
+                                        <rect key="frame" x="0.0" y="550" width="235" height="180"/>
                                         <subviews>
                                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vyE-i9-CqJ">
                                                 <rect key="frame" x="18" y="136" width="200" height="26"/>
@@ -927,8 +927,8 @@ CA
                                             <constraint firstItem="YHM-mW-0d4" firstAttribute="leading" secondItem="YrW-zK-Abd" secondAttribute="leading" constant="20" id="xrY-XZ-tuY"/>
                                         </constraints>
                                     </customView>
-                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oWk-sF-qhk">
-                                        <rect key="frame" x="0.0" y="0.0" width="235" height="520"/>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="oWk-sF-qhk">
+                                        <rect key="frame" x="0.0" y="0.0" width="235" height="550"/>
                                     </customView>
                                 </subviews>
                                 <constraints>
@@ -943,18 +943,18 @@ CA
                                     <constraint firstAttribute="trailing" secondItem="YrW-zK-Abd" secondAttribute="trailing" id="pMl-aD-JqC"/>
                                 </constraints>
                             </customView>
-                            <customView misplaced="YES" id="qlL-OX-5LK" userLabel="Right View">
-                                <rect key="frame" x="1" y="0.0" width="849" height="700"/>
+                            <customView id="qlL-OX-5LK" userLabel="Right View">
+                                <rect key="frame" x="236" y="0.0" width="614" height="730"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <scrollView misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="dlc-cC-15F" userLabel="Local Streams View">
-                                        <rect key="frame" x="0.0" y="600" width="614" height="100"/>
+                                    <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="dlc-cC-15F" userLabel="Local Streams View">
+                                        <rect key="frame" x="0.0" y="630" width="614" height="100"/>
                                         <clipView key="contentView" copiesOnScroll="NO" id="qhT-Do-cAZ" customClass="NCClipView">
                                             <rect key="frame" x="1" y="1" width="548" height="118"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UyR-Bn-0WQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="548" height="118"/>
+                                                    <rect key="frame" x="89" y="-96" width="193" height="105"/>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -982,7 +982,7 @@ CA
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EIq-nB-q8S">
-                                                    <rect key="frame" x="0.0" y="0.0" width="548" height="118"/>
+                                                    <rect key="frame" x="-172" y="171" width="64" height="188"/>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1004,8 +1004,8 @@ CA
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jBg-08-9BM">
-                                        <rect key="frame" x="0.0" y="100" width="614" height="500"/>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="jBg-08-9BM">
+                                        <rect key="frame" x="0.0" y="100" width="614" height="530"/>
                                     </customView>
                                 </subviews>
                                 <constraints>
@@ -1122,13 +1122,14 @@ CA
                 <constraint firstAttribute="bottom" secondItem="f2F-XH-RgY" secondAttribute="bottom" constant="20" id="YUl-js-MGC"/>
                 <constraint firstAttribute="trailing" secondItem="f2F-XH-RgY" secondAttribute="trailing" constant="20" id="bVI-NU-J5C"/>
                 <constraint firstAttribute="trailing" secondItem="fMC-HZ-SA4" secondAttribute="trailing" constant="20" id="c26-cG-JoQ"/>
+                <constraint firstItem="SuZ-Ig-TKS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fMC-HZ-SA4" secondAttribute="bottom" constant="2" id="cbS-0Z-jgb"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="f2F-XH-RgY" secondAttribute="bottom" constant="20" id="f8E-Bi-RMH"/>
                 <constraint firstItem="N2W-au-UF2" firstAttribute="centerY" secondItem="SuZ-Ig-TKS" secondAttribute="centerY" id="pvQ-FR-6rn"/>
                 <constraint firstItem="N2W-au-UF2" firstAttribute="centerY" secondItem="f2F-XH-RgY" secondAttribute="centerY" id="sCa-2p-oPu"/>
                 <constraint firstItem="fMC-HZ-SA4" firstAttribute="leading" secondItem="Ccd-Oc-lWv" secondAttribute="leading" constant="20" id="vsp-sj-l2R"/>
                 <constraint firstItem="fMC-HZ-SA4" firstAttribute="top" secondItem="Ccd-Oc-lWv" secondAttribute="top" constant="10" id="xip-fq-V2y"/>
             </constraints>
-            <point key="canvasLocation" x="648.5" y="-231"/>
+            <point key="canvasLocation" x="619.5" y="-260"/>
         </customView>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="TEV-7R-2BF">
             <rect key="frame" x="0.0" y="0.0" width="177" height="100"/>
