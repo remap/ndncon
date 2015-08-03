@@ -213,7 +213,7 @@ public:
 
 -(void)instantiateLibrary
 {
-    _ndnRtcLib = new NdnRtcLibrary(NULL);
+    _ndnRtcLib = &(NdnRtcLibrary::getSharedInstance());
     _libObserver = new LibraryObserver();
     _ndnRtcLib->setObserver(_libObserver);
     
@@ -227,8 +227,6 @@ public:
 
 -(void)releaseLibrary
 {
-    delete _ndnRtcLib;
-    _ndnRtcLib = NULL;
     delete _sessionObserverInstance;
     _sessionObserverInstance = NULL;
 }
