@@ -20,6 +20,8 @@
 #import "NCDiscoveryLibraryController.h"
 #import "NCPreferencesController.h"
 #import "NCStreamingController.h"
+#import "NSDictionary+NCAdditions.h"
+#import "NSArray+NCAdditions.h"
 
 @interface AppDelegate()
 
@@ -77,6 +79,8 @@
     [NCChatLibraryController sharedInstance];
     [NCUserDiscoveryController sharedInstance];
     [NCChatroomDiscoveryController sharedInstance];
+    
+    [self setupAutoFetch];
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ucla.edu.NdnCon" in the user's Application Support directory.
@@ -300,6 +304,59 @@
                     insertIntoManagedObjectContext:self.managedObjectContext];
     remapUser2.name = @"remap2";
     remapUser2.prefix = @"/ndn/edu/ucla/remap";
+}
+
+-(void)setupAutoFetch
+{
+    @autoreleasepool
+    {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *autoFetchPrefix = [defaults stringForKey:kAutoFetchPrefixCmdArg];
+        NSString *autoFetchUser = [defaults stringForKey:kAutoFetchUserCmdArg];
+        NSInteger autoFetchVideo = [defaults integerForKey:kAutoFetchVideoCmdArg];
+        NSInteger autoFetchAudio = [defaults integerForKey:kAutoFetchAudioCmdArg];
+        NSString *autoFetchStream = [defaults stringForKey:kAutoFetchStreamCmdArg];
+        
+        if (autoFetchPrefix && autoFetchUser &&
+            (autoFetchAudio == 1 || autoFetchVideo == 1 || autoFetchStream))
+            [self subscribeForNotificationsAndSelectors:
+             NCUserDiscoveredNotification, @selector(onUserDiscoveryNotification:),
+             NCUserWithdrawedNotification, @selector(onUserDiscoveryNotification:),
+             nil];
+    }
+}
+
+-(void)onUserDiscoveryNotification:(NSNotification*)notification
+{
+    NSString *autoFetchPrefix = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchPrefixCmdArg];
+    NSString *autoFetchUser = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchUserCmdArg];
+    NSInteger autoFetchVideo = [[NSUserDefaults standardUserDefaults] integerForKey:kAutoFetchVideoCmdArg];
+    NSInteger autoFetchAudio = [[NSUserDefaults standardUserDefaults] integerForKey:kAutoFetchAudioCmdArg];
+    NSString *autoFetchStream = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchStreamCmdArg];
+    
+    if ([notification.name isEqualToString: NCUserDiscoveredNotification])
+    {
+        NCActiveUserInfo *userInfo = notification.userInfo[kUserInfoKey];
+        
+        if ([userInfo.hubPrefix isEqualToString:autoFetchPrefix] &&
+            [userInfo.username isEqualToString:autoFetchUser])
+        {
+            NSMutableArray *streamsToFetch = [NSMutableArray array];
+            
+            if ([userInfo.streamConfigurations streamWithName:autoFetchStream])
+                [streamsToFetch addObject:[userInfo.streamConfigurations streamWithName:autoFetchStream]];
+
+            if (autoFetchAudio)
+                [streamsToFetch addObjectsFromArray:[userInfo getDefaultFetchAudioThreads]];
+            
+            if (autoFetchVideo)
+                [streamsToFetch addObjectsFromArray:[userInfo getDefaultFetchVideoThreads]];
+            
+            [[NCStreamingController sharedInstance] fetchStreams:streamsToFetch
+                                                        fromUser:userInfo.username
+                                                      withPrefix:userInfo.hubPrefix];
+        }
+    }
 }
 
 - (IBAction)sendFeedback:(id)sender {

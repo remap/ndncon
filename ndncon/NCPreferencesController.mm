@@ -94,6 +94,11 @@ NSDictionary* const LogLevelsStrings = @{@(ndnlog::NdnLoggerDetailLevelAll):kLog
                                          @(ndnlog::NdnLoggerDetailLevelDefault):kLogLevelDefault,
                                          @(ndnlog::NdnLoggerDetailLevelNone):kLogLevelNone};
 
+NSString* const kAutoFetchPrefixCmdArg = @"auto-fetch-prefix";
+NSString* const kAutoFetchUserCmdArg = @"auto-fetch-user";
+NSString* const kAutoFetchAudioCmdArg = @"auto-fetch-audio";
+NSString* const kAutoFetchVideoCmdArg = @"auto-fetch-video";
+NSString* const kAutoFetchStreamCmdArg = @"auto-fetch-stream";
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
