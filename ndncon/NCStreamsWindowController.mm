@@ -516,7 +516,8 @@ using namespace ndnrtc::new_api;
     }
     else
     {
-        [self.remoteStreamViewer.stackView removeView:self.noFetchingView];
+        if ([self.remoteStreamViewer.stackView.views indexOfObject:self.noFetchingView] != NSNotFound)
+            [self.remoteStreamViewer.stackView removeView:self.noFetchingView];
     }
 }
 

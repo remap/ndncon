@@ -41,6 +41,11 @@ extern NSString* const kAutoFetchUserCmdArg;
 extern NSString* const kAutoFetchAudioCmdArg;
 extern NSString* const kAutoFetchVideoCmdArg;
 extern NSString* const kAutoFetchStreamCmdArg;
+extern NSString* const kAutoPublishPrefixCmdArg;
+extern NSString* const kAutoPublishUserCmdArg;
+extern NSString* const kAutoPublishAudioCmdArg;
+extern NSString* const kAutoPublishVideoCmdArg;
+
 
 @interface NCPreferencesController : PTNStorage
 

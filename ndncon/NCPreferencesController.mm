@@ -10,7 +10,6 @@
 #import <CoreFoundation/CoreFoundation.h>
 
 #include <ndnrtc/params.h>
-#include <ndnrtc/simple-log.h>
 
 #import "NCPreferencesController.h"
 #import "NSObject+NCAdditions.h"
@@ -22,6 +21,7 @@ NSString* const kGeneralSectionKey = @"General";
 NSString* const kLogLevelKey = @"Log level";
 NSString* const kLogLevelAll = @"all";
 NSString* const kLogLevelDebug = @"debug";
+NSString* const kLogLevelStat = @"stat";
 NSString* const kLogLevelDefault = @"default";
 NSString* const kLogLevelNone = @"none";
 
@@ -87,10 +87,12 @@ NSDictionary* const DefaultUserFetchOptions = @{
 
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
                                   kLogLevelDebug: @(ndnlog::NdnLoggerDetailLevelDebug),
+                                  kLogLevelStat: @(ndnlog::NdnLoggerDetailLevelStat),
                                   kLogLevelDefault: @(ndnlog::NdnLoggerDetailLevelDefault),
                                   kLogLevelNone: @(ndnlog::NdnLoggerDetailLevelNone)};
 NSDictionary* const LogLevelsStrings = @{@(ndnlog::NdnLoggerDetailLevelAll):kLogLevelAll,
                                          @(ndnlog::NdnLoggerDetailLevelDebug):kLogLevelDebug,
+                                         @(ndnlog::NdnLoggerDetailLevelStat):kLogLevelStat,
                                          @(ndnlog::NdnLoggerDetailLevelDefault):kLogLevelDefault,
                                          @(ndnlog::NdnLoggerDetailLevelNone):kLogLevelNone};
 
@@ -99,6 +101,10 @@ NSString* const kAutoFetchUserCmdArg = @"auto-fetch-user";
 NSString* const kAutoFetchAudioCmdArg = @"auto-fetch-audio";
 NSString* const kAutoFetchVideoCmdArg = @"auto-fetch-video";
 NSString* const kAutoFetchStreamCmdArg = @"auto-fetch-stream";
+NSString* const kAutoPublishPrefixCmdArg = @"auto-publish-prefix";
+NSString* const kAutoPublishUserCmdArg = @"auto-publish-user";
+NSString* const kAutoPublishAudioCmdArg = @"auto-publish-audio";
+NSString* const kAutoPublishVideoCmdArg = @"auto-publish-video";
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
