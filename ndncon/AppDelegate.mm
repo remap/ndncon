@@ -20,6 +20,8 @@
 #import "NCDiscoveryLibraryController.h"
 #import "NCPreferencesController.h"
 #import "NCStreamingController.h"
+#import "NSDictionary+NCAdditions.h"
+#import "NSArray+NCAdditions.h"
 
 @interface AppDelegate()
 
@@ -64,19 +66,25 @@
     NSLog(@"%@ v%@", [NCPreferencesController sharedInstance].appName, [NCPreferencesController sharedInstance].versionString);
 #endif
     
+//    [[NCPreferencesController sharedInstance] resetDefaults];
     if ([NCPreferencesController sharedInstance].isFirstLaunch)
     {
         NSLog(@"First launch indeed!");
         [NCPreferencesController sharedInstance].firstLaunch = NO;
-        [self addTestUsers];
+        [NCPreferencesController sharedInstance].userName = [self generateUniqueUsername];
     }
     else
         NSLog(@"Not a first launch. We're friends already...");
+    
+    [self setupAutoFetch];
+    [self setupAutoPublishParams];
     
     [[NCNdnRtcLibraryController sharedInstance] startSession];
     [NCChatLibraryController sharedInstance];
     [NCUserDiscoveryController sharedInstance];
     [NCChatroomDiscoveryController sharedInstance];
+    
+    [self setupAutoPublishStreams];
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ucla.edu.NdnCon" in the user's Application Support directory.
@@ -288,18 +296,127 @@
     [[NCNdnRtcLibraryController sharedInstance] releaseLibrary];
 }
 
--(void)addTestUsers
+-(void)setupAutoFetch
 {
-    NSEntityDescription *userEntity = [[self.managedObjectModel entitiesByName] objectForKey:@"User"];
-    User *remapUser = [[User alloc] initWithEntity:userEntity
-                    insertIntoManagedObjectContext:self.managedObjectContext];
-    remapUser.name = @"remap";
-    remapUser.prefix = @"/ndn/edu/ucla/remap";
+    @autoreleasepool
+    {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *autoFetchPrefix = [defaults stringForKey:kAutoFetchPrefixCmdArg];
+        NSString *autoFetchUser = [defaults stringForKey:kAutoFetchUserCmdArg];
+        NSInteger autoFetchVideo = [defaults integerForKey:kAutoFetchVideoCmdArg];
+        NSInteger autoFetchAudio = [defaults integerForKey:kAutoFetchAudioCmdArg];
+        NSString *autoFetchStream = [defaults stringForKey:kAutoFetchStreamCmdArg];
+        
+        if (autoFetchPrefix && autoFetchUser &&
+            (autoFetchAudio == 1 || autoFetchVideo == 1 || autoFetchStream))
+        {
+            NSLog(@"auto-fetch enabled for %@:%@ (audio %@, video %@, stream %@)",
+                  autoFetchPrefix, autoFetchUser,
+                  (autoFetchAudio?@"YES":@"NO"), (autoFetchVideo?@"YES":@"NO"),
+                  (autoFetchStream?autoFetchStream:@"NO"));
+            
+            [self subscribeForNotificationsAndSelectors:
+             NCUserUpdatedNotificaiton, @selector(onUserDiscoveryNotification:),
+             NCUserDiscoveredNotification, @selector(onUserDiscoveryNotification:),
+             NCUserWithdrawedNotification, @selector(onUserDiscoveryNotification:),
+             nil];
+        }
+    }
+}
+
+-(void)setupAutoPublishParams
+{
+    @autoreleasepool {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *autoPublishPrefix = [defaults stringForKey:kAutoPublishPrefixCmdArg];
+        NSString *autoPublishUser = [defaults stringForKey:kAutoPublishUserCmdArg];
+        NSInteger autoPublishAudio = [defaults integerForKey:kAutoPublishAudioCmdArg];
+        NSInteger autoPublishVideo = [defaults integerForKey:kAutoPublishVideoCmdArg];
+        
+        if (autoPublishPrefix && autoPublishUser &&
+            (autoPublishAudio == 1 || autoPublishVideo == 1))
+        {
+            NSLog(@"auto-publishing enabled for %@:%@ (audio %@, video %@)",
+                  autoPublishPrefix, autoPublishUser,
+                  (autoPublishAudio?@"YES":@"NO"),
+                  (autoPublishVideo?@"YES":@"NO"));
+            
+            [NCPreferencesController sharedInstance].prefix = autoPublishPrefix;
+            [NCPreferencesController sharedInstance].userName = autoPublishUser;
+        }
+    }
+}
+
+-(void)setupAutoPublishStreams
+{
+    @autoreleasepool {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *autoPublishPrefix = [defaults stringForKey:kAutoPublishPrefixCmdArg];
+        NSString *autoPublishUser = [defaults stringForKey:kAutoPublishUserCmdArg];
+        NSInteger autoPublishAudio = [defaults integerForKey:kAutoPublishAudioCmdArg];
+        NSInteger autoPublishVideo = [defaults integerForKey:kAutoPublishVideoCmdArg];
+        
+        if (autoPublishPrefix && autoPublishUser &&
+            (autoPublishAudio == 1 || autoPublishVideo == 1))
+        {
+            if (autoPublishAudio)
+                [[NCStreamingController sharedInstance] publishStreams:[NCPreferencesController sharedInstance].audioStreams];
+            
+            if (autoPublishVideo)
+                [[NCStreamingController sharedInstance] publishStreams:[NCPreferencesController sharedInstance].videoStreams];
+        }
+    }
+}
+
+-(NSString*)generateUniqueUsername
+{
+    return [NSString stringWithFormat:@"jedi%d", (int)[[NSDate date] timeIntervalSince1970]];
+}
+
+-(void)onUserDiscoveryNotification:(NSNotification*)notification
+{
+    NSString *autoFetchPrefix = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchPrefixCmdArg];
+    NSString *autoFetchUser = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchUserCmdArg];
+    NSInteger autoFetchVideo = [[NSUserDefaults standardUserDefaults] integerForKey:kAutoFetchVideoCmdArg];
+    NSInteger autoFetchAudio = [[NSUserDefaults standardUserDefaults] integerForKey:kAutoFetchAudioCmdArg];
+    NSString *autoFetchStream = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchStreamCmdArg];
     
-    User *remapUser2 = [[User alloc] initWithEntity:userEntity
-                    insertIntoManagedObjectContext:self.managedObjectContext];
-    remapUser2.name = @"remap2";
-    remapUser2.prefix = @"/ndn/edu/ucla/remap";
+    if ([notification.name isEqualToString: NCUserUpdatedNotificaiton] ||
+        [notification.name isEqualToString:NCUserDiscoveredNotification])
+    {
+        NCActiveUserInfo *userInfo = notification.userInfo[kUserInfoKey];
+        
+        if ([userInfo.hubPrefix isEqualToString:autoFetchPrefix] &&
+            [userInfo.username isEqualToString:autoFetchUser])
+        {
+            NSLog(@"discovered auto-fetch user: %@:%@", userInfo.hubPrefix, userInfo.username);
+            
+            NSMutableArray *streamsToFetch = [NSMutableArray array];
+            
+            if ([userInfo.streamConfigurations streamWithName:autoFetchStream])
+            {
+                NSLog(@"will auto-fetch stream %@", autoFetchStream);
+                [streamsToFetch addObject:[userInfo.streamConfigurations streamWithName:autoFetchStream]];
+            }
+
+            if (autoFetchAudio)
+            {
+                NSLog(@"will auto-fetch all audio streams");
+                [streamsToFetch addObjectsFromArray:[userInfo getDefaultFetchAudioThreads]];
+            }
+            
+            if (autoFetchVideo)
+            {
+                NSLog(@"will auto-fetch all video streams");
+                [streamsToFetch addObjectsFromArray:[userInfo getDefaultFetchVideoThreads]];
+            }
+            
+            NSLog(@"auto-fetch streams %@", streamsToFetch);
+            [[NCStreamingController sharedInstance] fetchStreams:streamsToFetch
+                                                        fromUser:userInfo.username
+                                                      withPrefix:userInfo.hubPrefix];
+        }
+    }
 }
 
 - (IBAction)sendFeedback:(id)sender {

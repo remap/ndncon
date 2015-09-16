@@ -13,7 +13,7 @@
 
 #import "AppDelegate.h"
 
-#include <ndnrtc/simple-log.h>
+#include <ndnrtc/params.h>
 
 NSString* const kGeneralParameters = @"Advanced settings";
 NSString* const kProducerParameters = @"Media streams";
@@ -182,10 +182,16 @@ NSString* const kChatAndDiscoveryParameters = @"Chat and discovery";
     
     switch ([value intValue]) {
         case ndnlog::NdnLoggerDetailLevelAll: // log level all
-            outputLevel = 4;
+            outputLevel = 5;
             break;
         case ndnlog::NdnLoggerDetailLevelDebug: // log level debug
+            outputLevel = 4;
+            break;
+        case ndnlog::NdnLoggerLevelStat:
             outputLevel = 3;
+            break;
+        case ndnlog::NdnLoggerDetailLevelDefault:
+            outputLevel = 2;
             break;
         case ndnlog::NdnLoggerDetailLevelNone: // log level none
             outputLevel = 1;
@@ -209,10 +215,16 @@ NSString* const kChatAndDiscoveryParameters = @"Chat and discovery";
         case 1: // none
             logLevel = ndnlog::NdnLoggerDetailLevelNone;
             break;
-        case 3: // debug
+        case 2: // default
+            logLevel = ndnlog::NdnLoggerDetailLevelDefault;
+            break;
+        case 3: // stat
+            logLevel = ndnlog::NdnLoggerLevelStat;
+            break;
+        case 4: // debug
             logLevel = ndnlog::NdnLoggerDetailLevelDebug;
             break;
-        case 4: // all
+        case 5: // all
             logLevel = ndnlog::NdnLoggerDetailLevelAll;
             break;
         default:
