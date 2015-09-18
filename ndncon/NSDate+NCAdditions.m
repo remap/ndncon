@@ -3,7 +3,7 @@
 //  PTNAdditions
 //
 //  Created by Peter Gusev on 1/31/13.
-//  Copyright (c) 2013 peetonn inc. All rights reserved.
+//  Copyright 2013-2015 Regents of the University of California
 //
 
 #import "NSDate+NCAdditions.h"

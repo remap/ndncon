@@ -3,7 +3,7 @@
 //  PTNStorage
 //
 //  Created by Peter Gusev on 7/24/12.
-//  Copyright (c) 2012 peetonn inc. All rights reserved.
+//  Copyright 2013-2015 Regents of the University of California
 //
 
 #import <Foundation/Foundation.h>
