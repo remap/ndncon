@@ -3,7 +3,7 @@
 //  NdnCon
 //
 //  Created by Peter Gusev on 9/30/14.
-//  Copyright (c) 2014 REMAP. All rights reserved.
+//  Copyright 2013-2015 Regents of the University of California.
 //
 
 #import <Foundation/Foundation.h>

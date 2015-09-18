@@ -3,7 +3,7 @@
 //  NdnCon
 //
 //  Created by Peter Gusev on 3/13/15.
-//  Copyright (c) 2015 REMAP. All rights reserved.
+//  Copyright 2013-2015 Regents of the University of California
 //
 
 #import "PTNSingleton.h"
