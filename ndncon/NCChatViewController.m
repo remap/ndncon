@@ -352,9 +352,15 @@ typedef enum _NCChatMessageCellType {
         self.isTypeTextual = NO;
         
         if ([message.type isEqualToNumber:[ChatMessage typeFromString:kChatMesageTypeJoin]])
-            self.layer.backgroundColor = [NSColor colorWithWhite:0.98 alpha:1.].CGColor;
+        {
+            self.messageTypeTextField.stringValue = [kChatMesageTypeJoin lowercaseString];
+            self.layer.backgroundColor = [NSColor colorWithRed:1. green:249./255. blue:229./255. alpha:1.].CGColor;
+        }
         else
+        {
+            self.messageTypeTextField.stringValue = [kChatMesageTypeLeave lowercaseString];
             self.layer.backgroundColor = [NSColor colorWithWhite:0.98 alpha:1.].CGColor;
+        }
         
         __block NSMutableSet *userNames = [NSMutableSet set];
         [_messageGroup enumerateObjectsUsingBlock:^(ChatMessage *message, NSUInteger idx, BOOL *stop) {
@@ -364,7 +370,6 @@ typedef enum _NCChatMessageCellType {
         
         self.userNameTextField.stringValue = [[userNames allObjects] componentsJoinedByString:@","];
         self.timestampTextField.stringValue = [NSString stringWithFormat:@"(%@)", [NCChatMessageCell textRepresentationForDate:message.timestamp]];
-        self.messageTypeTextField.stringValue = [kChatMesageTypeJoin lowercaseString];
     }
 }
 

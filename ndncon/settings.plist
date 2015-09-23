@@ -4,6 +4,11 @@
 <dict>
 	<key>Version updates</key>
 	<dict>
+		<key>0.6.5</key>
+		<dict>
+			<key>Producer.Audio.Segment size</key>
+			<integer>1000</integer>
+		</dict>
 		<key>0.6.2</key>
 		<dict>
 			<key>Producer.Video streams</key>

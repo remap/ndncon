@@ -32,6 +32,7 @@
 #import "NCReporter.h"
 #import "NCChatLibraryController.h"
 #import "NCScreenCapturer.h"
+#import "ChatMessage.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -64,6 +65,10 @@ using namespace ndnrtc::new_api;
 @property (weak) IBOutlet NSButton *createChatroomButton;
 @property (weak) IBOutlet NSPopUpButton *chatroomPopup;
 
+@property (nonatomic) BOOL isAutoFetchAudio;
+@property (nonatomic) BOOL isAutoFetchVideo;
+@property (nonatomic) NSMutableArray *autoFetchUserList;
+
 @end
 
 @implementation NCStreamsWindowController
@@ -82,6 +87,12 @@ using namespace ndnrtc::new_api;
 
 -(void)initialize
 {
+    NSDictionary *chatAutoFetchOptions = [[NCPreferencesController sharedInstance] getChatFetchOptions];
+    _isAutoFetchAudio = [chatAutoFetchOptions[kUserFetchOptionFetchAudioKey] boolValue];
+    _isAutoFetchVideo = [chatAutoFetchOptions[kUserFetchOptionFetchVideoKey] boolValue];
+    
+    self.autoFetchUserList = [NSMutableArray array];
+    
     self.localStreamViewer = [[NCUserStreamsController alloc] init];
     self.localStreamViewer.delegate = self;
     self.remoteStreamViewer = [[NCUserStreamsController alloc] init];
@@ -102,6 +113,8 @@ using namespace ndnrtc::new_api;
      NCChatroomWithdrawedNotification, @selector(onChatroomWithdrawned:),
      NCChatroomUpdatedNotificaiton, @selector(onChatroomUpdated:),
      NCChatMessageNotification, @selector(onChatMessage:),
+     NCUserUpdatedNotificaiton, @selector(onUserUpdateNotification:),
+     NCUserWithdrawedNotification, @selector(onUserUpdateNotification:),
      nil];
 }
 
@@ -151,11 +164,6 @@ using namespace ndnrtc::new_api;
     [self unsubscribeFromNotifications];
     self.localStreamViewer = nil;
     self.remoteStreamViewer = nil;
-}
-
-- (void)windowDidLoad
-{
-    [super windowDidLoad];
 }
 
 #pragma mark - NCUserStreamsControllerDelegate
@@ -254,10 +262,14 @@ using namespace ndnrtc::new_api;
     {
         self.isPublishingChatroom = NO;
         [[NCChatroomDiscoveryController sharedInstance] withdrawChatroom:self.publishedChatroom];
+        [self stopAutoFetchAllUsers];
     }
     
     if (self.activeChatroom)
+    {
         [[NCChatLibraryController sharedInstance] leaveChat:self.activeChatroom.chatroomName];
+        [self stopAutoFetchAllUsers];
+    }
     
     if (chatroom)
     {
@@ -271,7 +283,8 @@ using namespace ndnrtc::new_api;
     self.chatViewController.isActive = (chatroom != nil);
 }
 
-- (IBAction)chatroomNameEntered:(NSTextField*)sender {
+- (IBAction)chatroomNameEntered:(NSTextField*)sender
+{
     if (sender.stringValue && ![sender.stringValue isEqualToString:@""])
     {
         self.isPublishingChatroom = YES;
@@ -307,6 +320,27 @@ using namespace ndnrtc::new_api;
         }
     }
 }
+
+-(void)setIsAutoFetchAudio:(BOOL)autoFetchAudio
+{
+    [self willChangeValueForKey:@"isAutoFetchAudio"];
+    _isAutoFetchAudio = autoFetchAudio;
+    NSMutableDictionary *options = [NSMutableDictionary dictionaryWithDictionary:[[NCPreferencesController sharedInstance] getChatFetchOptions]];
+    options[kUserFetchOptionFetchAudioKey] = @(autoFetchAudio);
+    [[NCPreferencesController sharedInstance] setChatFetchOptions: options];
+    [self didChangeValueForKey:@"isAutoFetchAudio"];
+}
+
+-(void)setIsAutoFetchVideo:(BOOL)autoFetchVideo
+{
+    [self willChangeValueForKey:@"isAutoFetchVideo"];
+    _isAutoFetchVideo = autoFetchVideo;
+    NSMutableDictionary *options = [NSMutableDictionary dictionaryWithDictionary:[[NCPreferencesController sharedInstance] getChatFetchOptions]];
+    options[kUserFetchOptionFetchVideoKey] = @(autoFetchVideo);
+    [[NCPreferencesController sharedInstance] setChatFetchOptions: options];
+    [self didChangeValueForKey:@"isAutoFetchVideo"];
+}
+
 
 #pragma mark - NCActiveStreamViewer
 -(void)activeStreamViewer:(NCActiveStreamViewer *)activeStreamViewer didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
@@ -490,6 +524,37 @@ using namespace ndnrtc::new_api;
     if ([chatRoomId isEqualTo:self.chatViewController.chatRoomId])
     {
         [self.chatViewController newChatMessage:notification];
+        [self updateAutoFetchForChatMessageNotification:notification];
+    }
+}
+
+-(void)onUserUpdateNotification:(NSNotification*)notification
+{
+    NCActiveUserInfo *userInfo = notification.userInfo[kUserInfoKey];
+    
+    BOOL isAutoFetchUser = NO;
+    
+    // check if we need to do anything about this user
+    @synchronized(self.autoFetchUserList)
+    {
+        isAutoFetchUser = ([self.autoFetchUserList
+                            indexOfObject:[NSString userIdWithName:userInfo.username
+                                                         andPrefix:userInfo.hubPrefix]] != NSNotFound);
+        isAutoFetchUser &= !([userInfo.username isEqualToString:[NCPreferencesController sharedInstance].userName] &&
+                             [userInfo.hubPrefix isEqualToString:[NCPreferencesController sharedInstance].prefix]);
+    }
+    
+    if (isAutoFetchUser)
+    {
+        // we should stop fetching
+        if ([notification.name isEqualToString:NCUserWithdrawedNotification])
+        {
+            [self removeAutoFetchUser:userInfo.username withPrefix:userInfo.hubPrefix];
+        }
+        else // we should start fetching based on current flags
+        {
+            [self startAutoFetchFromUser:userInfo];
+        }
     }
 }
 
@@ -554,6 +619,79 @@ using namespace ndnrtc::new_api;
     [self.activeStreamViewer setActiveStream:previewController.streamConfiguration
                                         user:userInfo.username
                                    andPrefix:userInfo.hubPrefix];
+}
+
+-(void)updateAutoFetchForChatMessageNotification:(NSNotification*)notification
+{
+    NSString *messageType = notification.userInfo[NCChatMessageTypeKey];
+    BOOL shouldModifyAutoFetchList = [messageType isEqualToString:kChatMesageTypeJoin] || [messageType isEqualToString:kChatMesageTypeLeave];
+    
+    if (shouldModifyAutoFetchList)
+    {
+        NSString *userName = notification.userInfo[NCChatMessageUsernameKey];
+        NSString *userPrefix = notification.userInfo[NCChatMessageUserPrefixKey];
+        
+        if ([messageType isEqualToString:kChatMesageTypeJoin])
+        {
+            NSLog(@"add auto-fetch user: %@:%@", userPrefix, userName);
+            [self addAutoFetchUser:userName withPrefix:userPrefix];
+        }
+        else
+        {
+            NSLog(@"remove auto-fetch user: %@:%@", userName, userPrefix);
+            [self removeAutoFetchUser:userName withPrefix:userPrefix];
+        }
+    }
+}
+
+-(void)addAutoFetchUser:(NSString*)username withPrefix:(NSString*)userPrefix
+{
+    @synchronized(self.autoFetchUserList){
+        [self.autoFetchUserList addObject:[NSString userIdWithName:username andPrefix:userPrefix]];
+    }
+}
+
+-(void)removeAutoFetchUser:(NSString*)username withPrefix:(NSString*)userPrefix
+{
+    @synchronized(self.autoFetchUserList){
+        [self.autoFetchUserList removeObject:[NSString userIdWithName:username andPrefix:userPrefix]];
+    }
+    
+    [self stopAutoFetchFromUser:username withPrefix:userPrefix];
+}
+
+-(void)startAutoFetchFromUser:(NCActiveUserInfo*)userInfo
+{
+    if (self.isAutoFetchAudio)
+        [[NCStreamingController sharedInstance] fetchStreams: [userInfo getDefaultFetchAudioThreads]
+                                                    fromUser: userInfo.username
+                                                  withPrefix: userInfo.hubPrefix];
+    
+    if (self.isAutoFetchVideo)
+        [[NCStreamingController sharedInstance] fetchStreams: [userInfo getDefaultFetchVideoThreads]
+                                                    fromUser: userInfo.username
+                                                  withPrefix: userInfo.hubPrefix];
+}
+
+-(void)stopAutoFetchFromUser:(NSString*)username withPrefix:(NSString*)hubPrefix
+{
+    NSArray *fetchedStreams = [[NCStreamingController sharedInstance]
+                               allFetchedStreamsForUser: username
+                               withPrefix: hubPrefix];
+    
+    if (fetchedStreams.count)
+        [[NCStreamingController sharedInstance] stopFetchingStreams: fetchedStreams
+                                                           fromUser:username
+                                                         withPrefix:hubPrefix];
+}
+
+-(void)stopAutoFetchAllUsers
+{
+    [self.autoFetchUserList enumerateObjectsUsingBlock:^(NSString *userId, NSUInteger idx, BOOL *stop) {
+        [self stopAutoFetchFromUser:[NSString userNameFromIdString:userId]
+                         withPrefix:[NSString userPrefixFromIdString:userId]];
+    }];
+    [self.autoFetchUserList removeAllObjects];
 }
 
 #pragma mark - NDN-RTC

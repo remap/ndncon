@@ -763,9 +763,14 @@ public:
 {
     NSLog(@"user disappeared: %@", [NSString ncStringFromCString:msg.c_str()]);
     NSString *userName = [[NSString ncStringFromCString:msg.c_str()] getNdnRtcUserName];
+    NSString *hubPrefx = [[NSString ncStringFromCString:msg.c_str()] getNdnRtcHubPrefix];
+    
+    NCActiveUserInfo *userInfo = [[NCActiveUserInfo alloc] init];
+    userInfo.username = userName;
+    userInfo.hubPrefix = hubPrefx;
     
     [self notifyNowWithNotificationName:NCUserWithdrawedNotification
-                            andUserInfo:@{kUserInfoKey: userName}];
+                            andUserInfo:@{kUserInfoKey: userInfo}];
 }
 
 -(void)onSetMessage:(const std::string&)msg withTimestamp:(double)timestamp

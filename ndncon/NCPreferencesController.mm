@@ -70,6 +70,7 @@ NSString* const kReportingAllowedKey = @"Reporting is allowed";
 
 NSString* const kUserFetchOptionsArrayKey = @"User fetch options";
 NSString* const kGlobalFetchOptionsArrayKey = @"Global fetch options";
+NSString* const kChatFetchOptionsArrayKey = @"Chat fetch options";
 
 NSString* const kUserFetchOptionFetchAudioKey = @"userFetchAudio";
 NSString* const kUserFetchOptionFetchVideoKey = @"userFetchVideo";
@@ -83,6 +84,11 @@ NSString* const kPreviousGlobalFetchingOptionsKey = @"previousFilter";
 NSDictionary* const DefaultUserFetchOptions = @{
                                                 kUserFetchOptionFetchAudioKey:@YES,
                                                 kUserFetchOptionFetchVideoKey:@YES
+                                                };
+
+NSDictionary* const DefaultChatFetchOptions = @{
+                                                kUserFetchOptionFetchAudioKey:@YES,
+                                                kUserFetchOptionFetchVideoKey:@NO
                                                 };
 
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
@@ -608,11 +614,29 @@ using namespace ndnrtc::new_api;
     
     if (!globalFetchOptions)
     {
-        [self saveParam:globalFetchOptions forKey:kGlobalFetchOptionsArrayKey];
+        [self saveParam:DefaultUserFetchOptions forKey:kGlobalFetchOptionsArrayKey];
         return DefaultUserFetchOptions;
     }
     
     return globalFetchOptions;
+}
+
+-(void)setChatFetchOptions:(NSDictionary *)options
+{
+    [self saveParam:options forKey:kChatFetchOptionsArrayKey];
+}
+
+-(NSDictionary *)getChatFetchOptions
+{
+    NSDictionary *fetchOptions = [self getParamWithName:kChatFetchOptionsArrayKey];
+    
+    if (!fetchOptions)
+    {
+        [self saveParam:DefaultChatFetchOptions forKey:kChatFetchOptionsArrayKey];
+        return DefaultChatFetchOptions;
+    }
+    
+    return fetchOptions;
 }
 
 -(void)setFetchOptions:(NSDictionary *)options forUser:(NSString *)username withPrefix:(NSString *)prefix
