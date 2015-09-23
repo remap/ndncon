@@ -32,6 +32,8 @@ extern NSString* const kNCNdnRtcUserUrlFormat;
 +(NSString*)ndnRtcSessionInfoComponent;
 
 +(NSString*)userIdWithName:(NSString*)username andPrefix:(NSString*)prefix;
++(NSString*)userNameFromIdString:(NSString*)userIdString;
++(NSString*)userPrefixFromIdString:(NSString*)userIdString;
 
 -(NSString*)getNdnRtcHubPrefix;
 -(NSString*)getNdnRtcSessionPrefix;

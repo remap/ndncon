@@ -13,6 +13,7 @@
 extern NSString* const NCChatMessageNotification;
 extern NSString* const NCChatMessageTypeKey;
 extern NSString* const NCChatMessageUsernameKey;
+extern NSString* const NCChatMessageUserPrefixKey;
 extern NSString* const NCChatMessageTimestampKey;
 extern NSString* const NCChatMessageBodyKey;
 extern NSString* const NCChatRoomIdKey;

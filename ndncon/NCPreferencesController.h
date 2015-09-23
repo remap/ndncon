@@ -105,9 +105,13 @@ extern NSString* const kAutoPublishVideoCmdArg;
 -(void)getNdnRtcGeneralProducerParameters:(void*)generalProducerParameters;
 -(void)getNdnRtcGeneralConsumerParameters:(void*)generalConsumerParameters;
 
-// user-specific fetch options
 -(void)setGlobalFetchOptions:(NSDictionary*)options;
 -(NSDictionary*)getGlobalFetchOptions;
+
+-(void)setChatFetchOptions:(NSDictionary*)options;
+-(NSDictionary*)getChatFetchOptions;
+
+// user-specific fetch options
 -(void)setFetchOptions:(NSDictionary*)options forUser:(NSString*)username withPrefix:(NSString*)prefix;
 -(void)addFetchOptions:(NSDictionary*)options forUser:(NSString*)username withPrefix:(NSString*)prefix;
 -(NSDictionary*)getFetchOptionsForUser:(NSString*)username withPrefix:(NSString*)prefix;

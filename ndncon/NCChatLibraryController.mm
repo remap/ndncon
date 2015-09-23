@@ -24,6 +24,7 @@
 NSString* const NCChatMessageNotification = @"NCChatMessageNotification";
 NSString* const NCChatMessageTypeKey = @"type";
 NSString* const NCChatMessageUsernameKey = @"username";
+NSString* const NCChatMessageUserPrefixKey = @"userPrefix";
 NSString* const NCChatMessageTimestampKey = @"timestamp";
 NSString* const NCChatMessageBodyKey = @"msg_body";
 NSString* const NCChatRoomIdKey = @"chatroomId";
@@ -63,7 +64,7 @@ public:
     {
         NSString *typeStr;
         NSString *userNameStr = [NSString ncStringFromCString:userName];
-        NSString *userPrefixStr = [NSString ncStringFromCString:userHubPrefix];
+        NSString *userPrefixStr = [[NSString ncStringFromCString:userHubPrefix] getNdnRtcHubPrefix];
         NSString *userSessionPrefix = [NSString userSessionPrefixForUser:userNameStr
                                                            withHubPrefix:userPrefixStr];
         NSString *message = [NSString ncStringFromCString:msg];
@@ -87,6 +88,7 @@ public:
                                                                                           NCChatMessageTypeKey : typeStr,
                                                                                           NCChatMessageTimestampKey: @(timestamp),
                                                                                           NCChatMessageUsernameKey: userNameStr,
+                                                                                          NCChatMessageUserPrefixKey: userPrefixStr,
                                                                                           NCChatMessageBodyKey: message
                                                                                           }];
         
@@ -189,9 +191,31 @@ private:
                                 cStringUsingEncoding:NSASCIIStringEncoding]);
         ndn::Name chatPrefixName(chatPrefix);
         
+# warning this is a workaround until Zhehao will help us fixing it
+        // we need join-leave messages in chatrooms
+        // so now, when we leave chatroom, we call leave, but not shutdown
+        // this allows peers to receive "leave" message from us
+        // if we decide to re-join chatroom, we'll shut it down first and
+        // destroy observer and chat objects and then re-create them again
+        // so that new join message can be received by our peers
+        // this is a workaround for now (else statement further should be
+        // un-commented in newer versions).
         if (_chatIdToObserver.find(chatRoom) != _chatIdToObserver.end())
-            return ;
-        else
+        {
+            NSLog(@"re-join chatroom %s", chatRoom.c_str());
+            
+            ndn::ptr_lib::shared_ptr<ChatObserver> observer = _chatIdToObserver[chatRoom];
+            [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+                try {
+                    boost::dynamic_pointer_cast<NCChatObserver>(observer)->getChat()->shutdown();
+                } catch (std::exception &exception) {
+                    NSLog(@"Exception while re-joining chat: %@", [NSString ncStringFromCString:exception.what()]);
+                    [[NCFaceSingleton sharedInstance] markInvalid];
+                }
+            }];
+            _chatIdToObserver.erase(chatRoom);
+        }
+        // else
         {
             ndn::ptr_lib::shared_ptr<ChatObserver> observer(new NCChatObserver(chatRoomId));
             __block boost::shared_ptr<Chat> chat(new Chat(broadcastPrefixName, screenName, chatRoom,
@@ -274,8 +298,12 @@ private:
     
     [[NCFaceSingleton sharedInstance] performSynchronizedWithFace:^{
         it->second->getChat()->leave();
-        it->second->getChat()->shutdown();
-        _chatIdToObserver.erase(it);
+#warning this solution is temporary utill Zhehao will have time to fix it
+        // observer should be erased and chat should be shutdown.
+        // though, currently if we do this, leave messsage will never get
+        // delivered to peers.
+//        it->second->getChat()->shutdown();
+//        _chatIdToObserver.erase(it);
     }];
 }
 

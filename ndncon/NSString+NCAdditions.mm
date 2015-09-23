@@ -113,7 +113,20 @@ NSString* const kNCNdnRtcUserUrlFormat = @"nrtc:%@:%@";
 
 +(NSString *)userIdWithName:(NSString *)username andPrefix:(NSString *)prefix
 {
+#warning should escape possible ":" in username and prefix!
     return [NSString stringWithFormat:@"%@:%@", username, prefix];
+}
+
++(NSString*)userNameFromIdString:(NSString*)userIdString
+{
+#warning should handle escaped ":"
+    return [userIdString componentsSeparatedByString:@":"][0];
+}
+
++(NSString*)userPrefixFromIdString:(NSString*)userIdString
+{
+#warning should handle escaped ":"
+    return [userIdString componentsSeparatedByString:@":"][1];
 }
 
 -(NSString*)getNdnRtcHubPrefix

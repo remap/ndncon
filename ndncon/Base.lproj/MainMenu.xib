@@ -802,12 +802,12 @@ CA
                                         <subviews>
                                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vyE-i9-CqJ">
                                                 <rect key="frame" x="18" y="136" width="200" height="26"/>
-                                                <popUpButtonCell key="cell" type="push" title="&lt;not in chatroom&gt;" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Jbu-B6-cnT" id="Pev-e2-Oln" userLabel="Select chatroom">
+                                                <popUpButtonCell key="cell" type="push" title="&lt;select chatroom&gt;" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Jbu-B6-cnT" id="Pev-e2-Oln" userLabel="Select chatroom">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="menu"/>
                                                     <menu key="menu" id="6cF-JN-EwG">
                                                         <items>
-                                                            <menuItem title="&lt;not in chatroom&gt;" state="on" id="Jbu-B6-cnT"/>
+                                                            <menuItem title="&lt;select chatroom&gt;" state="on" id="Jbu-B6-cnT"/>
                                                             <menuItem title="dynamically replaced" tag="1" id="9mU-oq-2hM">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
@@ -880,7 +880,7 @@ CA
                                                     <constraint firstAttribute="width" constant="30" id="caZ-zv-fgM"/>
                                                     <constraint firstAttribute="height" constant="30" id="mgz-TE-9wu"/>
                                                 </constraints>
-                                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_video" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Z6B-vV-ij7">
+                                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_video" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Z6B-vV-ij7">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -889,6 +889,9 @@ CA
                                                         <color key="value" red="0.0" green="0.13945808970000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <binding destination="q0s-gL-KLj" name="value" keyPath="self.isAutoFetchVideo" id="pi1-HL-g8a"/>
+                                                </connections>
                                             </button>
                                             <button toolTip="Audio-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="Hmu-nL-uXn" customClass="NCToggleButton">
                                                 <rect key="frame" x="22" y="13" width="30" height="30"/>
@@ -896,7 +899,7 @@ CA
                                                     <constraint firstAttribute="height" constant="30" id="B0L-uS-AC5"/>
                                                     <constraint firstAttribute="width" constant="30" id="Zu5-MX-Lmn"/>
                                                 </constraints>
-                                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_audio" imagePosition="overlaps" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ReK-js-8oV">
+                                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_audio" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ReK-js-8oV">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -905,6 +908,9 @@ CA
                                                         <color key="value" red="0.0" green="0.09351420731" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <binding destination="q0s-gL-KLj" name="value" keyPath="self.isAutoFetchAudio" id="ctJ-xH-dHb"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
