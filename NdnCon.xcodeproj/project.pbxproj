@@ -86,6 +86,8 @@
 		AF744CCB19ED99C100E92680 /* NCDiscoveryParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */; };
 		AF744CCC19ED99C100E92680 /* NCDiscoveryParametersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */; };
 		AF744CCF19EDD6B600E92680 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD978FE19BE546D0061AA24 /* MainMenu.xib */; };
+		AF78915A1BB381AE00C90924 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7891591BB381AE00C90924 /* AudioToolbox.framework */; };
+		AF78915B1BB381B400C90924 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7891591BB381AE00C90924 /* AudioToolbox.framework */; };
 		AF7FAD371B461BB200EC5168 /* NCRosterUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7FAD361B461BB200EC5168 /* NCRosterUserCell.m */; };
 		AF7FAD381B461BB200EC5168 /* NCRosterUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AF7FAD361B461BB200EC5168 /* NCRosterUserCell.m */; };
 		AF8A138E19BFB7C500010B20 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF8A138719BFB7C500010B20 /* MASPreferencesWindow.xib */; };
@@ -368,6 +370,7 @@
 		AF744CC819ED99C100E92680 /* NCDiscoveryParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCDiscoveryParametersViewController.h; path = ndncon/NCDiscoveryParametersViewController.h; sourceTree = SOURCE_ROOT; };
 		AF744CC919ED99C100E92680 /* NCDiscoveryParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCDiscoveryParametersViewController.m; path = ndncon/NCDiscoveryParametersViewController.m; sourceTree = SOURCE_ROOT; };
 		AF744CCA19ED99C100E92680 /* NCDiscoveryParametersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NCDiscoveryParametersView.xib; path = ndncon/NCDiscoveryParametersView.xib; sourceTree = SOURCE_ROOT; };
+		AF7891591BB381AE00C90924 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		AF7FAD351B461BB200EC5168 /* NCRosterUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCRosterUserCell.h; path = ndncon/NCRosterUserCell.h; sourceTree = SOURCE_ROOT; };
 		AF7FAD361B461BB200EC5168 /* NCRosterUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCRosterUserCell.m; path = ndncon/NCRosterUserCell.m; sourceTree = SOURCE_ROOT; };
 		AF8A138619BFB7C500010B20 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
@@ -461,6 +464,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF78915B1BB381B400C90924 /* AudioToolbox.framework in Frameworks */,
 				AF91BDDF1B44700700C58E7D /* libndn-cpp.dylib in Frameworks */,
 				AF91BDE21B44701800C58E7D /* libchrono-chat2013.dylib in Frameworks */,
 				AF91BDE31B44701800C58E7D /* libentity-discovery.dylib in Frameworks */,
@@ -490,6 +494,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF78915A1BB381AE00C90924 /* AudioToolbox.framework in Frameworks */,
 				AF91BDE71B4490A700C58E7D /* libndn-cpp.dylib in Frameworks */,
 				AF91BDE81B4490B700C58E7D /* libchrono-chat2013.dylib in Frameworks */,
 				AF91BDE91B4490B700C58E7D /* libentity-discovery.dylib in Frameworks */,
@@ -866,6 +871,7 @@
 		AFD978E819BE546D0061AA24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF7891591BB381AE00C90924 /* AudioToolbox.framework */,
 				AF45142D1B6525ED00B0AF02 /* GraphKit.framework */,
 				AF91BDE41B44703E00C58E7D /* libndnrtc.dylib */,
 				AF91BDE01B44701800C58E7D /* libchrono-chat2013.dylib */,
@@ -1047,8 +1053,8 @@
 				AFDD0DA11A7318380076A301 /* CopyFiles */,
 				AFDD0DAD1A7318380076A301 /* Sources */,
 				AFDD0DF01A7318380076A301 /* Frameworks */,
-				AFDD0E031A7318380076A301 /* Resources */,
 				AFDD0DAC1A7318380076A301 /* Run Script */,
+				AFDD0E031A7318380076A301 /* Resources */,
 				AF2BE53A1AAFAFB3006A1AA7 /* ShellScript */,
 			);
 			buildRules = (

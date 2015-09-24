@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCAudioStreamViewController">
@@ -16,7 +17,7 @@
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hz6-mo-xeY">
             <rect key="frame" x="0.0" y="0.0" width="590" height="230"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iw4-zC-Cjg">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iw4-zC-Cjg">
                     <rect key="frame" x="-2" y="183" width="83" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Stream prefix: " id="pW3-Vy-8BN">
                         <font key="font" metaFont="smallSystem"/>
@@ -37,7 +38,7 @@
                     <constraints>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="RZp-AE-FXO"/>
                     </constraints>
-                    <popUpButtonCell key="cell" type="roundRect" bezelStyle="roundedRect" imagePosition="left" alignment="left" lineBreakMode="truncatingTail" borderStyle="border" inset="2" id="vZ7-rT-y7s">
+                    <popUpButtonCell key="cell" type="roundRect" bezelStyle="roundedRect" imagePosition="left" alignment="left" lineBreakMode="truncatingTail" enabled="NO" borderStyle="border" inset="2" id="vZ7-rT-y7s">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                         <menu key="menu" title="OtherViews" id="Ofm-5r-RDm">
@@ -140,7 +141,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0Tl-7R-RWT">
+                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Tl-7R-RWT">
                     <rect key="frame" x="521" y="112" width="69" height="19"/>
                     <buttonCell key="cell" type="roundRect" title="Add thread" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7aV-jM-QKa">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -150,7 +151,7 @@
                         <action selector="addThread:" target="-2" id="i3f-bV-Mcg"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5NU-7E-eyc">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5NU-7E-eyc">
                     <rect key="frame" x="-1" y="137" width="150" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Data freshness period (ms):" id="T6I-si-NxB">
                         <font key="font" metaFont="smallSystem"/>
@@ -172,7 +173,7 @@
                         <binding destination="-2" name="value" keyPath="self.configuration.Freshness period" id="foE-oq-ubn"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9bo-hJ-0vE">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9bo-hJ-0vE">
                     <rect key="frame" x="232" y="137" width="117" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Segment size (bytes):" id="kNN-cb-9AE">
                         <font key="font" metaFont="smallSystem"/>

@@ -9,14 +9,25 @@
 #import "NCBaseCapturer.h"
 #include <ndnrtc/interfaces.h>
 
+#import "NSObject+NCAdditions.h"
+#import "NCPreferencesController.h"
+
 #define USE_YUV
 
 using namespace ndnrtc;
+
+#define MUTE_BUF_W 1280
+#define MUTE_BUF_H 720
+#define MUTE_BUF_PS 4
+// this buffer is 1280x720 4-byte pixels
+static unsigned char* muteVideoBuffer = nullptr;
 
 //******************************************************************************
 @interface NCBaseCapturer()
 {
     IExternalCapturer *_externalCapturer;
+    BOOL _isMuted;
+    dispatch_queue_t _captureQueue;
 }
 
 @property (nonatomic) AVCaptureSession *session;
@@ -33,6 +44,8 @@ using namespace ndnrtc;
     
     if (self)
     {
+        NSDictionary *muteOptions = [[NCPreferencesController sharedInstance] getMuteOptions];
+        _isMuted = [muteOptions[kMuteOptionVideoKey] boolValue];
         _externalCapturer = NULL;
         self.session = [[AVCaptureSession alloc] init];
         self.session.sessionPreset = AVCaptureSessionPresetHigh;
@@ -59,6 +72,13 @@ using namespace ndnrtc;
         self.sessionObservers = [[NSArray alloc] initWithObjects:runtimeErrorObserver, didStartRunningObserver, didStopRunningObserver, nil];
         
         [self initVideoOutput];
+        
+        [self subscribeForNotificationsAndSelectors:
+         kNCMuteOptionsChangedNotification, @selector(onMuteOptionChanged:),
+         nil];
+        
+        if (!muteVideoBuffer)
+            [self prepareMuteFrame];
     }
     
     return self;
@@ -67,8 +87,8 @@ using namespace ndnrtc;
 -(void)initVideoOutput
 {
     self.videoOutput = [[AVCaptureVideoDataOutput alloc] init];
-    dispatch_queue_t queue = dispatch_queue_create("capture_queue", NULL);
-    [self.videoOutput setSampleBufferDelegate:self queue:queue];
+    _captureQueue = dispatch_queue_create("capture_queue", NULL);
+    [self.videoOutput setSampleBufferDelegate:self queue:_captureQueue];
 #ifndef USE_YUV
     self.videoOutput.videoSettings = [NSDictionary dictionaryWithObject:
                                       [NSNumber numberWithInt:kCVPixelFormatType_32BGRA]
@@ -83,6 +103,8 @@ using namespace ndnrtc;
 
 -(void)dealloc
 {
+    [self unsubscribeFromNotifications];
+    
     [self.session stopRunning];
     [self stopCapturing];
     
@@ -124,6 +146,36 @@ using namespace ndnrtc;
         [self.delegate capturer: self didObtainedError: error];
 }
 
+-(void)onMuteOptionChanged:(NSNotification*)notification
+{
+    NSDictionary *prevOptions = notification.userInfo[kPreviousMuteOptionsKey];
+    NSDictionary *options = notification.userInfo[kMuteOptionsKey];
+    
+    if ([prevOptions[kMuteOptionVideoKey] boolValue] != [options[kMuteOptionVideoKey] boolValue])
+        [self muteVideo:[options[kMuteOptionVideoKey] boolValue]];
+}
+
+-(void)prepareMuteFrame
+{
+    NSImage *muteFrameImage = [NSImage imageNamed:@"muteframe"];
+    NSRect rect = NSMakeRect(0, 0, MUTE_BUF_W, MUTE_BUF_H);
+    CGImageRef image = [muteFrameImage CGImageForProposedRect:&rect
+                                                      context:[NSGraphicsContext currentContext]
+                                                        hints:nil];
+    NSUInteger width = CGImageGetWidth(image);
+    NSUInteger height = CGImageGetHeight(image);
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    muteVideoBuffer = (unsigned char*)malloc(MUTE_BUF_W * MUTE_BUF_H * MUTE_BUF_PS * sizeof(unsigned char));
+    NSUInteger bytesPerPixel = MUTE_BUF_PS;
+    NSUInteger bytesPerRow = bytesPerPixel * width;
+    NSUInteger bitsPerComponent = 8;
+    CGContextRef context = CGBitmapContextCreate(muteVideoBuffer, width, height, bitsPerComponent, bytesPerRow, colorSpace, kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Little);
+    CGColorSpaceRelease(colorSpace);
+    
+    CGContextDrawImage(context, CGRectMake(0, 0, width, height), image);
+    CGContextRelease(context);
+}
+
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
   didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer
@@ -155,21 +207,38 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             _externalCapturer->incomingArgbFrame(frameWidth, frameHeight,
                                                                        (unsigned char*)frameData.bytes, frameSize);
 #else
-        int strideY = (int)CVPixelBufferGetBytesPerRowOfPlane(videoFrame, 0);
-        unsigned char* yBuffer = (unsigned char*)CVPixelBufferGetBaseAddressOfPlane(videoFrame, 0);
-        int strideU = (int)CVPixelBufferGetBytesPerRowOfPlane(videoFrame, 1);
-        unsigned char* uBuffer = (unsigned char*)CVPixelBufferGetBaseAddressOfPlane(videoFrame, 1);
-        int strideV = (int)CVPixelBufferGetBytesPerRowOfPlane(videoFrame, 2);
-        unsigned char* vBuffer = (unsigned char*)CVPixelBufferGetBaseAddressOfPlane(videoFrame, 2);
-        
-        if (_externalCapturer)
-            _externalCapturer->incomingI420Frame(frameWidth, frameHeight,
-                                                 strideY, strideU, strideV,
-                                                 yBuffer, uBuffer, vBuffer);
+        if (!_isMuted)
+        {
+            int strideY = (int)CVPixelBufferGetBytesPerRowOfPlane(videoFrame, 0);
+            unsigned char* yBuffer = (unsigned char*)CVPixelBufferGetBaseAddressOfPlane(videoFrame, 0);
+            int strideU = (int)CVPixelBufferGetBytesPerRowOfPlane(videoFrame, 1);
+            unsigned char* uBuffer = (unsigned char*)CVPixelBufferGetBaseAddressOfPlane(videoFrame, 1);
+            int strideV = (int)CVPixelBufferGetBytesPerRowOfPlane(videoFrame, 2);
+            unsigned char* vBuffer = (unsigned char*)CVPixelBufferGetBaseAddressOfPlane(videoFrame, 2);
+            
+            if (_externalCapturer)
+                _externalCapturer->incomingI420Frame(frameWidth, frameHeight,
+                                                     strideY, strideU, strideV,
+                                                     yBuffer, uBuffer, vBuffer);
+        }
+        else
+        {
+            if (_externalCapturer)
+                _externalCapturer->incomingArgbFrame(MUTE_BUF_W, MUTE_BUF_H,
+                                                     muteVideoBuffer,
+                                                     MUTE_BUF_H*MUTE_BUF_W*MUTE_BUF_PS*sizeof(unsigned char));
+        }
 #endif
         
         CVPixelBufferUnlockBaseAddress(videoFrame, kFlags);
     }
+}
+
+-(void)muteVideo:(BOOL)shouldMute
+{
+        dispatch_sync(_captureQueue, ^{
+            _isMuted = shouldMute;
+        });
 }
 
 @end

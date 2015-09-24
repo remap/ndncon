@@ -274,5 +274,19 @@
 		<key>userFetchVideo</key>
 		<true/>
 	</dict>
+	<key>Chat fetch options</key>
+	<dict>
+		<key>userFetchAudio</key>
+		<true/>
+		<key>userFetchVideo</key>
+		<false/>
+	</dict>
+	<key>Mute options</key>
+	<dict>
+		<key>muteAudio</key>
+		<true/>
+		<key>muteVideo</key>
+		<false/>
+	</dict>
 </dict>
 </plist>
