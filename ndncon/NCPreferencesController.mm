@@ -8,6 +8,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreFoundation/CoreFoundation.h>
+#import <AudioToolbox/AudioServices.h>
 
 #include <ndnrtc/params.h>
 
@@ -71,15 +72,22 @@ NSString* const kReportingAllowedKey = @"Reporting is allowed";
 NSString* const kUserFetchOptionsArrayKey = @"User fetch options";
 NSString* const kGlobalFetchOptionsArrayKey = @"Global fetch options";
 NSString* const kChatFetchOptionsArrayKey = @"Chat fetch options";
+NSString* const kMuteOptionsArrayKey = @"Mute options";
 
 NSString* const kUserFetchOptionFetchAudioKey = @"userFetchAudio";
 NSString* const kUserFetchOptionFetchVideoKey = @"userFetchVideo";
 NSString* const kUserFetchOptionDefaultAudioThreadsKey = @"userDefaultAudioThread";
 NSString* const kUserFetchOptionDefaultVideoThreadsKey = @"userDefaultVideoThread";
+NSString* const kMuteOptionAudioKey = @"muteAudio";
+NSString* const kMuteOptionVideoKey = @"muteVideo";
 
 NSString* const kNCGlobalFetchingFilterChangedNotification = @"GlobalFetchingFilterChangedNotification";
 NSString* const kGlobalFetchingOptionsKey = @"filter";
 NSString* const kPreviousGlobalFetchingOptionsKey = @"previousFilter";
+
+NSString* const kNCMuteOptionsChangedNotification = @"MuteOptionsChangedNotification";
+NSString* const kMuteOptionsKey = @"options";
+NSString* const kPreviousMuteOptionsKey = @"previousOptions";
 
 NSDictionary* const DefaultUserFetchOptions = @{
                                                 kUserFetchOptionFetchAudioKey:@YES,
@@ -90,6 +98,11 @@ NSDictionary* const DefaultChatFetchOptions = @{
                                                 kUserFetchOptionFetchAudioKey:@YES,
                                                 kUserFetchOptionFetchVideoKey:@NO
                                                 };
+
+NSDictionary* const DefaultMuteOptions = @{
+                                           kMuteOptionAudioKey:@YES,
+                                           kMuteOptionVideoKey:@NO
+                                           };
 
 NSDictionary* const LogLevels = @{kLogLevelAll: @(ndnlog::NdnLoggerDetailLevelAll),
                                   kLogLevelDebug: @(ndnlog::NdnLoggerDetailLevelDebug),
@@ -639,6 +652,30 @@ using namespace ndnrtc::new_api;
     return fetchOptions;
 }
 
+-(void)setMuteOptions:(NSDictionary*)options
+{
+    NSDictionary *prevOptions = [self getMuteOptions];
+    
+    [self saveParam:options forKey:kMuteOptionsArrayKey];
+    [self notifyNowWithNotificationName:kNCMuteOptionsChangedNotification
+                            andUserInfo:@{kMuteOptionsKey:options,
+                                          kPreviousMuteOptionsKey:prevOptions}];
+}
+
+-(NSDictionary*)getMuteOptions
+{
+    NSDictionary *muteOptions = [self getParamWithName:kMuteOptionsArrayKey];
+    
+    if (!muteOptions)
+    {
+        [self saveParam:DefaultMuteOptions
+                 forKey:kMuteOptionsArrayKey];
+        return DefaultMuteOptions;
+    }
+    
+    return muteOptions;
+}
+
 -(void)setFetchOptions:(NSDictionary *)options forUser:(NSString *)username withPrefix:(NSString *)prefix
 {
     NSMutableDictionary *userFetchOptions = nil;
@@ -696,6 +733,75 @@ using namespace ndnrtc::new_api;
     }
     
     return userFetchOptions[userKey];
+}
+
+-(void)muteDefaultMic:(BOOL)shouldMute
+{
+    float newVolume = (shouldMute)?0.:1.;
+    
+    UInt32 propertySize = 0;
+    OSStatus status = noErr;
+    AudioObjectPropertyAddress propertyAOPA;
+    propertyAOPA.mElement = kAudioObjectPropertyElementMaster;
+    propertyAOPA.mScope = kAudioDevicePropertyScopeInput;
+    propertyAOPA.mSelector = kAudioHardwareServiceDeviceProperty_VirtualMasterVolume;
+    
+    // Get the default audio device
+    AudioDeviceID outputDeviceID = [self defaultOutputDeviceID];
+    if (outputDeviceID == kAudioObjectUnknown) {
+        NSLog(@"Unknown default audio device");
+        return;
+    }
+    
+    // Check that the device has a virtual master volume
+    if (!AudioHardwareServiceHasProperty(outputDeviceID, &propertyAOPA)) {
+        NSLog(@"Device 0x%0x does not support volume control", outputDeviceID);
+        return;
+    }
+    
+    // Check that we can set the volume
+    // TODO: If we're trying to mute and it's not supported, try just setting the volume
+    Boolean canSetVolume = NO;
+    status = AudioHardwareServiceIsPropertySettable(outputDeviceID, &propertyAOPA, &canSetVolume);
+    
+    if (status || canSetVolume == NO)     {
+        NSLog(@"Device 0x%0x does not support volume control", outputDeviceID);
+        return;
+    }
+    
+    propertySize = (UInt32) sizeof(float);
+    status = AudioHardwareServiceSetPropertyData(outputDeviceID, &propertyAOPA, 0, NULL, propertySize, &newVolume);
+    
+    if (status) {
+        NSLog(@"Unable to set volume for device 0x%0x", outputDeviceID);
+    }
+}
+
+- (AudioDeviceID)defaultOutputDeviceID {
+    AudioDeviceID outputDeviceID = kAudioObjectUnknown;
+    
+    // Prepare the request
+    UInt32 propertySize = 0;
+    OSStatus status = noErr;
+    AudioObjectPropertyAddress propertyAOPA;
+    propertyAOPA.mScope = kAudioObjectPropertyScopeGlobal;
+    propertyAOPA.mElement = kAudioObjectPropertyElementMaster;
+    propertyAOPA.mSelector = kAudioHardwarePropertyDefaultInputDevice;
+    
+    // Check that we can read the default output device
+    if (!AudioHardwareServiceHasProperty(kAudioObjectSystemObject, &propertyAOPA)) {
+        NSLog(@"Cannot find default output device!");
+        return outputDeviceID;
+    }
+    
+    // Send the request to get the default device
+    propertySize = (UInt32) sizeof(AudioDeviceID);
+    status = AudioHardwareServiceGetPropertyData(kAudioObjectSystemObject,
+                                                 &propertyAOPA, 0, NULL, &propertySize, &outputDeviceID);
+    if (status) {
+        NSLog(@"Cannot find default output device!");
+    }
+    return outputDeviceID;
 }
 
 @end

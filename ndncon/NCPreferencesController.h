@@ -35,6 +35,11 @@ extern NSString* const kUserFetchOptionDefaultVideoThreadsKey;
 extern NSString* const kNCGlobalFetchingFilterChangedNotification;
 extern NSString* const kGlobalFetchingOptionsKey;
 extern NSString* const kPreviousGlobalFetchingOptionsKey;
+extern NSString* const kNCMuteOptionsChangedNotification;
+extern NSString* const kMuteOptionsKey;
+extern NSString* const kPreviousMuteOptionsKey;
+extern NSString* const kMuteOptionAudioKey;
+extern NSString* const kMuteOptionVideoKey;
 
 extern NSString* const kAutoFetchPrefixCmdArg;
 extern NSString* const kAutoFetchUserCmdArg;
@@ -111,9 +116,14 @@ extern NSString* const kAutoPublishVideoCmdArg;
 -(void)setChatFetchOptions:(NSDictionary*)options;
 -(NSDictionary*)getChatFetchOptions;
 
+-(void)setMuteOptions:(NSDictionary*)options;
+-(NSDictionary*)getMuteOptions;
+
 // user-specific fetch options
 -(void)setFetchOptions:(NSDictionary*)options forUser:(NSString*)username withPrefix:(NSString*)prefix;
 -(void)addFetchOptions:(NSDictionary*)options forUser:(NSString*)username withPrefix:(NSString*)prefix;
 -(NSDictionary*)getFetchOptionsForUser:(NSString*)username withPrefix:(NSString*)prefix;
+
+-(void)muteDefaultMic:(BOOL)shouldMute;
 
 @end

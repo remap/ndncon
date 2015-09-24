@@ -69,6 +69,10 @@ using namespace ndnrtc::new_api;
 @property (nonatomic) BOOL isAutoFetchVideo;
 @property (nonatomic) NSMutableArray *autoFetchUserList;
 
+@property (weak) IBOutlet NSView *muteButtonsView;
+@property (nonatomic) BOOL isAudioMute;
+@property (nonatomic) BOOL isVideoMute;
+
 @end
 
 @implementation NCStreamsWindowController
@@ -90,6 +94,11 @@ using namespace ndnrtc::new_api;
     NSDictionary *chatAutoFetchOptions = [[NCPreferencesController sharedInstance] getChatFetchOptions];
     _isAutoFetchAudio = [chatAutoFetchOptions[kUserFetchOptionFetchAudioKey] boolValue];
     _isAutoFetchVideo = [chatAutoFetchOptions[kUserFetchOptionFetchVideoKey] boolValue];
+    
+    NSDictionary *muteOptions = [[NCPreferencesController sharedInstance] getMuteOptions];
+    _isAudioMute = [muteOptions[kMuteOptionAudioKey] boolValue];
+    _isVideoMute = [muteOptions[kMuteOptionVideoKey] boolValue];
+    [self muteAudio:_isAudioMute];
     
     self.autoFetchUserList = [NSMutableArray array];
     
@@ -115,6 +124,7 @@ using namespace ndnrtc::new_api;
      NCChatMessageNotification, @selector(onChatMessage:),
      NCUserUpdatedNotificaiton, @selector(onUserUpdateNotification:),
      NCUserWithdrawedNotification, @selector(onUserUpdateNotification:),
+     kNCMuteOptionsChangedNotification, @selector(onMuteOptionsChanged:),
      nil];
 }
 
@@ -242,16 +252,6 @@ using namespace ndnrtc::new_api;
     return [NSArray arrayWithArray:chatrooms];
 }
 
--(void)setIsPublishingChatroom:(BOOL)isPublishingChatroom
-{
-    _isPublishingChatroom = isPublishingChatroom;
-    
-    if (_isPublishingChatroom)
-        [self.createChatroomButton setTitle:@"Close chatroom"];
-    else
-        [self.createChatroomButton setTitle:@"Create chatroom"];
-}
-
 - (IBAction)selectChatroom:(NSPopUpButton*)sender
 {
     NSInteger selectedIndex = sender.indexOfSelectedItem;
@@ -321,6 +321,17 @@ using namespace ndnrtc::new_api;
     }
 }
 
+#pragma mark - properties
+-(void)setIsPublishingChatroom:(BOOL)isPublishingChatroom
+{
+    _isPublishingChatroom = isPublishingChatroom;
+    
+    if (_isPublishingChatroom)
+        [self.createChatroomButton setTitle:@"Close chatroom"];
+    else
+        [self.createChatroomButton setTitle:@"Create chatroom"];
+}
+
 -(void)setIsAutoFetchAudio:(BOOL)autoFetchAudio
 {
     [self willChangeValueForKey:@"isAutoFetchAudio"];
@@ -341,6 +352,25 @@ using namespace ndnrtc::new_api;
     [self didChangeValueForKey:@"isAutoFetchVideo"];
 }
 
+-(void)setIsAudioMute:(BOOL)isAudioMute
+{
+    [self willChangeValueForKey:@"isAudioMute"];
+    _isAudioMute = isAudioMute;
+    NSMutableDictionary *options = [NSMutableDictionary dictionaryWithDictionary:[[NCPreferencesController sharedInstance] getMuteOptions]];
+    options[kMuteOptionAudioKey] = @(isAudioMute);
+    [[NCPreferencesController sharedInstance] setMuteOptions:options];
+    [self didChangeValueForKey:@"isAudioMute"];
+}
+
+-(void)setIsVideoMute:(BOOL)isVideoMute
+{
+    [self willChangeValueForKey:@"isVideoMute"];
+    _isVideoMute = isVideoMute;
+    NSMutableDictionary *options = [NSMutableDictionary dictionaryWithDictionary:[[NCPreferencesController sharedInstance] getMuteOptions]];
+    options[kMuteOptionVideoKey] = @(isVideoMute);
+    [[NCPreferencesController sharedInstance] setMuteOptions:options];
+    [self didChangeValueForKey:@"isVideoMute"];
+}
 
 #pragma mark - NCActiveStreamViewer
 -(void)activeStreamViewer:(NCActiveStreamViewer *)activeStreamViewer didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
@@ -558,6 +588,15 @@ using namespace ndnrtc::new_api;
     }
 }
 
+-(void)onMuteOptionsChanged:(NSNotification*)notification
+{
+    NSDictionary *prevOptions = notification.userInfo[kPreviousMuteOptionsKey];
+    NSDictionary *options = notification.userInfo[kMuteOptionsKey];
+    
+    if ([prevOptions[kMuteOptionAudioKey] boolValue] != [options[kMuteOptionAudioKey] boolValue])
+        [self muteAudio:[options[kMuteOptionAudioKey] boolValue]];
+}
+
 #pragma mark - private
 -(void)setNoPublishingViewVisible:(BOOL)isVisible
 {
@@ -692,6 +731,11 @@ using namespace ndnrtc::new_api;
                          withPrefix:[NSString userPrefixFromIdString:userId]];
     }];
     [self.autoFetchUserList removeAllObjects];
+}
+
+-(void)muteAudio:(BOOL)muteAudio
+{
+    [[NCPreferencesController sharedInstance] muteDefaultMic: muteAudio];
 }
 
 #pragma mark - NDN-RTC

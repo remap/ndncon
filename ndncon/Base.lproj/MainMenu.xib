@@ -19,6 +19,7 @@
                 <outlet property="chatroomPopup" destination="vyE-i9-CqJ" id="X3m-xN-7AT"/>
                 <outlet property="createChatroomButton" destination="YHM-mW-0d4" id="Azq-wu-IuB"/>
                 <outlet property="localStreamsScrollView" destination="dlc-cC-15F" id="LBf-qz-Yiq"/>
+                <outlet property="muteButtonsView" destination="sWO-1W-aga" id="2ud-WD-1RX"/>
                 <outlet property="noFetchingView" destination="TEV-7R-2BF" id="W4G-Av-OzT"/>
                 <outlet property="noPublishingView" destination="Ccd-Oc-lWv" id="tsz-qN-IP7"/>
                 <outlet property="remoteStreamsScrollView" destination="1Ys-n5-d4v" id="Wbt-f5-d7R"/>
@@ -793,8 +794,8 @@ CA
                     <splitView dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1mm-MG-7gE">
                         <rect key="frame" x="0.0" y="0.0" width="850" height="730"/>
                         <subviews>
-                            <customView horizontalCompressionResistancePriority="250" id="fLF-5k-Zph" userLabel="Left view">
-                                <rect key="frame" x="0.0" y="0.0" width="235" height="730"/>
+                            <customView horizontalCompressionResistancePriority="250" misplaced="YES" id="fLF-5k-Zph" userLabel="Left view">
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="730"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <customView horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YrW-zK-Abd">
@@ -949,12 +950,12 @@ CA
                                     <constraint firstAttribute="trailing" secondItem="YrW-zK-Abd" secondAttribute="trailing" id="pMl-aD-JqC"/>
                                 </constraints>
                             </customView>
-                            <customView id="qlL-OX-5LK" userLabel="Right View">
-                                <rect key="frame" x="236" y="0.0" width="614" height="730"/>
+                            <customView misplaced="YES" id="qlL-OX-5LK" userLabel="Right View">
+                                <rect key="frame" x="1" y="0.0" width="849" height="730"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="dlc-cC-15F" userLabel="Local Streams View">
-                                        <rect key="frame" x="0.0" y="630" width="614" height="100"/>
+                                        <rect key="frame" x="50" y="630" width="564" height="100"/>
                                         <clipView key="contentView" copiesOnScroll="NO" id="qhT-Do-cAZ" customClass="NCClipView">
                                             <rect key="frame" x="1" y="1" width="548" height="118"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1013,17 +1014,81 @@ CA
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="jBg-08-9BM">
                                         <rect key="frame" x="0.0" y="100" width="614" height="530"/>
                                     </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="sWO-1W-aga">
+                                        <rect key="frame" x="0.0" y="630" width="50" height="100"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4em-Mx-5zz">
+                                                <rect key="frame" x="10" y="78" width="31" height="14"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="mute" id="Gyd-80-w5m">
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <button toolTip="Audio-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="WCH-jl-C38" customClass="NCToggleButton">
+                                                <rect key="frame" x="10" y="44" width="30" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="gul-4j-91F"/>
+                                                    <constraint firstAttribute="width" constant="30" id="kK1-Yx-NHa"/>
+                                                </constraints>
+                                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_audio" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PYe-pm-aPg">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
+                                                        <color key="value" red="1" green="0.0" blue="0.01049331014017163" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <binding destination="q0s-gL-KLj" name="value" keyPath="self.isAudioMute" id="p0d-Ag-oJ3"/>
+                                                </connections>
+                                            </button>
+                                            <button toolTip="Video-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="UO6-qa-Z4v" customClass="NCToggleButton">
+                                                <rect key="frame" x="10" y="14" width="30" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="MN9-hz-fQO"/>
+                                                    <constraint firstAttribute="width" constant="30" id="sip-tM-78V"/>
+                                                </constraints>
+                                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="stream_video" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HBl-St-WRs">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
+                                                        <color key="value" red="1" green="0.0" blue="0.020984086786254075" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <binding destination="q0s-gL-KLj" name="value" keyPath="self.isVideoMute" id="ko7-X4-Q2d"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="WCH-jl-C38" firstAttribute="top" secondItem="4em-Mx-5zz" secondAttribute="bottom" constant="4" id="AY0-gt-KDH"/>
+                                            <constraint firstItem="4em-Mx-5zz" firstAttribute="top" secondItem="sWO-1W-aga" secondAttribute="top" constant="8" id="FHc-os-6Vq"/>
+                                            <constraint firstItem="WCH-jl-C38" firstAttribute="centerX" secondItem="4em-Mx-5zz" secondAttribute="centerX" id="R0X-4B-Bom"/>
+                                            <constraint firstItem="UO6-qa-Z4v" firstAttribute="centerX" secondItem="WCH-jl-C38" secondAttribute="centerX" id="wR2-Ur-0CN"/>
+                                            <constraint firstItem="UO6-qa-Z4v" firstAttribute="top" secondItem="WCH-jl-C38" secondAttribute="bottom" id="y4A-rW-E4T"/>
+                                            <constraint firstAttribute="centerX" secondItem="4em-Mx-5zz" secondAttribute="centerX" id="yPy-6F-Nxl"/>
+                                        </constraints>
+                                    </customView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="dlc-cC-15F" firstAttribute="leading" secondItem="qlL-OX-5LK" secondAttribute="leading" id="2JG-Bi-3QU"/>
+                                    <constraint firstItem="dlc-cC-15F" firstAttribute="leading" secondItem="qlL-OX-5LK" secondAttribute="leading" constant="50" id="2JG-Bi-3QU"/>
                                     <constraint firstItem="1Ys-n5-d4v" firstAttribute="leading" secondItem="qlL-OX-5LK" secondAttribute="leading" id="8EU-Na-tau"/>
+                                    <constraint firstItem="sWO-1W-aga" firstAttribute="top" secondItem="qlL-OX-5LK" secondAttribute="top" id="Gmo-JQ-N2T"/>
                                     <constraint firstAttribute="trailing" secondItem="1Ys-n5-d4v" secondAttribute="trailing" id="HuW-AR-aSC"/>
                                     <constraint firstItem="dlc-cC-15F" firstAttribute="top" secondItem="qlL-OX-5LK" secondAttribute="top" id="Yzw-MF-XY8"/>
+                                    <constraint firstItem="jBg-08-9BM" firstAttribute="top" secondItem="sWO-1W-aga" secondAttribute="bottom" id="b8J-ug-OrE"/>
                                     <constraint firstAttribute="trailing" secondItem="dlc-cC-15F" secondAttribute="trailing" id="cdH-Gn-Nhw"/>
                                     <constraint firstAttribute="bottom" secondItem="1Ys-n5-d4v" secondAttribute="bottom" id="eAE-M5-zAa"/>
                                     <constraint firstItem="jBg-08-9BM" firstAttribute="leading" secondItem="qlL-OX-5LK" secondAttribute="leading" id="euh-jd-yCZ"/>
                                     <constraint firstItem="jBg-08-9BM" firstAttribute="top" secondItem="dlc-cC-15F" secondAttribute="bottom" id="gfT-P7-R6C"/>
+                                    <constraint firstItem="sWO-1W-aga" firstAttribute="leading" secondItem="qlL-OX-5LK" secondAttribute="leading" id="n6Z-De-LLM"/>
+                                    <constraint firstItem="dlc-cC-15F" firstAttribute="leading" secondItem="sWO-1W-aga" secondAttribute="trailing" id="nNA-RZ-N4D"/>
                                     <constraint firstItem="1Ys-n5-d4v" firstAttribute="top" secondItem="jBg-08-9BM" secondAttribute="bottom" id="tkO-ek-ZgU"/>
+                                    <constraint firstItem="dlc-cC-15F" firstAttribute="height" secondItem="sWO-1W-aga" secondAttribute="height" id="uUZ-bc-9qE"/>
                                     <constraint firstAttribute="trailing" secondItem="jBg-08-9BM" secondAttribute="trailing" id="ut0-ez-CZZ"/>
                                 </constraints>
                             </customView>
