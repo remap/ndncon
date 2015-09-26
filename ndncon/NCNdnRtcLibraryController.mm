@@ -61,26 +61,30 @@ class LibraryObserver : public INdnRtcLibraryObserver
 public:
     void onStateChanged(const char *state, const char *args)
     {
-        NSLog(@"Library state changed: %s - %s", state, args);
+        @autoreleasepool {
+            NSLog(@"Library state changed: %s - %s", state, args);
+        }
     }
     
     void onErrorOccurred(int errorCode, const char* message)
     {
-        [[NCErrorController sharedInstance] postErrorWithCode:errorCode
-                                                   andMessage:[NSString ncStringFromCString:message]];
-        
-        switch (errorCode) {
-            case NRTC_ERR_SIGPIPE:
-            {
-                if ([NCNdnRtcLibraryController sharedInstance].sessionPrefix)
-                    [[NCNdnRtcLibraryController sharedInstance] stopSession];
-                
-                [[NCFaceSingleton sharedInstance] markInvalid];
+        @autoreleasepool {
+            [[NCErrorController sharedInstance] postErrorWithCode:errorCode
+                                                       andMessage:[NSString ncStringFromCString:message]];
+            
+            switch (errorCode) {
+                case NRTC_ERR_SIGPIPE:
+                {
+                    if ([NCNdnRtcLibraryController sharedInstance].sessionPrefix)
+                        [[NCNdnRtcLibraryController sharedInstance] stopSession];
+                    
+                    [[NCFaceSingleton sharedInstance] markInvalid];
+                }
+                    break;
+                default:
+                    // do nothing
+                    break;
             }
-                break;
-            default:
-                // do nothing
-                break;
         }
     }
 };
@@ -96,22 +100,24 @@ public:
     onSessionStatusUpdate(const char* username, const char* sessionPrefix,
                      SessionStatus status)
     {
-        if (![NCNdnRtcLibraryController sharedInstance].sessionPrefix)
-            [NCNdnRtcLibraryController sharedInstance].sessionPrefix = [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding];
-
-        NCSessionStatus oldStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
-        [NCNdnRtcLibraryController sharedInstance].sessionStatus = [NCNdnRtcLibraryController ncStatus:status];
-        
-        NSLog(@"new local session status - %d", status);
-        NSString *usernameStr = [NSString ncStringFromCString:username];
-        NSString *sessionPrefixStr = [NSString ncStringFromCString:sessionPrefix];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[NSObject alloc] init] notifyNowWithNotificationName:NCLocalSessionStatusUpdateNotification
-                                                       andUserInfo:@{kSessionUsernameKey: usernameStr,
-                                                                     kSessionPrefixKey: sessionPrefixStr,
-                                                                     kSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
-                                                                     kSessionOldStatusKey: @(oldStatus)}];
-        });
+        @autoreleasepool {
+            if (![NCNdnRtcLibraryController sharedInstance].sessionPrefix)
+                [NCNdnRtcLibraryController sharedInstance].sessionPrefix = [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding];
+            
+            NCSessionStatus oldStatus = [NCNdnRtcLibraryController sharedInstance].sessionStatus;
+            [NCNdnRtcLibraryController sharedInstance].sessionStatus = [NCNdnRtcLibraryController ncStatus:status];
+            
+            NSLog(@"new local session status - %d", status);
+            NSString *usernameStr = [NSString ncStringFromCString:username];
+            NSString *sessionPrefixStr = [NSString ncStringFromCString:sessionPrefix];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[[NSObject alloc] init] notifyNowWithNotificationName:NCLocalSessionStatusUpdateNotification
+                                                           andUserInfo:@{kSessionUsernameKey: usernameStr,
+                                                                         kSessionPrefixKey: sessionPrefixStr,
+                                                                         kSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
+                                                                         kSessionOldStatusKey: @(oldStatus)}];
+            });
+        }
     }
 
     void
@@ -119,23 +125,28 @@ public:
                    SessionStatus status, unsigned int errorCode,
                    const char* errorMessage)
     {
-        [NCNdnRtcLibraryController sharedInstance].sessionStatus = [NCNdnRtcLibraryController ncStatus:status];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[NSObject alloc] init] notifyNowWithNotificationName: NCLocalSessionErrorNotification
-                                                       andUserInfo:@{kSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
-                        kSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
-                        kSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
-                        kSessionErrorCodeKey: @(errorCode),
-                        kSessionErrorMessageKey: [NSString stringWithCString:errorMessage encoding:NSASCIIStringEncoding]}];
+        @autoreleasepool {
+            [NCNdnRtcLibraryController sharedInstance].sessionStatus = [NCNdnRtcLibraryController ncStatus:status];
             
-        });
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[[NSObject alloc] init] notifyNowWithNotificationName: NCLocalSessionErrorNotification
+                                                           andUserInfo:@{kSessionUsernameKey: [NSString stringWithCString:username encoding:NSASCIIStringEncoding],
+                                                                         kSessionPrefixKey: [NSString stringWithCString:sessionPrefix encoding:NSASCIIStringEncoding],
+                                                                         kSessionStatusKey: @([NCNdnRtcLibraryController ncStatus:status]),
+                                                                         kSessionErrorCodeKey: @(errorCode),
+                                                                         kSessionErrorMessageKey: [NSString stringWithCString:errorMessage encoding:NSASCIIStringEncoding]}];
+                
+            });
+        }
     }
     
     void
     onSessionInfoUpdate(const new_api::SessionInfo& sessionInfo)
     {
-        [[NCUserDiscoveryController sharedInstance] announceInfo:[NCSessionInfoContainer containerWithSessionInfo:(new_api::SessionInfo*)&sessionInfo]];
+        @autoreleasepool {
+            [[NCUserDiscoveryController sharedInstance]
+             announceInfo:[NCSessionInfoContainer containerWithSessionInfo:(new_api::SessionInfo*)&sessionInfo]];
+        }
     }
 };
 

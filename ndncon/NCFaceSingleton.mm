@@ -194,10 +194,12 @@ static dispatch_once_t token;
 
 -(void)runFace
 {
-    try {
-        _face->processEvents();
-    } catch (std::exception& exception) {
-        NSLog(@"got exception from ndn-cpp face: %s", exception.what());
+    @autoreleasepool {
+        try {
+            _face->processEvents();
+        } catch (std::exception& exception) {
+            NSLog(@"got exception from ndn-cpp face: %s", exception.what());
+        }
     }
 }
 

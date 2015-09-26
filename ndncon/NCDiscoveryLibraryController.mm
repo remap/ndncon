@@ -100,34 +100,35 @@ public:
     void
     onStateChanged(MessageTypes type, const char *msg, double timestamp)
     {
-//        NSLog(@"DISCOVERY: type: %d, msg: %s, timestamp: %f", type, msg, timestamp);
-        std::string msgStr(msg);
-        
-        if (controller_)
-            switch (type) {
-                case MessageTypes::ADD:
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [controller_ onAddMessage:msgStr withTimestamp:timestamp];
-                    });
+        @autoreleasepool {
+            std::string msgStr(msg);
+            
+            if (controller_)
+                switch (type) {
+                    case MessageTypes::ADD:
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [controller_ onAddMessage:msgStr withTimestamp:timestamp];
+                        });
+                    }
+                        break;
+                    case MessageTypes::REMOVE:
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [controller_ onRemoveMessage:msgStr withTimestamp:timestamp];
+                        });
+                    }
+                        break;
+                    case MessageTypes::SET:{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [controller_ onSetMessage:msgStr withTimestamp:timestamp];
+                        });
+                    }
+                        break;
+                    default:
+                        break;
                 }
-                    break;
-                case MessageTypes::REMOVE:
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [controller_ onRemoveMessage:msgStr withTimestamp:timestamp];
-                    });
-                }
-                    break;
-                case MessageTypes::SET:{
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [controller_ onSetMessage:msgStr withTimestamp:timestamp];
-                    });
-                }
-                    break;
-                default:
-                    break;
-            }
+        }
     }
 
 private:
