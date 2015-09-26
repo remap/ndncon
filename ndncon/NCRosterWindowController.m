@@ -15,6 +15,56 @@
 #import "NCNdnRtcLibraryController.h"
 #import "NSDictionary+NCAdditions.h"
 
+//******************************************************************************
+@implementation NSDictionary (NCRosterUiChecks)
+
+-(NSDictionary*)uiReleveantStreamInfo
+{
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+    
+    d[kNameKey] = self[kNameKey];
+    d[kThreadsArrayKey] = [NSMutableArray array];
+    
+    for (NSDictionary *dd in self[kThreadsArrayKey])
+         [d[kThreadsArrayKey] addObject:[dd uiReleveantThreadInfo]];
+
+    return [NSDictionary dictionaryWithDictionary:d];
+}
+
+-(NSDictionary*)uiReleveantThreadInfo
+{
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+    
+    d[kNameKey] = self[kNameKey];
+    d[kBitrateKey] = self[kBitrateKey];
+
+    // check for audio threads
+    if (self[kEncodingHeightKey] && self[kEncodingWidthKey])
+    {
+        d[kEncodingWidthKey] = self[kEncodingWidthKey];
+        d[kEncodingHeightKey] = self[kEncodingHeightKey];
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:d];
+}
+
+@end
+
+@implementation NSArray (NCRosterUiChecks)
+
+-(NSArray*)streamConfigurationsUiRelevantInfo
+{
+    NSMutableArray *a = [NSMutableArray array];
+    
+    for (NSDictionary *d in self)
+        [a addObject:[d uiReleveantStreamInfo]];
+    
+    return [NSArray arrayWithArray:a];
+}
+
+@end
+
+//******************************************************************************
 @interface NCRosterWindowController()
 
 @property (weak) IBOutlet NSView *localContrainerView;
@@ -90,8 +140,12 @@
 
 -(void)onUserUpdated:(NSNotification*)notification
 {
-    self.discoveredUsers = [NCUserDiscoveryController sharedInstance].discoveredUsers;
-    [self.outlineView reloadData];
+    if ([self checkForUiUpdates: [NCUserDiscoveryController sharedInstance].discoveredUsers])
+    {
+        self.discoveredUsers = [NCUserDiscoveryController sharedInstance].discoveredUsers;
+        NSLog(@"your new users: %@", self.discoveredUsers);
+        [self.outlineView reloadData];
+    }
 }
 
 -(void)onUserWithdrawed:(NSNotification*)notification
@@ -328,6 +382,38 @@
                                                        fromUser:cell.userInfo.username
                                                      withPrefix:cell.userInfo.hubPrefix];
     [self.outlineView reloadItem:cell.userInfo reloadChildren:YES];
+}
+
+#pragma mark - private
+-(BOOL)checkForUiUpdates:(NSArray*)updatedUsers
+{
+    BOOL hasUpdate = NO;
+    
+    // we need to check whether there are any UI updates required.
+    // check every user's stream number and parameters
+    if (self.discoveredUsers.count == updatedUsers.count)
+    {
+        for (NCActiveUserInfo *userInfo in self.discoveredUsers)
+        {
+            NSArray *uarr = [updatedUsers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NCActiveUserInfo *u, NSDictionary *bindings) {
+                return [u.username isEqualToString:userInfo.username] && [u.hubPrefix isEqualToString:userInfo.hubPrefix];
+            }]];
+            
+            if (!uarr.count)
+                return YES;
+
+            NCActiveUserInfo *correspondingUser = uarr[0];
+            hasUpdate = !([[userInfo.streamConfigurations streamConfigurationsUiRelevantInfo]
+                         isEqualToArray:[correspondingUser.streamConfigurations streamConfigurationsUiRelevantInfo]]);
+
+            if (hasUpdate)
+                break;
+        }
+    }
+    else
+        hasUpdate = YES;
+    
+    return hasUpdate;
 }
 
 @end

@@ -830,43 +830,51 @@ using namespace ndnrtc::new_api;
     [[NCPreferencesController sharedInstance] getNdnRtcGeneralParameters:&generalParams];
     BOOL isVideoStream = [streamConfiguration isVideoStream];
     NSDictionary *streamConfigurationFull = [[[NCUserDiscoveryController sharedInstance] userWithName:username andHubPrefix:prefix].streamConfigurations streamWithName:streamConfiguration[kNameKey]];
-    std::string threadToFetch = [streamConfiguration[kThreadsArrayKey][0][kNameKey] cStringUsingEncoding:NSASCIIStringEncoding];
-    MediaStreamParams streamParams = isVideoStream ? [streamConfigurationFull asVideoStreamParams] : [streamConfigurationFull asAudioStreamParams];
-    NCVideoStreamRenderer *renderer = isVideoStream ? [[NCVideoStreamRenderer alloc] init] : nil;
-    std::string streamPrefix = lib->addRemoteStream(sessionPrefix,
-                                                    threadToFetch,
-                                                    streamParams,
-                                                    generalParams,
-                                                    consumerParams,
-                                                    (isVideoStream?(IExternalRenderer*)renderer.ndnRtcRenderer:NULL));
-    if (streamPrefix != "")
+    if (streamConfigurationFull)
     {
-        if (isVideoStream)
+        std::string threadToFetch = [streamConfiguration[kThreadsArrayKey][0][kNameKey] cStringUsingEncoding:NSASCIIStringEncoding];
+        MediaStreamParams streamParams = isVideoStream ? [streamConfigurationFull asVideoStreamParams] : [streamConfigurationFull asAudioStreamParams];
+        NCVideoStreamRenderer *renderer = isVideoStream ? [[NCVideoStreamRenderer alloc] init] : nil;
+        std::string streamPrefix = lib->addRemoteStream(sessionPrefix,
+                                                        threadToFetch,
+                                                        streamParams,
+                                                        generalParams,
+                                                        consumerParams,
+                                                        (isVideoStream?(IExternalRenderer*)renderer.ndnRtcRenderer:NULL));
+        if (streamPrefix != "")
         {
-            NCVideoPreviewController *videoPreviewVc = [self.remoteStreamViewer addStream:streamConfiguration
-                                                                                  forUser:username
-                                                                               withPrefix:prefix];
-            [videoPreviewVc setPreviewForVideoRenderer:renderer];
-            
-            if (!self.activeVideoPreviewController)
+            if (isVideoStream)
             {
-                NCActiveUserInfo *userInfo = [[NCUserDiscoveryController sharedInstance] userWithName:username
-                                                                                         andHubPrefix:prefix];
-                if (userInfo)
-                    [self switchActiveToUser:userInfo withPreviewController:videoPreviewVc];
+                NCVideoPreviewController *videoPreviewVc = [self.remoteStreamViewer addStream:streamConfiguration
+                                                                                      forUser:username
+                                                                                   withPrefix:prefix];
+                [videoPreviewVc setPreviewForVideoRenderer:renderer];
+                
+                if (!self.activeVideoPreviewController)
+                {
+                    NCActiveUserInfo *userInfo = [[NCUserDiscoveryController sharedInstance] userWithName:username
+                                                                                             andHubPrefix:prefix];
+                    if (userInfo)
+                        [self switchActiveToUser:userInfo withPreviewController:videoPreviewVc];
+                }
+                
             }
-            
+            else
+            {
+                [self.remoteStreamViewer addStream:streamConfiguration
+                                           forUser:username
+                                        withPrefix:prefix];
+            }
         }
         else
-        {
-            [self.remoteStreamViewer addStream:streamConfiguration
-                                       forUser:username
-                                    withPrefix:prefix];
-        }
+            [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't add media stream"];
     }
     else
-        [[NCErrorController sharedInstance] postErrorWithMessage:@"Couldn't add media stream"];
-
+        NSLog(@"requested stream %@ disappeared from user info: %@",
+              streamConfiguration[kNameKey],
+              [[NCUserDiscoveryController sharedInstance]
+               userWithName:username
+               andHubPrefix:prefix].streamConfigurations);
 }
 
 -(void)removeRemoteStreamWithConfiguration:(NSDictionary*)streamConfiguration
