@@ -8,12 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Sparkle/Sparkle.h>
+#import <HockeySDK/HockeySDK.h>
 
 #import "MASPreferencesWindowController.h"
 #import "NCPreferencesController.h"
 
 @interface AppDelegate : NSObject
-<NSApplicationDelegate, SUUpdaterDelegate>
+<NSApplicationDelegate, SUUpdaterDelegate, BITHockeyManagerDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 
