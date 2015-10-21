@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -540,7 +540,7 @@ CA
                                                             </buttonCell>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
-                                                                    <color key="value" red="1" green="0.0" blue="0.020984086786254075" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="value" red="0.0" green="0.67442161599999995" blue="0.123746103" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -675,7 +675,7 @@ CA
                                                             </buttonCell>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
-                                                                    <color key="value" red="1" green="0.0" blue="0.052415957744966768" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="value" red="0.0" green="0.67442161599999995" blue="0.123746103" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -795,13 +795,13 @@ CA
                         <rect key="frame" x="0.0" y="0.0" width="850" height="730"/>
                         <subviews>
                             <customView horizontalCompressionResistancePriority="250" misplaced="YES" id="fLF-5k-Zph" userLabel="Left view">
-                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="730"/>
+                                <rect key="frame" x="0.0" y="0.0" width="849" height="730"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <customView horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YrW-zK-Abd">
+                                    <customView horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YrW-zK-Abd">
                                         <rect key="frame" x="0.0" y="550" width="235" height="180"/>
                                         <subviews>
-                                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vyE-i9-CqJ">
+                                            <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vyE-i9-CqJ">
                                                 <rect key="frame" x="18" y="136" width="200" height="26"/>
                                                 <popUpButtonCell key="cell" type="push" title="&lt;select chatroom&gt;" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Jbu-B6-cnT" id="Pev-e2-Oln" userLabel="Select chatroom">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -829,7 +829,7 @@ CA
                                                     </binding>
                                                 </connections>
                                             </popUpButton>
-                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="YHM-mW-0d4" customClass="NCToggleButton">
+                                            <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YHM-mW-0d4" customClass="NCToggleButton">
                                                 <rect key="frame" x="20" y="76" width="195" height="25"/>
                                                 <buttonCell key="cell" type="square" title="Create chatroom" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DDi-rD-Yak">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
@@ -846,7 +846,7 @@ CA
                                                     <binding destination="q0s-gL-KLj" name="enabled" keyPath="self.publishedChatroomName.length" id="JdF-1g-9Xt"/>
                                                 </connections>
                                             </button>
-                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hBX-7Y-dvs">
+                                            <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hBX-7Y-dvs">
                                                 <rect key="frame" x="20" y="109" width="195" height="22"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="your chatroom name" drawsBackground="YES" id="pfv-nF-JfC">
                                                     <font key="font" metaFont="system"/>
@@ -867,7 +867,7 @@ CA
                                                     </binding>
                                                 </connections>
                                             </textField>
-                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qv7-jw-uVF">
+                                            <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qv7-jw-uVF">
                                                 <rect key="frame" x="20" y="53" width="197" height="14"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Auto-fetch media from joining users:" id="DKc-Y1-xpy">
                                                     <font key="font" metaFont="smallSystem"/>
@@ -934,7 +934,7 @@ CA
                                             <constraint firstItem="YHM-mW-0d4" firstAttribute="leading" secondItem="YrW-zK-Abd" secondAttribute="leading" constant="20" id="xrY-XZ-tuY"/>
                                         </constraints>
                                     </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="oWk-sF-qhk">
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oWk-sF-qhk">
                                         <rect key="frame" x="0.0" y="0.0" width="235" height="550"/>
                                     </customView>
                                 </subviews>
@@ -951,12 +951,12 @@ CA
                                 </constraints>
                             </customView>
                             <customView misplaced="YES" id="qlL-OX-5LK" userLabel="Right View">
-                                <rect key="frame" x="1" y="0.0" width="849" height="730"/>
+                                <rect key="frame" x="850" y="0.0" width="0.0" height="730"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="dlc-cC-15F" userLabel="Local Streams View">
+                                    <scrollView ambiguous="YES" misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="dlc-cC-15F" userLabel="Local Streams View">
                                         <rect key="frame" x="50" y="630" width="564" height="100"/>
-                                        <clipView key="contentView" copiesOnScroll="NO" id="qhT-Do-cAZ" customClass="NCClipView">
+                                        <clipView key="contentView" ambiguous="YES" copiesOnScroll="NO" id="qhT-Do-cAZ" customClass="NCClipView">
                                             <rect key="frame" x="1" y="1" width="548" height="118"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -974,7 +974,7 @@ CA
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="177" id="nFT-yD-W7n"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="lbq-yg-BGD">
-                                            <rect key="frame" x="1" y="103" width="548" height="16"/>
+                                            <rect key="frame" x="0.0" y="84" width="564" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="kfy-M5-xgL">
@@ -982,7 +982,7 @@ CA
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="1Ys-n5-d4v" userLabel="Remote Streams View">
+                                    <scrollView misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="1Ys-n5-d4v" userLabel="Remote Streams View">
                                         <rect key="frame" x="0.0" y="0.0" width="614" height="100"/>
                                         <clipView key="contentView" copiesOnScroll="NO" id="O4N-0f-WHh" customClass="NCClipView">
                                             <rect key="frame" x="1" y="1" width="548" height="118"/>
@@ -1003,7 +1003,7 @@ CA
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="UOa-hg-SMx"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="tQP-iz-Lcg">
-                                            <rect key="frame" x="1" y="103" width="548" height="16"/>
+                                            <rect key="frame" x="0.0" y="84" width="614" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="3ZP-dW-ubR">
@@ -1011,7 +1011,7 @@ CA
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="jBg-08-9BM">
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jBg-08-9BM">
                                         <rect key="frame" x="0.0" y="100" width="614" height="530"/>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="sWO-1W-aga">

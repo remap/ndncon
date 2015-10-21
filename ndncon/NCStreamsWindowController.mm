@@ -255,7 +255,8 @@ using namespace ndnrtc::new_api;
 - (IBAction)selectChatroom:(NSPopUpButton*)sender
 {
     NSInteger selectedIndex = sender.indexOfSelectedItem;
-    NCChatRoom *chatroom = (selectedIndex == 0)? nil : [self.chatrooms objectAtIndex:(selectedIndex-1)];
+    NSArray *chatrooms = self.chatrooms;
+    NCChatRoom *chatroom = (selectedIndex == 0 || selectedIndex < chatrooms.count)? nil : [chatrooms objectAtIndex:(selectedIndex-1)];
     
     if (self.isPublishingChatroom &&
         ![chatroom.chatroomName isEqualToString:self.publishedChatroom.chatroomName])
@@ -529,7 +530,7 @@ using namespace ndnrtc::new_api;
     [self willChangeValueForKey:@"chatrooms"];
     [self didChangeValueForKey:@"chatrooms"];
     
-    if ([self.chatViewController.chatRoomId isEqualToString: notification.userInfo[kChatroomKey]])
+    if ([self.activeChatroom.chatroomName isEqualToString: notification.userInfo[kChatroomKey]])
     {
         if (self.isPublishingChatroom)
             self.chatViewController.chatRoomId = nil;

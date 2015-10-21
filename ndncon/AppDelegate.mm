@@ -6,8 +6,6 @@
 //  Copyright 2013-2015 Regents of the University of California.
 //
 
-#import <HockeySDK/HockeySDK.h>
-
 #import "AppDelegate.h"
 
 #import "NCNdnRtcLibraryController.h"
@@ -22,6 +20,7 @@
 #import "NCStreamingController.h"
 #import "NSDictionary+NCAdditions.h"
 #import "NSArray+NCAdditions.h"
+#import "NSString+NCAdditions.h"
 
 @interface AppDelegate()
 
@@ -43,6 +42,8 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"f04e450096a94f9989a875d20d4b8662"];
+    [[BITHockeyManager sharedHockeyManager].crashManager setAutoSubmitCrashReport:YES];
+    [[BITHockeyManager sharedHockeyManager] setDelegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [BITHockeyManager sharedHockeyManager].crashManager.askUserDetails = NO;
     [BITHockeyManager sharedHockeyManager].feedbackManager.requireUserName = BITFeedbackUserDataElementOptional;
@@ -426,6 +427,19 @@
 -(NSArray*)feedParametersForUpdater:(SUUpdater *)updater sendingSystemProfile:(BOOL)sendingProfile
 {
     return [[BITSystemProfile sharedSystemProfile] systemUsageData];
+}
+
+# pragma mark - delegation BITHockeyManagerDelegate
+-(NSString*)userIDForHockeyManager:(BITHockeyManager *)hockeyManager componentManager:(BITHockeyBaseManager *)componentManager
+{
+    return [NSString userIdWithName:[NCPreferencesController sharedInstance].userName
+                          andPrefix:[NCPreferencesController sharedInstance].prefix];
+}
+
+-(NSString*)userNameForHockeyManager:(BITHockeyManager *)hockeyManager
+                    componentManager:(BITHockeyBaseManager *)componentManager
+{
+    return [NCPreferencesController sharedInstance].userName;
 }
 
 @end
