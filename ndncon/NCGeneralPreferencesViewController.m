@@ -10,6 +10,7 @@
 #import "NSObject+NCAdditions.h"
 #import "NCPreferencesController.h"
 #import "NCNdnRtcLibraryController.h"
+#import "AppDelegate.h"
 
 @interface NCGeneralPreferencesViewController ()
 
@@ -68,6 +69,11 @@
 -(NSString *)connectionStatus
 {
     return [self stringFromSessionStatus:[NCNdnRtcLibraryController sharedInstance].sessionStatus];
+}
+
+- (IBAction)reconnect:(id)sender
+{
+    [(AppDelegate*)NSApp.delegate initConnection];
 }
 
 // KVO

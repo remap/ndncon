@@ -84,7 +84,7 @@ public:
     int
     registerObserver()
     {
-        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+        INdnRtcLibrary *lib = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
         return lib->setStreamObserver(streamPrefix_, this);
     }
     
@@ -99,7 +99,7 @@ public:
     {
         if (streamPrefix_ != "")
         {
-            NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+            INdnRtcLibrary *lib = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
             lib->removeStreamObserver(streamPrefix_);
         }
     }
@@ -312,7 +312,7 @@ private:
     
     _activeStreamConfiguration = streamConfiguration;
     
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    INdnRtcLibrary *lib = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     std::string streamName([[NSString streamPrefixForStream:streamConfiguration[kNameKey]
                                                         user:username
                                                      withPrefix:hubPrefix] cStringUsingEncoding:NSASCIIStringEncoding]);

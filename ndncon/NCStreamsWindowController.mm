@@ -376,7 +376,7 @@ using namespace ndnrtc::new_api;
 #pragma mark - NCActiveStreamViewer
 -(void)activeStreamViewer:(NCActiveStreamViewer *)activeStreamViewer didSelectThreadWithConfiguration:(NSDictionary *)threadConfiguration
 {
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    INdnRtcLibrary *lib = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     lib->switchThread([activeStreamViewer.streamPrefix cStringUsingEncoding:NSASCIIStringEncoding],
                       [[threadConfiguration valueForKey:kNameKey] cStringUsingEncoding:NSASCIIStringEncoding]);
 }
@@ -495,7 +495,7 @@ using namespace ndnrtc::new_api;
                                                             user:[NCPreferencesController sharedInstance].userName
                                                       withPrefix:[NCPreferencesController sharedInstance].prefix];
         
-        NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+        INdnRtcLibrary *lib = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
         lib->removeLocalStream([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding],
                                [streamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
     }
@@ -742,7 +742,7 @@ using namespace ndnrtc::new_api;
 #pragma mark - NDN-RTC
 -(void)startAudioStreamWithConfiguration:(NSDictionary*)streamConfiguration
 {
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    INdnRtcLibrary *lib = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     std::string sessionPrefix([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
     IExternalCapturer *nilCapturer = NULL;
     std::string streamPrefix = lib->addLocalStream(sessionPrefix,
@@ -761,7 +761,7 @@ using namespace ndnrtc::new_api;
 
 -(void)startVideoStreamWithConfiguration:(NSDictionary*)streamConfiguration
 {
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    INdnRtcLibrary *lib = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     std::string sessionPrefix([[NCNdnRtcLibraryController sharedInstance].sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
     IExternalCapturer *externalCapturer;
     NSInteger deviceIdx = [[streamConfiguration valueForKey:kInputDeviceKey] intValue];
@@ -822,7 +822,7 @@ using namespace ndnrtc::new_api;
                                 forUser:(NSString*)username
                              withPrefix:(NSString*)prefix
 {
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    INdnRtcLibrary *lib = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     std::string sessionPrefix([[NSString userSessionPrefixForUser:username
                                                    withHubPrefix:prefix] cStringUsingEncoding:NSASCIIStringEncoding]);
     GeneralConsumerParams consumerParams;
@@ -882,7 +882,7 @@ using namespace ndnrtc::new_api;
                                    forUser:(NSString*)username
                                 withPrefix:(NSString*)prefix
 {
-    NdnRtcLibrary *lib = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+    INdnRtcLibrary *lib = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
     NSString *streamPrefix = [NSString streamPrefixForStream:streamConfiguration[kNameKey]
                                                         user:username
                                                   withPrefix:prefix];

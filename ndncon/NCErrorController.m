@@ -65,9 +65,9 @@
 {
     if ([self.alertLock tryLock])
     {
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             NSAlert *alert = [[NSAlert alloc] init];
-            alert.messageText = [NSString stringWithFormat:@"An error (%ld) has occurred:\n%@", errorCode, errorMessage];
+            alert.messageText = errorMessage; //[NSString stringWithFormat:@"An error (%ld) has occurred:\n%@", errorCode, errorMessage];
             [alert runModal];
         });
         [self.alertLock unlock];

@@ -13,6 +13,8 @@
 #import "MASPreferencesWindowController.h"
 #import "NCPreferencesController.h"
 
+extern NSString* const kNCDaemonConnectionStatusUpdate;
+
 @interface AppDelegate : NSObject
 <NSApplicationDelegate, SUUpdaterDelegate, BITHockeyManagerDelegate>
 
@@ -24,8 +26,11 @@
 
 @property (nonatomic, strong) MASPreferencesWindowController* preferencesWindowController;
 @property (nonatomic, readonly) NCPreferencesController *preferences;
+@property (nonatomic) BOOL isConnected;
+@property (nonatomic) BOOL isPublishing;
 
 - (IBAction)saveAction:(id)sender;
 - (BOOL)commitManagedContext;
+-(void)initConnection;
 
 @end

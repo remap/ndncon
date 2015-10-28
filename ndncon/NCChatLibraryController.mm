@@ -211,6 +211,7 @@ private:
                     success = NO;
                     NSLog(@"Exception while starting chat: %@", [NSString ncStringFromCString:exception.what()]);
                     [[NCFaceSingleton sharedInstance] markInvalid];
+                    [[NCErrorController sharedInstance] postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
                 }
             }];
             
@@ -260,6 +261,7 @@ private:
         catch (std::exception &exception) {
             NSLog(@"Exception while sending message to chat: %@", [NSString ncStringFromCString:exception.what()]);
             [[NCFaceSingleton sharedInstance] markInvalid];
+            [[NCErrorController sharedInstance] postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
         }
     }];
 }
@@ -323,7 +325,6 @@ private:
 // notificaitons
 -(void)onLocalSessionStatusChanged:(NSNotification*)notification
 {
-    NSLog(@"got local session update notification");
 #ifdef CHATS_ENABLED
     NCSessionStatus status = (NCSessionStatus)[notification.userInfo[kSessionStatusKey] integerValue];
     NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];

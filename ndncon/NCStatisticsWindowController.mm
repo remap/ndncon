@@ -325,7 +325,7 @@ using namespace ndnrtc::new_api::statistics;
 {
     if (aStreamPrefix)
     {
-        NdnRtcLibrary *libHandle = (NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
+        INdnRtcLibrary *libHandle = (INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject];
         
         [self.streamPrefixLock lock];
         std::string streamPrefix([aStreamPrefix cStringUsingEncoding:NSASCIIStringEncoding]);

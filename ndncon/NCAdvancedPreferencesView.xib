@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="14F1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCAdvancedPreferencesViewController">
@@ -23,19 +24,19 @@
         </arrayController>
         <userDefaultsController representsSharedInstance="YES" id="Sq2-dj-Uf1"/>
         <splitView verticalHuggingPriority="750" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qpJ-Z7-YmR">
-            <rect key="frame" x="0.0" y="0.0" width="761" height="492"/>
+            <rect key="frame" x="0.0" y="0.0" width="376" height="177"/>
             <subviews>
-                <customView verticalHuggingPriority="750" id="ZC9-fY-25L">
-                    <rect key="frame" x="0.0" y="0.0" width="250" height="492"/>
+                <customView verticalHuggingPriority="750" misplaced="YES" id="ZC9-fY-25L">
+                    <rect key="frame" x="0.0" y="0.0" width="123.5" height="177"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <subviews>
-                        <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqb-Hw-3QB">
-                            <rect key="frame" x="0.0" y="0.0" width="250" height="492"/>
-                            <clipView key="contentView" id="scn-5w-6CJ">
+                        <scrollView misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqb-Hw-3QB">
+                            <rect key="frame" x="0.0" y="-315" width="250" height="492"/>
+                            <clipView key="contentView" drawsBackground="NO" id="scn-5w-6CJ">
                                 <rect key="frame" x="1" y="1" width="248" height="490"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" id="oin-wn-GBL">
+                                    <tableView appearanceType="vibrantLight" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" id="oin-wn-GBL">
                                         <rect key="frame" x="0.0" y="0.0" width="253" height="19"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -64,7 +65,7 @@
                                         </connections>
                                     </tableView>
                                 </subviews>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <nil key="backgroundColor"/>
                             </clipView>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="5Cd-Hu-dCt"/>
@@ -87,7 +88,7 @@
                     </constraints>
                 </customView>
                 <customView fixedFrame="YES" id="dys-RD-1o5">
-                    <rect key="frame" x="251" y="0.0" width="510" height="492"/>
+                    <rect key="frame" x="124.5" y="0.0" width="251.5" height="177"/>
                     <autoresizingMask key="autoresizingMask"/>
                 </customView>
             </subviews>
@@ -95,6 +96,7 @@
                 <real value="250"/>
                 <real value="250"/>
             </holdingPriorities>
+            <point key="canvasLocation" x="225" y="44.5"/>
         </splitView>
     </objects>
 </document>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="14F1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCDiscoveryParametersViewController">
@@ -12,16 +14,16 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="390" height="378"/>
+            <rect key="frame" x="0.0" y="0.0" width="518" height="170"/>
             <subviews>
                 <box autoresizesSubviews="NO" title="Text chat" boxType="oldStyle" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="9jJ-np-1K9">
-                    <rect key="frame" x="20" y="298" width="350" height="60"/>
-                    <view key="contentView">
-                        <rect key="frame" x="1" y="1" width="348" height="44"/>
+                    <rect key="frame" x="20" y="90" width="478" height="60"/>
+                    <view key="contentView" id="z1Q-LZ-lP4">
+                        <rect key="frame" x="1" y="1" width="476" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EbV-6a-Pne">
-                                <rect key="frame" x="17" y="14.5" width="144" height="17"/>
+                                <rect key="frame" x="17" y="14.5" width="142" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Chat broadcast prefix:" id="tIO-Hy-Kg5">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -29,9 +31,9 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" placeholderIntrinsicWidth="170" placeholderIntrinsicHeight="22" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xyY-EW-Jew">
-                                <rect key="frame" x="169" y="12" width="170" height="22"/>
+                                <rect key="frame" x="167" y="12" width="300" height="22"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="220" id="Gna-n7-qNK"/>
+                                    <constraint firstAttribute="width" constant="300" id="Gna-n7-qNK"/>
                                 </constraints>
                                 <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="mlM-K2-VQb">
                                     <font key="font" metaFont="system"/>
@@ -39,30 +41,35 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
+                                    <binding destination="-3" name="enabled" keyPath="self.delegate.hasActivity" id="dyg-Li-PD6">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
                                     <binding destination="-2" name="value" keyPath="self.preferences.chatBroadcastPrefix" id="cxn-nP-Mfn"/>
                                 </connections>
                             </textField>
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstItem="EbV-6a-Pne" firstAttribute="leading" secondItem="9jJ-np-1K9" secondAttribute="leading" constant="20" id="QEN-jT-OJt"/>
-                        <constraint firstItem="xyY-EW-Jew" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="EbV-6a-Pne" secondAttribute="trailing" constant="10" id="QI5-LF-gmB"/>
-                        <constraint firstAttribute="bottom" secondItem="xyY-EW-Jew" secondAttribute="bottom" constant="13" id="aii-l9-9jT"/>
-                        <constraint firstAttribute="trailing" secondItem="xyY-EW-Jew" secondAttribute="trailing" constant="10" id="pOO-wk-C3w"/>
-                        <constraint firstItem="xyY-EW-Jew" firstAttribute="top" secondItem="9jJ-np-1K9" secondAttribute="top" constant="25" id="u5z-O8-WHF"/>
-                        <constraint firstItem="xyY-EW-Jew" firstAttribute="centerY" secondItem="EbV-6a-Pne" secondAttribute="centerY" id="uL8-wZ-vXj"/>
+                        <constraint firstItem="xyY-EW-Jew" firstAttribute="top" secondItem="9jJ-np-1K9" secondAttribute="top" constant="25" id="2jy-cH-h1B"/>
+                        <constraint firstItem="xyY-EW-Jew" firstAttribute="centerY" secondItem="EbV-6a-Pne" secondAttribute="centerY" id="8gq-LL-WVG"/>
+                        <constraint firstItem="EbV-6a-Pne" firstAttribute="leading" secondItem="9jJ-np-1K9" secondAttribute="leading" constant="20" id="JMg-6g-7b8"/>
+                        <constraint firstAttribute="bottom" secondItem="xyY-EW-Jew" secondAttribute="bottom" constant="13" id="U1n-bp-6Kv"/>
+                        <constraint firstItem="xyY-EW-Jew" firstAttribute="leading" secondItem="EbV-6a-Pne" secondAttribute="trailing" constant="10" id="gMC-d8-tDb"/>
+                        <constraint firstAttribute="trailing" secondItem="xyY-EW-Jew" secondAttribute="trailing" constant="10" id="kj6-pG-qQh"/>
                     </constraints>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
                 <box autoresizesSubviews="NO" title="Conference discovery" boxType="oldStyle" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="PbK-IZ-Loh">
-                    <rect key="frame" x="20" y="228" width="350" height="60"/>
-                    <view key="contentView">
-                        <rect key="frame" x="1" y="1" width="348" height="44"/>
+                    <rect key="frame" x="20" y="20" width="478" height="60"/>
+                    <view key="contentView" id="Qza-ym-ug3">
+                        <rect key="frame" x="1" y="1" width="476" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h8n-ih-LTv">
-                                <rect key="frame" x="17" y="14" width="109" height="17"/>
+                                <rect key="frame" x="17" y="14" width="107" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Discovery prefix:" id="rrh-ki-MNf">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -70,25 +77,35 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="170" placeholderIntrinsicHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RFD-Bp-GLx">
-                                <rect key="frame" x="169" y="12" width="170" height="22"/>
+                                <rect key="frame" x="167" y="12" width="300" height="22"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="220" id="itU-Es-SHT"/>
+                                    <constraint firstAttribute="width" constant="300" id="itU-Es-SHT"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Ucs-9E-ZBa">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Ucs-9E-ZBa">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <binding destination="-3" name="enabled" keyPath="self.delegate.hasActivity" id="2yj-6h-cwe">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="-2" name="value" keyPath="self.preferences.userBroadcastPrefix" id="jbQ-KX-wq2"/>
+                                </connections>
                             </textField>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="RFD-Bp-GLx" firstAttribute="leading" secondItem="h8n-ih-LTv" secondAttribute="trailing" constant="45" id="lyY-tF-dRO"/>
+                        </constraints>
                     </view>
                     <constraints>
-                        <constraint firstItem="h8n-ih-LTv" firstAttribute="leading" secondItem="PbK-IZ-Loh" secondAttribute="leading" constant="20" id="BWV-9g-IUO"/>
-                        <constraint firstAttribute="trailing" secondItem="RFD-Bp-GLx" secondAttribute="trailing" constant="10" id="GxD-EV-vk2"/>
-                        <constraint firstItem="RFD-Bp-GLx" firstAttribute="top" secondItem="PbK-IZ-Loh" secondAttribute="top" constant="25" id="Jj9-DS-clv"/>
-                        <constraint firstAttribute="bottom" secondItem="RFD-Bp-GLx" secondAttribute="bottom" constant="13" id="aLj-6q-eTm"/>
-                        <constraint firstItem="RFD-Bp-GLx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="h8n-ih-LTv" secondAttribute="trailing" constant="10" id="jWv-At-dX0"/>
-                        <constraint firstItem="h8n-ih-LTv" firstAttribute="baseline" secondItem="RFD-Bp-GLx" secondAttribute="baseline" id="tIL-Hw-7Mu"/>
+                        <constraint firstAttribute="trailing" secondItem="RFD-Bp-GLx" secondAttribute="trailing" constant="10" id="5qT-ba-YX3"/>
+                        <constraint firstItem="h8n-ih-LTv" firstAttribute="leading" secondItem="PbK-IZ-Loh" secondAttribute="leading" constant="20" id="96z-xm-Xu1"/>
+                        <constraint firstItem="h8n-ih-LTv" firstAttribute="baseline" secondItem="RFD-Bp-GLx" secondAttribute="baseline" id="G7l-ny-Hyx"/>
+                        <constraint firstItem="RFD-Bp-GLx" firstAttribute="top" secondItem="PbK-IZ-Loh" secondAttribute="top" constant="25" id="eay-CA-2VC"/>
+                        <constraint firstAttribute="bottom" secondItem="RFD-Bp-GLx" secondAttribute="bottom" constant="13" id="sX2-NU-bfl"/>
                     </constraints>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -98,7 +115,7 @@
                 <constraint firstItem="9jJ-np-1K9" firstAttribute="width" secondItem="PbK-IZ-Loh" secondAttribute="width" id="2fn-n6-aSl"/>
                 <constraint firstAttribute="trailing" secondItem="9jJ-np-1K9" secondAttribute="trailing" constant="20" id="4AX-3b-hUs"/>
                 <constraint firstItem="PbK-IZ-Loh" firstAttribute="top" secondItem="9jJ-np-1K9" secondAttribute="bottom" constant="10" id="9EZ-4k-7SI"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="PbK-IZ-Loh" secondAttribute="bottom" constant="20" id="GmT-GR-clf"/>
+                <constraint firstAttribute="bottom" secondItem="PbK-IZ-Loh" secondAttribute="bottom" constant="20" id="GmT-GR-clf"/>
                 <constraint firstItem="9jJ-np-1K9" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="Lrq-zP-FrC"/>
                 <constraint firstItem="9jJ-np-1K9" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="paH-7B-Fn6"/>
                 <constraint firstItem="9jJ-np-1K9" firstAttribute="leading" secondItem="PbK-IZ-Loh" secondAttribute="leading" id="wGW-wN-cCz"/>

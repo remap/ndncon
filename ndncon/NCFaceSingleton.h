@@ -20,7 +20,7 @@ typedef void(^NCFaceSynchronizedBlock)();
 -(void)startProcessingEvents;
 -(void)stopProcessingEvents;
 -(void)markInvalid;
--(void)reset;
+-(BOOL)reset;
 
 -(void)performSynchronizedWithFace:(NCFaceSynchronizedBlock)block;
 -(void)performSynchronizedWithFaceBlocking:(NCFaceSynchronizedBlock)block;
