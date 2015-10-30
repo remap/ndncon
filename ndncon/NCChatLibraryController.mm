@@ -200,7 +200,8 @@ private:
                                                           chatPrefixName, observer.get(),
                                                           *[[NCFaceSingleton sharedInstance] getFace],
                                                           *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                                          [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
+                                                          [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName(),
+                                                          60000, 120000));
             __block BOOL success = YES;
             
             [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
