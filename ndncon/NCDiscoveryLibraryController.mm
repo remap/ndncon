@@ -81,7 +81,6 @@ class EntityDiscoveryObserver;
     boost::shared_ptr<IEntitySerializer> _entitySerializer;
 }
 
-@property (nonatomic) BOOL isInitialized;
 @property (nonatomic, readonly) NSManagedObjectContext *context;
 
 -(void)onAddMessage:(const std::string&)msg withTimestamp:(double)timestamp;
@@ -150,7 +149,6 @@ private:
         [self subscribeForNotificationsAndSelectors:
          NCLocalSessionStatusUpdateNotification,@selector(onLocalSessionStatusChanged:),
          nil];
-        [[NCFaceSingleton sharedInstance] startProcessingEvents];
         
         _discoveryObserver.reset(new EntityDiscoveryObserver(self));
     }
@@ -161,6 +159,11 @@ private:
 -(void)dealloc
 {
     [self unsubscribeFromNotifications];
+}
+
+-(NSString*)description
+{
+    return @"discovery mechanism";
 }
 
 -(NSManagedObjectContext *)context
@@ -174,41 +177,19 @@ private:
     NCSessionStatus oldStatus = (NCSessionStatus)[notification.userInfo[kSessionOldStatusKey] integerValue];
 
     if (status == SessionStatusOffline)
-    {
-        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-            try {
-                _discovery->shutdown();
-                NSLog(@"discovery shut down");
-            }
-            catch (std::exception &exception){
-                [[NCFaceSingleton sharedInstance] markInvalid];
-                NSLog(@"exception while shutting down discovery: %@",
-                      [NSString ncStringFromCString:exception.what()]);
-            }
-        }];
-        
         [self onLocalSessionOffline];
-    }
-    else {
-        if (oldStatus == SessionStatusOffline)
-        {
-            [self onLocalSessionOnline];
-        }
-    }
+    else if (oldStatus == SessionStatusOffline)
+        [self onLocalSessionOnline];
 }
 
 -(void)onLocalSessionOnline
 {
-    @throw [NSException exceptionWithName:@"NCExcpetionUnimplemented"
-                                   reason:@"unimplemented"
-                                 userInfo:nil];
+    [self initDiscovery];
 }
 
 -(void)onLocalSessionOffline
 {
-    @throw [NSException exceptionWithName:@"NCExcpetionUnimplemented"
-                                   reason:@"unimplemented"
-                                 userInfo:nil];
+    [self shutdown];
 }
 
 -(void)onAddMessage:(const std::string&)msg withTimestamp:(double)timestamp
@@ -230,6 +211,95 @@ private:
     @throw [NSException exceptionWithName:@"NCExcpetionUnimplemented"
                                    reason:@"unimplemented"
                                  userInfo:nil];
+}
+
+-(NSString*)broadcastPrefix
+{
+    @throw [NSException exceptionWithName:@"NCExcpetionUnimplemented"
+                                   reason:@"unimplemented"
+                                 userInfo:nil];
+}
+
+-(void)initDiscovery
+{
+    if (!self.isInitialized)
+    {
+        if ([NCFaceSingleton sharedInstance].isValid)
+        {   
+            [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+                try {
+                    std::string broadcastPrefix([[self broadcastPrefix] cStringUsingEncoding:NSASCIIStringEncoding]);
+                    _discovery.reset(new EntityDiscovery(broadcastPrefix,
+                                                         _discoveryObserver.get(),
+                                                         _entitySerializer,
+                                                         *[[NCFaceSingleton sharedInstance] getFace],
+                                                         *[[NCFaceSingleton sharedInstance] getKeyChain],
+                                                         [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
+                    _discovery->start();
+                    NSLog(@"initialized %@", self);
+                }
+                catch (std::exception &exception) {
+                    [self failInit:[NSString ncStringFromCString:exception.what()]];
+                }
+            }];
+            
+            self.isInitialized = (_discovery.get() != NULL);
+        }
+    }
+    
+    if (self.isInitialized)
+        [[NCFaceSingleton sharedInstance] addObserver:self
+                                          forKeyPaths:@"isValid", nil];
+}
+
+-(void)failInit:(NSString*)what
+{
+    _discovery.reset();
+    [[NCFaceSingleton sharedInstance] markInvalid];
+    [[NCNdnRtcLibraryController sharedInstance] stopSession];
+    
+    [[NCErrorController sharedInstance] postErrorWithMessage:
+     [NSString stringWithFormat:@"Can't initialize %@: %@", self, what]];
+}
+
+-(void)shutdown
+{
+    if (self.isInitialized)
+    {
+        NSLog(@"shutdown discovery for %@", NSStringFromClass([self class]));
+        [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+            try {
+                _discovery->shutdown();
+            }
+            catch (std::exception &exception){
+                NSLog(@"exception while shutting down discovery: %@",
+                      [NSString ncStringFromCString:exception.what()]);
+            }
+        }];
+        
+        self.isInitialized = NO;
+        _discovery.reset();
+        
+        [[NCFaceSingleton sharedInstance] removeObserver:self
+                                             forKeyPaths:@"isValid", nil];
+    }
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary<NSString *,id> *)change
+                      context:(void *)context
+{
+    if (object == [NCFaceSingleton sharedInstance])
+    {
+        if (![NCFaceSingleton sharedInstance].isValid)
+        {
+            [self shutdown];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [[NCNdnRtcLibraryController sharedInstance] stopSession]; 
+            });
+        }
+    }
 }
 
 @end
@@ -536,7 +606,7 @@ public:
         SessionInfo *sessionInfo = userInfo->getSessionInfo().get();
         unsigned int length = 0;
         unsigned char *bytes;
-        ndnrtc::NdnRtcLibrary *lib = ((ndnrtc::NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject]);
+        ndnrtc::INdnRtcLibrary *lib = ((ndnrtc::INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject]);
         
         if (lib)
         {
@@ -557,7 +627,7 @@ public:
     deserialize(ndn::Blob srcBlob)
     {
         SessionInfo sessionInfo;
-        ndnrtc::NdnRtcLibrary *lib = ((ndnrtc::NdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject]);
+        ndnrtc::INdnRtcLibrary *lib = ((ndnrtc::INdnRtcLibrary*)[[NCNdnRtcLibraryController sharedInstance] getLibraryObject]);
         
         if (lib)
         {
@@ -627,6 +697,11 @@ public:
     return self;
 }
 
+-(NSString*)description
+{
+    return @"user discovery mechanism";
+}
+
 #pragma mark - public
 -(NSArray *)discoveredUsers
 {
@@ -675,11 +750,10 @@ public:
                 std::string entityName([userFullName cStringUsingEncoding:NSASCIIStringEncoding]);
                 std::string entityPrefix([userInfoPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
                 _discovery->publishEntity(entityName, entityPrefix, userInfo);
-                
-//                NSLog(@"published user info: %@", userInfoPrefix);
             } catch (std::exception &exception) {
                 NSLog(@"Exception while announcing user info: %@", [NSString ncStringFromCString:exception.what()]);
                 [[NCFaceSingleton sharedInstance] markInvalid];
+                [[NCErrorController sharedInstance] postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
             }
         }];
     }
@@ -704,48 +778,17 @@ public:
 }
 
 #pragma mark - private
--(void)onLocalSessionOnline
+-(void)shutdown
 {
-    if (!self.isInitialized)
-    {
-        if (![NCFaceSingleton sharedInstance].isValid)
-            [[NCFaceSingleton sharedInstance] reset];
-        [self initUserDiscovery];
-    }
-}
-
--(void)onLocalSessionOffline
-{
-    NSLog(@"user discovery shutdown");
+    [super shutdown];
     [self withdrawInfo];
-    self.isInitialized = NO;
-    _discovery.reset();
     self.discoveredUsers = [NSArray array];
 }
 
 #pragma mark - private
--(void)initUserDiscovery
+-(NSString*)broadcastPrefix
 {
-    std::string broadcastPrefix([[NCPreferencesController sharedInstance].userBroadcastPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
-    _discovery.reset(new EntityDiscovery(broadcastPrefix,
-                                                         _discoveryObserver.get(),
-                                                         _entitySerializer,
-                                                         *[[NCFaceSingleton sharedInstance] getFace],
-                                                         *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                                         [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
-    
-    [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-        try {
-            _discovery->start();
-            NSLog(@"initialized user discovery");
-        } catch (std::exception &exception) {
-            _discovery.reset();
-            NSLog(@"Exception while initializing user discovery: %@", [NSString ncStringFromCString:exception.what()]);
-            [[NCFaceSingleton sharedInstance] markInvalid];
-        }
-    }];
-    
-    self.isInitialized = (_discovery.get() != NULL);
+    return [NCPreferencesController sharedInstance].userBroadcastPrefix;
 }
 
 -(void)onAddMessage:(const std::string&)msg withTimestamp:(double)timestamp
@@ -960,6 +1003,11 @@ public:
     return self;
 }
 
+-(NSString*)description
+{
+    return @"chatroom discovery mechanism";
+}
+
 #pragma mark - public
 -(NCChatRoom *)chatroomWithName:(NSString *)chatroomName
 {
@@ -1011,6 +1059,7 @@ public:
             } catch (std::exception& exception) {
                 NSLog(@"exception while announcing chatroom: %@", [NSString ncStringFromCString:exception.what()]);
                 [[NCFaceSingleton sharedInstance] markInvalid];
+                [[NCErrorController sharedInstance] postErrorWithMessage:[NSString ncStringFromCString:exception.what()]];
             }
         }];
     }
@@ -1055,51 +1104,21 @@ public:
         catch (std::exception &e)
         {
             NSLog(@"excpetion while withdrawing chatroom %s", e.what());
+            [[NCErrorController sharedInstance] postErrorWithMessage:[NSString ncStringFromCString:e.what()]];
         }
     }];
 }
 
 #pragma mark - private
--(void)onLocalSessionOnline
+-(NSString*)broadcastPrefix
 {
-    if (!self.isInitialized)
-    {
-        if (![NCFaceSingleton sharedInstance].isValid)
-            [[NCFaceSingleton sharedInstance] reset];
-        [self initChatroomDiscovery];
-    }
+    return [NCPreferencesController sharedInstance].chatBroadcastPrefix;
 }
 
--(void)onLocalSessionOffline
+-(void)shutdown
 {
-    NSLog(@"chatroom discovery shutdown");
-    self.isInitialized = NO;
-    _discovery.reset();
+    [super shutdown];
     self.discoveredChatrooms = [NSArray array];
-}
-
--(void)initChatroomDiscovery
-{
-    std::string broadcastPrefix([[NCPreferencesController sharedInstance].chatroomBroadcastPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
-    _discovery.reset(new EntityDiscovery(broadcastPrefix,
-                                         _discoveryObserver.get(),
-                                         _entitySerializer,
-                                         *[[NCFaceSingleton sharedInstance] getFace],
-                                         *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                         [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
-    
-    [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
-        try {
-            _discovery->start();
-            NSLog(@"initialized chatroom discovery");
-        } catch (std::exception &exception) {
-            _discovery.reset();
-            NSLog(@"exception while initializing chatroom discovery: %@", [NSString ncStringFromCString:exception.what()]);
-            [[NCFaceSingleton sharedInstance] markInvalid];
-        }
-    }];
-    
-    self.isInitialized = (_discovery.get() != NULL);
 }
 
 -(void)onAddMessage:(const std::string &)msg withTimestamp:(double)timestamp

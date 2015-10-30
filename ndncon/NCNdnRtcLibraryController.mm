@@ -13,6 +13,7 @@
 #import "NSString+NCAdditions.h"
 #import "NCFaceSingleton.h"
 #import "NCDiscoveryLibraryController.h"
+#import "NCStreamingController.h"
 
 #include <ndnrtc/ndnrtc-library.h>
 #include <ndnrtc/error-codes.h>
@@ -41,7 +42,7 @@ static NCNdnRtcLibraryController *SharedInstance = NULL;
 //******************************************************************************
 @interface NCNdnRtcLibraryController ()
 {
-    NdnRtcLibrary *_ndnRtcLib;
+    INdnRtcLibrary *_ndnRtcLib;
     SessionObserver *_sessionObserverInstance;
     LibraryObserver *_libObserver;
     NSString *_sessionPrefix;
@@ -73,12 +74,21 @@ public:
                                                        andMessage:[NSString ncStringFromCString:message]];
             
             switch (errorCode) {
+                case NRTC_ERR_FATAL:
+                case NRTC_ERR_VALIDATION:
                 case NRTC_ERR_SIGPIPE:
                 {
-                    if ([NCNdnRtcLibraryController sharedInstance].sessionPrefix)
-                        [[NCNdnRtcLibraryController sharedInstance] stopSession];
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        [[NCStreamingController sharedInstance] stopFetchingAllStreams];
+                        [[NCStreamingController sharedInstance] stopPublishingStreams:[NCStreamingController sharedInstance].allPublishedStreams];
+                        
+//                        if ([NCNdnRtcLibraryController sharedInstance].sessionPrefix)
+//                            [[NCNdnRtcLibraryController sharedInstance] stopSession];                        
+                    });
                     
-                    [[NCFaceSingleton sharedInstance] markInvalid];
+                    [[NCFaceSingleton sharedInstance] performSynchronizedWithFaceBlocking:^{
+                        [[NCFaceSingleton sharedInstance] markInvalid];
+                    }];
                 }
                     break;
                 default:
@@ -254,8 +264,11 @@ public:
         std::string sessionPrefix = _ndnRtcLib->startSession(username,
                                                             generalParams,
                                                             _sessionObserverInstance);
-        _sessionPrefix = [NSString stringWithCString:sessionPrefix.c_str()
-                                           encoding:NSASCIIStringEncoding];
+        if (sessionPrefix != "")
+        {
+            _sessionPrefix = [NSString stringWithCString:sessionPrefix.c_str()
+                                                encoding:NSASCIIStringEncoding];
+        }
         return (sessionPrefix != "");
     }
     
@@ -264,7 +277,7 @@ public:
 
 -(BOOL)stopSession
 {
-    if (_ndnRtcLib)
+    if (_ndnRtcLib && _sessionPrefix)
     {
         int res = _ndnRtcLib->stopSession([_sessionPrefix cStringUsingEncoding:NSASCIIStringEncoding]);
         _sessionPrefix = nil;

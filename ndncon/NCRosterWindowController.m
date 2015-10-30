@@ -14,6 +14,7 @@
 #import "NCStreamingController.h"
 #import "NCNdnRtcLibraryController.h"
 #import "NSDictionary+NCAdditions.h"
+#import "AppDelegate.h"
 
 //******************************************************************************
 @implementation NSDictionary (NCRosterUiChecks)
@@ -94,7 +95,9 @@
     if (self)
     {
         _discoveredUsers = @[];
-        [self subscribeForNotificationsAndSelectors:NCLocalSessionStatusUpdateNotification, @selector(onLocalSessionStatusUpdate:),
+        [self subscribeForNotificationsAndSelectors:
+         NCLocalSessionStatusUpdateNotification, @selector(onLocalSessionStatusUpdate:),
+         kNCDaemonConnectionStatusUpdate, @selector(onDaemonConnectionStatusUpdate:),
          nil];
     }
     
@@ -127,6 +130,11 @@
 }
 
 #pragma mark notifications
+-(void)onDaemonConnectionStatusUpdate:(NSNotification*)notification
+{
+    [self willChangeValueForKey:@"canPublish"];
+    [self didChangeValueForKey:@"canPublish"];
+}
 -(void)onLocalSessionStatusUpdate:(NSNotification*)notification
 {
     self.isPublishing = [notification.userInfo[kSessionStatusKey] intValue] == SessionStatusOnlinePublishing;
@@ -236,10 +244,15 @@
     [[NCPreferencesController sharedInstance] setGlobalFetchOptions:options];
 }
 
+- (IBAction)reconnect:(id)sender
+{
+    [(AppDelegate*)[NSApp delegate] initConnection];
+}
+
 #pragma mark - properties
 -(BOOL)canPublish
 {
-    return self.isAudioPublish || self.isVideoPublish;
+    return (self.isAudioPublish || self.isVideoPublish) && ([(AppDelegate*)NSApp.delegate isConnected]);
 }
 
 -(void)setIsAudioPublish:(BOOL)isAudioPublish

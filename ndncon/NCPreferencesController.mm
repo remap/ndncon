@@ -179,7 +179,7 @@ using namespace ndnrtc::new_api;
     self.observers = nil;
 }
 
-- (void)refreshDevices
+-(void)refreshDevices
 {
     [self setVideoDevices:[[AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] arrayByAddingObjectsFromArray:[AVCaptureDevice devicesWithMediaType:AVMediaTypeMuxed]]];
     [self setAudioDevices:[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio]];

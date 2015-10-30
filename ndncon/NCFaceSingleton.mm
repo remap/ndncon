@@ -13,6 +13,7 @@
 #import "NCErrorController.h"
 #import "NSString+NCAdditions.h"
 #import "NSObject+NCAdditions.h"
+#import "NCErrorController.h"
 
 //******************************************************************************
 @interface NCFaceSingleton()
@@ -70,8 +71,8 @@ static dispatch_once_t token;
 -(void)dealloc
 {
     _isRunningFace = NO;
-    delete _keychain;
-    delete _face;
+    if (_keychain) delete _keychain;
+    if (_face) delete _face;
 }
 
 #pragma mark - public
@@ -100,22 +101,24 @@ static dispatch_once_t token;
 
 -(void)markInvalid
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self stopProcessingEvents];
-        [self performSynchronizedWithFaceBlocking:^{
-            delete _face;
-            _face = NULL;
-            delete _keychain;
-            _keychain = NULL;
-        }];
-    });
+    [self stopProcessingEvents];
+    [self willChangeValueForKey:@"isValid"];
+    if (_face) delete _face;
+    _face = NULL;
+    if (_keychain) delete _keychain;
+    _keychain = NULL;
+    [self didChangeValueForKey:@"isValid"];
 }
 
--(void)reset
+-(BOOL)reset
 {   
-    [self initFace];
-    _isRunningFace = YES;
-    [self runFace];
+    if ([self initFace])
+    {
+        _isRunningFace = YES;
+        [self runFace];
+    }
+    
+    return [self isValid];
 }
 
 -(void)performSynchronizedWithFace:(NCFaceSynchronizedBlock)block
@@ -153,8 +156,10 @@ static dispatch_once_t token;
     unsigned short port = (unsigned short)([NCPreferencesController sharedInstance].daemonPort.intValue);
     
     try {
+        [self willChangeValueForKey:@"isValid"];
         _face = new ndn::Face(host, port);
         _keychain = new ndn::KeyChain();
+        [self didChangeValueForKey:@"isValid"];
         _face->setCommandSigningInfo(*_keychain, _keychain->getDefaultCertificateName());
     }
     catch (std::exception &exception)
@@ -195,11 +200,15 @@ static dispatch_once_t token;
 -(void)runFace
 {
     @autoreleasepool {
-        try {
-            _face->processEvents();
-        } catch (std::exception& exception) {
-            NSLog(@"got exception from ndn-cpp face: %s", exception.what());
-        }
+        if (_face && _isRunningFace)
+            try {
+                _face->processEvents();
+            } catch (std::exception& exception) {
+                [self markInvalid];
+                [[NCErrorController sharedInstance]
+                 postErrorWithMessage:[NSString stringWithFormat:@"Error while processing Face: %@",
+                                       [NSString stringWithCString:exception.what() encoding:NSASCIIStringEncoding]]];
+            }
     }
 }
 

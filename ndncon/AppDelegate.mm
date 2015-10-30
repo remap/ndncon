@@ -6,6 +6,8 @@
 //  Copyright 2013-2015 Regents of the University of California.
 //
 
+#include <signal.h>
+
 #import "AppDelegate.h"
 
 #import "NCNdnRtcLibraryController.h"
@@ -21,7 +23,14 @@
 #import "NSDictionary+NCAdditions.h"
 #import "NSArray+NCAdditions.h"
 #import "NSString+NCAdditions.h"
+#import "NCFaceSingleton.h"
 
+NSString* const kNCDaemonConnectionStatusUpdate = @"kNCDaemonConnectionStatusUpdate";
+
+//******************************************************************************
+void signalHandler(int signal);
+
+//******************************************************************************
 @interface AppDelegate()
 
 @property (weak) IBOutlet SUUpdater *sparkleUpdater;
@@ -36,6 +45,8 @@
 
 +(void)initialize
 {
+    signal(SIGPIPE, signalHandler);
+    
     [NCPreferencesController sharedInstanceWithDefaultsFile:@"settings"];
 }
 
@@ -80,10 +91,20 @@
     [self setupAutoFetch];
     [self setupAutoPublishParams];
     
-    [[NCNdnRtcLibraryController sharedInstance] startSession];
-    [NCChatLibraryController sharedInstance];
-    [NCUserDiscoveryController sharedInstance];
-    [NCChatroomDiscoveryController sharedInstance];
+    [self initConnection];
+    [[NCUserDiscoveryController sharedInstance]
+     addObserver:self
+     forKeyPaths:NSStringFromSelector(@selector(isInitialized)), nil];
+    [[NCChatroomDiscoveryController sharedInstance]
+     addObserver:self
+     forKeyPaths:NSStringFromSelector(@selector(isInitialized)), nil];
+    [self subscribeForNotificationsAndSelectors:
+     NCLocalSessionStatusUpdateNotification, @selector(onLocalSessionUpdate:),
+     kNCFetchedStreamsAddedNotification, @selector(onFetchingActivityChanged:),
+     kNCFetchedStreamsRemovedNotification, @selector(onFetchingActivityChanged:),
+     kNCFetchedUserAddedNotification, @selector(onFetchingActivityChanged:),
+     kNCFetchedUserRemovedNotification, @selector(onFetchingActivityChanged:),
+     nil];
     
     [self setupAutoPublishStreams];
 }
@@ -287,7 +308,57 @@
     return YES;
 }
 
+-(BOOL)isConnected
+{
+    return [NCUserDiscoveryController sharedInstance].isInitialized &&
+    [NCChatroomDiscoveryController sharedInstance].isInitialized &&
+    [NCNdnRtcLibraryController sharedInstance].sessionStatus != SessionStatusOffline;
+}
+
+-(BOOL)hasActivity
+{
+    return ([NCNdnRtcLibraryController sharedInstance].sessionStatus == SessionStatusOnlinePublishing) ||
+    ([NCStreamingController sharedInstance].allFetchedStreams.count > 0);
+}
+
 //******************************************************************************
+-(void)initConnection
+{
+    [[NCFaceSingleton sharedInstance] startProcessingEvents];
+    [[NCNdnRtcLibraryController sharedInstance] startSession];
+    [NCChatLibraryController sharedInstance];
+    [NCUserDiscoveryController sharedInstance];
+    [NCChatroomDiscoveryController sharedInstance];
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary<NSString *,id> *)change
+                      context:(void *)context
+{
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(isInitialized))])
+    {
+        [self willChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
+        [self didChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
+        [self notifyNowWithNotificationName:kNCDaemonConnectionStatusUpdate
+                                andUserInfo:nil];
+    }
+}
+
+-(void)onLocalSessionUpdate:(NSNotification*)notification
+{
+    [self willChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
+    [self willChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
+}
+
+-(void)onFetchingActivityChanged:(NSNotification*)notification
+{
+    [self willChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
+}
+
 -(void)cleanup
 {
     [[NCStreamingController sharedInstance] stopPublishingStreams:[[NCStreamingController sharedInstance] allPublishedStreams]];
@@ -443,4 +514,16 @@
 }
 
 @end
+
+//******************************************************************************
+void signalHandler(int signal)
+{
+    switch (signal) {
+        case SIGPIPE:
+            NSLog(@"SIGPIPE caught!!!");
+            break;
+        default:
+            break;
+    }
+}
 

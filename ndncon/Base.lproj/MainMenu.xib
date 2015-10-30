@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="14F1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -430,7 +430,7 @@ CA
                         </textFieldCell>
                     </textField>
                     <button toolTip="Video-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="6Vb-38-b3f" customClass="NCToggleButton">
-                        <rect key="frame" x="310" y="5" width="22" height="22"/>
+                        <rect key="frame" x="320" y="5" width="22" height="22"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="Gei-ix-1zh"/>
                             <constraint firstAttribute="width" constant="22" id="duo-iG-rif"/>
@@ -450,7 +450,7 @@ CA
                         </connections>
                     </button>
                     <button toolTip="Audio-only filter" translatesAutoresizingMaskIntoConstraints="NO" id="jyZ-Jj-6ff" customClass="NCToggleButton">
-                        <rect key="frame" x="284" y="5" width="22" height="22"/>
+                        <rect key="frame" x="294" y="5" width="22" height="22"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="VJR-gx-WIu"/>
                             <constraint firstAttribute="width" constant="22" id="VNh-jd-OJj"/>
@@ -733,13 +733,39 @@ CA
                         </scroller>
                     </scrollView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Bb-xE-Nje">
-                        <rect key="frame" x="164" y="9" width="114" height="14"/>
+                        <rect key="frame" x="174" y="9" width="114" height="14"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="media streams filters" id="j0m-QO-wf7">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uYw-oU-Ztw">
+                        <rect key="frame" x="26" y="9" width="120" height="14"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="no connection to NFD" id="rW7-kP-vf5">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="Voe-Tx-rLC" name="hidden" keyPath="self.isConnected" id="Ow8-jK-ZJL"/>
+                        </connections>
+                    </textField>
+                    <button toolTip="Reconnect" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IJB-AK-lER">
+                        <rect key="frame" x="8" y="9" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="9Fs-Z7-ANG"/>
+                            <constraint firstAttribute="width" constant="16" id="oRc-Kh-9mz"/>
+                        </constraints>
+                        <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="NSRefreshFreestandingTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="4kh-cL-Jt5">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="reconnect:" target="zW4-r6-vjY" id="L4W-ud-8Xu"/>
+                            <binding destination="Voe-Tx-rLC" name="hidden" keyPath="self.isConnected" id="F4k-hc-FUL"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="j1t-fK-0dB" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" id="1OY-yS-LZg"/>
@@ -750,19 +776,23 @@ CA
                     <constraint firstItem="PMo-X4-yCs" firstAttribute="top" secondItem="zIx-sC-YAp" secondAttribute="bottom" constant="1" id="KOd-3Q-1Ot"/>
                     <constraint firstAttribute="bottom" secondItem="GPi-Zz-25f" secondAttribute="bottom" constant="31" id="KfX-Ah-efd"/>
                     <constraint firstAttribute="trailing" secondItem="j1t-fK-0dB" secondAttribute="trailing" id="L0e-fM-may"/>
+                    <constraint firstItem="IJB-AK-lER" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" constant="8" id="ORE-3g-02u"/>
                     <constraint firstItem="PMo-X4-yCs" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" id="Sdm-PA-Sg7"/>
                     <constraint firstItem="zIx-sC-YAp" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" constant="8" id="VJE-eh-alD"/>
                     <constraint firstItem="jyZ-Jj-6ff" firstAttribute="leading" secondItem="2Bb-xE-Nje" secondAttribute="trailing" constant="8" id="VPH-yp-g3c"/>
                     <constraint firstAttribute="trailing" secondItem="PMo-X4-yCs" secondAttribute="trailing" id="XKW-J4-ve2"/>
                     <constraint firstItem="jyZ-Jj-6ff" firstAttribute="centerY" secondItem="2Bb-xE-Nje" secondAttribute="centerY" id="XhX-QK-vtF"/>
-                    <constraint firstAttribute="trailing" secondItem="6Vb-38-b3f" secondAttribute="trailing" constant="18" id="dJx-6P-Gpu"/>
+                    <constraint firstItem="2Bb-xE-Nje" firstAttribute="baseline" secondItem="uYw-oU-Ztw" secondAttribute="baseline" id="a5Q-Pa-We4"/>
+                    <constraint firstAttribute="trailing" secondItem="6Vb-38-b3f" secondAttribute="trailing" constant="8" id="dJx-6P-Gpu"/>
                     <constraint firstItem="GPi-Zz-25f" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" id="eVM-Tq-YJY"/>
                     <constraint firstItem="6Vb-38-b3f" firstAttribute="centerY" secondItem="jyZ-Jj-6ff" secondAttribute="centerY" id="mXS-fL-fb0"/>
                     <constraint firstAttribute="trailing" secondItem="BdF-lK-Exv" secondAttribute="trailing" id="mo7-zo-oid"/>
+                    <constraint firstItem="IJB-AK-lER" firstAttribute="baseline" secondItem="uYw-oU-Ztw" secondAttribute="baseline" id="o4x-7v-krG"/>
                     <constraint firstItem="zIx-sC-YAp" firstAttribute="top" secondItem="j1t-fK-0dB" secondAttribute="bottom" constant="5" id="raC-gL-ubc"/>
                     <constraint firstAttribute="bottom" secondItem="6Vb-38-b3f" secondAttribute="bottom" constant="5" id="vLf-5b-91W"/>
                     <constraint firstItem="j1t-fK-0dB" firstAttribute="top" secondItem="BdF-lK-Exv" secondAttribute="bottom" id="y8L-WT-3ea"/>
                     <constraint firstItem="BdF-lK-Exv" firstAttribute="leading" secondItem="Reg-Bg-aTn" secondAttribute="leading" id="yrB-Bh-kc7"/>
+                    <constraint firstItem="uYw-oU-Ztw" firstAttribute="leading" secondItem="IJB-AK-lER" secondAttribute="trailing" constant="4" id="zBC-ga-kHk"/>
                 </constraints>
             </view>
             <contentBorderThickness minY="32"/>
@@ -957,7 +987,7 @@ CA
                                     <scrollView ambiguous="YES" misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="dlc-cC-15F" userLabel="Local Streams View">
                                         <rect key="frame" x="50" y="630" width="564" height="100"/>
                                         <clipView key="contentView" ambiguous="YES" copiesOnScroll="NO" id="qhT-Do-cAZ" customClass="NCClipView">
-                                            <rect key="frame" x="1" y="1" width="548" height="118"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="564" height="100"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UyR-Bn-0WQ">
@@ -985,7 +1015,7 @@ CA
                                     <scrollView misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="1Ys-n5-d4v" userLabel="Remote Streams View">
                                         <rect key="frame" x="0.0" y="0.0" width="614" height="100"/>
                                         <clipView key="contentView" copiesOnScroll="NO" id="O4N-0f-WHh" customClass="NCClipView">
-                                            <rect key="frame" x="1" y="1" width="548" height="118"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="614" height="100"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EIq-nB-q8S">
@@ -1114,7 +1144,7 @@ CA
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Ccd-Oc-lWv">
             <rect key="frame" x="0.0" y="0.0" width="177" height="100"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fMC-HZ-SA4">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fMC-HZ-SA4">
                     <rect key="frame" x="18" y="62" width="141" height="28"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="you are not publishing any media" id="IbM-1S-EEo">
                         <font key="font" metaFont="smallSystem"/>
@@ -1205,7 +1235,7 @@ CA
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="TEV-7R-2BF">
             <rect key="frame" x="0.0" y="0.0" width="177" height="100"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IX1-EF-18I">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IX1-EF-18I">
                     <rect key="frame" x="18" y="36" width="141" height="28"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="you are not fetching any media" id="9Yq-to-gEo">
                         <font key="font" metaFont="smallSystem"/>
@@ -1225,6 +1255,7 @@ CA
         </customView>
     </objects>
     <resources>
+        <image name="NSRefreshFreestandingTemplate" width="14" height="14"/>
         <image name="fetch" width="60" height="60"/>
         <image name="pref" width="60" height="60"/>
         <image name="publish" width="60" height="60"/>

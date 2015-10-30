@@ -25,6 +25,9 @@ extern NSString* const kChatroomKey;
 
 //******************************************************************************
 @interface NCEntityDiscoveryController : PTNSingleton
+
+@property (nonatomic) BOOL isInitialized;
+
 @end
 
 //******************************************************************************
