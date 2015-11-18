@@ -608,7 +608,9 @@ using namespace ndnrtc::new_api;
     }
     else
     {
-        [self.localStreamViewer.stackView removeView:self.noPublishingView];
+        // check if it's there
+        if ([self.localStreamViewer.stackView.views containsObject:self.noPublishingView])
+            [self.localStreamViewer.stackView removeView:self.noPublishingView];
     }
 }
 
