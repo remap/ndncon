@@ -59,6 +59,8 @@ class StreamObserver;
 
 @property (nonatomic, strong) NCStatisticsWindowController *statController;
 
+-(void)threadUpdatedTo:(NSString*)threadName;
+
 @end
 
 //******************************************************************************
@@ -113,6 +115,7 @@ public:
             [ConsumerStatusAdjusting] =      "adjusting",
             [ConsumerStatusBuffering] =   "buffering",
             [ConsumerStatusFetching] =     "fetching",
+//            [ConsumerStatusChallenge] =     "challenge"
         };
         
         lastStatus_ = newStatus;
@@ -148,6 +151,11 @@ public:
     {
         NSLog(@"active thread is %s for %s", threadName.c_str(),
               streamPrefix_.c_str());
+        
+        NSString *newThread = [NSString stringWithCString:threadName.c_str() encoding:NSASCIIStringEncoding];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [viewer_ threadUpdatedTo:newThread];
+        });
     }
     
 private:
@@ -477,6 +485,22 @@ private:
     NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObjectsAndKeys:color, NSForegroundColorAttributeName, style, NSParagraphStyleAttributeName, nil];
     NSAttributedString *attrString = [[NSAttributedString alloc]initWithString:title attributes:attrsDictionary];
     [button setAttributedTitle:attrString];
+}
+
+-(void)threadUpdatedTo:(NSString*)threadName
+{
+    NSInteger idx = 0;
+    
+    for (NSDictionary *threadConf in self.mediaThreads)
+    {
+        if ([threadConf[kNameKey] isEqualToString:threadName])
+            break;
+        idx++;
+    }
+    
+    [self willChangeValueForKey:@"currentThreadIdx"];
+    _currentThreadIdx = idx;
+    [self didChangeValueForKey:@"currentThreadIdx"];
 }
 
 @end

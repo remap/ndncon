@@ -76,7 +76,7 @@
 {
     return @{
              kNameKey:@"mic",
-             kSegmentSizeKey: @(500),
+             kSegmentSizeKey: @(1000),
              kFreshnessPeriodKey: @(1000),
              kInputDeviceKey:@(0),  // any first device in the list
              kSynchornizedToKey:@(-1),  // index -1 means no synchornization
