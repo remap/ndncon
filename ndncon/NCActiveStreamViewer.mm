@@ -115,7 +115,7 @@ public:
             [ConsumerStatusAdjusting] =      "adjusting",
             [ConsumerStatusBuffering] =   "buffering",
             [ConsumerStatusFetching] =     "fetching",
-            [ConsumerStatusChallenge] =     "challenge"
+//            [ConsumerStatusChallenge] =     "challenge"
         };
         
         lastStatus_ = newStatus;

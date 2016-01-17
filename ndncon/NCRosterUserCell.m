@@ -588,8 +588,7 @@
     
     if ([theEvent clickCount] == 1 && rowIndex == -1)
         [self deselectAll:nil];
-    
-    else
+    else if (rowIndex >= 0)
     {
         NSTableRowView *rowView = [self rowViewAtRow:rowIndex makeIfNecessary:NO];
         
