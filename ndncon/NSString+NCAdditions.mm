@@ -95,7 +95,7 @@ NSString* const kNCNdnRtcUserUrlFormat = @"nrtc:%@:%@";
     if (chatroomName && username && hubPrefix)
     {
         NSString *userSessionPrefix = [NSString userSessionPrefixForUser:username withHubPrefix:hubPrefix];
-        return [[userSessionPrefix stringByAppendingNdnComponent:@"chat"] stringByAppendingNdnComponent:chatroomName];
+        return [userSessionPrefix stringByAppendingNdnComponent:@"chat"];
     }
     
     return nil;

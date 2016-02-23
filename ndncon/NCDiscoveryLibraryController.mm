@@ -1112,7 +1112,7 @@ public:
 #pragma mark - private
 -(NSString*)broadcastPrefix
 {
-    return [NCPreferencesController sharedInstance].chatBroadcastPrefix;
+    return [NCPreferencesController sharedInstance].chatroomBroadcastPrefix;
 }
 
 -(void)shutdown
