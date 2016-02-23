@@ -114,7 +114,7 @@ public:
             [ConsumerStatusNoData] =     "chasing",
             [ConsumerStatusAdjusting] =      "adjusting",
             [ConsumerStatusBuffering] =   "buffering",
-            [ConsumerStatusFetching] =     "fetching",
+            [ConsumerStatusFetching] =     "fetching"
 //            [ConsumerStatusChallenge] =     "challenge"
         };
         
