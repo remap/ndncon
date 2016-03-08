@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="14F1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1605" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -17,7 +17,6 @@
                 <outlet property="activeStreamViewerContainer" destination="jBg-08-9BM" id="aVH-hp-OvU"/>
                 <outlet property="chatContentView" destination="oWk-sF-qhk" id="bD3-ah-yIP"/>
                 <outlet property="chatroomPopup" destination="vyE-i9-CqJ" id="X3m-xN-7AT"/>
-                <outlet property="createChatroomButton" destination="YHM-mW-0d4" id="Azq-wu-IuB"/>
                 <outlet property="localStreamsScrollView" destination="dlc-cC-15F" id="LBf-qz-Yiq"/>
                 <outlet property="muteButtonsView" destination="sWO-1W-aga" id="2ud-WD-1RX"/>
                 <outlet property="noFetchingView" destination="TEV-7R-2BF" id="W4G-Av-OzT"/>
@@ -833,12 +832,12 @@ CA
                                         <subviews>
                                             <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vyE-i9-CqJ">
                                                 <rect key="frame" x="18" y="136" width="200" height="26"/>
-                                                <popUpButtonCell key="cell" type="push" title="&lt;select chatroom&gt;" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Jbu-B6-cnT" id="Pev-e2-Oln" userLabel="Select chatroom">
+                                                <popUpButtonCell key="cell" type="push" title="&lt;no chatroom selected&gt;" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Jbu-B6-cnT" id="Pev-e2-Oln" userLabel="Select chatroom">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="menu"/>
                                                     <menu key="menu" id="6cF-JN-EwG">
                                                         <items>
-                                                            <menuItem title="&lt;select chatroom&gt;" state="on" id="Jbu-B6-cnT"/>
+                                                            <menuItem title="&lt;no chatroom selected&gt;" state="on" id="Jbu-B6-cnT"/>
                                                             <menuItem title="dynamically replaced" tag="1" id="9mU-oq-2hM">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
@@ -861,7 +860,7 @@ CA
                                             </popUpButton>
                                             <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YHM-mW-0d4" customClass="NCToggleButton">
                                                 <rect key="frame" x="20" y="76" width="195" height="25"/>
-                                                <buttonCell key="cell" type="square" title="Create chatroom" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DDi-rD-Yak">
+                                                <buttonCell key="cell" type="square" title="Create chatroom" alternateTitle="Leave chatroom" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DDi-rD-Yak">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -871,9 +870,8 @@ CA
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="createChatroom:" target="q0s-gL-KLj" id="wLk-sM-Lbb"/>
-                                                    <binding destination="q0s-gL-KLj" name="value" keyPath="self.isPublishingChatroom" id="AcS-of-EOB"/>
-                                                    <binding destination="q0s-gL-KLj" name="enabled" keyPath="self.publishedChatroomName.length" id="JdF-1g-9Xt"/>
+                                                    <action selector="toggleChatroom:" target="q0s-gL-KLj" id="Otw-42-WPf"/>
+                                                    <binding destination="q0s-gL-KLj" name="value" keyPath="self.isJoinedChatroom" id="4jL-Sh-0DT"/>
                                                 </connections>
                                             </button>
                                             <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hBX-7Y-dvs">
@@ -1144,7 +1142,7 @@ CA
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Ccd-Oc-lWv">
             <rect key="frame" x="0.0" y="0.0" width="177" height="100"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fMC-HZ-SA4">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fMC-HZ-SA4">
                     <rect key="frame" x="18" y="62" width="141" height="28"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="you are not publishing any media" id="IbM-1S-EEo">
                         <font key="font" metaFont="smallSystem"/>
@@ -1235,7 +1233,7 @@ CA
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="TEV-7R-2BF">
             <rect key="frame" x="0.0" y="0.0" width="177" height="100"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IX1-EF-18I">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IX1-EF-18I">
                     <rect key="frame" x="18" y="36" width="141" height="28"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="you are not fetching any media" id="9Yq-to-gEo">
                         <font key="font" metaFont="smallSystem"/>
