@@ -76,6 +76,7 @@ extern NSString* const kAutoPublishVideoCmdArg;
 @property (nonatomic) NSNumber *fecEnabled;
 @property (nonatomic) NSNumber *cachingEnabled;
 @property (nonatomic) NSNumber *avSyncEnabled;
+@property (nonatomic) NSNumber *writeStatsToFile;
 
 @property (nonatomic) NSNumber *interestLifetimeMs;
 @property (nonatomic) NSNumber *jitterSizeMs;

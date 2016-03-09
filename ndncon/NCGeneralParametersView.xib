@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1605" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
         <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
@@ -14,38 +14,22 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
-            <rect key="frame" x="0.0" y="0.0" width="338" height="388.5"/>
+            <rect key="frame" x="0.0" y="0.0" width="338" height="364.5"/>
             <subviews>
                 <box autoresizesSubviews="NO" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" title="Common" boxType="oldStyle" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="JXO-2Q-KPg">
-                    <rect key="frame" x="20" y="173" width="298" height="195.5"/>
+                    <rect key="frame" x="20" y="173" width="298" height="171.5"/>
                     <view key="contentView" id="wZI-fE-9vL">
-                        <rect key="frame" x="1" y="1" width="296" height="179.5"/>
+                        <rect key="frame" x="1" y="1" width="296" height="155.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wyp-Jq-3Yt">
-                                <rect key="frame" x="41" y="58" width="219" height="17"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wyp-Jq-3Yt">
+                                <rect key="frame" x="46" y="58" width="214" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Forward Error Correction enabled:" id="Mdf-EC-2T4">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="QW3-sm-vaO">
-                                <rect key="frame" x="264" y="106" width="22" height="18"/>
-                                <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="w6e-Vk-l2f">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <binding destination="-3" name="enabled" keyPath="self.delegate.hasActivity" id="gX2-Lm-hRN">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
-                                    <binding destination="-2" name="value" keyPath="self.preferences.tlvEnabled" id="uTG-oV-ahq"/>
-                                    <outlet property="nextKeyView" destination="4tg-Em-rHQ" id="E0d-FX-RxC"/>
-                                </connections>
-                            </button>
                             <button verticalCompressionResistancePriority="1000" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="4tg-Em-rHQ">
                                 <rect key="frame" x="264" y="82" width="22" height="18"/>
                                 <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="A4D-xP-bBg">
@@ -62,17 +46,9 @@
                                     <outlet property="nextKeyView" destination="clj-KH-LzQ" id="izR-04-tka"/>
                                 </connections>
                             </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rL8-vE-NfE">
-                                <rect key="frame" x="42" y="83" width="218" height="17"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rL8-vE-NfE">
+                                <rect key="frame" x="45" y="83" width="215" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Interests retransmissions enabled:" id="qU9-ci-2Vu">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hk4-u0-wOX">
-                                <rect key="frame" x="82" y="107" width="178" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="TLV packet format enabled:" id="4YQ-Zu-3Do">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -106,28 +82,28 @@
                                             <string key="NSValueTransformerName">NSNegateBoolean</string>
                                         </dictionary>
                                     </binding>
-                                    <binding destination="-2" name="value" keyPath="self.preferences.cachingEnabled" id="mr4-VT-lQF"/>
+                                    <binding destination="-2" name="value" keyPath="self.preferences.avSyncEnabled" id="uiL-Bp-3Ud"/>
                                     <outlet property="nextKeyView" destination="Pcf-jY-u34" id="VrG-z6-NCG"/>
                                 </connections>
                             </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1td-9o-EUa">
-                                <rect key="frame" x="115" y="34" width="145" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="In-app cache enabled:" id="yQd-GF-bNH">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1td-9o-EUa">
+                                <rect key="frame" x="76" y="34" width="184" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Audio/Video synchronization:" id="yQd-GF-bNH">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TBN-RT-Ty9">
-                                <rect key="frame" x="68" y="10" width="192" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Audio/Video synchronization:" id="bQ2-Vz-3QH">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TBN-RT-Ty9">
+                                <rect key="frame" x="40" y="10" width="220" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Write stats to file (/tmp/ndnrtc.stat)" id="bQ2-Vz-3QH">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <customView verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ikx-dg-0pX">
-                                <rect key="frame" x="14" y="136" width="268" height="37"/>
+                                <rect key="frame" x="14" y="112" width="268" height="37"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PXr-aZ-kep">
                                         <rect key="frame" x="-2" y="17" width="64" height="17"/>
@@ -175,7 +151,6 @@
                                                     <string key="NSValueTransformerName">NCLogLevelValueTransformer</string>
                                                 </dictionary>
                                             </binding>
-                                            <outlet property="nextKeyView" destination="QW3-sm-vaO" id="cfc-Js-Myz"/>
                                         </connections>
                                     </slider>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EAl-vG-mZE">
@@ -212,11 +187,15 @@
                                             <string key="NSValueTransformerName">NSNegateBoolean</string>
                                         </dictionary>
                                     </binding>
-                                    <binding destination="-2" name="value" keyPath="self.preferences.avSyncEnabled" id="QaK-06-zv7"/>
+                                    <binding destination="-2" name="value" keyPath="self.preferences.writeStatsToFile" id="TQW-9l-6HD"/>
                                     <outlet property="nextKeyView" destination="avY-k5-2XS" id="tmB-q3-VsB"/>
                                 </connections>
                             </button>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="4tg-Em-rHQ" secondAttribute="trailing" constant="12" id="2f2-zi-uq7"/>
+                            <constraint firstItem="4tg-Em-rHQ" firstAttribute="top" secondItem="ikx-dg-0pX" secondAttribute="bottom" constant="14" id="ODX-Tn-Lsh"/>
+                        </constraints>
                     </view>
                     <constraints>
                         <constraint firstItem="x4p-0j-3n1" firstAttribute="leading" secondItem="1td-9o-EUa" secondAttribute="trailing" constant="8" id="0L6-rD-xcX"/>
@@ -226,24 +205,18 @@
                         <constraint firstAttribute="bottom" secondItem="Pcf-jY-u34" secondAttribute="bottom" constant="12" id="DkY-6S-dTG"/>
                         <constraint firstItem="Pcf-jY-u34" firstAttribute="leading" secondItem="TBN-RT-Ty9" secondAttribute="trailing" constant="8" id="FrI-Tg-UO2"/>
                         <constraint firstItem="clj-KH-LzQ" firstAttribute="leading" secondItem="Wyp-Jq-3Yt" secondAttribute="trailing" constant="8" id="GBM-pg-fVq"/>
-                        <constraint firstItem="QW3-sm-vaO" firstAttribute="baseline" secondItem="Hk4-u0-wOX" secondAttribute="baseline" id="Hiu-7M-WdB"/>
                         <constraint firstItem="ikx-dg-0pX" firstAttribute="top" secondItem="JXO-2Q-KPg" secondAttribute="top" constant="21" id="IQ3-9H-6Js"/>
                         <constraint firstItem="x4p-0j-3n1" firstAttribute="baseline" secondItem="1td-9o-EUa" secondAttribute="baseline" id="Ilo-0t-zCf"/>
                         <constraint firstItem="ikx-dg-0pX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JXO-2Q-KPg" secondAttribute="leading" constant="15" id="NMh-ta-B9G"/>
-                        <constraint firstItem="QW3-sm-vaO" firstAttribute="top" secondItem="ikx-dg-0pX" secondAttribute="bottom" constant="14" id="Rqq-P0-WTQ"/>
                         <constraint firstItem="clj-KH-LzQ" firstAttribute="top" secondItem="4tg-Em-rHQ" secondAttribute="bottom" constant="11.5" id="S2l-hg-XaJ"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ikx-dg-0pX" secondAttribute="trailing" constant="15" id="XhD-20-lnc"/>
                         <constraint firstItem="clj-KH-LzQ" firstAttribute="baseline" secondItem="Wyp-Jq-3Yt" secondAttribute="baseline" id="Ymj-EE-f2w"/>
-                        <constraint firstItem="4tg-Em-rHQ" firstAttribute="top" secondItem="QW3-sm-vaO" secondAttribute="bottom" constant="10" id="bg3-Q5-P4r"/>
                         <constraint firstItem="Pcf-jY-u34" firstAttribute="centerX" secondItem="x4p-0j-3n1" secondAttribute="centerX" id="cuJ-eH-0Si"/>
                         <constraint firstItem="TBN-RT-Ty9" firstAttribute="baseline" secondItem="Pcf-jY-u34" secondAttribute="baseline" id="dak-8X-9o0"/>
                         <constraint firstItem="Pcf-jY-u34" firstAttribute="centerX" secondItem="4tg-Em-rHQ" secondAttribute="centerX" id="dgJ-Fc-1vv"/>
                         <constraint firstItem="x4p-0j-3n1" firstAttribute="top" secondItem="clj-KH-LzQ" secondAttribute="bottom" constant="10" id="eeV-vX-rRh"/>
                         <constraint firstItem="4tg-Em-rHQ" firstAttribute="leading" secondItem="rL8-vE-NfE" secondAttribute="trailing" constant="8" id="lIg-7w-bPF"/>
                         <constraint firstItem="Pcf-jY-u34" firstAttribute="top" secondItem="x4p-0j-3n1" secondAttribute="bottom" constant="10" id="skM-j9-Clk"/>
-                        <constraint firstAttribute="trailing" secondItem="QW3-sm-vaO" secondAttribute="trailing" constant="13" id="xTY-XD-b32"/>
-                        <constraint firstItem="Pcf-jY-u34" firstAttribute="centerX" secondItem="QW3-sm-vaO" secondAttribute="centerX" id="yce-Eo-Cxq"/>
-                        <constraint firstItem="QW3-sm-vaO" firstAttribute="leading" secondItem="Hk4-u0-wOX" secondAttribute="trailing" constant="8" id="zip-m4-2HS"/>
                     </constraints>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -395,7 +368,7 @@
                 <constraint firstAttribute="trailing" secondItem="JXO-2Q-KPg" secondAttribute="trailing" constant="20" id="xJ7-P9-kG7"/>
                 <constraint firstItem="JXO-2Q-KPg" firstAttribute="width" secondItem="zsP-pS-W2M" secondAttribute="width" id="xVM-A4-9dN"/>
             </constraints>
-            <point key="canvasLocation" x="381" y="290.5"/>
+            <point key="canvasLocation" x="381" y="290.25"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="WU7-bW-zgZ"/>
     </objects>

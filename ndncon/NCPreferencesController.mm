@@ -31,6 +31,7 @@ NSString* const kRtxEnabledKey = @"Retransmissions enabled";
 NSString* const kFecEnabledKey = @"FEC enabled";
 NSString* const kAppCachingEnabledKey = @"App caching enabled";
 NSString* const kAvSyncEnabledKey = @"AV sync enabled";
+NSString* const kWriteStatsToFileKey = @"Write stats to file";
 NSString* const kAudioEnabledKey = @"Audio enabled";
 NSString* const kVideoEnabledKey = @"Video enabled";
 NSString* const kSkipIncompleteKey = @"Skip incomplete frames";
@@ -331,6 +332,16 @@ using namespace ndnrtc::new_api;
 -(NSNumber*)avSyncEnabled
 {
     return [self getParamAtPathByComponents:kGeneralSectionKey, kAvSyncEnabledKey, nil];
+}
+
+-(void)setWriteStatsToFile:(NSNumber *)writeStatsToFile
+{
+    [self saveParam:writeStatsToFile atPathByComponents:kGeneralSectionKey, kWriteStatsToFileKey, nil];
+}
+
+-(NSNumber*)writeStatsToFile
+{
+    return [self getParamAtPathByComponents:kGeneralSectionKey, kWriteStatsToFileKey, nil];
 }
 
 -(void)setInterestLifetimeMs:(NSNumber *)interestLifetimeMs

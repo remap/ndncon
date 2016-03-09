@@ -12,6 +12,7 @@
 #import "NSDictionary+NCAdditions.h"
 #import "NSArray+NCAdditions.h"
 #import "NSString+NCAdditions.h"
+#import "NCStatisticCollector.h"
 
 NSString* const kNCFetchedStreamsRemovedNotification = @"NCFetchedStreamsRemovedNotification";
 NSString* const kNCFetchedStreamsAddedNotification = @"NCFetchedStreamsAddedNotification";
@@ -105,6 +106,11 @@ NSString* const kNCStreamConfigurationsKey = @"streams";
     return [self.fetchedStreams filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSDictionary *streamConf, NSDictionary *bindings) {
         return [streamConf isVideoStream];
     }]];
+}
+
+-(NSString*)sessionPrefix
+{
+    return [NSString userSessionPrefixForUser:self.username withHubPrefix:self.hubPrefix];
 }
 
 #pragma mark - static
@@ -268,6 +274,11 @@ NSString* const kNCStreamConfigurationsKey = @"streams";
                                            andUserInfo:@{kNCStreamConfigurationsKey:streamConfigurations}];
         }
     }
+    
+    if ([NCPreferencesController sharedInstance].writeStatsToFile.boolValue &&
+        ![NCStatisticCollector sharedInstance].isRunning)
+        [[NCStatisticCollector sharedInstance] start];
+    
 }
 
 -(void)stopFetchingStreams:(NSArray *)streamConfigurations fromUser:(NSString *)username withPrefix:(NSString *)prefix
@@ -372,6 +383,16 @@ NSString* const kNCStreamConfigurationsKey = @"streams";
     NCFetchedUser *fetchedUser = self.fetchedUsers[[NSString userIdWithName:username andPrefix:prefix]];
     
     return (fetchedUser)?[fetchedUser.fetchedVideoStreams copy]:@[];
+}
+
+-(NSArray*)allFetchedUsers
+{
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    
+    for (NSString *key in self.fetchedUsers)
+        [users addObject:self.fetchedUsers[key]];
+    
+    return [NSArray arrayWithArray: users];
 }
 
 #pragma mark - private

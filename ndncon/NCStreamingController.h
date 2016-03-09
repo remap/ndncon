@@ -26,6 +26,7 @@ extern NSString* const kNCStreamConfigurationsKey;
 @property (nonatomic, readonly) NSString *prefix;
 @property (nonatomic, readonly) NSString *hubPrefix;
 @property (nonatomic, readonly) NSString *userId;
+@property (nonatomic, readonly) NSString *sessionPrefix;
 
 @property (nonatomic) NSMutableArray *fetchedStreams;
 @property (nonatomic, readonly) NSArray *fetchedStreamNames;
@@ -68,4 +69,6 @@ extern NSString* const kNCStreamConfigurationsKey;
                               withPrefix:(NSString*)prefix;
 -(NSArray*)allFetchedVideoStreamsForUser:(NSString*)username
                               withPrefix:(NSString*)prefix;
+-(NSArray*)allFetchedUsers;
+
 @end
