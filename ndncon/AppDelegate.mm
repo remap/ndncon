@@ -77,8 +77,12 @@ void signalHandler(int signal);
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
     NSLog(@"%@ v%@", [NCPreferencesController sharedInstance].appName, [NCPreferencesController sharedInstance].versionString);
 #endif
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *resetSettings = [defaults stringForKey:@"reset-settings"];
     
-//    [[NCPreferencesController sharedInstance] resetDefaults];
+    if (resetSettings)
+        [[NCPreferencesController sharedInstance] resetDefaults];
+    
     if ([NCPreferencesController sharedInstance].isFirstLaunch)
     {
         NSLog(@"First launch indeed!");

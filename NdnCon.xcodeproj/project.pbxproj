@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF09040C1C8F752E00914A3C /* NCStatisticCollector.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF09040B1C8F752E00914A3C /* NCStatisticCollector.mm */; };
+		AF09040D1C8F752E00914A3C /* NCStatisticCollector.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF09040B1C8F752E00914A3C /* NCStatisticCollector.mm */; };
 		AF11BAFB19D4E37E0011270F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF11BAFA19D4E37E0011270F /* OpenGL.framework */; };
 		AF241DA71AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */; };
 		AF241DA81AEB2C5B000CA14A /* NCSessionInfoContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */; };
@@ -266,6 +268,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AF09040A1C8F752E00914A3C /* NCStatisticCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCStatisticCollector.h; path = ndncon/NCStatisticCollector.h; sourceTree = SOURCE_ROOT; };
+		AF09040B1C8F752E00914A3C /* NCStatisticCollector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCStatisticCollector.mm; path = ndncon/NCStatisticCollector.mm; sourceTree = SOURCE_ROOT; };
 		AF11BAFA19D4E37E0011270F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		AF241DA51AEB2C5B000CA14A /* NCSessionInfoContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCSessionInfoContainer.h; path = ndncon/NCSessionInfoContainer.h; sourceTree = SOURCE_ROOT; };
 		AF241DA61AEB2C5B000CA14A /* NCSessionInfoContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCSessionInfoContainer.mm; path = ndncon/NCSessionInfoContainer.mm; sourceTree = SOURCE_ROOT; };
@@ -616,6 +620,8 @@
 			children = (
 				AF6D91FD1B4DBD6100F8F4E0 /* NCStreamingController.h */,
 				AF6D91FE1B4DBD6100F8F4E0 /* NCStreamingController.m */,
+				AF09040A1C8F752E00914A3C /* NCStatisticCollector.h */,
+				AF09040B1C8F752E00914A3C /* NCStatisticCollector.mm */,
 			);
 			name = "Streaming controller";
 			sourceTree = "<group>";
@@ -1285,6 +1291,7 @@
 				AFA8521719C8B2FF0015A883 /* NCEmbeddedScrollView.m in Sources */,
 				AF5D34AB19DA52E400227E75 /* NCClickableView.m in Sources */,
 				AFA8521419C8A6060015A883 /* NSObject+NCAdditions.m in Sources */,
+				AF09040C1C8F752E00914A3C /* NCStatisticCollector.mm in Sources */,
 				AFC99BF319D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm in Sources */,
 				AF5D34AE19DB7B4700227E75 /* NSString+NCAdditions.mm in Sources */,
 				AFB35C0E19CA095100D8A2BC /* NCStreamPreviewController.m in Sources */,
@@ -1365,6 +1372,7 @@
 				AFDD0DDB1A7318380076A301 /* NCEmbeddedScrollView.m in Sources */,
 				AFDD0DDD1A7318380076A301 /* NCClickableView.m in Sources */,
 				AFDD0DDE1A7318380076A301 /* NSObject+NCAdditions.m in Sources */,
+				AF09040D1C8F752E00914A3C /* NCStatisticCollector.mm in Sources */,
 				AF4258981AB3B887004C726B /* FTPManager.m in Sources */,
 				AFDD0DDF1A7318380076A301 /* NSDictionary+NCNdnRtcAdditions.mm in Sources */,
 				AFDD0DE01A7318380076A301 /* NSString+NCAdditions.mm in Sources */,

@@ -58,6 +58,7 @@ using namespace ndnrtc::new_api;
 @property (weak) IBOutlet NSView *chatContentView;
 @property (nonatomic) NSArray *chatrooms;
 @property (nonatomic) NCChatRoom *activeChatroom;
+@property (nonatomic) BOOL isJoinedChatroom;
 @property (nonatomic) NCChatRoom *publishedChatroom;
 @property (nonatomic) BOOL isPublishingChatroom;
 @property (nonatomic) NSString *publishedChatroomName;
@@ -255,71 +256,118 @@ using namespace ndnrtc::new_api;
 - (IBAction)selectChatroom:(NSPopUpButton*)sender
 {
     NSInteger selectedIndex = sender.indexOfSelectedItem;
+    
+    if (self.isPublishingChatroom && selectedIndex == 1)
+        return;
+    
     NSArray *chatrooms = self.chatrooms;
-    NCChatRoom *chatroom = (selectedIndex == 0 || selectedIndex < chatrooms.count)? nil : [chatrooms objectAtIndex:(selectedIndex-1)];
+    NCChatRoom *chatroom = (selectedIndex == 0 || selectedIndex < chatrooms.count)? nil : [chatrooms objectAtIndex: selectedIndex-1];
     
-    if (self.isPublishingChatroom &&
-        ![chatroom.chatroomName isEqualToString:self.publishedChatroom.chatroomName])
-    {
-        self.isPublishingChatroom = NO;
-        [[NCChatroomDiscoveryController sharedInstance] withdrawChatroom:self.publishedChatroom];
-        [self stopAutoFetchAllUsers];
-    }
-    
-    if (self.activeChatroom)
-    {
-        [[NCChatLibraryController sharedInstance] leaveChat:self.activeChatroom.chatroomName];
-        [self stopAutoFetchAllUsers];
-    }
+    [self leaveActiveChatroom];
     
     if (chatroom)
     {
-        [[NCChatLibraryController sharedInstance] joinChatroom:chatroom];
-        self.chatViewController.chatRoomId = chatroom.chatroomName;
+        [self joinChatroom:chatroom];
+        self.isJoinedChatroom = YES;
+        self.publishedChatroomName = @"";
     }
     else
-        self.chatViewController.chatRoomId = nil;
-    
-    self.activeChatroom = chatroom;
-    self.chatViewController.isActive = (chatroom != nil);
+    {
+        self.createChatroomButton.enabled = (self.publishedChatroomName.length > 0);
+        self.isJoinedChatroom = NO;
+    }
+}
+
+-(void)deselectChatroom
+{
+    [self.chatroomPopup selectItemAtIndex:0];
+}
+
+-(void)selectPublishedChatroom
+{
+    [self.chatroomPopup selectItemAtIndex:1];
 }
 
 - (IBAction)chatroomNameEntered:(NSTextField*)sender
 {
     if (sender.stringValue && ![sender.stringValue isEqualToString:@""])
     {
-        self.isPublishingChatroom = YES;
-        [self createChatroom:nil];
+        [self toggleChatroom:nil];
+        self.isJoinedChatroom = YES;
     }
 }
 
-- (IBAction)createChatroom:(id)sender
+- (IBAction)toggleChatroom:(id)sender
 {
-    if (self.isPublishingChatroom)
+    if (self.activeChatroom)
     {
-        NCChatRoom *chatroom = [NCChatRoom chatRoomWithName:self.publishedChatroomName
-                                            andParticipants:@[[NCNdnRtcLibraryController sharedInstance].sessionPrefix]];
-        [[NCChatroomDiscoveryController sharedInstance] announceChatroom:chatroom];
+        [self deselectChatroom];
         [self willChangeValueForKey:@"chatrooms"];
-        self.publishedChatroom = chatroom;
+        [self leaveActiveChatroom];
         [self didChangeValueForKey:@"chatrooms"];
-        
-        [self.chatroomPopup selectItemAtIndex:1];
-        [self selectChatroom:self.chatroomPopup];
     }
     else
     {
-        if (self.publishedChatroomName &&
-            ![self.publishedChatroomName isEqualToString:@""])
+        if (!self.isPublishingChatroom)
         {
-            [self willChangeValueForKey:@"chatrooms"];
-            [[NCChatroomDiscoveryController sharedInstance] withdrawChatroom:self.publishedChatroom];
-            self.publishedChatroom = nil;
-            [self didChangeValueForKey:@"chatrooms"];
-            [self.chatroomPopup selectItemAtIndex:0];
-            [self selectChatroom:self.chatroomPopup];
+            if (self.publishedChatroomName.length > 0)
+            {
+                [self createChatroom];
+                [self joinChatroom:self.publishedChatroom];
+                [self selectPublishedChatroom];
+            }
+            else
+            {
+                [[NCErrorController sharedInstance] postErrorWithMessage:@"Chatroom name can't be empty"];
+                self.isJoinedChatroom = NO;
+            }
         }
     }
+}
+
+-(void)joinChatroom:(NCChatRoom*)chatroom
+{
+    [[NCChatLibraryController sharedInstance] joinChatroom:chatroom];
+    self.activeChatroom = chatroom;
+    self.chatViewController.chatRoomId = chatroom.chatroomName;
+    self.chatViewController.isActive = YES;
+}
+
+-(void)leaveActiveChatroom
+{
+    if (self.isPublishingChatroom)
+        [self destroyChatroom];
+    
+    if (self.activeChatroom)
+    {
+        [[NCChatLibraryController sharedInstance] leaveChat:self.activeChatroom.chatroomName];
+        self.activeChatroom = nil;
+        self.chatViewController.isActive = NO;
+        self.chatViewController.chatRoomId = nil;
+        [self stopAutoFetchAllUsers];
+    }
+}
+
+-(void)createChatroom
+{
+    self.isPublishingChatroom = YES;
+    NCChatRoom *chatroom = [NCChatRoom chatRoomWithName:self.publishedChatroomName
+                                        andParticipants:@[[NCNdnRtcLibraryController sharedInstance].sessionPrefix]];
+    [[NCChatroomDiscoveryController sharedInstance] announceChatroom:chatroom];
+    [self willChangeValueForKey:@"chatrooms"];
+    self.publishedChatroom = chatroom;
+    [self didChangeValueForKey:@"chatrooms"];
+}
+
+-(void)destroyChatroom
+{
+    self.isPublishingChatroom = NO;
+    [self stopAutoFetchAllUsers];
+    [[NCChatroomDiscoveryController sharedInstance] withdrawChatroom:self.publishedChatroom];
+    [self willChangeValueForKey:@"chatrooms"];
+    self.publishedChatroom = nil;
+    [self didChangeValueForKey:@"chatrooms"];
+    self.activeChatroom = nil;
 }
 
 #pragma mark - properties
@@ -328,7 +376,7 @@ using namespace ndnrtc::new_api;
     _isPublishingChatroom = isPublishingChatroom;
     
     if (_isPublishingChatroom)
-        [self.createChatroomButton setTitle:@"Close chatroom"];
+        [self.createChatroomButton setTitle:@"Leave chatroom"];
     else
         [self.createChatroomButton setTitle:@"Create chatroom"];
 }
@@ -535,9 +583,7 @@ using namespace ndnrtc::new_api;
         if (self.isPublishingChatroom)
             self.chatViewController.chatRoomId = nil;
         
-        [[NCChatLibraryController sharedInstance] leaveChat:self.activeChatroom.chatroomName];
-        self.chatViewController.isActive = NO;
-        self.activeChatroom = nil;
+        [self leaveActiveChatroom];
     }
 }
 
@@ -550,7 +596,6 @@ using namespace ndnrtc::new_api;
 -(void)onChatMessage:(NSNotification*)notification
 {
     NSString *chatRoomId = notification.userInfo[NCChatRoomIdKey];
-    User *user = notification.userInfo[NCChatMessageUserKey];
     
     if ([chatRoomId isEqualTo:self.chatViewController.chatRoomId])
     {
