@@ -6,6 +6,19 @@
 //  Copyright 2013-2015 Regents of the University of California.
 //
 
+// from http://stackoverflow.com/questions/8733104/objective-c-property-instance-variable-in-category
+#define CATEGORY_PROPERTY_GET(type, property) - (type) property { return objc_getAssociatedObject(self, @selector(property)); }
+#define CATEGORY_PROPERTY_SET(type, property, setter) - (void) setter (type) property { objc_setAssociatedObject(self, @selector(property), property, OBJC_ASSOCIATION_RETAIN_NONATOMIC); }
+#define CATEGORY_PROPERTY_GET_SET(type, property, setter) CATEGORY_PROPERTY_GET(type, property) CATEGORY_PROPERTY_SET(type, property, setter)
+
+#define CATEGORY_PROPERTY_GET_NSNUMBER_PRIMITIVE(type, property, valueSelector) - (type) property { return [objc_getAssociatedObject(self, @selector(property)) valueSelector]; }
+#define CATEGORY_PROPERTY_SET_NSNUMBER_PRIMITIVE(type, property, setter, numberSelector) - (void) setter (type) property { objc_setAssociatedObject(self, @selector(property), [NSNumber numberSelector: property], OBJC_ASSOCIATION_RETAIN_NONATOMIC); }
+
+#define CATEGORY_PROPERTY_GET_UINT(property) CATEGORY_PROPERTY_GET_NSNUMBER_PRIMITIVE(unsigned int, property, unsignedIntValue)
+#define CATEGORY_PROPERTY_SET_UINT(property, setter) CATEGORY_PROPERTY_SET_NSNUMBER_PRIMITIVE(unsigned int, property, setter, numberWithUnsignedInt)
+#define CATEGORY_PROPERTY_GET_SET_UINT(property, setter) CATEGORY_PROPERTY_GET_UINT(property) CATEGORY_PROPERTY_SET_UINT(property, setter)
+
+#import <objc/runtime.h>
 #import "NSArray+NCAdditions.h"
 #import "NSDictionary+NCAdditions.h"
 
@@ -94,6 +107,38 @@
     }
     
     return nil;
+}
+
+@end
+
+@implementation NSMutableArray (NCCircularArray)
+
+CATEGORY_PROPERTY_GET_SET_UINT(circularBufferSize, setCircularBufferSize:)
+CATEGORY_PROPERTY_GET_SET_UINT(currentIndex, setCurrentIndex:)
+
+-(instancetype)initCircularArrayWithSize:(unsigned int)size
+{
+    self = [self init];
+    self.circularBufferSize = size;
+    self.currentIndex = 0;
+    
+    return self;
+}
+
+-(void)push:(id)object
+{
+    if (self.currentIndex == self.circularBufferSize)
+        self.currentIndex = 0;
+    
+    [self insertObject:object atIndex:self.currentIndex++];
+    
+    if (self.count > self.circularBufferSize)
+        [self removeObjectAtIndex:self.currentIndex];
+}
+
+-(float)average
+{
+    return [[self valueForKeyPath:@"@avg.floatValue"] floatValue];
 }
 
 @end
