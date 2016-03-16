@@ -4,11 +4,11 @@
 <dict>
 	<key>Version updates</key>
 	<dict>
-		<key>0.7.6</key>
+		<key>0.8.0</key>
 		<dict>
-			<key>Jitter size</key>
+			<key>Consumer.Jitter size</key>
 			<integer>150</integer>
-			<key>Chatroom broadcast prefix</key>
+			<key>Chat.Chatroom broadcast prefix</key>
 			<string>/ndn/broadcast/ndnrtc/chatrooms</string>
 		</dict>
 		<key>0.6.5</key>
@@ -140,6 +140,8 @@
 		<string>/ndn/edu/ucla/remap</string>
 		<key>Default username</key>
 		<string>jedi</string>
+		<key>Default identity</key>
+		<string></string>
 		<key>NDN daemon</key>
 		<dict>
 			<key>Host</key>

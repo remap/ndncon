@@ -7,6 +7,7 @@
 //
 
 #include <signal.h>
+#include <Security/Security.h>
 
 #import "AppDelegate.h"
 
@@ -24,6 +25,8 @@
 #import "NSArray+NCAdditions.h"
 #import "NSString+NCAdditions.h"
 #import "NCFaceSingleton.h"
+#import "NCIdentitySetupController.h"
+#import "NCRosterWindowController.h"
 
 NSString* const kNCDaemonConnectionStatusUpdate = @"kNCDaemonConnectionStatusUpdate";
 
@@ -34,6 +37,8 @@ void signalHandler(int signal);
 @interface AppDelegate()
 
 @property (weak) IBOutlet SUUpdater *sparkleUpdater;
+@property (weak) IBOutlet NCIdentitySetupController *identitySetupController;
+@property (weak) IBOutlet NCRosterWindowController *rosterWindowController;
 
 @end
 
@@ -95,7 +100,22 @@ void signalHandler(int signal);
     [self setupAutoFetch];
     [self setupAutoPublishParams];
     
+    if ([[NCPreferencesController sharedInstance].identity isEqualToString:@""])
+        [self configureIdentity];
+    else
+        [self identityConfigured];
+}
+
+-(void)configureIdentity
+{
+    [self.identitySetupController showWindow:nil];
+}
+
+-(void)identityConfigured
+{
+    [self.rosterWindowController showWindow:nil];
     [self initConnection];
+    
     [[NCUserDiscoveryController sharedInstance]
      addObserver:self
      forKeyPaths:NSStringFromSelector(@selector(isInitialized)), nil];

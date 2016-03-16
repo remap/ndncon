@@ -68,6 +68,7 @@ extern NSString* const kAutoPublishVideoCmdArg;
 
 @property (nonatomic) NSString *prefix;
 @property (nonatomic) NSString *userName;
+@property (nonatomic) NSString *identity;
 @property (nonatomic) NSString *daemonHost;
 @property (nonatomic) NSNumber *daemonPort;
 

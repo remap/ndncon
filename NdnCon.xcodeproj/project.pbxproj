@@ -123,6 +123,10 @@
 		AFB35C1C19CA1CA400D8A2BC /* NCUserStreamsController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C1B19CA1CA400D8A2BC /* NCUserStreamsController.m */; };
 		AFB35C2719CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB35C2619CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm */; };
 		AFB8DE9519CD049B008F691B /* NCCameraCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB8DE9419CD049B008F691B /* NCCameraCapturer.m */; };
+		AFC1E9971C992DF8007AC9D6 /* NCIdentitySetupController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFC1E9961C992DF8007AC9D6 /* NCIdentitySetupController.mm */; };
+		AFC1E9981C992DF8007AC9D6 /* NCIdentitySetupController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFC1E9961C992DF8007AC9D6 /* NCIdentitySetupController.mm */; };
+		AFC1E99A1C992E20007AC9D6 /* IdentitySetupWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC1E9991C992E20007AC9D6 /* IdentitySetupWindow.xib */; };
+		AFC1E99B1C992E20007AC9D6 /* IdentitySetupWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC1E9991C992E20007AC9D6 /* IdentitySetupWindow.xib */; };
 		AFC99BD619D20489005B75AB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BD519D20489005B75AB /* User.m */; };
 		AFC99BF319D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFC99BF219D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.mm */; };
 		AFD17DF219F03EDA00C8DD6E /* NSDate+NCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD17DF119F03EDA00C8DD6E /* NSDate+NCAdditions.m */; };
@@ -425,6 +429,9 @@
 		AFB35C2619CB6DEF00D8A2BC /* NCNdnRtcLibraryController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCNdnRtcLibraryController.mm; path = ndncon/NCNdnRtcLibraryController.mm; sourceTree = SOURCE_ROOT; };
 		AFB8DE9319CD049B008F691B /* NCCameraCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCCameraCapturer.h; path = ndncon/NCCameraCapturer.h; sourceTree = SOURCE_ROOT; };
 		AFB8DE9419CD049B008F691B /* NCCameraCapturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NCCameraCapturer.m; path = ndncon/NCCameraCapturer.m; sourceTree = SOURCE_ROOT; };
+		AFC1E9951C992DF8007AC9D6 /* NCIdentitySetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NCIdentitySetupController.h; path = ndncon/NCIdentitySetupController.h; sourceTree = SOURCE_ROOT; };
+		AFC1E9961C992DF8007AC9D6 /* NCIdentitySetupController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NCIdentitySetupController.mm; path = ndncon/NCIdentitySetupController.mm; sourceTree = SOURCE_ROOT; };
+		AFC1E9991C992E20007AC9D6 /* IdentitySetupWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IdentitySetupWindow.xib; path = ndncon/IdentitySetupWindow.xib; sourceTree = SOURCE_ROOT; };
 		AFC99BD419D20489005B75AB /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = ndncon/User.h; sourceTree = SOURCE_ROOT; };
 		AFC99BD519D20489005B75AB /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = ndncon/User.m; sourceTree = SOURCE_ROOT; };
 		AFC99BF119D29B67005B75AB /* NSDictionary+NCNdnRtcAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+NCNdnRtcAdditions.h"; path = "ndncon/NSDictionary+NCNdnRtcAdditions.h"; sourceTree = SOURCE_ROOT; };
@@ -729,6 +736,7 @@
 		AF8A138119BFB74300010B20 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				AFC1E9941C992DBC007AC9D6 /* Identity setup controller */,
 				AF6D91FC1B4DBD3900F8F4E0 /* Streaming controller */,
 				AF744CB219EC96E100E92680 /* Lib controllers */,
 				AF7026C519C279830087B605 /* Stream editor */,
@@ -841,6 +849,16 @@
 				AF45142A1B64E7D800B0AF02 /* NCBaseCapturer.mm */,
 			);
 			name = "Device manager";
+			sourceTree = "<group>";
+		};
+		AFC1E9941C992DBC007AC9D6 /* Identity setup controller */ = {
+			isa = PBXGroup;
+			children = (
+				AFC1E9951C992DF8007AC9D6 /* NCIdentitySetupController.h */,
+				AFC1E9961C992DF8007AC9D6 /* NCIdentitySetupController.mm */,
+				AFC1E9991C992E20007AC9D6 /* IdentitySetupWindow.xib */,
+			);
+			name = "Identity setup controller";
 			sourceTree = "<group>";
 		};
 		AFC99BDF19D25E6A005B75AB /* Chatroom view */ = {
@@ -1134,6 +1152,7 @@
 				AF744CCF19EDD6B600E92680 /* MainMenu.xib in Resources */,
 				AF7026EC19C3CD560087B605 /* NCVideoThreadView.xib in Resources */,
 				AF7026BA19C251490087B605 /* NCStackEditorEntryView.xib in Resources */,
+				AFC1E99A1C992E20007AC9D6 /* IdentitySetupWindow.xib in Resources */,
 				AF8A13A319BFB8E700010B20 /* NCAdvancedPreferencesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1173,6 +1192,7 @@
 				AFDD0E1D1A7318380076A301 /* MainMenu.xib in Resources */,
 				AFDD0E1E1A7318380076A301 /* NCVideoThreadView.xib in Resources */,
 				AFDD0E1F1A7318380076A301 /* NCStackEditorEntryView.xib in Resources */,
+				AFC1E99B1C992E20007AC9D6 /* IdentitySetupWindow.xib in Resources */,
 				AFDD0E201A7318380076A301 /* NCAdvancedPreferencesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1299,6 +1319,7 @@
 				AF4258971AB3B887004C726B /* FTPManager.m in Sources */,
 				AF3EEA3C19F83BA900039A56 /* NCFaceSingleton.mm in Sources */,
 				AF3E074519D4A86300028E26 /* NCVideoStreamRenderer.mm in Sources */,
+				AFC1E9971C992DF8007AC9D6 /* NCIdentitySetupController.mm in Sources */,
 				AFB35C0619CA010700D8A2BC /* NCStreamBrowserController.m in Sources */,
 				AFF63AAC1AEF14B50066BAEB /* NCRosterWindowController.m in Sources */,
 				AF744C8519E61F2900E92680 /* NSTimer+NCAdditions.m in Sources */,
@@ -1380,6 +1401,7 @@
 				AFDD0DE31A7318380076A301 /* NCProducerParametersViewController.m in Sources */,
 				AFDD0DE51A7318380076A301 /* NCFaceSingleton.mm in Sources */,
 				AFDD0DE61A7318380076A301 /* NCVideoStreamRenderer.mm in Sources */,
+				AFC1E9981C992DF8007AC9D6 /* NCIdentitySetupController.mm in Sources */,
 				AFDD0DE71A7318380076A301 /* NCStreamBrowserController.m in Sources */,
 				AFF63AAD1AEF14B50066BAEB /* NCRosterWindowController.m in Sources */,
 				AFDD0DE81A7318380076A301 /* NSTimer+NCAdditions.m in Sources */,

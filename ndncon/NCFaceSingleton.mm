@@ -159,6 +159,7 @@ static dispatch_once_t token;
         [self willChangeValueForKey:@"isValid"];
         _face = new ndn::Face(host, port);
         _keychain = new ndn::KeyChain();
+        
         [self didChangeValueForKey:@"isValid"];
         _face->setCommandSigningInfo(*_keychain, _keychain->getDefaultCertificateName());
     }

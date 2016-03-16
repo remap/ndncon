@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1605" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NCIdentitySetupController">
+            <connections>
+                <outlet property="dropDownList" destination="heI-Eo-8mM" id="W2z-1H-KV5"/>
+                <outlet property="progressIndicator" destination="flH-2O-sSG" id="V2l-kc-gei"/>
+                <outlet property="progressLabel" destination="YuU-cv-dc7" id="KtG-sJ-uGL"/>
+                <outlet property="useIdentityButton" destination="wJg-sd-v0i" id="KKi-BH-tJ4"/>
+                <outlet property="window" destination="QvC-M9-y7g" id="8OG-2S-LT1"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="ndncon Identity setup" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES"/>
+            <rect key="contentRect" x="488" y="320" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <value key="minSize" type="size" width="480" height="270"/>
+            <value key="maxSize" type="size" width="480" height="270"/>
+            <view key="contentView" id="EiT-Mj-1SZ">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView translatesAutoresizingMaskIntoConstraints="NO" id="X3Y-cg-NXH">
+                        <rect key="frame" x="193" y="175" width="95" height="95"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="95" id="CsI-cI-smh"/>
+                            <constraint firstAttribute="width" constant="95" id="YVj-VJ-LVd"/>
+                        </constraints>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="ndncon" id="sqD-PG-5ES"/>
+                    </imageView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q4d-Eq-vZx">
+                        <rect key="frame" x="160" y="148" width="161" height="19"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Welcome to ndncon!" allowsEditingTextAttributes="YES" id="k9u-Lg-wKJ">
+                            <font key="font" size="16" name=".HelveticaNeueDeskInterface-Regular"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tY8-zf-7Kc">
+                        <rect key="frame" x="18" y="122" width="444" height="18"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Your ndncon identity needs to be set up. " allowsEditingTextAttributes="YES" id="K0j-Kq-ytp">
+                            <font key="font" size="14" name=".HelveticaNeueDeskInterface-Regular"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="qWm-jb-cLT">
+                        <rect key="frame" x="18" y="77" width="444" height="37"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="37" id="R4X-gW-9eF"/>
+                        </constraints>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" allowsEditingTextAttributes="YES" id="fyT-1m-niZ">
+                            <font key="font" size="12" name=".HelveticaNeueDeskInterface-Regular"/>
+                            <string key="title">Please, choose signing identity from the list of available identities below. Chosen identity will be used to uniquely identify you among ndncon users.</string>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wJg-sd-v0i">
+                        <rect key="frame" x="183" y="13" width="114" height="32"/>
+                        <buttonCell key="cell" type="push" title="Use identity" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rwM-uf-b2y">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="setupIdentity:" target="-2" id="nf9-UH-baj"/>
+                        </connections>
+                    </button>
+                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="heI-Eo-8mM">
+                        <rect key="frame" x="138" y="45" width="205" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="200" id="2pn-H7-mc9"/>
+                        </constraints>
+                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="KZ7-TB-tXh" id="41Y-Ot-o9N">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="wr4-vJ-tJB">
+                                <items>
+                                    <menuItem title="Item 1" state="on" id="KZ7-TB-tXh"/>
+                                    <menuItem title="Item 2" id="dWj-S3-QS8"/>
+                                    <menuItem title="Item 3" id="qdp-r6-MdI"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <binding destination="-2" name="content" keyPath="self.identities" id="Gs2-zM-Hrx"/>
+                            <binding destination="-2" name="selectedObject" keyPath="self.selectedIdentity" previousBinding="Gs2-zM-Hrx" id="8VM-vS-EhE"/>
+                        </connections>
+                    </popUpButton>
+                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YuU-cv-dc7">
+                        <rect key="frame" x="210" y="53" width="61" height="16"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="hint label" allowsEditingTextAttributes="YES" id="uiU-un-qNa">
+                            <font key="font" size="12" name=".HelveticaNeueDeskInterface-Regular"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="flH-2O-sSG">
+                        <rect key="frame" x="188" y="53" width="16" height="16"/>
+                    </progressIndicator>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="tY8-zf-7Kc" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="3L9-0u-qoy"/>
+                    <constraint firstItem="q4d-Eq-vZx" firstAttribute="top" secondItem="X3Y-cg-NXH" secondAttribute="bottom" constant="8" id="3jE-EP-TWY"/>
+                    <constraint firstItem="qWm-jb-cLT" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="7ug-SK-RJP"/>
+                    <constraint firstItem="wJg-sd-v0i" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="9iP-hS-3ZP"/>
+                    <constraint firstAttribute="bottom" secondItem="wJg-sd-v0i" secondAttribute="bottom" constant="20" id="D1X-eG-wJG"/>
+                    <constraint firstItem="X3Y-cg-NXH" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="DG2-TT-EQz"/>
+                    <constraint firstItem="X3Y-cg-NXH" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="MVj-AG-o2A"/>
+                    <constraint firstItem="YuU-cv-dc7" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="O3C-cO-Ynl"/>
+                    <constraint firstItem="tY8-zf-7Kc" firstAttribute="top" secondItem="q4d-Eq-vZx" secondAttribute="bottom" constant="8" id="QdR-NP-7ma"/>
+                    <constraint firstItem="YuU-cv-dc7" firstAttribute="top" secondItem="qWm-jb-cLT" secondAttribute="bottom" constant="8" id="UDM-uG-7cq"/>
+                    <constraint firstItem="qWm-jb-cLT" firstAttribute="top" secondItem="tY8-zf-7Kc" secondAttribute="bottom" constant="8" id="XFB-mO-NOc"/>
+                    <constraint firstItem="X3Y-cg-NXH" firstAttribute="centerX" secondItem="q4d-Eq-vZx" secondAttribute="centerX" id="d6j-0s-KhB"/>
+                    <constraint firstItem="YuU-cv-dc7" firstAttribute="leading" secondItem="flH-2O-sSG" secondAttribute="trailing" constant="8" id="dSU-pr-jEa"/>
+                    <constraint firstItem="heI-Eo-8mM" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="e4j-20-zVy"/>
+                    <constraint firstAttribute="trailing" secondItem="qWm-jb-cLT" secondAttribute="trailing" constant="20" id="fvv-1R-lo8"/>
+                    <constraint firstAttribute="trailing" secondItem="tY8-zf-7Kc" secondAttribute="trailing" constant="20" id="hld-dN-RIy"/>
+                    <constraint firstItem="heI-Eo-8mM" firstAttribute="top" secondItem="qWm-jb-cLT" secondAttribute="bottom" constant="8" id="uQy-Ji-hqp"/>
+                    <constraint firstItem="YuU-cv-dc7" firstAttribute="centerY" secondItem="flH-2O-sSG" secondAttribute="centerY" id="x6X-9M-GB2"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="22" y="220"/>
+        </window>
+        <userDefaultsController representsSharedInstance="YES" id="dWF-T1-Frb"/>
+    </objects>
+    <resources>
+        <image name="ndncon" width="512" height="512"/>
+    </resources>
+</document>
