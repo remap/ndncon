@@ -30,5 +30,16 @@
  * Checks if times are equal (does not take care about dates)
  */
 -(bool)isEqualToTimeOnly:(NSDate*)dateTime;
+/**
+ * Returns a future date which is ahead of the current date by 
+ * specified number of years
+ */
+-(NSDate*)dateByAddingYears:(NSUInteger)years;
+/**
+ * Returns time interval between current date and future date which
+ * is ahead of the current date by specified number of years
+ */
+-(NSTimeInterval)timeIntervalForYearsAhead:(NSUInteger)years;
+
 
 @end

@@ -7,7 +7,9 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NCIdentitySetupController">
             <connections>
+                <outlet property="descriptionLabel" destination="qWm-jb-cLT" id="9Zd-dN-hUv"/>
                 <outlet property="dropDownList" destination="heI-Eo-8mM" id="W2z-1H-KV5"/>
+                <outlet property="infoLabel" destination="tY8-zf-7Kc" id="4k6-Kh-kxi"/>
                 <outlet property="progressIndicator" destination="flH-2O-sSG" id="V2l-kc-gei"/>
                 <outlet property="progressLabel" destination="YuU-cv-dc7" id="KtG-sJ-uGL"/>
                 <outlet property="useIdentityButton" destination="wJg-sd-v0i" id="KKi-BH-tJ4"/>
@@ -56,7 +58,7 @@
                             <constraint firstAttribute="height" constant="37" id="R4X-gW-9eF"/>
                         </constraints>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" allowsEditingTextAttributes="YES" id="fyT-1m-niZ">
-                            <font key="font" size="12" name=".HelveticaNeueDeskInterface-Regular"/>
+                            <font key="font" metaFont="cellTitle"/>
                             <string key="title">Please, choose signing identity from the list of available identities below. Chosen identity will be used to uniquely identify you among ndncon users.</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -96,7 +98,7 @@
                     <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YuU-cv-dc7">
                         <rect key="frame" x="210" y="53" width="61" height="16"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="hint label" allowsEditingTextAttributes="YES" id="uiU-un-qNa">
-                            <font key="font" size="12" name=".HelveticaNeueDeskInterface-Regular"/>
+                            <font key="font" metaFont="cellTitle"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>

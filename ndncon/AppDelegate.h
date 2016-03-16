@@ -12,11 +12,13 @@
 
 #import "MASPreferencesWindowController.h"
 #import "NCPreferencesController.h"
+#import "NCIdentitySetupController.h"
 
 extern NSString* const kNCDaemonConnectionStatusUpdate;
 
 @interface AppDelegate : NSObject
-<NSApplicationDelegate, SUUpdaterDelegate, BITHockeyManagerDelegate>
+<NSApplicationDelegate, SUUpdaterDelegate, BITHockeyManagerDelegate,
+NCIdentitySetupDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 

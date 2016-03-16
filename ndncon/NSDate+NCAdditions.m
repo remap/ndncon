@@ -95,4 +95,16 @@
 {
     return self.second == dateTime.second && self.minute == dateTime.minute && self.hour == dateTime.hour;
 }
+
+-(NSDate *)dateByAddingYears:(NSUInteger)years
+{
+    return [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitYear value:years toDate:self options:NSCalendarMatchStrictly];
+}
+
+-(NSTimeInterval)timeIntervalForYearsAhead:(NSUInteger)years
+{
+    NSDate *futureDate = [self dateByAddingYears:years];
+    return [futureDate timeIntervalSinceDate:self];
+}
+
 @end

@@ -86,7 +86,9 @@ void signalHandler(int signal);
     NSString *resetSettings = [defaults stringForKey:@"reset-settings"];
     
     if (resetSettings)
+    {
         [[NCPreferencesController sharedInstance] resetDefaults];
+    }
     
     if ([NCPreferencesController sharedInstance].isFirstLaunch)
     {
@@ -104,6 +106,43 @@ void signalHandler(int signal);
         [self configureIdentity];
     else
         [self identityConfigured];
+}
+
+// Performs the save action for the application, which is to send the save: message to the application's managed object context. Any encountered errors are presented to the user.
+- (IBAction)saveAction:(id)sender
+{
+    NSError *error = nil;
+    
+    if (![[self managedObjectContext] commitEditing]) {
+        NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
+    }
+    
+    if (![[self managedObjectContext] save:&error]) {
+        [[NSApplication sharedApplication] presentError:error];
+    }
+}
+
+-(IBAction)showPreferences:(id)sender
+{
+    if (self.preferencesWindowController != nil)
+        self.preferencesWindowController = nil;
+    
+    if (self.preferencesWindowController == nil)
+    {
+        NSViewController *generalViewController = [[NCGeneralPreferencesViewController alloc] init];
+        NSViewController *advancedViewController = [[NCAdvancedPreferencesViewController alloc] init];
+        NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, advancedViewController, nil];
+        
+        NSString *title = NSLocalizedString(@"Preferences", @"Common title for Preferences window");
+        self.preferencesWindowController = [[MASPreferencesWindowController alloc] initWithViewControllers:controllers title:title];
+    }
+    
+    [self.preferencesWindowController showWindow:nil];
+}
+
+- (IBAction)sendFeedback:(id)sender
+{
+    [[BITHockeyManager sharedHockeyManager].feedbackManager showFeedbackWindow];
 }
 
 -(void)configureIdentity
@@ -133,6 +172,8 @@ void signalHandler(int signal);
     [self setupAutoPublishStreams];
 }
 
+
+#pragma mark - CoreData delegation
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ucla.edu.NdnCon" in the user's Application Support directory.
 - (NSURL *)applicationFilesDirectory
 {
@@ -242,20 +283,7 @@ void signalHandler(int signal);
     return [[self managedObjectContext] undoManager];
 }
 
-// Performs the save action for the application, which is to send the save: message to the application's managed object context. Any encountered errors are presented to the user.
-- (IBAction)saveAction:(id)sender
-{
-    NSError *error = nil;
-    
-    if (![[self managedObjectContext] commitEditing]) {
-        NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
-    }
-    
-    if (![[self managedObjectContext] save:&error]) {
-        [[NSApplication sharedApplication] presentError:error];
-    }
-}
-
+#pragma mark - AppDelegate
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     [self cleanup];
@@ -275,23 +303,110 @@ void signalHandler(int signal);
     return YES;
 }
 
--(IBAction)showPreferences:(id)sender
+#pragma mark - SUUpdater delegation
+-(NSArray*)feedParametersForUpdater:(SUUpdater *)updater sendingSystemProfile:(BOOL)sendingProfile
 {
-    if (self.preferencesWindowController != nil)
-        self.preferencesWindowController = nil;
-    
-    if (self.preferencesWindowController == nil)
-    {
-        NSViewController *generalViewController = [[NCGeneralPreferencesViewController alloc] init];
-        NSViewController *advancedViewController = [[NCAdvancedPreferencesViewController alloc] init];
-        NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, advancedViewController, nil];
-        
-        NSString *title = NSLocalizedString(@"Preferences", @"Common title for Preferences window");
-        self.preferencesWindowController = [[MASPreferencesWindowController alloc] initWithViewControllers:controllers title:title];
-    }
-    
-    [self.preferencesWindowController showWindow:nil];
+    return [[BITSystemProfile sharedSystemProfile] systemUsageData];
 }
+
+# pragma mark - delegation BITHockeyManagerDelegate
+-(NSString*)userIDForHockeyManager:(BITHockeyManager *)hockeyManager componentManager:(BITHockeyBaseManager *)componentManager
+{
+    return [NSString userIdWithName:[NCPreferencesController sharedInstance].userName
+                          andPrefix:[NCPreferencesController sharedInstance].prefix];
+}
+
+-(NSString*)userNameForHockeyManager:(BITHockeyManager *)hockeyManager
+                    componentManager:(BITHockeyBaseManager *)componentManager
+{
+    return [NCPreferencesController sharedInstance].userName;
+}
+
+#pragma mark - NCIdentitySetupDelegate
+-(void)identitySetupCompletedWithIdentity:(NSString *)identity
+{
+    [NCPreferencesController sharedInstance].identity = identity;
+    [self.identitySetupController close];
+    [self identityConfigured];
+}
+
+#pragma mark - notifications
+-(void)onUserDiscoveryNotification:(NSNotification*)notification
+{
+    NSString *autoFetchPrefix = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchPrefixCmdArg];
+    NSString *autoFetchUser = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchUserCmdArg];
+    NSInteger autoFetchVideo = [[NSUserDefaults standardUserDefaults] integerForKey:kAutoFetchVideoCmdArg];
+    NSInteger autoFetchAudio = [[NSUserDefaults standardUserDefaults] integerForKey:kAutoFetchAudioCmdArg];
+    NSString *autoFetchStream = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchStreamCmdArg];
+    
+    if ([notification.name isEqualToString: NCUserUpdatedNotificaiton] ||
+        [notification.name isEqualToString:NCUserDiscoveredNotification])
+    {
+        NCActiveUserInfo *userInfo = notification.userInfo[kUserInfoKey];
+        
+        if ([userInfo.hubPrefix isEqualToString:autoFetchPrefix] &&
+            [userInfo.username isEqualToString:autoFetchUser])
+        {
+            NSLog(@"discovered auto-fetch user: %@:%@", userInfo.hubPrefix, userInfo.username);
+            
+            NSMutableArray *streamsToFetch = [NSMutableArray array];
+            
+            if ([userInfo.streamConfigurations streamWithName:autoFetchStream])
+            {
+                NSLog(@"will auto-fetch stream %@", autoFetchStream);
+                [streamsToFetch addObject:[userInfo.streamConfigurations streamWithName:autoFetchStream]];
+            }
+            
+            if (autoFetchAudio)
+            {
+                NSLog(@"will auto-fetch all audio streams");
+                [streamsToFetch addObjectsFromArray:[userInfo getDefaultFetchAudioThreads]];
+            }
+            
+            if (autoFetchVideo)
+            {
+                NSLog(@"will auto-fetch all video streams");
+                [streamsToFetch addObjectsFromArray:[userInfo getDefaultFetchVideoThreads]];
+            }
+            
+            NSLog(@"auto-fetch streams %@", streamsToFetch);
+            [[NCStreamingController sharedInstance] fetchStreams:streamsToFetch
+                                                        fromUser:userInfo.username
+                                                      withPrefix:userInfo.hubPrefix];
+        }
+    }
+}
+
+-(void)onLocalSessionUpdate:(NSNotification*)notification
+{
+    [self willChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
+    [self willChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
+}
+
+-(void)onFetchingActivityChanged:(NSNotification*)notification
+{
+    [self willChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
+}
+
+#pragma mark - KVO
+-(void)observeValueForKeyPath:(NSString *)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary<NSString *,id> *)change
+                      context:(void *)context
+{
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(isInitialized))])
+    {
+        [self willChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
+        [self didChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
+        [self notifyNowWithNotificationName:kNCDaemonConnectionStatusUpdate
+                                andUserInfo:nil];
+    }
+}
+
+#pragma mark - private
 
 -(NCPreferencesController *)preferences
 {
@@ -353,34 +468,6 @@ void signalHandler(int signal);
     [NCChatLibraryController sharedInstance];
     [NCUserDiscoveryController sharedInstance];
     [NCChatroomDiscoveryController sharedInstance];
-}
-
--(void)observeValueForKeyPath:(NSString *)keyPath
-                     ofObject:(id)object
-                       change:(NSDictionary<NSString *,id> *)change
-                      context:(void *)context
-{
-    if ([keyPath isEqualToString:NSStringFromSelector(@selector(isInitialized))])
-    {
-        [self willChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
-        [self didChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
-        [self notifyNowWithNotificationName:kNCDaemonConnectionStatusUpdate
-                                andUserInfo:nil];
-    }
-}
-
--(void)onLocalSessionUpdate:(NSNotification*)notification
-{
-    [self willChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
-    [self didChangeValueForKey:NSStringFromSelector(@selector(isConnected))];
-    [self willChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
-    [self didChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
-}
-
--(void)onFetchingActivityChanged:(NSNotification*)notification
-{
-    [self willChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
-    [self didChangeValueForKey:NSStringFromSelector(@selector(hasActivity))];
 }
 
 -(void)cleanup
@@ -467,74 +554,6 @@ void signalHandler(int signal);
 -(NSString*)generateUniqueUsername
 {
     return [NSString stringWithFormat:@"jedi%d", (int)[[NSDate date] timeIntervalSince1970]];
-}
-
--(void)onUserDiscoveryNotification:(NSNotification*)notification
-{
-    NSString *autoFetchPrefix = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchPrefixCmdArg];
-    NSString *autoFetchUser = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchUserCmdArg];
-    NSInteger autoFetchVideo = [[NSUserDefaults standardUserDefaults] integerForKey:kAutoFetchVideoCmdArg];
-    NSInteger autoFetchAudio = [[NSUserDefaults standardUserDefaults] integerForKey:kAutoFetchAudioCmdArg];
-    NSString *autoFetchStream = [[NSUserDefaults standardUserDefaults] stringForKey:kAutoFetchStreamCmdArg];
-    
-    if ([notification.name isEqualToString: NCUserUpdatedNotificaiton] ||
-        [notification.name isEqualToString:NCUserDiscoveredNotification])
-    {
-        NCActiveUserInfo *userInfo = notification.userInfo[kUserInfoKey];
-        
-        if ([userInfo.hubPrefix isEqualToString:autoFetchPrefix] &&
-            [userInfo.username isEqualToString:autoFetchUser])
-        {
-            NSLog(@"discovered auto-fetch user: %@:%@", userInfo.hubPrefix, userInfo.username);
-            
-            NSMutableArray *streamsToFetch = [NSMutableArray array];
-            
-            if ([userInfo.streamConfigurations streamWithName:autoFetchStream])
-            {
-                NSLog(@"will auto-fetch stream %@", autoFetchStream);
-                [streamsToFetch addObject:[userInfo.streamConfigurations streamWithName:autoFetchStream]];
-            }
-
-            if (autoFetchAudio)
-            {
-                NSLog(@"will auto-fetch all audio streams");
-                [streamsToFetch addObjectsFromArray:[userInfo getDefaultFetchAudioThreads]];
-            }
-            
-            if (autoFetchVideo)
-            {
-                NSLog(@"will auto-fetch all video streams");
-                [streamsToFetch addObjectsFromArray:[userInfo getDefaultFetchVideoThreads]];
-            }
-            
-            NSLog(@"auto-fetch streams %@", streamsToFetch);
-            [[NCStreamingController sharedInstance] fetchStreams:streamsToFetch
-                                                        fromUser:userInfo.username
-                                                      withPrefix:userInfo.hubPrefix];
-        }
-    }
-}
-
-- (IBAction)sendFeedback:(id)sender {
-    [[BITHockeyManager sharedHockeyManager].feedbackManager showFeedbackWindow];
-}
-
--(NSArray*)feedParametersForUpdater:(SUUpdater *)updater sendingSystemProfile:(BOOL)sendingProfile
-{
-    return [[BITSystemProfile sharedSystemProfile] systemUsageData];
-}
-
-# pragma mark - delegation BITHockeyManagerDelegate
--(NSString*)userIDForHockeyManager:(BITHockeyManager *)hockeyManager componentManager:(BITHockeyBaseManager *)componentManager
-{
-    return [NSString userIdWithName:[NCPreferencesController sharedInstance].userName
-                          andPrefix:[NCPreferencesController sharedInstance].prefix];
-}
-
--(NSString*)userNameForHockeyManager:(BITHockeyManager *)hockeyManager
-                    componentManager:(BITHockeyBaseManager *)componentManager
-{
-    return [NCPreferencesController sharedInstance].userName;
 }
 
 @end
