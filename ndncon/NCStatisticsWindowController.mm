@@ -16,6 +16,7 @@
 #import "NCStreamingController.h"
 #import "NSDictionary+NCAdditions.h"
 #import "NSObject+NCAdditions.h"
+#import "NSArray+NCAdditions.h"
 
 #define INTEREST_AVERAGE_SIZE_BYTES 150
 #define STAT_UPDATE_RATE 10 // per second
@@ -30,6 +31,9 @@ using namespace ndnrtc::new_api::statistics;
 
 //******************************************************************************
 @interface NCStatisticsWindowController ()
+{
+    StatisticsStorage::StatRepo _prevStat;
+}
 
 @property (nonatomic) NSString *username;
 @property (nonatomic) NSString *hubPrefix;
@@ -43,6 +47,8 @@ using namespace ndnrtc::new_api::statistics;
 @property (nonatomic) NSTimer *statUpdateTimer;
 @property (nonatomic) NSString *activeThread;
 @property (weak) IBOutlet NSTextField *outRateEstimationLabel;
+@property (nonatomic) unsigned int refreshRate;
+@property (nonatomic) NSDictionary *rateMeters;
 
 @property (nonatomic) double nBytesPerSec, interestFrequency, segmentsFrequency;
 @property (nonatomic) double rttEstimation;
@@ -87,6 +93,9 @@ using namespace ndnrtc::new_api::statistics;
     
     if (self)
     {
+        for (auto it:StatisticsStorage::IndicatorKeywords)
+            _prevStat[it.first] = 0.;
+        
         self.activeStreamPrefix = nil;
         self.streamPrefixLock = [[NSLock alloc] init];
         self.chartsView.alphaValue = 0;
@@ -307,6 +316,13 @@ using namespace ndnrtc::new_api::statistics;
 -(void)startStatUpdate:(NSTimeInterval)refreshRate
 {
     __weak NCStatisticsWindowController *weakSelf = self;
+    self.refreshRate = refreshRate;
+    self.rateMeters = @{
+                        @"incomingRate" : [[NSMutableArray alloc] initCircularArrayWithSize:refreshRate],
+                        @"irate" : [[NSMutableArray alloc] initCircularArrayWithSize:refreshRate],
+                        @"srate" : [[NSMutableArray alloc] initCircularArrayWithSize:refreshRate],
+                        @"rtxRate" : [[NSMutableArray alloc] initCircularArrayWithSize:refreshRate]
+                         };
     self.statUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(1./refreshRate)
                                                            repeats:YES
                                                          fireBlock:^(NSTimer *timer) {
@@ -336,9 +352,12 @@ using namespace ndnrtc::new_api::statistics;
         std::string threadName = libHandle->getStreamThread(streamPrefix);
         self.activeThread = [NSString ncStringFromCString:threadName.c_str()];
         
-        self.nBytesPerSec = stat[Indicator::InBitrateKbps];
-        self.interestFrequency = stat[Indicator::InterestRate];
-        self.segmentsFrequency = stat[Indicator::InRateSegments];
+        [self.rateMeters[@"incomingRate"] push:@((stat[Indicator::RawBytesReceived] - _prevStat[Indicator::RawBytesReceived]))];
+        self.nBytesPerSec = [self.rateMeters[@"incomingRate"] average]*self.refreshRate*8/1000;
+        [self.rateMeters[@"irate"] push:@((stat[Indicator::InterestsSentNum] - _prevStat[Indicator::InterestsSentNum]))];
+        self.interestFrequency = [self.rateMeters[@"irate"] average]*(double)self.refreshRate;
+        [self.rateMeters[@"srate"] push:@((stat[Indicator::SegmentsReceivedNum] - _prevStat[Indicator::SegmentsReceivedNum]))];
+        self.segmentsFrequency = [self.rateMeters[@"srate"] average]*(double)self.refreshRate;
         self.rttEstimation = stat[Indicator::RttEstimation];
         self.jitterEstimationMs = stat[Indicator::BufferEstimatedSize];
         self.jitterPlayableMs = stat[Indicator::BufferPlayableSize];
@@ -372,7 +391,7 @@ using namespace ndnrtc::new_api::statistics;
         self.avgSegNumKey = stat[Indicator::SegmentsKeyAvgNum];
         self.avgSegNumParity = stat[Indicator::SegmentsDeltaParityAvgNum];
         self.avgSegNumParityKey = stat[Indicator::SegmentsKeyParityAvgNum];
-        self.rtxFreq = stat[Indicator::RtxFrequency];
+        self.rtxFreq = [self.rateMeters[@"rtxRate"] average]*(double)self.refreshRate;
         self.nRtx = stat[Indicator::RtxNum];
         self.nRebuffer = stat[Indicator::RebufferingsNum];
         self.nRequested = stat[Indicator::RequestedNum];
@@ -386,7 +405,10 @@ using namespace ndnrtc::new_api::statistics;
         double allSkipped = self.nSkippedIncomplete+self.nSkippedInvalidGop+self.nSkippedNoKey;
         self.playbackEfficiency = round(allSkipped/(double)self.nPlayed*10000)/100;
         
-        self.outRateEstimationLabel.stringValue = [[NSNumber numberWithDouble:(INTEREST_AVERAGE_SIZE_BYTES*stat[Indicator::InterestRate]*8/1000.)] stringValue];
+        self.outRateEstimationLabel.stringValue = [[NSNumber numberWithDouble:(INTEREST_AVERAGE_SIZE_BYTES*self.interestFrequency*8/1000.)] stringValue];
+
+        _prevStat = stat.getIndicators();
+        
     }
 }
 

@@ -26,3 +26,15 @@
 -(NSDictionary*)threadWithName:(NSString*)threadName;
 
 @end
+
+@interface NSMutableArray (NCCircularArray)
+
+@property (nonatomic) unsigned int circularBufferSize;
+@property (nonatomic) unsigned int currentIndex;
+
+-(instancetype)initCircularArrayWithSize:(unsigned int)size;
+
+-(void)push:(id)object;
+-(float)average;
+
+@end
