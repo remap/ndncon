@@ -264,6 +264,7 @@ public:
         std::string sessionPrefix = _ndnRtcLib->startSession(username,
                                                              generalParams.prefix_,
                                                              generalParams,
+                                                             [[NCFaceSingleton sharedInstance] getInstanceKeyChain],
                                                              _sessionObserverInstance);
         if (sessionPrefix != "")
         {
