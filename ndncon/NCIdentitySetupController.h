@@ -14,10 +14,13 @@
 
 @property (nonatomic, weak) IBOutlet id<NCIdentitySetupDelegate> delegate;
 
+-(void)setupInstanceIdentity;
+
 @end
 
 @protocol NCIdentitySetupDelegate<NSObject>
 
 -(void)identitySetupCompletedWithIdentity:(NSString*)identity;
+-(void)identitySetupCompletedWithInstanceIdentity:(NSString*)instanceIdentity;
 
 @end

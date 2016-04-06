@@ -233,8 +233,8 @@ private:
                                                          _discoveryObserver.get(),
                                                          _entitySerializer,
                                                          *[[NCFaceSingleton sharedInstance] getFace],
-                                                         *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                                         [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName()));
+                                                         *[[NCFaceSingleton sharedInstance] getSystemKeyChain],
+                                                         [[NCFaceSingleton sharedInstance] getSystemKeyChain]->getDefaultCertificateName()));
                     _discovery->start();
                     NSLog(@"initialized %@", self);
                 }

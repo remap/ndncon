@@ -199,8 +199,8 @@ private:
             __block boost::shared_ptr<Chat> chat(new Chat(broadcastPrefixName, screenName, chatRoom,
                                                           chatPrefixName, observer.get(),
                                                           *[[NCFaceSingleton sharedInstance] getFace],
-                                                          *[[NCFaceSingleton sharedInstance] getKeyChain],
-                                                          [[NCFaceSingleton sharedInstance] getKeyChain]->getDefaultCertificateName(),
+                                                          *[[NCFaceSingleton sharedInstance] getSystemKeyChain],
+                                                          [[NCFaceSingleton sharedInstance] getSystemKeyChain]->getDefaultCertificateName(),
                                                           60000, 120000));
             __block BOOL success = YES;
             

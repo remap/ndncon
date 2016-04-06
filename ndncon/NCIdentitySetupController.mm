@@ -13,6 +13,9 @@
 #import "NSTimer+NCAdditions.h"
 #import "NCErrorController.h"
 #import "NSDate+NCAdditions.h"
+#import "NCPreferencesController.h"
+
+#define NC_INSTANCE_CERT_DURATION 3600
 
 typedef void (^NCProgressBlock)(NSString*);
 
@@ -26,7 +29,7 @@ using namespace boost;
 
 @property (nonatomic) NSTimer *fetchTimer;
 @property (nonatomic) NSArray *identities;
-@property (nonatomic) NSString *selectedIdentity;
+@property (nonatomic) NSString *selectedIdentity, *generatedAppIdentity;
 
 @property (weak) IBOutlet NSPopUpButton *dropDownList;
 @property (weak) IBOutlet NSButton *useIdentityButton;
@@ -58,7 +61,7 @@ using namespace boost;
 
 -(void)fetchIdentities
 {
-    KeyChain* keyChain = [[NCFaceSingleton sharedInstance] getKeyChain];
+    KeyChain* keyChain = [[NCFaceSingleton sharedInstance] getSystemKeyChain];
     vector<Name> identities;
     
     keyChain->getIdentityManager()->getAllIdentities(identities, true);
@@ -70,7 +73,7 @@ using namespace boost;
         [identitiesArray addObject: [NSString stringWithCString:i.toUri().c_str() encoding:NSASCIIStringEncoding]];
     
     self.identities = [NSArray arrayWithArray: identitiesArray];
-
+    
     if (!self.selectedIdentity)
         self.selectedIdentity = self.identities[0];
 }
@@ -98,6 +101,55 @@ using namespace boost;
     }
 }
 
+-(void)setupInstanceIdentity
+{
+    try {
+        Name appIdentity = Name([[NCPreferencesController sharedInstance].identity cStringUsingEncoding:NSASCIIStringEncoding]);
+        Name instanceIdentity(appIdentity);
+        
+        instanceIdentity.append([[NSString stringWithFormat:@"instance%.0f", [NSDate date].timeIntervalSince1970] cStringUsingEncoding:NSASCIIStringEncoding]);
+        
+        NSLog(@"creating instance identity: %s", instanceIdentity.toUri().c_str());
+        
+        KeyChain *systemKeyChain = [[NCFaceSingleton sharedInstance] getSystemKeyChain];
+        KeyChain *keyChain = [[NCFaceSingleton sharedInstance] getInstanceKeyChain];
+        
+        NSLog(@"generating instance keypair...");
+        Name instanceKeyName = keyChain->generateRSAKeyPairAsDefault(instanceIdentity);
+        Name signingCertName = systemKeyChain->getIdentityManager()->getDefaultCertificateNameForIdentity(appIdentity);
+        
+        NSLog(@"creating instance certificate...");
+        vector<CertificateSubjectDescription> subjectDescriptions;
+        NSDate *now = [NSDate date];
+        shared_ptr<IdentityCertificate> instanceCert =
+        keyChain->getIdentityManager()->prepareUnsignedIdentityCertificate(instanceKeyName,
+                                                                           signingCertName,
+                                                                           now.timeIntervalSince1970*1000,
+                                                                           [now dateByAddingTimeInterval:NC_INSTANCE_CERT_DURATION].timeIntervalSince1970*1000,
+                                                                           subjectDescriptions);
+        
+        NSLog(@"signing identity certificate...");
+        systemKeyChain->sign(*instanceCert, signingCertName);
+        
+        NSLog(@"installing instance certificate...");
+        keyChain->installIdentityCertificate(*instanceCert);
+        keyChain->setDefaultCertificateForKey(*instanceCert);
+        
+        NSLog(@"instance identity setup successfully completed");
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(identitySetupCompletedWithInstanceIdentity:)])
+        {
+            [self.delegate identitySetupCompletedWithInstanceIdentity:[NSString stringWithCString:instanceIdentity.toUri().c_str()
+                                                                                         encoding:NSASCIIStringEncoding]];
+        }
+    }
+    catch (std::runtime_error &e) {
+        [[NCErrorController sharedInstance] postErrorWithMessage:[NSString stringWithFormat:@"Identity setup failed: %@",
+                                                              [NSString stringWithCString:e.what()
+                                                                                 encoding:NSASCIIStringEncoding]]];
+    }
+}
+
 -(void)setupIdentityWithProgressCallback:(NCProgressBlock)progressCallback
 {
     try
@@ -109,13 +161,13 @@ using namespace boost;
         
         if (signingIdentity[-1] != "ndncon")
         {
+            
             ndnconIdentity.append("ndncon");
             
-            progressCallback(@"Creating ndncon certificate...");
-            KeyChain* keyChain = [[NCFaceSingleton sharedInstance] getKeyChain];
+            KeyChain* keyChain = [[NCFaceSingleton sharedInstance] getSystemKeyChain];
             
             progressCallback(@"Generating new key pair...");
-            Name ndnconKeyName = keyChain->generateRSAKeyPairAsDefault(ndnconIdentity);
+            Name ndnconKeyName = keyChain->generateRSAKeyPairAsDefault(ndnconIdentity, true);
             Name signingCertName = keyChain->getIdentityManager()->getDefaultCertificateNameForIdentity(signingIdentity);
             
             progressCallback(@"Creating ndncon certificate...");
@@ -125,7 +177,8 @@ using namespace boost;
             keyChain->getIdentityManager()->prepareUnsignedIdentityCertificate(ndnconKeyName, signingIdentity,
                                                                                [now timeIntervalSince1970]*1000,
                                                                                [[now dateByAddingYears:3] timeIntervalSince1970]*1000,
-                                                                               subjectDescriptions);
+                                                                               subjectDescriptions,
+                                                                               &ndnconIdentity);
             
             
             progressCallback(@"Signing ndncon certificate...");
@@ -136,10 +189,16 @@ using namespace boost;
             keyChain->setDefaultCertificateForKey(*ndnconCert);
             
             progressCallback(@"ndncon identity setup succesfully completed");
+            
+            self.generatedAppIdentity = [NSString stringWithCString:ndnconIdentity.toUri().c_str()
+                                                           encoding:NSASCIIStringEncoding];
         }
         else
         {
 #warning implement some verification algorithm for the chosen identity
+            self.generatedAppIdentity = [NSString stringWithCString:signingIdentity.toUri().c_str()
+                                                           encoding:NSASCIIStringEncoding];
+            
         }
         
         [self setupCompleted];
@@ -184,7 +243,7 @@ using namespace boost;
 -(void)continueSetup
 {
     // check for discoverability
-    [self.delegate identitySetupCompletedWithIdentity: self.selectedIdentity];
+    [self.delegate identitySetupCompletedWithIdentity: self.generatedAppIdentity];
 }
 
 @end

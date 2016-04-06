@@ -26,6 +26,7 @@ typedef void(^NCFaceSynchronizedBlock)();
 -(void)performSynchronizedWithFaceBlocking:(NCFaceSynchronizedBlock)block;
 
 -(ndn::Face*)getFace;
--(ndn::KeyChain*)getKeyChain;
+-(ndn::KeyChain*)getSystemKeyChain;
+-(ndn::KeyChain*)getInstanceKeyChain;
 
 @end

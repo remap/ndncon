@@ -152,6 +152,11 @@ void signalHandler(int signal);
 
 -(void)identityConfigured
 {
+    [self.identitySetupController setupInstanceIdentity];
+}
+
+-(void)initApp
+{
     [self.rosterWindowController showWindow:nil];
     [self initConnection];
     
@@ -328,6 +333,11 @@ void signalHandler(int signal);
     [NCPreferencesController sharedInstance].identity = identity;
     [self.identitySetupController close];
     [self identityConfigured];
+}
+
+-(void)identitySetupCompletedWithInstanceIdentity:(NSString *)instanceIdentity
+{
+    [self initApp];
 }
 
 #pragma mark - notifications

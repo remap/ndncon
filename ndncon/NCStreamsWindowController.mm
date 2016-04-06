@@ -33,6 +33,7 @@
 #import "NCChatLibraryController.h"
 #import "NCScreenCapturer.h"
 #import "ChatMessage.h"
+#import "NCFaceSingleton.h"
 
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
@@ -888,6 +889,7 @@ using namespace ndnrtc::new_api;
                                                         streamParams,
                                                         generalParams,
                                                         consumerParams,
+                                                        [[NCFaceSingleton sharedInstance] getInstanceKeyChain],
                                                         (isVideoStream?(IExternalRenderer*)renderer.ndnRtcRenderer:NULL));
         if (streamPrefix != "")
         {

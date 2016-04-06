@@ -8,6 +8,10 @@
 
 #include <ndn-cpp/security/key-chain.hpp>
 
+#include <ndn-cpp/security/identity/memory-private-key-storage.hpp>
+#include <ndn-cpp/security/identity/memory-identity-storage.hpp>
+#include <ndn-cpp/security/policy/no-verify-policy-manager.hpp>
+
 #import "NCFaceSingleton.h"
 #import "NCPreferencesController.h"
 #import "NCErrorController.h"
@@ -15,11 +19,14 @@
 #import "NSObject+NCAdditions.h"
 #import "NCErrorController.h"
 
+using namespace boost;
+using namespace ndn;
+
 //******************************************************************************
 @interface NCFaceSingleton()
 {
     ndn::Face* _face;
-    ndn::KeyChain* _keychain;
+    ndn::KeyChain* _systemKeychain, *_instanceKeyChain;
     dispatch_queue_t _faceQueue;
     dispatch_source_t _faceTimer;
     BOOL _isRunningFace;
@@ -57,7 +64,7 @@ static dispatch_once_t token;
     {
         _faceQueue = dispatch_queue_create("ndncon.faceQueue", DISPATCH_QUEUE_SERIAL);
         _face = NULL;
-        _keychain = NULL;
+        _systemKeychain = NULL;
         
         if (![self initFace])
             return nil;
@@ -71,7 +78,7 @@ static dispatch_once_t token;
 -(void)dealloc
 {
     _isRunningFace = NO;
-    if (_keychain) delete _keychain;
+    if (_systemKeychain) delete _systemKeychain;
     if (_face) delete _face;
 }
 
@@ -96,7 +103,7 @@ static dispatch_once_t token;
 
 -(BOOL)isValid
 {
-    return _face && _keychain;
+    return _face && _systemKeychain;
 }
 
 -(void)markInvalid
@@ -105,8 +112,8 @@ static dispatch_once_t token;
     [self willChangeValueForKey:@"isValid"];
     if (_face) delete _face;
     _face = NULL;
-    if (_keychain) delete _keychain;
-    _keychain = NULL;
+    if (_systemKeychain) delete _systemKeychain;
+    _systemKeychain = NULL;
     [self didChangeValueForKey:@"isValid"];
 }
 
@@ -138,9 +145,14 @@ static dispatch_once_t token;
     return _face;
 }
 
--(ndn::KeyChain *)getKeyChain
+-(ndn::KeyChain *)getSystemKeyChain
 {
-    return _keychain;
+    return _systemKeychain;
+}
+
+-(ndn::KeyChain *)getInstanceKeyChain
+{
+    return _instanceKeyChain;
 }
 
 #pragma mark - private
@@ -149,8 +161,8 @@ static dispatch_once_t token;
     if (_face)
         delete _face;
     
-    if (_keychain)
-        delete _keychain;
+    if (_systemKeychain)
+        delete _systemKeychain;
     
     const char* host = [[NCPreferencesController sharedInstance].daemonHost cStringUsingEncoding:NSASCIIStringEncoding];
     unsigned short port = (unsigned short)([NCPreferencesController sharedInstance].daemonPort.intValue);
@@ -158,10 +170,11 @@ static dispatch_once_t token;
     try {
         [self willChangeValueForKey:@"isValid"];
         _face = new ndn::Face(host, port);
-        _keychain = new ndn::KeyChain();
+        _systemKeychain = new ndn::KeyChain();
+        [self initInstanceKeyChain];
         
         [self didChangeValueForKey:@"isValid"];
-        _face->setCommandSigningInfo(*_keychain, _keychain->getDefaultCertificateName());
+        _face->setCommandSigningInfo(*_systemKeychain, _systemKeychain->getDefaultCertificateName());
     }
     catch (std::exception &exception)
     {
@@ -211,6 +224,15 @@ static dispatch_once_t token;
                                        [NSString stringWithCString:exception.what() encoding:NSASCIIStringEncoding]]];
             }
     }
+}
+
+-(void)initInstanceKeyChain
+{
+    shared_ptr<MemoryPrivateKeyStorage> privateKeyStorage(new MemoryPrivateKeyStorage());
+    
+    _instanceKeyChain = new KeyChain(make_shared<IdentityManager>(make_shared<MemoryIdentityStorage>(),
+                                                                            privateKeyStorage),
+                                                    make_shared<NoVerifyPolicyManager>());
 }
 
 @end

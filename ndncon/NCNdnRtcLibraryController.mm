@@ -262,8 +262,9 @@ public:
         [[NCPreferencesController sharedInstance] getNdnRtcGeneralParameters:&generalParams];
         
         std::string sessionPrefix = _ndnRtcLib->startSession(username,
-                                                            generalParams,
-                                                            _sessionObserverInstance);
+                                                             generalParams.prefix_,
+                                                             generalParams,
+                                                             _sessionObserverInstance);
         if (sessionPrefix != "")
         {
             _sessionPrefix = [NSString stringWithCString:sessionPrefix.c_str()

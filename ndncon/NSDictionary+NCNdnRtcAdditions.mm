@@ -35,8 +35,7 @@ using namespace ndnrtc::new_api;
     
     if ([self valueForKey:kInputDeviceKey])
     {
-        params.captureDevice_ = new CaptureDeviceParams();
-        params.captureDevice_->deviceId_ = [[self valueForKey:kInputDeviceKey] intValue];
+        params.captureDevice_.deviceId_ = [[self valueForKey:kInputDeviceKey] intValue];
     }
     
     if ([self valueForKey:kThreadsArrayKey])
@@ -45,9 +44,7 @@ using namespace ndnrtc::new_api;
         
         for (NSDictionary *threadConfiguration in threads)
         {
-            VideoThreadParams *threadParams = new VideoThreadParams();
-            *threadParams = [threadConfiguration asVideoThreadParams];
-            params.mediaThreads_.push_back(threadParams);
+            params.addMediaThread([threadConfiguration asVideoThreadParams]);
         }
     }
     
@@ -70,8 +67,7 @@ using namespace ndnrtc::new_api;
     
     if ([self valueForKey:kInputDeviceKey])
     {
-        params.captureDevice_ = new CaptureDeviceParams();
-        params.captureDevice_->deviceId_ = [[self valueForKey:kInputDeviceKey] intValue];
+        params.captureDevice_.deviceId_ = [[self valueForKey:kInputDeviceKey] intValue];
     }
     
     if ([self valueForKey:kThreadsArrayKey])
@@ -80,9 +76,7 @@ using namespace ndnrtc::new_api;
         
         for (NSDictionary *threadConfiguration in threads)
         {
-            AudioThreadParams *threadParams = new AudioThreadParams();
-            *threadParams = [threadConfiguration asAudioThreadParams];
-            params.mediaThreads_.push_back(threadParams);
+            params.addMediaThread([threadConfiguration asAudioThreadParams]);
         }
     }
     
@@ -115,16 +109,16 @@ using namespace ndnrtc::new_api;
         params.coderParams_.encodeWidth_ = [[self valueForKey:kEncodingWidthKey] intValue];
     
     if ([self valueForKey:kDeltaAverageSegNumKey])
-        params.deltaAvgSegNum_ = [[self valueForKey:kDeltaAverageSegNumKey] floatValue];
+        params.segInfo_.deltaAvgSegNum_ = [[self valueForKey:kDeltaAverageSegNumKey] floatValue];
     
     if ([self valueForKey:kDeltaAverageParSegNumKey])
-        params.deltaAvgParitySegNum_ = [[self valueForKey:kDeltaAverageParSegNumKey] floatValue];
+        params.segInfo_.deltaAvgParitySegNum_ = [[self valueForKey:kDeltaAverageParSegNumKey] floatValue];
     
     if ([self valueForKey:kKeyAverageSegNumKey])
-        params.keyAvgSegNum_ = [[self valueForKey:kKeyAverageSegNumKey] floatValue];
+        params.segInfo_.keyAvgSegNum_ = [[self valueForKey:kKeyAverageSegNumKey] floatValue];
     
     if ([self valueForKey:kKeyAverageParSegNumKey])
-        params.keyAvgParitySegNum_ = [[self valueForKey:kKeyAverageParSegNumKey] floatValue];
+        params.segInfo_.keyAvgParitySegNum_ = [[self valueForKey:kKeyAverageParSegNumKey] floatValue];
     
     return params;
 }
@@ -150,14 +144,14 @@ using namespace ndnrtc::new_api;
                                                   kFreshnessPeriodKey: @(params.producerParams_.freshnessMs_)
                                                   }];
     
-    if (params.captureDevice_)
-        [streamConfiguration setObject: @(params.captureDevice_->deviceId_) forKey:kInputDeviceKey];
+    if (params.captureDevice_.deviceId_ >= 0)
+        [streamConfiguration setObject: @(params.captureDevice_.deviceId_) forKey:kInputDeviceKey];
     
     NSMutableArray *threads = [NSMutableArray array];
     
-    for (int i = 0; i < params.mediaThreads_.size(); i++)
+    for (int i = 0; i < params.getThreadNum(); i++)
     {
-        VideoThreadParams *threadParams = (VideoThreadParams*)params.mediaThreads_[i];
+        VideoThreadParams *threadParams = params.getVideoThread(i);
         [threads addObject:[NSDictionary configurationWithVideoThreadParams:*threadParams]];
     }
     
@@ -177,14 +171,14 @@ using namespace ndnrtc::new_api;
                                                   kFreshnessPeriodKey: @(params.producerParams_.freshnessMs_)
                                                   }];
     
-    if (params.captureDevice_)
-        [streamConfiguration setObject: @(params.captureDevice_->deviceId_) forKey:kInputDeviceKey];
+    if (params.captureDevice_.deviceId_ >= 0)
+        [streamConfiguration setObject: @(params.captureDevice_.deviceId_) forKey:kInputDeviceKey];
     
     NSMutableArray *threads = [NSMutableArray array];
     
-    for (int i = 0; i < params.mediaThreads_.size(); i++)
+    for (int i = 0; i < params.getThreadNum(); i++)
     {
-        AudioThreadParams *threadParams = (AudioThreadParams*)params.mediaThreads_[i];
+        AudioThreadParams *threadParams = params.getAudioThread(i);
         [threads addObject:[NSDictionary configurationWithAudioThreadParams:*threadParams]];
     }
     
@@ -204,10 +198,10 @@ using namespace ndnrtc::new_api;
              kMaxBitrateKey: @(params.coderParams_.maxBitrate_),
              kEncodingWidthKey: @(params.coderParams_.encodeWidth_),
              kEncodingHeightKey: @(params.coderParams_.encodeHeight_),
-             kDeltaAverageSegNumKey: @(params.deltaAvgSegNum_),
-             kDeltaAverageParSegNumKey: @(params.deltaAvgParitySegNum_),
-             kKeyAverageSegNumKey : @(params.keyAvgSegNum_),
-             kKeyAverageParSegNumKey: @(params.keyAvgParitySegNum_)
+             kDeltaAverageSegNumKey: @(params.segInfo_.deltaAvgSegNum_),
+             kDeltaAverageParSegNumKey: @(params.segInfo_.deltaAvgParitySegNum_),
+             kKeyAverageSegNumKey : @(params.segInfo_.keyAvgSegNum_),
+             kKeyAverageParSegNumKey: @(params.segInfo_.keyAvgParitySegNum_)
              };
 }
 
