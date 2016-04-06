@@ -257,12 +257,13 @@ public:
     if (_ndnRtcLib)
     {
         std::string username = std::string([[NCPreferencesController sharedInstance].userName cStringUsingEncoding:NSASCIIStringEncoding]);
+        std::string prefix = std::string([[NCPreferencesController sharedInstance].prefix cStringUsingEncoding:NSASCIIStringEncoding]);
         GeneralParams generalParams;
         
         [[NCPreferencesController sharedInstance] getNdnRtcGeneralParameters:&generalParams];
         
         std::string sessionPrefix = _ndnRtcLib->startSession(username,
-                                                             generalParams.prefix_,
+                                                             prefix,
                                                              generalParams,
                                                              [[NCFaceSingleton sharedInstance] getInstanceKeyChain],
                                                              _sessionObserverInstance);

@@ -571,7 +571,6 @@ using namespace ndnrtc::new_api;
     params->useFec_ = self.fecEnabled.boolValue;
     params->useAvSync_ = true;
     params->skipIncomplete_ = true;
-    params->prefix_ = std::string([self.prefix cStringUsingEncoding:NSUTF8StringEncoding]);
     params->host_ = std::string([self.daemonHost cStringUsingEncoding:NSUTF8StringEncoding]);
     params->portNum_ = self.daemonPort.intValue;
 }
